@@ -132,6 +132,7 @@ server {
 	location ${resourceLocation!'/'} {
 		root   ${rootPath}/staticfile/resource/site_${siteId}/;
 		index  index.html;
+		add_header Access-Control-Allow-Origin *;
 	}
 }</#if></@_disk></textarea>
 <script>

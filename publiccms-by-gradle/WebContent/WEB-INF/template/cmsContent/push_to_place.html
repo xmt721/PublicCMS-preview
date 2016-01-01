@@ -34,7 +34,7 @@
 			<#include "../include_page/extendData.html"/>
 			<@_metadata path='include'+path type=type><#assign metadata=object/></@_metadata>
 			<#assign pageExtendList=(metadata.pageExtendList)![]/>
-			<#assign extendValues=getPageDataAttribute(a.id)!/>
+			<#assign extendValues=getPageDataAttribute(object.id)!{}/>
 			<@extendData 'extendDataList' pageExtendList extendValues/>
 		</div>
 		<div class="formBar">

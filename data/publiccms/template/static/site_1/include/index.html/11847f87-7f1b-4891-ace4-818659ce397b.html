@@ -1,10 +1,6 @@
-<div class="info">
-	<h3>技术支持</h3>
-<#list page.list>
-	<ul>
-	<#items as a>
+<h3>技术支持</h3>
+<ul>
+	<#list page.list as a>
 		<li><a href="${site.dynamicPath}page/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></li>
-	</#items>
-</#list>
-	</ul>
-</div>
+	</#list>
+</ul>

@@ -1485,7 +1485,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='部门';
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -1493,6 +1493,7 @@ CREATE TABLE `sys_dept` (
 INSERT INTO `sys_dept` VALUES ('1', '1', '总公司', null, '集团总公司', '1', '1', '1');
 INSERT INTO `sys_dept` VALUES ('2', '2', '技术部', null, '', '3', '1', '1');
 INSERT INTO `sys_dept` VALUES ('3', '4', '技术部', null, '', null, '1', '1');
+INSERT INTO `sys_dept` VALUES ('4', '6', '总公司', null, null, '8', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_dept_category
@@ -1544,7 +1545,7 @@ CREATE TABLE `sys_domain` (
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`),
   KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='域名';
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='域名';
 
 -- ----------------------------
 -- Records of sys_domain
@@ -1554,6 +1555,7 @@ INSERT INTO `sys_domain` VALUES ('2', 'www.sanluan.com', '2', '', '/login.html',
 INSERT INTO `sys_domain` VALUES ('3', 'cms.kerneler.com', '3', '', '', '');
 INSERT INTO `sys_domain` VALUES ('4', 'cms.oldhunter.com', '4', '', '', '');
 INSERT INTO `sys_domain` VALUES ('5', 'cms.publicms.com', '5', '', '', '');
+INSERT INTO `sys_domain` VALUES ('6', 'cms.demo1.publiccms.com', '6', '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_email_token
@@ -1772,7 +1774,7 @@ CREATE TABLE `sys_role` (
   `show_all_moudle` tinyint(1) NOT NULL COMMENT '显示全部模块',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='角色';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
@@ -1783,6 +1785,7 @@ INSERT INTO `sys_role` VALUES ('3', '2', '站长', '1', '0');
 INSERT INTO `sys_role` VALUES ('4', '3', '站长', '1', '1');
 INSERT INTO `sys_role` VALUES ('5', '4', '站长', '1', '1');
 INSERT INTO `sys_role` VALUES ('6', '5', '站长', '1', '1');
+INSERT INTO `sys_role` VALUES ('7', '6', '站长', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_role_authorized
@@ -1880,7 +1883,7 @@ CREATE TABLE `sys_role_user` (
   PRIMARY KEY  (`id`),
   KEY `role_id` (`role_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sys_role_user
@@ -1891,6 +1894,7 @@ INSERT INTO `sys_role_user` VALUES ('3', '3', '3');
 INSERT INTO `sys_role_user` VALUES ('4', '4', '5');
 INSERT INTO `sys_role_user` VALUES ('5', '5', '6');
 INSERT INTO `sys_role_user` VALUES ('6', '6', '7');
+INSERT INTO `sys_role_user` VALUES ('7', '7', '8');
 
 -- ----------------------------
 -- Table structure for sys_site
@@ -1905,7 +1909,7 @@ CREATE TABLE `sys_site` (
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`disabled`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='站点';
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='站点';
 
 -- ----------------------------
 -- Records of sys_site
@@ -1915,6 +1919,7 @@ INSERT INTO `sys_site` VALUES ('2', '散乱', '#', '//www.sanluan.com/', '//imag
 INSERT INTO `sys_site` VALUES ('4', 'OldHunter', '//www.oldhunter.com/', '//cms.oldhunter.com/', '//image.oldhunter.com/', '0');
 INSERT INTO `sys_site` VALUES ('3', 'Kerneler', '//www.kerneler.com/', '//cms.kerneler.com/', '//image.kerneler.com/', '0');
 INSERT INTO `sys_site` VALUES ('5', 'PublicMS', '//www.publicms.com/', '//cms.publicms.com/', '//image.publicms.com/', '0');
+INSERT INTO `sys_site` VALUES ('6', '演示站点1', '//demo1.publiccms.com/', '#', '//resource.demo1.publiccms.com/', '0');
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -1971,7 +1976,7 @@ CREATE TABLE `sys_user` (
   KEY `lastLoginDate` (`last_login_date`),
   KEY `email_checked` (`email_checked`),
   KEY `dept_id` (`dept_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
@@ -1982,6 +1987,7 @@ INSERT INTO `sys_user` VALUES ('3', '2', 'admin', '21232f297a57a5a743894a0e4a801
 INSERT INTO `sys_user` VALUES ('5', '3', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', null, '4', null, '0', '1', '0', null, null, '0', '2016-03-23 11:30:05');
 INSERT INTO `sys_user` VALUES ('6', '4', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '3', '5', '', '0', '1', '0', '2016-03-23 11:36:49', '106.2.199.138', '1', '2016-03-23 11:31:00');
 INSERT INTO `sys_user` VALUES ('7', '5', 'admin', 'dbdc2d8254ff5fc85b35803a78beaca7', 'admin', null, '6', null, '0', '1', '0', '2016-04-01 16:41:30', '106.2.199.138', '1', '2016-04-01 16:40:46');
+INSERT INTO `sys_user` VALUES ('8', '6', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', null, '7', null, '0', '1', '0', null, null, '0', '2016-04-15 00:00:00');
 
 -- ----------------------------
 -- Table structure for sys_user_token

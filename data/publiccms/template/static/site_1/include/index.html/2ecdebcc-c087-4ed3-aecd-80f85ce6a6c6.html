@@ -1,11 +1,11 @@
 <header>
-	<div class="container search">
-		<form action="${site.dynamicPath!}search.html">
-			<input name="word" type="text" placeholder="这里输入关键词"/>
-			<input type="submit" value="搜索"/>
-		</form>
-	</div>
 	<div class="container">
+		<div class="search">
+			<form action="${site.dynamicPath!}search.html">
+				<input name="word" type="text" placeholder="这里输入关键词"/>
+				<input type="submit" value="搜索"/>
+			</form>
+		</div>
 		<a href="#" class="nav-icon"></a>
 		<div class="logo">
 			<a href="${site.sitePath}"><img src="${site.resourcePath!}image/logo.png" alt="Public CMS"/></a>
@@ -34,6 +34,19 @@
 				<!--#include virtual="/include/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html"--> <#-- 导航-动态站点 -->				
 			</ul>
 		</nav>
+		<div class="clearfix-before"></div>
 	</div>
 </header>
-<script>$('.nav-icon').click(function(){$('header nav>ul').fadeToggle()});</script>
+<script>
+	$('.nav-icon').click(function(){$('header nav>ul').fadeToggle()});
+	$(function(){
+		var headerHeight=$('header').height();
+		$(window).scroll(function(){
+			if(headerHeight-$(window).scrollTop()>0){
+				$('header').removeClass('fixed-position');
+			} else {
+				$('header').addClass('fixed-position');
+			}
+		});
+	});
+</script>

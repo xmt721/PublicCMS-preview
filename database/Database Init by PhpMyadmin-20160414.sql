@@ -1608,7 +1608,7 @@ CREATE TABLE IF NOT EXISTS `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='部门' AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='部门' AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `sys_dept`
@@ -1617,7 +1617,8 @@ CREATE TABLE IF NOT EXISTS `sys_dept` (
 INSERT INTO `sys_dept` (`id`, `site_id`, `name`, `parent_id`, `description`, `user_id`, `owns_all_category`, `owns_all_page`) VALUES
 (1, 1, '总公司', NULL, '集团总公司', 1, 1, 1),
 (2, 2, '技术部', NULL, '', 3, 1, 1),
-(3, 4, '技术部', NULL, '', NULL, 1, 1);
+(3, 4, '技术部', NULL, '', NULL, 1, 1),
+(4, 6, '总公司', NULL, NULL, 8, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1667,7 +1668,7 @@ CREATE TABLE IF NOT EXISTS `sys_domain` (
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`),
   KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='域名' AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='域名' AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `sys_domain`
@@ -1678,7 +1679,8 @@ INSERT INTO `sys_domain` (`id`, `name`, `site_id`, `path`, `login_path`, `regist
 (2, 'www.sanluan.com', 2, '', '/login.html', '/register.html'),
 (3, 'cms.kerneler.com', 3, '', '', ''),
 (4, 'cms.oldhunter.com', 4, '', '', ''),
-(5, 'cms.publicms.com', 5, '', '', '');
+(5, 'cms.publicms.com', 5, '', '', ''),
+(6, 'cms.demo1.publiccms.com', 6, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1913,7 +1915,7 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
   `show_all_moudle` tinyint(1) NOT NULL COMMENT '显示全部模块',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='角色' AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='角色' AUTO_INCREMENT=8 ;
 
 --
 -- 转存表中的数据 `sys_role`
@@ -1925,7 +1927,8 @@ INSERT INTO `sys_role` (`id`, `site_id`, `name`, `owns_all_right`, `show_all_mou
 (3, 2, '站长', 1, 0),
 (4, 3, '站长', 1, 1),
 (5, 4, '站长', 1, 1),
-(6, 5, '站长', 1, 1);
+(6, 5, '站长', 1, 1),
+(7, 6, '站长', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2027,7 +2030,7 @@ CREATE TABLE IF NOT EXISTS `sys_role_user` (
   PRIMARY KEY  (`id`),
   KEY `role_id` (`role_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户角色' AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户角色' AUTO_INCREMENT=8 ;
 
 --
 -- 转存表中的数据 `sys_role_user`
@@ -2039,7 +2042,8 @@ INSERT INTO `sys_role_user` (`id`, `role_id`, `user_id`) VALUES
 (3, 3, 3),
 (4, 4, 5),
 (5, 5, 6),
-(6, 6, 7);
+(6, 6, 7),
+(7, 7, 8);
 
 -- --------------------------------------------------------
 
@@ -2056,7 +2060,7 @@ CREATE TABLE IF NOT EXISTS `sys_site` (
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`disabled`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='站点' AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='站点' AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `sys_site`
@@ -2067,7 +2071,8 @@ INSERT INTO `sys_site` (`id`, `name`, `site_path`, `dynamic_path`, `resource_pat
 (2, '散乱', '#', '//www.sanluan.com/', '//image.sanluan.com/', 0),
 (4, 'OldHunter', '//www.oldhunter.com/', '//cms.oldhunter.com/', '//image.oldhunter.com/', 0),
 (3, 'Kerneler', '//www.kerneler.com/', '//cms.kerneler.com/', '//image.kerneler.com/', 0),
-(5, 'PublicMS', '//www.publicms.com/', '//cms.publicms.com/', '//image.publicms.com/', 0);
+(5, 'PublicMS', '//www.publicms.com/', '//cms.publicms.com/', '//image.publicms.com/', 0),
+(6, '演示站点1', '//demo1.publiccms.com/', '#', '//resource.demo1.publiccms.com/', 0);
 
 -- --------------------------------------------------------
 
@@ -2130,7 +2135,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   KEY `lastLoginDate` (`last_login_date`),
   KEY `email_checked` (`email_checked`),
   KEY `dept_id` (`dept_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户' AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `sys_user`
@@ -2142,7 +2147,8 @@ INSERT INTO `sys_user` (`id`, `site_id`, `name`, `password`, `nick_name`, `dept_
 (3, 2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 2, '3', '', 0, 1, 0, '2016-03-23 11:51:11', '106.2.199.138', 6, '2016-03-22 17:42:26'),
 (5, 3, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', NULL, '4', NULL, 0, 1, 0, NULL, NULL, 0, '2016-03-23 11:30:05'),
 (6, 4, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 3, '5', '', 0, 1, 0, '2016-03-23 11:36:49', '106.2.199.138', 1, '2016-03-23 11:31:00'),
-(7, 5, 'admin', 'dbdc2d8254ff5fc85b35803a78beaca7', 'admin', NULL, '6', NULL, 0, 1, 0, '2016-04-01 16:41:30', '106.2.199.138', 1, '2016-04-01 16:40:46');
+(7, 5, 'admin', 'dbdc2d8254ff5fc85b35803a78beaca7', 'admin', NULL, '6', NULL, 0, 1, 0, '2016-04-01 16:41:30', '106.2.199.138', 1, '2016-04-01 16:40:46'),
+(8, 6, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', NULL, '7', NULL, 0, 1, 0, NULL, NULL, 0, '2016-04-15 00:00:00');
 
 -- --------------------------------------------------------
 
