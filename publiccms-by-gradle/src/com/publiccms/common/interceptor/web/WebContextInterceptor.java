@@ -1,0 +1,85 @@
+package com.publiccms.common.interceptor.web;
+
+import static com.publiccms.common.base.AbstractController.clearUserToSession;
+import static com.publiccms.common.base.AbstractController.getUserFromSession;
+import static com.publiccms.common.base.AbstractController.getUserTimeFromSession;
+import static com.publiccms.common.base.AbstractController.setUserToSession;
+import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
+import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
+import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
+import static com.sanluan.common.tools.RequestUtils.cancleCookie;
+import static com.sanluan.common.tools.RequestUtils.getCookie;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.time.DateUtils.addSeconds;
+
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.SiteComponent;
+import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
+import com.sanluan.common.base.BaseInterceptor;
+
+/**
+ * 
+ * WebContextInterceptor 权限拦截器
+ *
+ */
+public class WebContextInterceptor extends BaseInterceptor {
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private SysUserTokenService sysUserTokenService;
+    @Autowired
+    private SiteComponent siteComponent;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
+        HttpSession session = request.getSession();
+        String contextPath = request.getContextPath();
+        SysUser user = getUserFromSession(session);
+        if (null == user) {
+            Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+            if (null != userCookie && isNotBlank(userCookie.getValue())) {
+                String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
+                if (userData.length > 1) {
+                    try {
+                        Integer userId = Integer.parseInt(userData[0]);
+                        SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
+                        if (null != userToken && userId == userToken.getUserId() && CHANNEL_WEB.equals(userToken.getChannel())
+                                && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
+                            user.setPassword(null);
+                            setUserToSession(session, user);
+                        } else {
+                            cancleCookie(contextPath, response, COOKIES_USER, null);
+                        }
+                    } catch (NumberFormatException e) {
+                        cancleCookie(contextPath, response, COOKIES_USER, null);
+                    }
+                }
+            }
+        } else {
+            Date date = getUserTimeFromSession(session);
+            if (null == date || date.before(addSeconds(new Date(), -30))) {
+                user = sysUserService.getEntity(user.getId());
+                if (null != user && !user.isDisabled()) {
+                    user.setPassword(null);
+                    setUserToSession(session, user);
+                } else {
+                    clearUserToSession(contextPath, session, response);
+                    cancleCookie(contextPath, response, COOKIES_USER, null);
+                }
+            }
+        }
+        return true;
+    }
+}

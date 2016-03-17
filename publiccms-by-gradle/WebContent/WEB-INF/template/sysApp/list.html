@@ -1,0 +1,52 @@
+<@_sysAppList channel=channel pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>渠道：</label>
+					<input type="text" name="channel" value="${channel!}" />
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="sysApp/add.html" target="navTab" rel="sysApp/add"><span>添加</span></a></li>
+			<li><a class="edit" href="sysApp/add.html?id={sid}" target="navTab" rel="sysApp/edit"><span>修改</span></a></li>
+			<li><a class="delete" href="sysApp/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="92">
+		<thead>
+			<tr>
+				<th>渠道</th>
+				<th>授权KEY</th>
+				<th>授权密码</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.channel!}</td>
+				<td>${a.appKey!}</td>
+				<td>
+					<a href="sysApp/view.html?id=${a.id}" target="dialog" rel="sysApp">查看密码</a>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_sysAppList>

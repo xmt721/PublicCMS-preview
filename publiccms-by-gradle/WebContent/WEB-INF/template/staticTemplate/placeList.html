@@ -1,0 +1,29 @@
+<#macro templateTree filepath type>
+	<@_templateList path='/include'+filepath type=type>
+		<@_metadata dir='/include'+filepath type=type><#local metaDataMap=object/></@_metadata>
+		<#list list as a>
+			<li>
+			<#local path=filepath+'/'+a.fileName>
+				<a href="${type}Template/placeContent.html?path=${path?url}" target="ajax" rel="${type}TemplateBox">
+					${(metaDataMap[a.fileName].alias)!a.fileName}
+				</a>
+			<#if a.directory>
+				<ul>
+					<@templateTree path/>
+				</ul>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
+<#assign type=type!'static'/>
+<div class="pageContent">
+	<ul class="tree treeFolder">
+		<li>
+			<a href="javascript:;">推荐位</a>
+			<ul><@templateTree path type/></ul>
+		</li>
+     </ul>
+</div>

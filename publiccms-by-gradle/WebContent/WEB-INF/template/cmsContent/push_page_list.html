@@ -1,0 +1,15 @@
+<#assign type=type!'static'/>
+<div layoutH="0">
+	<ul class="tree treeFolder">
+<@_templateList path='/include'+path+'/' type=type>
+	<#list list as a>
+		<@_metadata dir='/include'+path+'/' type=type><#assign metaDataMap=object/></@_metadata>
+		<#if !a.directory&&0 != ((metaDataMap[a.fileName].size)!0)>
+		<li>
+			<a href="cmsContent/push_to_place.html?path=${(path+'/'+a.fileName)?url}&type=${type}&contentId=${contentId!}" target="dialog" rel="push">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+		</li>
+		</#if>
+	</#list>
+</@_templateList>
+  	</ul>
+</div>

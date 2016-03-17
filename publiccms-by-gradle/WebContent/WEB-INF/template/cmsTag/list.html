@@ -1,0 +1,66 @@
+<@_tagList name=name typeId=typeId pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>名称：</label>
+					<input type="text" name="name" value="${name!}" />
+				</li>
+				<li>
+					<label>类型：</label>
+					<#if typeId?has_content><@_tagType id=typeId><#assign typeName=(object.name)!/></@_tagType></#if>
+					<input type="hidden" name="typeId" value="${typeId!}" />
+					<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${typeName!}"/>
+					<a class="btnLook" href="cmsTagType/lookup.html?typeId=${typeId!}" width="920" warn="请选择标签分类" lookupGroup="">选择标签分类</a>
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="cmsTag/add.html" target="navTab" rel="cmsTag/add"><span>添加标签</span></a></li>
+			<li><a class="edit" href="cmsTag/add.html?id={sid}" target="navTab" rel="cmsTag/edit"><span>修改标签</span></a></li>
+			<li><a class="delete" href="cmsTag/delete.do" title="确定要删除这些记录吗?"  target="selectedTodo" rel="ids"><span>批量删除</span></a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="92">
+		<thead>
+			<tr>
+				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th width="30">ID</th>
+				<th>名称</th>
+				<th>类型</th>
+				<th>内容数</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'typeIds' a.typeId!/>
+			</#list>
+			
+			<@_tagType ids=t.typeIds!><#assign typeMap=map!/></@_tagType>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.id}</td>
+				<td>${a.name!}</td>
+				<td>${(typeMap[a.typeId?string].name)!}</td>
+				<td><@_contentTagList tagId=a.id>${page.totalCount}</@_contentTagList></td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_tagList>

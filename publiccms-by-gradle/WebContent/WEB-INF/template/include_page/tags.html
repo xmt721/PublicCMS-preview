@@ -1,0 +1,66 @@
+<#macro tagsRow tagIds='' typeId=''>
+<dl class="nowrap tags">
+	<dt>标签:</dt>
+	<dd>
+		<div id="tags${typeId!}"></div>
+		<input name="tag[${typeId!}].id" type="hidden"/>
+		<input name="tag[${typeId!}].typeId" type="hidden"/>
+		<input name="tag[${typeId!}].name" type="text" size="30" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="cmsTag/suggest.html"/>
+		<a class="button" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].typeId\']',navTab.getCurrentPanel()).val());return false;"><span>增加</span></a>
+		<span class="info">点击某个标签可以将其删除</span>
+	</dd>
+</dl>
+</#macro>
+<#macro tags typeIds='' tagIds=''>
+<style>
+#tags{line-height:25px;}
+#tags span{margin-right:8px;padding:3px;border:1px solid #aaa;}
+</style>
+	<#if typeIds?has_content>
+		<@_tagType ids=typeIds>
+			<#list typeIds?split(',') as typeId>
+<@tagsRow tagIds typeId/>
+			</#list>
+		</@_tagType>
+	<#else>
+<@tagsRow tagIds/>
+	</#if>
+<script>
+function addTag(typeId,$id,$name,$typeId){
+	if($name){
+		$name=$name.trim();
+	}
+	if($('#tags'+typeId+' span',navTab.getCurrentPanel()).size()>20){
+		alertMsg.error('标签不能超过20个');
+	}else{
+		if($id&&$name){
+			$('#tags'+typeId,navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();reIndex();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tags[].id\" value=\""+$id+"\"/><input type=\"hidden\" name=\"tags[].name\" value=\""+$name+"\"/><input type=\"hidden\" name=\"tags[].typeId\" value=\""+$typeId+"\"/></span>");
+		}else if($name){
+			$('#tags'+typeId,navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();reIndex();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tags[].name\" value=\""+$name+"\"/></span>");
+		}
+		reIndex();
+	}
+	$('input[name=\'tag['+typeId+'].id\']',navTab.getCurrentPanel()).val('');
+	$('input[name=\'tag['+typeId+'].typeId\']',navTab.getCurrentPanel()).val('');
+	$('input[name=\'tag['+typeId+'].name\']',navTab.getCurrentPanel()).val('');
+}
+function reIndex(){
+	$('.tags',navTab.getCurrentPanel()).each(function(){
+		$('span',this).each(function(tagIndex){
+			$('input[name$=\\.id]',this).attr('name','tags['+tagIndex+'].id');
+			$('input[name$=\\.name]',this).attr('name','tags['+tagIndex+'].name');
+			$('input[name$=\\.typeId]',this).attr('name','tags['+tagIndex+'].typeId');
+		});
+	});
+}
+	<@_tag ids=tagIds>
+		<#list map?keys as k>
+			<#if typeIds?has_content>
+addTag('${map[k].typeId!}','${k}','${map[k].name}','${map[k].typeId!}');
+			<#else>
+addTag('','${k}','${map[k].name}','${map[k].typeId!}');
+			</#if>
+		</#list>
+	</@_tag>
+</script>
+</#macro>

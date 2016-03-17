@@ -1,0 +1,42 @@
+<style>
+.CodeMirror{height:100%;font-size:14px;}
+</style>
+<script>
+function refreshTaskTemplate(){
+	$('textarea[name=content]',navTab.getCurrentPanel()).val(taskTemplateEditor.getValue());
+}
+</script>
+<h2 class="contentTitle">
+ 		<a href="taskTemplate/chipLookup.html" target="dialog" mask="true">模板片段</a>
+	<#if !path?has_content||!path?starts_with('/ftl/')>
+		<a href="taskTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="taskTemplateMetadata"><span>创建模板片段</span></a>
+	</#if>
+	<a href="cmsTemplate/delete.do?path=${path?html?url}&type=task" title="确定要删除该模板吗?" target="ajaxTodo" rel="staticTemplate/list">删除模板</a>
+ </h2>
+<div class="pageContent">
+	<form method="post" action="cmsTemplate/save.do?navTabId=taskTemplate" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="98" style="background:#ffffff;">
+	   		<div>
+				<input name="path" type="hidden" value="${path?html}"/>
+				<input name="type" type="hidden" value="task"/>
+				<textarea name="content" id="taskTemplateEditor"><@_templateContent path=path type='task'>${(object?html)!}</@_templateContent></textarea>
+				<script>
+					var taskTemplateEditor = CodeMirror.fromTextArea(document.getElementById('taskTemplateEditor'), {
+				        mode: "freemarkermixed",
+				        lineNumbers: true,
+				        tabSize        : 2,
+				        indentUnit     : 2,
+				        indentWithTabs : false
+					});
+				</script>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><a class="button" href="taskTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="staticTemplateMetadata"><span>模板元数据</span></a></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

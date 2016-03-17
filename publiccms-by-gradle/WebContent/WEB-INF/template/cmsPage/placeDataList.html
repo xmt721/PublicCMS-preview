@@ -1,0 +1,90 @@
+<@_metadata path='/include'+path type=type><#assign a=object/></@_metadata>
+<div class="pageHeader">
+	<form id="pagerForm" action="cmsPage/placeDataList.html" onsubmit="return divSearch(this,'pageBox');"  method="post">
+		<#include "../include_page/paramters.html"/>
+		<input name="type" type="hidden" value="${type}"/>
+		<input name="path" type="hidden" value="${path}"/>
+		<div class="searchBar">
+			<ul class="searchContent two">
+				<li class="colspan">
+					<label>推荐位名称：</label><label>${a.alias!}</label>
+				</li>
+				<li class="width:auto">
+					<#list 0..1 as s>
+						<label style="width:auto">
+							<input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+							<span><@t.m 'status.place.data.'+s/></span>
+						</label>
+					</#list>
+				</li>
+				<li>
+					<label>发布用户：</label>
+					<#include "../include_page/userId.html"/>
+				</li>
+				<li class="colspan">
+					<label>发布日期：</label>
+					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${startPublishDate!}" />
+					<span>-</span>
+					<input type="text" name="endPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${endPublishDate!}" />
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+		<#if 0 != (a.size!0)>
+			<li><a class="add" href="cmsPage/placeDataAdd.html?path=${(path?url!)}&type=${type}" target="navTab" rel="cmsPageData/add"><span>添加推荐位数据</span></a></li>
+			<li><a class="edit" href="cmsPage/placeDataAdd.html?path=${(path?url!)}&id={sid}&type=${type}" target="navTab" rel="cmsPageData/edit"><span>修改推荐位数据</span></a></li>
+			<li><a class="delete" href="cmsPage/delete.do?id={sid}&path=${(path?url!)}&type=${type}&rel=pageBox" title="确定要删除这条记录么?" target="ajaxTodo"><span>删除</span></a></li>
+			<li><a class="icon" href="cmsPage/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><span>批量刷新</span></a></li>
+			<li><a class="icon" href="cmsPage/check.do" title="确定要审核这些记录么?"  target="selectedTodo" rel="ids"><span>批量审核</span></a></li>
+		</#if>
+			<#if 'static'=type>
+				<li><a class="icon" href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo"><span>发布</span></a></li>
+			</#if>
+		<#if 0 != (a.size!0)>
+			<li class="line">line</li>
+			<li><a class="icon" href="cmsPage/clear.do?path=${(path?url!)}&type=${type}" title="确定要清空这些记录么?"  target="ajaxTodo"><span>全部清空</span></a></li>
+		</#if>
+		</ul>
+	</div>
+<#if 0 != (a.size!0)>
+<@_pageDataList path=path admin=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate 
+	orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+	<table class="list" width="100%" layoutH="117" rel="pageBox">
+		<thead>
+			<tr>
+				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th width="30">ID</th>
+				<th>标题</th>
+				<th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
+				<th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+				<th width="50">状态</th>
+			</tr>
+		</thead>
+		<tbody>
+	<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.id}</td>
+				<td><a href="${a.url}" target="_blank">${a.title}</a></td>
+				<td>${a.publishDate}</td>
+				<td>${a.createDate}</td>
+				<td><@t.m 'status.place.data.'+a.status/></td>
+			</tr>
+	</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</@_pageDataList>
+</#if>
+</div>

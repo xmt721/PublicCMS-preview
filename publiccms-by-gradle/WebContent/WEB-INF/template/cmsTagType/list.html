@@ -1,0 +1,33 @@
+<@_tagTypeList pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="cmsTagType/add.html" target="navTab" rel="cmsTagType/add"><span>添加标签分类</span></a></li>
+			<li><a class="edit" href="cmsTagType/add.html?id={sid}" target="navTab" rel="cmsTagType/edit"><span>修改标签类型</span></a></li>
+			<li><a class="delete" href="cmsTagType/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="57">
+		<thead>
+			<tr>
+				<th width="30">ID</th>
+				<th>名称</th>
+				<th>标签个数</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.id!}</td>
+				<td>${a.name!}</td>
+				<td>${a.count!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_tagTypeList>

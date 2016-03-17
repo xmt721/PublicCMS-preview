@@ -1,0 +1,203 @@
+<div class="pageFormContent" layoutH="20">
+	<div class="unit">
+		<p>
+			<label>我的待审核:</label>
+			<a href="myself/contentList.html?status=2" title="我的待审核" target="navTab" rel="myself/contentList">
+				<@_contentList admin=true status=2 userId=admin.id>
+					${page.totalCount}篇
+				</@_contentList>
+			</a>
+		</p>
+		<p>
+			<label>我的草稿:</label>
+			<a href="myself/contentList.html?status=0" title="我的草稿" target="navTab" rel="myself/contentList">
+				<@_contentList admin=true status=0 userId=admin.id>
+					${page.totalCount}篇
+				</@_contentList>
+			</a>
+		</p>
+		<p>
+			<a class="button" href="main.html" title="工作台" target="navTab" rel="main">
+				<span>刷新</span>
+			</a>
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>登录次数:</label>
+			<a href="myself/logLogin.html" title="我的登陆日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
+		</p>
+		<p>
+			<label>上次登录日期:</label>
+			<a href="myself/logLogin.html" title="我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
+		</p>
+		<p>
+			<label>上次登录IP:</label>
+			<a href="myself/logLogin.html" title="我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>静态站点地址：</label><a href="${site.sitePath}" target="_blank">${site.sitePath}</a>
+		</p>
+		<p>
+			<label>动态站点地址：</label><a href="${site.dynamicPath}" target="_blank">${site.dynamicPath}</a>
+		</p>
+		<p>
+			<label>资源文件地址：</label><a href="${site.resourcePath}" target="_blank">${site.resourcePath}</a>
+		</p>
+	</div>
+	<div class="divider"></div>
+<@_checkMasterSite>
+	<#if result>
+<@_memory>
+	<div class="unit">
+		<p>
+			<label>已用内存：</label>${((totalMemory-freeMemory)/1048576)?string("0.##")}MB
+		</p>
+		<p>
+			<label>空闲内存：</label>${(freeMemory/1048576)?string("0.##")}MB
+		</p>
+		<p>
+			<label>占用内存：</label>${(totalMemory/1048576)?string("0.##")}MB
+		</p>
+		<p>
+			<label>最大内存：</label>${(maxMemory/1048576)?string("0.##")}MB
+		</p>
+	</div>
+	<div class="divider"></div>
+</@_memory>
+<@_disk>
+	<div class="unit">
+		<p>
+			<label>站点文件目录:</label>${rootPath!}
+		</p>
+		<p>
+			<label>已用磁盘空间：</label>${((totalSpace-freeSpace)/1048576)?string("0.##")}MB
+		</p>
+		<p>
+			<label>空闲磁盘空间：</label>${(freeSpace/1048576)?string("0.##")}MB
+		</p>
+		<p>
+			<label>可用磁盘空间：</label>${(usableSpace/1048576)?string("0.##")}MB
+		</p>
+		<p>
+			<label>总磁盘空间：</label>${(totalSpace/1048576)?string("0.##")}MB
+		</p>
+	</div>
+	<div class="divider"></div>
+</@_disk>
+<@_systemProperties>
+	<div class="unit">
+		<p>
+			<label>操作系统：</label>${.vars['os.name']!}(${.vars['os.arch']!})
+		</p>
+		<p>
+			<label>操作系统版本：</label>${.vars['os.version']!}
+		</p>
+		<p>
+			<label>操作系统用户：</label>${.vars['user.name']!}
+		</p>
+		<p>
+			<label>操作系统时区：</label>${.vars['user.timezone']!}
+		</p>
+		<p>
+			<label>文件编码：</label>${.vars['file.encoding']!}
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>JRE名称：</label>${.vars['java.runtime.name']!}
+		</p>
+		<p>
+			<label>JRE版本：</label>
+			${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
+		</p>
+		<p>
+			<label>JVM名称：</label>${.vars['java.vm.name']!}
+		</p>
+		<p>
+			<label>JVM版本：</label>${.vars['java.vm.version']!}
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>用户目录：</label>${.vars['user.home']!}
+		</p>
+		<p>
+			<label>工作目录：</label>${.vars['user.dir']!}
+		</p>
+		<p>
+			<label>临时文件目录：</label>${.vars['java.io.tmpdir']!}
+		</p>
+		<p>
+			<label>文件分隔符：</label>${.vars['file.separator']!}
+		</p>
+	</div>
+	<div class="divider"></div>
+</@_systemProperties>
+<@_version>
+	<div class="unit">
+		<p>
+			<label>FreeMarker：</label>
+			<a href="http://freemarker.org/" target="_blank">${.version}</a>
+			(<a href="http://freemarker.org/docs/app_license.html" target="_blank">Apache License2</a>)
+		</p>
+		<p>
+			<label>Spring Framework：</label>
+			<a href="http://projects.spring.io/spring-framework/" target="_blank">${springVersion}</a>
+			(<a href="https://github.com/spring-projects/spring-framework" target="_blank">Apache License2</a>)
+		</p>
+		<p>
+			<label>Hibernate：</label>
+			<a href="http://hibernate.org/orm/" target="_blank">${hibernateVersion}</a>
+			(<a href="http://hibernate.org/community/license/" target="_blank">LGPL 2.1 License</a>)
+		</p>
+		<p>
+			<label>Hibernate Search：</label>
+			<a href="http://hibernate.org/search/" target="_blank">${hibernateSearchVersion}</a>
+			(<a href="https://raw.githubusercontent.com/hibernate/hibernate-search/master/lgpl.txt" target="_blank">LGPL 2.1 License</a>)
+		</p>
+		<p>
+			<label>lucene：</label>
+			<a href="http://lucene.apache.org/" target="_blank">${luceneVersion}</a>
+			(<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License2</a>)
+		</p>
+		<p>
+			<label>Jquery：</label>
+			<a id="JQueryVersion" href="http://jquery.com/" target="_blank"></a>
+			(<a href="https://jquery.org/license/" target="_blank">The MIT License</a>)
+		</p>
+		<p>
+			<label>jUI：</label>
+			<a id="jUIVersion" href="http://jui.org/" target="_blank"></a>
+			(<a href="https://code.csdn.net/dwzteam/dwz_jui" target="_blank">Apache License2</a>)
+		</p>
+		<p>
+			<label>UEditor：</label>
+			<a id="UEditorVersion" href="http://ueditor.baidu.com/website/" target="_blank"></a>
+			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
+		</p>
+		<script>
+			$('#JQueryVersion').text(jQuery.fn.jquery);
+			$('#UEditorVersion').text(UE.version);
+			$('#jUIVersion').text(DWZ.version);
+		</script>
+	</div>
+</@_version>
+	<div class="divider"></div>
+	</#if>
+</@_checkMasterSite>
+	<div class="unit">
+		<p>
+			<label>Public CMS：</label>
+			<a href="http://www.publiccms.com/" target="_blank">2016.3</a>
+			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
+		</p>
+	</div>
+	<div class="divider"></div>
+</div>

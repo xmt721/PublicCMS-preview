@@ -1,0 +1,67 @@
+<@_category id=id><#assign category=object/></@_category>
+<#if !pageIndex?has_content><#assign pageIndex='1'/></#if>
+<#assign pageIndex=pageIndex?number/>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${category.name} - PublicCMS</title>
+	<meta name="keywords" content="${category.name}"/>
+	<meta name="description" content="${category.name}"/>
+	<@include path="/ftl/header.ftl"/> <#-- 公共头部 -->
+</head>
+<body>
+<@include path="/ftl/nav.ftl"/> <#-- 导航 -->
+<main>
+	<div class="container nav">
+		<@_categoryList parentId=category.parentId>
+			<#list page.list as a>
+				<a href="list.html?id=${a.id}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
+			</#list>
+		</@_categoryList>
+	</div>
+	<div class="container bread">
+		<@include path="/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
+	</div>
+	<div class="container">
+<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
+		<div class="data-list left-content">
+	<#list page.list as a>
+		<@include path="/ftl/data-list.ftl"/>
+	</#list>
+			<#if 1=pageIndex>
+				<div class="page">
+					<#if !page.lastPage>
+						<a href="list.html?id=${id}&pageIndex=${page.nextPage}">查看更多</a>
+					<#else>
+						<span>查看更多</span>
+					</#if>
+				</div>
+			<#else>
+				<@include path="/ftl/category_page.ftl"/>
+			</#if>
+		</div>
+		<aside>
+			<@_pageDataList path="/include/category/list.html/1.html">
+				<@include path=path/><#-- 文章右侧-编辑推荐 -->
+			</@_pageDataList>
+			<@_pageDataList path="/include/category/list.html/2.html">
+				<@include path=path/><#-- 精彩图集 -->
+			</@_pageDataList>
+			<div>
+				<h3>热门排行</h3>
+				<ul class="rank">
+<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
+	<#list page.list as a>
+					<li><a href="content.html?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+		</aside>
+</@_contentList>
+	</div>
+</main>
+<@include path="/ftl/footer.ftl"/> <#-- 公共尾部 -->
+</body>
+</html>

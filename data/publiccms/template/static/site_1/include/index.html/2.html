@@ -1,0 +1,10 @@
+<li>
+	<a href="${site.dynamicPath!}" target="_blank">动态站点</a>
+<#if dataList?has_content>
+	<ul>
+	<#list page.list as a>
+		<li><a href="${a.url!}" target="_blank">${a.title}</a></li>
+	</#list>
+	</ul>
+</#if>
+</li>

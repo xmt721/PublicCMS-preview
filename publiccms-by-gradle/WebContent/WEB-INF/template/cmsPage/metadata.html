@@ -1,0 +1,30 @@
+<@_metadata path=path type=type><#assign a=object/></@_metadata>
+<form method="post" action="cmsPage/saveMetaData.do?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<div class="pageFormContent" layoutH="56" style="background:#ffffff;">
+		<dl class="nowrap">
+			<dt>操作:</dt>
+			<dd>
+				<input name="path" type="hidden" value="${path?html}"/>
+				<input name="type" type="hidden" value="${type?html}"/>
+				<#if (a.publishPath)?has_content>
+					<a class="button" href="cmsTemplate/publish.do?path=${path?url}" target="ajaxTodo"><span>生成页面</span></a>
+					<a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><span>查看页面</span></a>
+				</#if>
+			</dd>
+		</dl>
+		<#include "../include_page/extendData.html"/>
+		<@_metadata path=path type=type><#assign a=object/></@_metadata>
+		<#assign metadataExtendList=(a.metadataExtendList)![]/>
+		<#assign extendValues=(a.extendData)!/>
+		<@extendData 'extendDataList' metadataExtendList extendValues/>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li>
+				<div class="buttonActive">
+					<div class="buttonContent"><button type="submit">保存</button></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</form>

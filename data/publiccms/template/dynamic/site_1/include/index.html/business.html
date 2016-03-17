@@ -1,0 +1,10 @@
+<div class="info">
+	<h3>商务合作</h3>
+<#list page.list>
+	<ul>
+	<#items as a>
+		<li><a target="_blank" href="${a.url!}">${a.title!}</a></li>
+	</#items>
+	</ul>
+</#list>
+</div>

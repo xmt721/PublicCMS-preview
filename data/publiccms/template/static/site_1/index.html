@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>PublicCMS - 永久免费开源JAVA CMS(内容管理系统),最新技术框架</title>
+	<meta name="keywords" content="${metadata.keywords!}"/>
+	<meta name="description" content="${metadata.description!}"/>
+<!--#include virtual="/include/header.html"-->
+</head>
+<body>
+<!--#include virtual="/include/nav.html"-->
+<script>
+	$("header nav ul li a:contains('首页')").parent().addClass('selected');
+</script>
+<main>
+	<div class="container">
+		<!--#include virtual="/include/index.html/1.html"--><#-- 焦点图 -->
+		<div class="data-list left-content">
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<@_modelList>
+	<#list page.list?reverse as model>
+		<@_contentList status=1 modelId=model.id endPublishDate=.now orderField='publishDate' orderType='desc' count=3>
+			<#if page.totalCount gt 0>
+				<h3>最新${model.name!}</h3>
+				<#list page.list as a>
+					<@include path="/ftl/data-list.ftl"/>
+				</#list>
+			</#if>
+		</@_contentList>
+	</#list>
+</@_modelList>
+		</div>
+		<aside>
+			<div>
+				<h3>热门文章</h3>
+				<ul class="rank">
+<@_contentList status=1 modelId=1 endPublishDate=.now orderType='desc' orderField='clicks' count=10>
+	<#list page.list as a>
+					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+			<div>
+				<h3>热门图集</h3>
+				<ul class="rank">
+<@_contentList status=1 modelId=3 endPublishDate=.now orderType='desc' orderField='clicks' count=10>
+	<#list page.list as a>
+					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
+			<@include path="/ftl/index.html/1.html"/><#-- 开源中国 -->
+		</aside>
+	</div>
+</main>
+<footer>
+	<div class="container">
+		<!--#include virtual="/include/index.html/business.html"--><#-- 页尾导航 -->
+		<!--#include virtual="/include/index.html/support.html"--><#-- 技术支持 -->
+		<!--#include virtual="/include/index.html/code.html"--><#-- 源码托管 -->
+		<!--#include virtual="/include/index.html/4.html"--><#-- 下载链接 -->
+		<!--#include virtual="/include/index.html/frendlink_index.html"--><#-- 首页友链 -->
+	</div>
+	<div class="container">
+		<script type="text/javascript" src="http://links.webscan.360.cn/index/index/0ee0303b90149ca2b7b3d67e754d6fa4"></script>
+		<div class="copyright">&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved. 京ICP备15009690号</div>
+	</div>
+</footer>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?bd81f02e5329554415de9ee15f916a98";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>
+</html>

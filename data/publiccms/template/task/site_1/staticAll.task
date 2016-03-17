@@ -1,0 +1,5 @@
+<@_include path="staticContent.task"/>
+<@_include path="staticCategory.task"/>
+<@_include path="staticContent.task"/>
+<@_include path="staticCategory.task"/>
+<@_include path="staticPage.task"/>

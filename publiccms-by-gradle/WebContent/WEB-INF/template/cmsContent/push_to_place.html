@@ -1,0 +1,49 @@
+<@_content id=contentId>
+<div class="pageContent">
+	<form method="post" action="cmsPage/save.do?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input name="path" type="hidden" value="${(path?html)!}" />
+		<input name="type" type="hidden" value="${type?html}" />
+		<input name="itemType" type="hidden" value="content" />
+		<input name="itemId" type="hidden" value="${contentId}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt>标题：</dt>
+				<dd>
+					<input class="required" name="title" type="text"  maxlength="255" size="60" value="${object.title}"/>
+					<a class="btnLook" href="cmsPage/lookup.html" lookupGroup="" width="1200" >选择</a>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>地址：</dt>
+				<dd><input class="required" name="url" type="text" maxlength="1000" style="width: 100%;" value="${a.url!}"/></dd>
+			</dl>
+			<dl>
+				<dt>发布日期：</dt>
+				<dd>
+					<input class="date" name="publishDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${object.publishDate}"/>
+					<a class="inputDateButton" href="javascript:;">选择</a>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>封面：</dt>
+				<dd>
+					<input name="cover" value="${site.resourcePath+object.cover!}" maxlength="300" size="40" type="text"/>
+					<#include "../include_page/preview.html"/>
+					<@preview 'pushToPlace' 'input[name=cover]'/>
+				</dd>
+			</dl>
+			<#include "../include_page/extendData.html"/>
+			<@_metadata path='include'+path type=type><#assign a=object/></@_metadata>
+			<#assign pageExtendList=(a.pageExtendList)![]/>
+			<#assign extendValues=getPageDataAttribute(a.id)!/>
+			<@extendData 'extendDataList' pageExtendList extendValues/>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@_content>

@@ -1,0 +1,18 @@
+<#include '../include_page/templateChipTree.html'/>
+<#assign editor=editor!'dynamicTemplateEditor'/>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree treeFolder">
+<#if chip='ftl'>
+	<@chipTree editor '/ftl' 'static' '<@_include path="' '"/>'/>
+<#else>
+	<@chipTree editor '/include' 'static' '<@_metadata path="' 'path type="dynamic"><@_pageDataList path=path type=type count=object.size><@_include path=path/></@_pageDataList></@_metadata>'/>
+</#if>
+		</ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>
