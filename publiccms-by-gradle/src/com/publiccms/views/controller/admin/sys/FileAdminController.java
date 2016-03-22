@@ -44,9 +44,9 @@ public class FileAdminController extends AbstractController {
                         getDate(), fileName));
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage());
-                return "common/upload";
+                return "common/uploadResult";
             }
         }
-        return "common/upload";
+        return "common/uploadResult";
     }
 }

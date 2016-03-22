@@ -5,7 +5,7 @@
 			<li>
 				<#local path=filepath+'/'+a.fileName>
 			<#if a.directory>
-				<a href="javascript:;">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>
+				<a href="javascript:;">${a.fileName} </a>
 				<ul>
 					<@chipTree editor path type prefix suffix/>
 				</ul>

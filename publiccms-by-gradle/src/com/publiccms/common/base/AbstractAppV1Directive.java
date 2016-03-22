@@ -45,9 +45,9 @@ public abstract class AbstractAppV1Directive extends AbstractAppDirective implem
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysApp app = null;
         SysUser user = null;
-        if ((needApp() || needUser()) && null == (app = getApp(handler))) {
+        if ((needApp() || needUser()) && empty((app = getApp(handler)))) {
             handler.put("error", "needAppToken").render();
-        } else if (needUser() && null == (user = getUser(handler, app))) {
+        } else if (needUser() && empty((user = getUser(handler, app)))) {
             handler.put("error", "needLogin").render();
         } else {
             execute(handler, app, user);

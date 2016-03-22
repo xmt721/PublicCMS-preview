@@ -34,7 +34,7 @@ public class SysUserTokenAdminController extends AbstractController {
             }
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.ftpuser",
-                    getIpAddress(request), getDate(), entity.getId() + " channel:" + entity.getChannel() + " ip:"
+                    getIpAddress(request), getDate(), entity.getAuthToken() + " channel:" + entity.getChannel() + " ip:"
                             + entity.getLoginIp()));
         }
         return TEMPLATE_DONE;

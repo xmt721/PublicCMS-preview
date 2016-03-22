@@ -1,9 +1,9 @@
 <dl>
 	<dt>
-		<h3><a href="<#if model.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank">${a.title}</a><span>${a.publishDate?date}</span></h3>
+		<h3><a href="<#if a.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank">${a.title}</a><span>${a.publishDate?date}</span></h3>
 	</dt>
 	<dd>
-		<a href="<#if model.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank">
+		<a href="<#if a.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank">
 <#if a.cover?has_content>
 			<img src="<@_thumb path=a.cover width=144 height=192/>" alt="${a.title}"/>
 </#if>
@@ -15,6 +15,6 @@
 		</@_contentFilesList>
 </#if>
 		</a>
-		<p class="clearfix-before"><@t.cut a.description!'' 100 '...'/><a href="<#if model.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a></p>
+		<p class="clearfix-before"><@t.cut a.description!'' 100 '...'/><a href="<#if a.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a></p>
 	</dd>
 </dl>

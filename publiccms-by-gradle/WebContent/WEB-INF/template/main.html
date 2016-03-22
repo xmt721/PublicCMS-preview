@@ -149,22 +149,22 @@
 		</p>
 		<p>
 			<label>Spring Framework：</label>
-			<a href="http://projects.spring.io/spring-framework/" target="_blank">${springVersion}</a>
+			<a href="http://projects.spring.io/spring-framework/" target="_blank">${spring}</a>
 			(<a href="https://github.com/spring-projects/spring-framework" target="_blank">Apache License2</a>)
 		</p>
 		<p>
 			<label>Hibernate：</label>
-			<a href="http://hibernate.org/orm/" target="_blank">${hibernateVersion}</a>
+			<a href="http://hibernate.org/orm/" target="_blank">${hibernate}</a>
 			(<a href="http://hibernate.org/community/license/" target="_blank">LGPL 2.1 License</a>)
 		</p>
 		<p>
 			<label>Hibernate Search：</label>
-			<a href="http://hibernate.org/search/" target="_blank">${hibernateSearchVersion}</a>
+			<a href="http://hibernate.org/search/" target="_blank">${hibernateSearch}</a>
 			(<a href="https://raw.githubusercontent.com/hibernate/hibernate-search/master/lgpl.txt" target="_blank">LGPL 2.1 License</a>)
 		</p>
 		<p>
 			<label>lucene：</label>
-			<a href="http://lucene.apache.org/" target="_blank">${luceneVersion}</a>
+			<a href="http://lucene.apache.org/" target="_blank">${lucene}</a>
 			(<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License2</a>)
 		</p>
 		<p>
@@ -192,12 +192,14 @@
 	<div class="divider"></div>
 	</#if>
 </@_checkMasterSite>
+	<@_version>
 	<div class="unit">
 		<p>
 			<label>Public CMS：</label>
-			<a href="http://www.publiccms.com/" target="_blank">2016.3</a>
+			<a href="http://www.publiccms.com/" target="_blank">${cms}</a>
 			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
 		</p>
 	</div>
 	<div class="divider"></div>
+	</@_version>
 </div>

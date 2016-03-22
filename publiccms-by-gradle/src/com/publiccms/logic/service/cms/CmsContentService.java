@@ -97,9 +97,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     public void updateStatistics(Collection<CmsContentStatistics> entitys) {
         for (CmsContentStatistics contentStatistics : entitys) {
             CmsContent entity = getEntity(contentStatistics.getId());
-            entity.setClicks(entity.getClicks() + contentStatistics.getClicks());
-            entity.setComments(entity.getComments() + contentStatistics.getComments());
-            entity.setScores(entity.getScores() + contentStatistics.getScores());
+            if (notEmpty(entity)) {
+                entity.setClicks(entity.getClicks() + contentStatistics.getClicks());
+                entity.setComments(entity.getComments() + contentStatistics.getComments());
+                entity.setScores(entity.getScores() + contentStatistics.getScores());
+            }
         }
     }
 
@@ -118,7 +120,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
         return entity;
     }
-    
+
     public CmsContent updateStaticUrl(Serializable id, String url) {
         CmsContent entity = getEntity(id);
         if (notEmpty(entity)) {

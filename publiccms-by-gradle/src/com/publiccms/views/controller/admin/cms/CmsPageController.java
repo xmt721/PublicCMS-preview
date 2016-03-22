@@ -50,7 +50,7 @@ public class CmsPageController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(value = SAVE, method = RequestMethod.POST)
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(CmsPageData entity, @ModelAttribute CmsPageDataParamters pageDataParamters, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
@@ -67,7 +67,7 @@ public class CmsPageController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "status", "userId", "type", "clicks", "path",
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path",
                     "createDate", "disabled" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER,
@@ -174,7 +174,7 @@ public class CmsPageController extends AbstractController {
      * @param session
      * @return
      */
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
         if (notEmpty(ids)) {
             SysSite site = getSite(request);

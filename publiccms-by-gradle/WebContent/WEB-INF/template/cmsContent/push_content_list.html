@@ -1,4 +1,3 @@
-<@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
@@ -30,6 +29,7 @@
 	</form>
 </div>
 <div>
+<@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="89" rel="push_content_list">
 		<thead>
 			<tr>
@@ -42,8 +42,8 @@
 				<th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
 				<th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
 				<th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
-				<th width="60" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-				<th width="60">创建日期</th>
+				<th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
+				<th width="70">创建日期</th>
 				<th width="50">状态/审核用户</th>
 				<th width="40">子内容</th>
 			</tr>
@@ -106,5 +106,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/pageDialog.html"/>
-</div>
 </@_contentList>
+</div>

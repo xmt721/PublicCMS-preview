@@ -2,7 +2,9 @@ package com.publiccms.views.pojo;
 
 import java.util.List;
 
-public class CmsPageDataParamters {
+import com.sanluan.common.base.Base;
+
+public class CmsPageDataParamters extends Base {
     List<ExtendData> extendDataList;
 
     public List<ExtendData> getExtendDataList() {

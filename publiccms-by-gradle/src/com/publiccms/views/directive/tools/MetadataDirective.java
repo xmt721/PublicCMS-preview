@@ -17,7 +17,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         String dir = handler.getString("dir");
         String type = handler.getString("type");
-        if (notEmpty(path) && !path.endsWith("/")) {
+        if (notEmpty(path) && !path.endsWith(SEPARATOR)) {
             handler.put("path", path)
                     .put("type", type)
                     .put("object",

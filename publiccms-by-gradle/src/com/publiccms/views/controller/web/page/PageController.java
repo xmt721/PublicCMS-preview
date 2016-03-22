@@ -20,10 +20,12 @@ import com.publiccms.entities.cms.CmsPageData;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.MetadataComponent;
+import com.publiccms.logic.component.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPageDataAttributeService;
 import com.publiccms.logic.service.cms.CmsPageDataService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.views.pojo.CmsPageDataParamters;
+import com.publiccms.views.pojo.CmsPageDataStatistics;
 import com.publiccms.views.pojo.CmsPageMetadata;
 
 @Controller
@@ -32,11 +34,13 @@ public class PageController extends AbstractController {
     @Autowired
     private CmsPageDataService service;
     @Autowired
+    private StatisticsComponent statisticsComponent;
+    @Autowired
     private CmsPageDataAttributeService attributeService;
     @Autowired
     private MetadataComponent metadataComponent;
 
-    @RequestMapping(value = SAVE, method = RequestMethod.POST)
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
     public MappingJacksonValue save(CmsPageData entity, @ModelAttribute CmsPageDataParamters pageDataParamters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
@@ -54,7 +58,8 @@ public class PageController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return new MappingJacksonValue(model);
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "type", "path", "createDate", "disabled" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "type", "path", "createDate",
+                    "disabled" });
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB, "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
         } else {
@@ -67,5 +72,22 @@ public class PageController extends AbstractController {
         String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath, pageDataParamters.getExtendDataList()));
         attributeService.updateAttribute(entity.getId(), extentString);
         return new MappingJacksonValue(model);
+    }
+
+    /**
+     * 推荐位链接重定向并计数
+     * 
+     * @param id
+     * @return
+     */
+    @RequestMapping("redirect")
+    public String clicks(Integer id, HttpServletRequest request) {
+        SysSite site = getSite(request);
+        CmsPageDataStatistics pageDataStatistics = statisticsComponent.placeClicks(id);
+        if (notEmpty(pageDataStatistics.getEntity()) && site.getId() == pageDataStatistics.getEntity().getSiteId()) {
+            return REDIRECT + pageDataStatistics.getEntity().getUrl();
+        } else {
+            return REDIRECT + site.getSitePath();
+        }
     }
 }

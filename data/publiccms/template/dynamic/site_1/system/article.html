@@ -24,7 +24,7 @@
 	<div class="container">
 		<article class="left-content">
 			<h1><a href="${content.url!}">${content.title}</a></h1>
-			<p class="author"><#if content.isCopied>来源：<a href="${content.sourceUrl!}" target="_blank">${content.source!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate} 阅读:<em>loading...</em></p>
+			<p class="author"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate} 阅读:<em>loading...</em></p>
 			<div id="content">${text!}</div>
 			<#if content.tags?has_content>
 				<div class="tags">

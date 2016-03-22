@@ -15,19 +15,22 @@
 					<a class="btnLook" href="sysMoudle/lookup.html" lookupGroup="">选择</a>
 				</dd>
 			</dl>
-			<dl>
+			<dl class="nowrap">
 				<dt>名称：</dt>
 				<dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
 			</dl>
-			<dl>
+			<dl class="nowrap">
 				<dt>地址：</dt>
-				<dd><input name="url" type="text" size="30" value="${(a.url)!}"/></dd>
+				<dd>
+					<input name="url" type="text" size="30" value="${(a.url)!}"/>
+					<span class="info">此模块的展示页面</span>
+				</dd>
 			</dl>
 			<dl class="nowrap">
 				<dt>授权访问地址：</dt>
 				<dd>
 					<textarea name="authorizedUrl" style="width: 100%;" rows="8">${(a.authorizedUrl)!}</textarea>
-					<span class="info">使用逗号分隔，不带后缀</span>
+					<span class="info">此模块需要授权的URL请求路径，使用逗号分隔，不带后缀</span>
 				</dd>
 			</dl>
 			<dl>

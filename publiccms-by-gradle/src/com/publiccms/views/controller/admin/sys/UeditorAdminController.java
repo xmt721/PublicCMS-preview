@@ -88,7 +88,7 @@ public class UeditorAdminController extends AbstractController {
         map.put("catcherFieldName", FIELD_NAME);
         map.put("videoFieldName", FIELD_NAME);
         map.put("fileFieldName", FIELD_NAME);
-        String urlPrefix = siteComponent.getSite(request.getServerName(), request.getServerPort()).getResourcePath();
+        String urlPrefix = getSite(request).getResourcePath();
         map.put("imageUrlPrefix", urlPrefix);
         map.put("scrawlUrlPrefix", urlPrefix);
         map.put("snapscreenUrlPrefix", urlPrefix);

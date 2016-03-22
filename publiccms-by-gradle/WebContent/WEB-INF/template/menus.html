@@ -17,7 +17,7 @@
 						<@pageTree type path/>
 					</ul>
 				<#else>
-					<a href="cmsPage/${('dynamic'=type)?then('dynamicPlaceList','staticPlacelist')}.html?path=${path?url}&type=${type}" target="navTab" title="${('static'=type)?then('静态','动态')}页面:${a.fileName}" rel="cmsPage">
+					<a href="cmsPage/${('dynamic'=type)?then('dynamicPlaceList','staticPlacelist')}.html?path=${path?url}&type=${type}" target="navTab" title="${('static'=type)?then('静态','动态')}页面:${a.fileName}" rel="cmsPage/${type}PlaceList">
 						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 					</a>
 				</#if>
@@ -80,7 +80,7 @@
 	</div>
 	<div class="accordionContent">
 		<ul class="tree treeFolder">
-	<#switch a.url>
+	<#switch a.url!''>
 		<#case 'cmsContent/list'>
 			<li>
 				<@_sysDept id=admin.deptId>
@@ -118,7 +118,7 @@
 				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
 				<#list page.list as a>
 					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
-			<li><a href="${a.url?html}" target="navTab" rel="${a.url?html}">${a.name?html}</a></li>
+			<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.name?html}</a></li>
 					</#if>
 				</#list>
 			</@_sysMoudleList>

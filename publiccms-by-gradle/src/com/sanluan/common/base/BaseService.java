@@ -69,11 +69,12 @@ public abstract class BaseService<E> extends Base {
      * @param ignoreProperties
      * @return
      */
-    public void update(Serializable id, E newEntity, String[] ignoreProperties) {
+    public E update(Serializable id, E newEntity, String[] ignoreProperties) {
         E entity = getEntity(id);
         if (notEmpty(entity)) {
             BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
         }
+        return entity;
     }
 
     /**

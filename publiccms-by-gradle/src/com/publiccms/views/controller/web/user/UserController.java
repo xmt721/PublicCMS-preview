@@ -1,7 +1,10 @@
 package com.publiccms.views.controller.web.user;
 
+import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
+import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByFile;
 import static com.sanluan.common.tools.LanguagesUtils.getMessage;
+import static com.sanluan.common.tools.RequestUtils.getCookie;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 
@@ -10,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,6 +35,7 @@ import com.publiccms.logic.component.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
 
 import freemarker.template.TemplateException;
 
@@ -45,6 +50,8 @@ import freemarker.template.TemplateException;
 public class UserController extends AbstractController {
     @Autowired
     private SysUserService service;
+    @Autowired
+    private SysUserTokenService sysUserTokenService;
     @Autowired
     private MailComponent mailComponent;
     @Autowired
@@ -68,6 +75,13 @@ public class UserController extends AbstractController {
         SysUser user = getUserFromSession(session);
         if (!virifyNotEmpty("password", password, model) && !virifyNotEquals("repassword", password, repassword, model)) {
             if (!virifyNotEquals("password", user.getPassword(), encode(oldpassword), model)) {
+                Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+                if (null != userCookie && notEmpty(userCookie.getValue())) {
+                    String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
+                    if (userData.length > 1) {
+                        sysUserTokenService.delete(userData[1]);
+                    }
+                }
                 clearUserToSession(request.getContextPath(), session, response);
                 model.addAttribute(MESSAGE, "needReLogin");
                 if (notEmpty(user)) {

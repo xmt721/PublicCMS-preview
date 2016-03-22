@@ -14,12 +14,14 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
+import com.sanluan.common.base.Base;
+
 /**
  * 
  * MyClassUtils
  *
  */
-public class MyClassUtils {
+public class MyClassUtils extends Base {
     private static final String RESOURCE_PATTERN = "/**/*.class";
     private static final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 

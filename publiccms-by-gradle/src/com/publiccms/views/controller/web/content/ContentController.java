@@ -85,7 +85,7 @@ public class ContentController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     @ResponseBody
     public MappingJacksonValue save(CmsContent entity, CmsContentAttribute attribute,
             @ModelAttribute CmsContentParamters contentParamters, String txt, Boolean timing, Boolean draft,
@@ -129,7 +129,7 @@ public class ContentController extends AbstractController {
             if (!entity.isOnlyUrl()) {
                 ignoreProperties = addAll(ignoreProperties, new String[] { "url" });
             }
-            service.update(entity.getId(), entity, ignoreProperties);
+            entity = service.update(entity.getId(), entity, ignoreProperties);
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
                         getIpAddress(request), now, entity.getId() + ":" + entity.getTitle()));
@@ -192,10 +192,10 @@ public class ContentController extends AbstractController {
     @RequestMapping("redirect")
     public String clicks(Integer id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
-        if (notEmpty(contentStatistics.getEntity())) {
+        SysSite site = getSite(request);
+        if (notEmpty(contentStatistics.getEntity()) && site.getId() == contentStatistics.getEntity().getSiteId()) {
             return REDIRECT + contentStatistics.getEntity().getUrl();
         } else {
-            SysSite site = siteComponent.getSite(request.getServerName(), request.getServerPort());
             return REDIRECT + site.getSitePath();
         }
     }

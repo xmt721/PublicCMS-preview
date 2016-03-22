@@ -5,8 +5,9 @@ import java.util.List;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsTag;
+import com.sanluan.common.base.Base;
 
-public class CmsContentParamters {
+public class CmsContentParamters extends Base {
     private List<CmsContentRelated> contentRelateds;
     private List<CmsTag> tags;
     private List<CmsContentFile> files;

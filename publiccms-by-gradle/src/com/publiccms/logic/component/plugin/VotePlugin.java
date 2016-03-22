@@ -37,7 +37,7 @@ public class VotePlugin extends Base implements Pluginable {
 
                 }
             }
-            pluginVoteService.getEntitys(ids.toArray(new Integer[] {}));
+            pluginVoteService.getEntitys(ids.toArray(new Integer[ids.size()]));
         }
         return "";
     }

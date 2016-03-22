@@ -103,9 +103,9 @@ public class CmsContentController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
-            String txt, Boolean timing, Boolean draft, HttpServletRequest request, HttpSession session, ModelMap model) {
+            Boolean timing, Boolean draft, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysUser user = getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
@@ -154,7 +154,7 @@ public class CmsContentController extends AbstractController {
             if (!entity.isOnlyUrl()) {
                 ignoreProperties = addAll(ignoreProperties, new String[] { "url" });
             }
-            service.update(entity.getId(), entity, ignoreProperties);
+            entity = service.update(entity.getId(), entity, ignoreProperties);
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.content", getIpAddress(request), now, entity.getId() + ":" + entity.getTitle()));
@@ -180,7 +180,7 @@ public class CmsContentController extends AbstractController {
         }
 
         if (null != attribute.getText()) {
-            attribute.setWordCount(removeHtmlTag(txt).length());
+            attribute.setWordCount(removeHtmlTag(attribute.getText()).length());
         }
 
         Map<String, String> map = null;
@@ -238,7 +238,7 @@ public class CmsContentController extends AbstractController {
                     categoryIdSet.add(entity.getCategoryId());
                 }
             }
-            for (CmsCategory category : categoryService.getEntitys(entityList.toArray(new Integer[] {}))) {
+            for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
                 templateComponent.createCategoryFile(site, category, null, null);
             }
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "check.content",
@@ -372,7 +372,7 @@ public class CmsContentController extends AbstractController {
      * @param session
      * @return
      */
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
         if (notEmpty(ids)) {

@@ -4,10 +4,10 @@
 	<title>搜索 - PublicCMS</title>
 	<meta name="keywords" content="搜索"/>
 	<meta name="description" content="搜索  ${word!}"/>
-	<!--#include virtual="/include/header.html"-->
+	<@include path="/ftl/header.ftl"/> <#-- 公共头部 -->
 </head>
 <body>
-<!--#include virtual="/include/nav.html"-->
+<@include path="/ftl/nav.ftl"/>
 <main>
 	<div class="container bread">
 		<a href="${site.sitePath}">首页</a>
@@ -35,6 +35,6 @@
 		</aside>
 	</div>
 </main>
-<!--#include virtual="/include/footer.html"-->
+<@include path="/ftl/footer.ftl"/> <#-- 公共尾部 -->
 </body>
 </html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>${category.name} - PublicCMS</title>
-	<meta name="keywords" content="${category.name}"/>
-	<meta name="description" content="${category.name}"/>
-<!--#include virtual="/include/header.html"-->
+	<title>${(attribute.title?html)!category.name?html}</title>
+	<meta name="keywords" content="${(attribute.keywords?html)!}"/>
+	<meta name="description" content="${(attribute.description?html)!}"/>
+<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
 </head>
 <body>
-<!--#include virtual="/include/nav.html"-->
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
 <script>
 	$("header nav ul li a:contains('${category.name}')").parent().addClass('selected');
 </script>
@@ -34,7 +34,7 @@
 			<#if 1=pageIndex>
 				<div class="page">
 					<#if !page.lastPage>
-						<a href="${getPage(category.url,page.nextPage)}">查看更多</a>
+						<a href="${getPage(url,page.nextPage)}">查看更多</a>
 					<#else>
 						<span>查看更多</span>
 					</#if>
@@ -60,6 +60,6 @@
 </@_contentList>
 	</div>
 </main>
-<!--#include virtual="/include/footer.html"-->
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
 </body>
 </html>

@@ -6,10 +6,12 @@ import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 
 public abstract class Base {
+    public static final Random r = new Random();
     public static final String DEFAULT_CHARSET = "UTF-8";
     public static final String SEPARATOR = "/";
     public static final String BLANK = "";

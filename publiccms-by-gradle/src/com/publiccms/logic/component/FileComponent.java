@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +33,6 @@ import com.sanluan.common.base.Cacheable;
  */
 @Component
 public class FileComponent extends Base implements Cacheable {
-    private Random r = new Random();
     private static List<String> cachedlist = new ArrayList<String>();
     private static Map<String, List<FileInfo>> cachedMap = new HashMap<String, List<FileInfo>>();
 

@@ -35,12 +35,17 @@ public class ExtendUtils extends Base {
     }
 
     public static Map<String, String> getExtendMap(String data) {
-        try {
-            return objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
-            });
-        } catch (IOException | ClassCastException e) {
+        if (notEmpty(data)) {
+            try {
+                return objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
+                });
+            } catch (IOException | ClassCastException e) {
+                return new HashMap<String, String>();
+            }
+        } else {
             return new HashMap<String, String>();
         }
+
     }
 
     public static String getExtendString(Map<String, String> map) {

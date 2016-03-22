@@ -154,6 +154,15 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (empty(entity.getPublishDate())) {
             entity.setPublishDate(getDate());
         }
+        if (empty(entity.getTagIds())) {
+            entity.setTagIds(null);
+        }
+        if (empty(entity.getAuthor())) {
+            entity.setAuthor(null);
+        }
+        if (empty(entity.getCover())) {
+            entity.setCover(null);
+        }
         return entity;
     }
 

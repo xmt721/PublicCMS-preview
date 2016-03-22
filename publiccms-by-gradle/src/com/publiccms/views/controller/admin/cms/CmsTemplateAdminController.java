@@ -61,7 +61,7 @@ public class CmsTemplateAdminController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(String path, String type, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (notEmpty(path)) {
@@ -103,7 +103,7 @@ public class CmsTemplateAdminController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(String path, String type, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);

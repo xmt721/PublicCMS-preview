@@ -10,11 +10,11 @@
 			<#break>
 		<#case 'file'>
 		<input name="${inputName}" class="readonly<#if extend.required> required</#if>" value="${value!}" readonly="readonly" type="text"/>
-		<a class="btnAttach" href="file/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a>
+		<a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a>
 			<#break>
 		<#case 'image'>
 		<input name="${inputName}" class="readonly<#if extend.required> required</#if>" value="${value!}" readonly="readonly" type="text"/>
-		<a class="btnAttach" href="file/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+		<a class="btnAttach" href="common/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 		<#if !preview?has_content>
 			<#include "../include_page/preview.html"/>
 		</#if>
@@ -24,7 +24,7 @@
 		<input name="${inputName}" class="<#if extend.required> required</#if>" type="password" size="30" value="${value!}"/>
 			<#break>
 		<#case 'textarea'>
-		<textarea name="${inputName}" class="<#if extend.required>required</#if>" cols="80" rows="8">${value!}</textarea>
+		<textarea name="${inputName}" class="<#if extend.required>required</#if>" cols="80" rows="5">${value!}</textarea>
 			<#break>
 		<#case 'editor'>
 		<textarea name="${inputName}" class="editor<#if extend.required> required</#if>" style="width: 100%;" rows="20">${value!}</textarea>
@@ -39,7 +39,7 @@
 </#macro>
 <#macro extendData name extendList extendValues>
 	<#list extendList as e>
-	<dl${['textarea','editor','file','image']?seq_contains(e.inputType)?then(' class="nowrap"','')}>
+	<dl class="nowrap">
 		<dt>${e.name}：</dt>
 		<dd<#if 'editor'=e.inputType> style="width:80%;"</#if>>
 			<@input name e e?index extendValues[e.code]!/>

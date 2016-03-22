@@ -1,8 +1,9 @@
 package com.publiccms.views.pojo;
 
 import com.publiccms.entities.cms.CmsContent;
+import com.sanluan.common.base.Base;
 
-public class CmsContentStatistics {
+public class CmsContentStatistics extends Base {
     private int id;
     private int clicks;
     private int comments;

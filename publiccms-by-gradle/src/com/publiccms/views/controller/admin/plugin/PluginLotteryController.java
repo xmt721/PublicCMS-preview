@@ -33,7 +33,7 @@ public class PluginLotteryController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "extendId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "extendId" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.plugin.lottery", getIpAddress(request), getDate(), entity

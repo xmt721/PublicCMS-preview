@@ -41,15 +41,19 @@ public class SysRoleController extends AbstractController {
     @Autowired
     private SysUserService userService;
 
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(SysRole entity, Integer[] moudleIds, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
+        if (entity.isOwnsAllRight()) {
+            moudleIds = null;
+            entity.setShowAllMoudle(false);
+        }
         if (notEmpty(entity.getId())) {
             SysRole oldEntity = service.getEntity(entity.getId());
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.role", getIpAddress(request), getDate(), entity.getId()
@@ -64,11 +68,12 @@ public class SysRoleController extends AbstractController {
                             + entity.getName()));
             roleMoudleService.saveRoleMoudles(entity.getId(), moudleIds);
         }
-        roleAuthorizedService.dealRoleMoudles(entity.getId(), moudleService.getEntitys(moudleIds));
+        roleAuthorizedService.dealRoleMoudles(entity.getId(), entity.isShowAllMoudle(), moudleService.getEntitys(moudleIds),
+                moudleService.getPageUrl(null));
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysRole entity = service.getEntity(id);
         SysSite site = getSite(request);

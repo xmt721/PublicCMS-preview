@@ -14,7 +14,7 @@
 <@_sysDomainList admin=true siteId=siteId>
 	<#if page.totalCount gt 0>
 upstream publiccms_site_${siteId} {
-	server localhost  weight=1;
+	server localhost:8080  weight=1;
 }
 
 		<#assign dynamicPath=a.dynamicPath/>
@@ -64,11 +64,11 @@ server {
 		proxy_pass http://publiccms_site_${siteId};
 	}
 	location /include/ {
-		alias ${rootPath}/static/site_${siteId}/include/;
+		alias ${rootPath}/staticfile/web/site_${siteId}/include/;
 	}
 			<#if a.resourcePath?starts_with(a.dynamicPath)>
 	location /${a.resourcePath?substring(a.dynamicPath.length)} {
-		alias ${rootPath}/resource/site_${siteId}/;
+		alias ${rootPath}/staticfile/resource/site_${siteId}/;
 	}
 			</#if>
 }
@@ -98,13 +98,13 @@ server {
 	#开启ssi配置 如果http包已经配置过，这里可以删掉  end
 
 	location ${siteLocation!'/'} {
-		root   ${rootPath}/static/site_${siteId}/;
+		root   ${rootPath}/staticfile/web/site_${siteId}/;
 		index  index.html;
 	}
 	
 	<#if a.resourcePath?starts_with(a.sitePath)>
 	location /${a.resourcePath?substring(a.sitePath?length)} {
-		alias ${rootPath}/resource/site_${siteId}/;
+		alias ${rootPath}/staticfile/resource/site_${siteId}/;
 	}
 	</#if>
 }
@@ -128,7 +128,7 @@ server {
 	server_name  ${resourcePath};
 
 	location ${resourceLocation!'/'} {
-		root   ${rootPath}/resource/site_${siteId}/;
+		root   ${rootPath}/staticfile/resource/site_${siteId}/;
 		index  index.html;
 	}
 }</#if></@_disk></textarea>
@@ -136,7 +136,7 @@ server {
    CodeMirror.fromTextArea(document.getElementById("nginx"), {
 	   mode: "nginx",
 	   lineNumbers: true,
-       tabSize        : 2,
+       tabSize        : 4,
        indentUnit     : 2,
        indentWithTabs : false
    });

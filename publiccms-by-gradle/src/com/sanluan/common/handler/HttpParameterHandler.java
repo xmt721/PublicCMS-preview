@@ -10,8 +10,6 @@ import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,28 +31,22 @@ public class HttpParameterHandler extends BaseHandler {
 
     public HttpParameterHandler(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
             HttpServletRequest request, String callback, HttpServletResponse response) throws Exception {
-        this(httpMessageConverter, mediaType, request, null, false, callback, response);
-    }
-
-    public HttpParameterHandler(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
-            HttpServletRequest request, List<Map<String, Object>> parameterList, boolean regristerParamter, String callback,
-            HttpServletResponse response) throws Exception {
-        super(parameterList, regristerParamter);
         this.httpMessageConverter = httpMessageConverter;
         this.request = request;
         this.callback = callback;
         this.response = response;
         this.mediaType = mediaType;
-        if (getBooleanWithoutRegrister(PARAMETERS_CONTROLLER, false)) {
-            put(PARAMETERS_NAME, parameterList);
-        }
+        regristerParamters();
     }
 
     @Override
     public void render() throws HttpMessageNotWritableException, IOException {
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
-        mappingJacksonValue.setJsonpFunction(callback);
-        httpMessageConverter.write(mappingJacksonValue, mediaType, new ServletServerHttpResponse(response));
+        if (!renderd) {
+            MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
+            mappingJacksonValue.setJsonpFunction(callback);
+            httpMessageConverter.write(mappingJacksonValue, mediaType, new ServletServerHttpResponse(response));
+            renderd = true;
+        }
     }
 
     @Override
@@ -72,24 +64,12 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public String getString(String name) {
-        regristerParamter(PARAMETER_TYPE_STRING, name);
-        return getStringWithoutRegrister(name);
-    }
-
-    @Override
     protected Integer getIntegerWithoutRegrister(String name) {
         String result = getStringWithoutRegrister(name);
         if (notEmpty(result)) {
             return Integer.valueOf(result);
         }
         return null;
-    }
-
-    @Override
-    public Integer getInteger(String name) {
-        regristerParamter(PARAMETER_TYPE_INTEGER, name);
-        return getIntegerWithoutRegrister(name);
     }
 
     @Override
@@ -132,24 +112,12 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public String[] getStringArray(String name) {
-        regristerParamter(PARAMETER_TYPE_STRINGARRAY, name);
-        return getStringArrayWithoutRegrister(name);
-    }
-
-    @Override
     protected Boolean getBooleanWithoutRegrister(String name) {
         String result = getStringWithoutRegrister(name);
         if (notEmpty(result)) {
             return Boolean.valueOf(result);
         }
         return null;
-    }
-
-    @Override
-    public Boolean getBoolean(String name) {
-        regristerParamter(PARAMETER_TYPE_BOOLEAN, name);
-        return getBooleanWithoutRegrister(name);
     }
 
     @Override

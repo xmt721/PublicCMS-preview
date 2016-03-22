@@ -28,7 +28,7 @@ public class CmsTagType implements java.io.Serializable {
     private Integer id;
     @MyColumn(title = "站点", condition = true)
     private int siteId;
-    @MyColumn(title = "名称")
+    @MyColumn(title = "名称", condition = true, like = true)
     private String name;
     @MyColumn(title = "标签个数")
     private int count;

@@ -1,5 +1,3 @@
-<@_sysDeptList parentId=parentId userId=userId name=name 
-			pageIndex=pageNum count=numPerPage>
 <#if parentId?has_content>
 	<@_sysDept id=parentId!>
 		<#assign parent=object/>
@@ -47,6 +45,8 @@
 			<li><a class="delete" href="sysDept/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
 		</ul>
 	</div>
+<@_sysDeptList parentId=parentId userId=userId name=name 
+			pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
@@ -83,5 +83,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/page.html"/>
-</div>
 </@_sysDeptList>
+</div>

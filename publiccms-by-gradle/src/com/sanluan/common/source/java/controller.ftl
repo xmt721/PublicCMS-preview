@@ -20,7 +20,7 @@ public class ${entityName}Controller extends AbstractController {
     @RequestMapping("save")
     public String save(${entityName} entity, HttpServletRequest request) {
         if (notEmpty(entity.getId())) {
-            service.update(entity.getId(), entity, new String[]{"id"});
+            entity = service.update(entity.getId(), entity, new String[]{"id"});
         } else {
             service.save(entity);
         }

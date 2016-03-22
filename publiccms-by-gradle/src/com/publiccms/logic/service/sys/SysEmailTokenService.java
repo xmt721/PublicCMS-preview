@@ -15,9 +15,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysEmailTokenService extends BaseService<SysEmailToken> {
 
-    @Autowired
-    private SysEmailTokenDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(userId, pageIndex, pageSize);
@@ -26,8 +23,7 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
     public int delete(Date createDate) {
         return dao.delete(createDate);
     }
-
-    public SysEmailToken getEntity(String authToken) {
-        return getEntity(authToken, "authToken");
-    }
+    
+    @Autowired
+    private SysEmailTokenDao dao;
 }

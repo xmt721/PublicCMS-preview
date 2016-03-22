@@ -56,6 +56,8 @@ public class CmsCategory implements java.io.Serializable, Staticable {
     private boolean allowContribute;
     @MyColumn(title = "排序")
     private int sort;
+    @MyColumn(title = "是否隐藏", condition = true)
+    private boolean hidden;
     @MyColumn(title = "是否删除", condition = true)
     private boolean disabled;
     @MyColumn(title = "内容数")
@@ -82,7 +84,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
 
     public CmsCategory(int siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds,
             String englishName, String templatePath, String path, boolean hasStatic, String url, String contentPath,
-            Integer pageSize, boolean allowContribute, int sort, boolean disabled, int contents, Integer extendId) {
+            Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled, int contents, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
@@ -98,6 +100,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
         this.pageSize = pageSize;
         this.allowContribute = allowContribute;
         this.sort = sort;
+        this.hidden = hidden;
         this.disabled = disabled;
         this.contents = contents;
         this.extendId = extendId;
@@ -247,6 +250,15 @@ public class CmsCategory implements java.io.Serializable, Staticable {
 
     public void setSort(int sort) {
         this.sort = sort;
+    }
+
+    @Column(name = "hidden", nullable = false)
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 
     @Column(name = "disabled", nullable = false)

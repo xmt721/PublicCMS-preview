@@ -10,8 +10,7 @@ function refreshStaticTemplate(){
 	<a href="staticTemplate/chipLookup.html?chip=include" target="dialog" mask="true">推荐位</a>
  	<a href="staticTemplate/chipLookup.html?chip=ftl" target="dialog" mask="true">模板片段</a>
 <#if !path?has_content||!path?starts_with('/ftl/')>
-	<a href="staticTemplate/createPlace.html?path=${(path?url)!}" target="navTab" rel="staticTemplateMetadata"><span>创建推荐位</span></a>
-	<a href="staticTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="staticTemplateMetadata"><span>创建模板片段</span></a>
+	<a href="staticTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="staticTemplate/metadata"><span>创建模板片段</span></a>
 </#if>
 	<a href="cmsTemplate/delete.do?path=${path?html?url}&type=static" title="确定要删除该模板吗?" target="ajaxTodo" rel="staticTemplate/list">删除模板</a>
  </h2>
@@ -21,12 +20,12 @@ function refreshStaticTemplate(){
 	   		<div>
 				<input name="path" type="hidden" value="${path?html}"/>
 				<input name="type" type="hidden" value="static"/>
-				<textarea name="content" id="staticTemplateEditor"><@_templateContent path=path type=type>${(object?html)!}</@_templateContent></textarea>
+				<textarea name="content" id="staticTemplateEditor"><@_templateContent path=path type='static'>${(object?html)!}</@_templateContent></textarea>
 				<script>
 					var staticTemplateEditor = CodeMirror.fromTextArea(document.getElementById('staticTemplateEditor'), {
 				        mode: "freemarkermixed",
 				        lineNumbers: true,
-				        tabSize        : 2,
+				        tabSize        : 4,
 				        indentUnit     : 2,
 				        indentWithTabs : false
 					});
@@ -35,8 +34,9 @@ function refreshStaticTemplate(){
 		</div>
 		<div class="formBar">
 			<ul>
-				<li><a class="button" href="staticTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="staticTemplateMetadata"><span>模板元数据</span></a></li>
-				<li><a class="button" href="staticTemplate/placeList.html?path=${(path?url)!}" target="ajax" rel="staticTemplateBox"><span>推荐位管理</span></a></li>
+				<@_metadata path=path type=type><#assign a=object/></@_metadata>
+				<li><a class="button" href="staticTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="staticTemplate/metadata"><span>${(a.alias)!(path?html)!}模板元数据</span></a></li>
+				<li><a class="button" href="staticTemplate/placeList.html?path=${(path?url)!}" target="navTab" rel="staticTemplate/placeList"><span>${(a.alias)!(path?html)!}推荐位管理</span></a></li>
 				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
 				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
 			</ul>

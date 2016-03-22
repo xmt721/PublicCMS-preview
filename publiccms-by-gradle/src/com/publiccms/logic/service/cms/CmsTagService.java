@@ -40,8 +40,8 @@ public class CmsTagService extends BaseService<CmsTag> {
         if (notEmpty(entitys)) {
             for (CmsTag entity : entitys) {
                 if (notEmpty(entity.getId())) {
+                    entity = getEntity(entity.getId());
                     if (siteId == entity.getSiteId()) {
-                        update(entity.getId(), entity, new String[] { "id", "typeId", "siteId" });
                         idList.add(entity.getId());
                     }
                 } else {
@@ -51,6 +51,6 @@ public class CmsTagService extends BaseService<CmsTag> {
                 }
             }
         }
-        return idList.toArray(new Integer[] {});
+        return idList.toArray(new Integer[idList.size()]);
     }
 }

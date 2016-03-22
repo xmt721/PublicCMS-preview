@@ -30,7 +30,7 @@ public class SysUserAdminController extends AbstractController {
     @Autowired
     private SysRoleUserService roleUserService;
 
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(SysUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
@@ -70,7 +70,7 @@ public class SysUserAdminController extends AbstractController {
                     entity.setEmailChecked(false);
                 }
             }
-            service.update(entity.getId(), entity, new String[] { ID, "registeredDate", "siteId", "authToken", "lastLoginDate",
+            entity = service.update(entity.getId(), entity, new String[] { "id", "registeredDate", "siteId", "authToken", "lastLoginDate",
                     "lastLoginIp", "loginCount", "disabled" });
             roleUserService.dealRoleUsers(entity.getId(), roleIds);
             if (notEmpty(entity.getId())) {

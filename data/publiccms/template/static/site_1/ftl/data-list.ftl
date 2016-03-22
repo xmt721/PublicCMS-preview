@@ -13,6 +13,6 @@
 		</@_contentFileList>
 </#if>
 		</a>
-		<p class="clearfix-before"><@t.cut a.description!'' 100 '...'/><a href="<#if model.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank"> 详细 &gt;&gt;</a></p>
+		<p class="clearfix-before"><@t.cut a.description!'' 100 '...'/><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank"> 详细 &gt;&gt;</a></p>
 	</dd>
 </dl>

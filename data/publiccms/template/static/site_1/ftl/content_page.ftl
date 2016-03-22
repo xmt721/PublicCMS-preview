@@ -5,7 +5,7 @@
 		<#else>
 			<span>上一页</span>
 		</#if>
-		<#list page.list as a><a href="${getPage(url,a?counter)}"<#if url?counter=page.pageIndex> class="selected"</#if>>${a?counter}</a></#list>
+		<#list 1..page.totalCount as a><a href="${getPage(url,a)}"<#if a=page.pageIndex> class="selected"</#if>>${a}</a></#list>
 		<#if !page.lastPage>
 			<a href="${getPage(url,page.nextPage)}">下一页</a>
 		<#else>

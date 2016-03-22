@@ -5,6 +5,8 @@ import static com.publiccms.common.base.AbstractController.getUserFromSession;
 import static com.publiccms.common.base.AbstractController.getUserTimeFromSession;
 import static com.publiccms.common.base.AbstractController.setUserToSession;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
+import static com.publiccms.common.constants.CommonConstants.PUBLICCMS_VERSION;
+import static com.publiccms.common.constants.CommonConstants.X_POWERED;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
 import static com.sanluan.common.tools.RequestUtils.cancleCookie;
@@ -44,6 +46,7 @@ public class WebContextInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
+        response.addHeader(X_POWERED, PUBLICCMS_VERSION);
         HttpSession session = request.getSession();
         String contextPath = request.getContextPath();
         SysUser user = getUserFromSession(session);
@@ -60,6 +63,7 @@ public class WebContextInterceptor extends BaseInterceptor {
                             user.setPassword(null);
                             setUserToSession(session, user);
                         } else {
+                            sysUserTokenService.delete(userToken.getAuthToken());
                             cancleCookie(contextPath, response, COOKIES_USER, null);
                         }
                     } catch (NumberFormatException e) {
@@ -75,8 +79,14 @@ public class WebContextInterceptor extends BaseInterceptor {
                     user.setPassword(null);
                     setUserToSession(session, user);
                 } else {
+                    Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+                    if (null != userCookie && isNotBlank(userCookie.getValue())) {
+                        String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
+                        if (userData.length > 1) {
+                            sysUserTokenService.delete(userData[1]);
+                        }
+                    }
                     clearUserToSession(contextPath, session, response);
-                    cancleCookie(contextPath, response, COOKIES_USER, null);
                 }
             }
         }

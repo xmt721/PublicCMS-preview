@@ -33,7 +33,7 @@ public class SysAppController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "channel" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "channel" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.app", getIpAddress(request), getDate(), entity.getId() + ":"

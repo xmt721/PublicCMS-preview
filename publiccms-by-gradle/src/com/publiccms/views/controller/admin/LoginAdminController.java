@@ -25,11 +25,14 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.CacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
 
 @Controller
 public class LoginAdminController extends AbstractController {
     @Autowired
     private SysUserService service;
+    @Autowired
+    private SysUserTokenService sysUserTokenService;
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
@@ -79,19 +82,23 @@ public class LoginAdminController extends AbstractController {
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
     public String loginDialog(String username, String password, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
-        login(username, password, null, request, session, response, model);
-        return TEMPLATE_DONE;
+        if ("login".equals(login(username, password, null, request, session, response, model))) {
+            return TEMPLATE_ERROR;
+        } else {
+            return TEMPLATE_DONE;
+        }
     }
 
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public String changeMyselfPassword(Integer id, String oldpassword, String password, String repassword,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        SysUser user = getAdminFromSession(session);
+        SysUser user = service.getEntity(getAdminFromSession(session).getId());
         if (virifyNotEquals("siteId", site.getId(), user.getSiteId(), model)) {
             return TEMPLATE_ERROR;
         }
-        if (virifyNotEquals("password", user.getPassword(), encode(oldpassword), model)) {
+        String encodedOldPassword = encode(oldpassword);
+        if (virifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return TEMPLATE_ERROR;
         } else if (virifyNotEmpty("password", password, model) || virifyNotEquals("repassword", password, repassword, model)) {
             return TEMPLATE_ERROR;
@@ -101,7 +108,7 @@ public class LoginAdminController extends AbstractController {
         }
         service.updatePassword(user.getId(), encode(password));
         logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "changepassword",
-                getIpAddress(request), getDate(), user.getPassword()));
+                getIpAddress(request), getDate(), encodedOldPassword));
         return "common/ajaxTimeout";
     }
 

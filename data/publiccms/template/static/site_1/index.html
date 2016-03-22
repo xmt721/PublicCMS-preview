@@ -2,18 +2,18 @@
 <html lang="zh">
 <head>
 	<title>PublicCMS - 永久免费开源JAVA CMS(内容管理系统),最新技术框架</title>
-	<meta name="keywords" content="${metadata.keywords!}"/>
-	<meta name="description" content="${metadata.description!}"/>
-<!--#include virtual="/include/header.html"-->
+	<meta name="keywords" content="${(metadata.extendData.keywords?html)!}"/>
+	<meta name="description" content="${(metadata.extendData.description?html)!}"/>
+	<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
 </head>
 <body>
-<!--#include virtual="/include/nav.html"-->
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
 <script>
 	$("header nav ul li a:contains('首页')").parent().addClass('selected');
 </script>
 <main>
 	<div class="container">
-		<!--#include virtual="/include/index.html/1.html"--><#-- 焦点图 -->
+		<!--#include virtual="/include/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"--> <#-- 焦点图 -->
 		<div class="data-list left-content">
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <@_modelList>
@@ -55,27 +55,6 @@
 		</aside>
 	</div>
 </main>
-<footer>
-	<div class="container">
-		<!--#include virtual="/include/index.html/business.html"--><#-- 页尾导航 -->
-		<!--#include virtual="/include/index.html/support.html"--><#-- 技术支持 -->
-		<!--#include virtual="/include/index.html/code.html"--><#-- 源码托管 -->
-		<!--#include virtual="/include/index.html/4.html"--><#-- 下载链接 -->
-		<!--#include virtual="/include/index.html/frendlink_index.html"--><#-- 首页友链 -->
-	</div>
-	<div class="container">
-		<script type="text/javascript" src="http://links.webscan.360.cn/index/index/0ee0303b90149ca2b7b3d67e754d6fa4"></script>
-		<div class="copyright">&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved. 京ICP备15009690号</div>
-	</div>
-</footer>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?bd81f02e5329554415de9ee15f916a98";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
 </body>
 </html>

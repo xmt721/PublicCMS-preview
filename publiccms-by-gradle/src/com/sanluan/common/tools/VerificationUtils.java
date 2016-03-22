@@ -2,26 +2,27 @@ package com.sanluan.common.tools;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+
+import com.sanluan.common.base.Base;
 
 /**
  * 
  * VerificationUtils 安全验证工具类
  *
  */
-public class VerificationUtils {
+public class VerificationUtils extends Base {
+
     /**
      * @param length
      * @return
      */
     public static String getRandomNumber(int length) {
-        String result = "";
-        Random r = new Random();
+        StringBuffer sb = new StringBuffer();
         while (0 < length) {
             length -= 1;
-            result += r.nextInt(9);
+            sb.append(r.nextInt(9));
         }
-        return result;
+        return sb.toString();
     }
 
     /**

@@ -4,7 +4,7 @@
 		<#list list as a>
 			<li>
 				<#local path=filepath+'/'+a.fileName>
-				<a href="${type}Template/${a.directory?then('directory','content')}.html?path=${path?url}&type=${type}" target="ajax" rel="${type}TemplateBox">
+				<a href="${type}Template/${a.directory?then('directory','content')}.html?path=${path?url}" target="ajax" rel="${type}TemplateBox">
 					${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 				</a>
 			<#if a.directory>

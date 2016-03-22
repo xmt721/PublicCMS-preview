@@ -1,6 +1,8 @@
 package com.publiccms.views.pojo;
 
-public class ExtendData {
+import com.sanluan.common.base.Base;
+
+public class ExtendData extends Base {
     String name;
     String value;
 

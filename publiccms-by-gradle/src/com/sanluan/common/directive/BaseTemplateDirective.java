@@ -22,12 +22,7 @@ public abstract class BaseTemplateDirective extends BaseDirective implements Tem
     public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
             TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         try {
-            TemplateDirectiveHandler handler = new TemplateDirectiveHandler(parameters, parameterList, regristerParamter,
-                    loopVars, environment, templateDirectiveBody);
-            execute(handler);
-            if (regristerParamter) {
-                regristerParamter = false;
-            }
+            execute(new TemplateDirectiveHandler(parameters, loopVars, environment, templateDirectiveBody));
         } catch (IOException e) {
             throw e;
         } catch (Exception e) {

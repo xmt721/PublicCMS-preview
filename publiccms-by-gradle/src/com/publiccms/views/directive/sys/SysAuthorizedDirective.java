@@ -24,27 +24,23 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         String url = handler.getString("url");
         String[] urls = handler.getStringArray("urls");
         if (notEmpty(roleIds)) {
-            if (notEmpty(url)) {
-                if (notEmpty(service.getEntitys(roleIds, new String[] { url }))) {
-                    handler.put("object", true).render();
-                }
-            } else {
-                if (notEmpty(urls)) {
-                    Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
-                    if (sysRoleService.showAllMoudle(roleIds)) {
-                        for (String u : urls) {
-                            map.put(u, true);
-                        }
-                    } else {
-                        for (String u : urls) {
-                            map.put(u, false);
-                        }
-                        for (SysRoleAuthorized entity : service.getEntitys(roleIds, urls)) {
-                            map.put(entity.getUrl(), true);
-                        }
+            if (notEmpty(url) && notEmpty(service.getEntitys(roleIds, new String[] { url }))) {
+                handler.put("object", true).render();
+            } else if (notEmpty(urls)) {
+                Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
+                if (sysRoleService.showAllMoudle(roleIds)) {
+                    for (String u : urls) {
+                        map.put(u, true);
                     }
-                    handler.put("map", map).render();
+                } else {
+                    for (String u : urls) {
+                        map.put(u, false);
+                    }
+                    for (SysRoleAuthorized entity : service.getEntitys(roleIds, urls)) {
+                        map.put(entity.getUrl(), true);
+                    }
                 }
+                handler.put("map", map).render();
             }
         }
     }

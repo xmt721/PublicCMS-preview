@@ -49,7 +49,7 @@ public class SysSiteController extends AbstractController {
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
-            service.update(entity.getId(), entity, new String[] { ID });
+            entity = service.update(entity.getId(), entity, new String[] { "id" });
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.site", getIpAddress(request), getDate(), entity.getId() + ":"
                             + entity.getName()));

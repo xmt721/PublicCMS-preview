@@ -16,7 +16,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -46,17 +45,13 @@ public class TemplateDirectiveHandler extends BaseHandler {
      * @param templateDirectiveBody
      * @throws Exception
      */
-    public TemplateDirectiveHandler(Map<String, TemplateModel> parameters, List<Map<String, Object>> parameterList,
-            boolean regristerParamter, TemplateModel[] loopVars, Environment environment,
+    public TemplateDirectiveHandler(Map<String, TemplateModel> parameters, TemplateModel[] loopVars, Environment environment,
             TemplateDirectiveBody templateDirectiveBody) throws Exception {
-        super(parameterList, regristerParamter);
         this.parameters = parameters;
         this.loopVars = loopVars;
         this.templateDirectiveBody = templateDirectiveBody;
         this.environment = environment;
-        if (getBooleanWithoutRegrister(PARAMETERS_CONTROLLER, false)) {
-            put(PARAMETERS_NAME, parameterList);
-        }
+        regristerParamters();
     }
 
     @Override
@@ -66,11 +61,14 @@ public class TemplateDirectiveHandler extends BaseHandler {
 
     @Override
     public void render() throws TemplateException, IOException {
-        Map<String, TemplateModel> reduceMap = reduce();
-        if (notEmpty(templateDirectiveBody)) {
-            templateDirectiveBody.render(environment.getOut());
+        if (!renderd) {
+            Map<String, TemplateModel> reduceMap = reduce();
+            if (notEmpty(templateDirectiveBody)) {
+                templateDirectiveBody.render(environment.getOut());
+            }
+            reduce(reduceMap);
+            renderd = true;
         }
-        reduce(reduceMap);
     }
 
     @Override
@@ -129,18 +127,6 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public String getString(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_STRING, name);
-        return getStringWithoutRegrister(name);
-    }
-
-    @Override
-    public Integer getInteger(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_INTEGER, name);
-        return getIntegerWithoutRegrister(name);
-    }
-
-    @Override
     public Integer getIntegerWithoutRegrister(String name) throws TemplateModelException {
         return converInteger(getModel(name));
     }
@@ -169,20 +155,8 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public String[] getStringArray(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_STRINGARRAY, name);
-        return getStringArrayWithoutRegrister(name);
-    }
-
-    @Override
     protected Boolean getBooleanWithoutRegrister(String name) throws TemplateModelException {
         return converBoolean(getModel(name));
-    }
-
-    @Override
-    public Boolean getBoolean(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_BOOLEAN, name);
-        return getBooleanWithoutRegrister(name);
     }
 
     @Override

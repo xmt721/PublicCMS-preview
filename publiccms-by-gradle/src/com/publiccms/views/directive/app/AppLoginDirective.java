@@ -40,9 +40,10 @@ public class AppLoginDirective extends AbstractAppV1Directive {
             String ip = RequestUtils.getIpAddress(handler.getRequest());
             if (user.getPassword().equals(encode(password))) {
                 String authToken = UUID.randomUUID().toString();
-                sysUserTokenService.save(new SysUserToken(user.getId(), authToken, app.getChannel(), getDate(), ip));
+                sysUserTokenService.save(new SysUserToken(authToken, user.getId(), app.getChannel(), getDate(), ip));
                 service.updateLoginStatus(user.getId(), ip);
-                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), app.getChannel(), ip, true, getDate(), ip));
+                logLoginService
+                        .save(new LogLogin(site.getId(), username, user.getId(), app.getChannel(), ip, true, getDate(), ip));
                 user.setPassword(null);
                 result = true;
                 handler.put("authToken", authToken).put("user", user);

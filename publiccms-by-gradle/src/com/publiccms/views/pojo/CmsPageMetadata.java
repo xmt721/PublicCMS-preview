@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.entities.sys.SysExtendField;
 import com.sanluan.common.base.Base;
 
@@ -19,6 +20,7 @@ public class CmsPageMetadata extends Base {
     private List<SysExtendField> pageExtendList;
     private List<SysExtendField> metadataExtendList;
     private List<ExtendData> extendDataList;
+    private Map<String, String> extendData;
 
     public String getType() {
         return type;
@@ -84,14 +86,17 @@ public class CmsPageMetadata extends Base {
         this.metadataExtendList = metadataExtendList;
     }
 
+    @JsonIgnore
     public Map<String, String> getExtendData() {
-        Map<String, String> map = new HashMap<String, String>();
-        if (Base.notEmpty(extendDataList)) {
-            for (ExtendData extend : extendDataList) {
-                map.put(extend.getName(), extend.getValue());
+        if (empty(extendData)) {
+            extendData = new HashMap<String, String>();
+            if (Base.notEmpty(extendDataList)) {
+                for (ExtendData extend : extendDataList) {
+                    extendData.put(extend.getName(), extend.getValue());
+                }
             }
         }
-        return map;
+        return extendData;
     }
 
     public List<ExtendData> getExtendDataList() {

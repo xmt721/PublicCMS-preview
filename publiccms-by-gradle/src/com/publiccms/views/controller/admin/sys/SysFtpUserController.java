@@ -40,7 +40,7 @@ public class SysFtpUserController extends AbstractController {
             } else {
                 entity.setPassword(user.getPassword());
             }
-            service.update(entity.getId(), entity, new String[] { ID });
+            entity = service.update(entity.getId(), entity, new String[] { "id" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.ftpuser", getIpAddress(request), getDate(), entity.getId()

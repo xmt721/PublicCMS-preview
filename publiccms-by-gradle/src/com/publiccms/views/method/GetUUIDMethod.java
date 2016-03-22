@@ -1,7 +1,6 @@
 package com.publiccms.views.method;
 
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import freemarker.template.TemplateModelException;
 
 @Component
 public class GetUUIDMethod extends BaseMethod {
-    Random r = new Random();
 
     /*
      * (non-Javadoc)

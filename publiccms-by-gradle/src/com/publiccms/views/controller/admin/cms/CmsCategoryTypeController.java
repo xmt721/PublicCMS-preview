@@ -59,7 +59,7 @@ public class CmsCategoryTypeController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "extendId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "extendId" });
             if (notEmpty(entity.getId())) {
                 if (empty(extendService.getEntity(entity.getExtendId()))) {
                     SysExtend extend = new SysExtend();
@@ -97,8 +97,8 @@ public class CmsCategoryTypeController extends AbstractController {
         CmsCategoryType entity = service.getEntity(id);
         if (notEmpty(entity)) {
             if (virifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || virifyNotGreaterThen("category", categoryService.getPage(site.getId(), null, id, null, null, null, 1)
-                            .getTotalCount(), 0, model)) {
+                    || virifyNotGreaterThen("category", categoryService
+                            .getPage(site.getId(), null, id, null, null, null, null, 1).getTotalCount(), 0, model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);

@@ -26,7 +26,7 @@ public class AppTokenDirective extends AbstractAppV1Directive {
         SysApp entity = appService.getEntity(handler.getString("appKey"));
         if (notEmpty(entity)) {
             if (entity.getAppSecret().equalsIgnoreCase(handler.getString("appSecret"))) {
-                SysAppToken token = new SysAppToken(entity.getId(), UUID.randomUUID().toString(), getDate());
+                SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), getDate());
                 appTokenService.save(token);
                 handler.put("appToken", token.getAuthToken()).render();
             } else {

@@ -1,8 +1,6 @@
 package com.sanluan.common.tools;
 
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -34,17 +32,16 @@ public class RequestUtils extends Base {
      * @throws UnsupportedEncodingException
      */
     public static String getEncodePath(String path, String queryString) {
-        String encodeString;
+        String url = path;
         try {
-            if (isNotBlank(queryString)) {
-                encodeString = URLEncoder.encode(path + "?" + queryString, DEFAULT_CHARSET);
-            } else {
-                encodeString = URLEncoder.encode(path, DEFAULT_CHARSET);
+            if (notEmpty(queryString)) {
+                url += "?" + queryString;
             }
+            url = URLEncoder.encode(url, DEFAULT_CHARSET);
         } catch (UnsupportedEncodingException e) {
-            encodeString = "";
+            url = "";
         }
-        return encodeString;
+        return url;
     }
 
     /**
@@ -106,7 +103,7 @@ public class RequestUtils extends Base {
         if (notEmpty(domain)) {
             cookie.setDomain(domain);
         }
-        cookie.setPath(isBlank(contextPath) ? "/" : contextPath);
+        cookie.setPath(empty(contextPath) ? SEPARATOR : contextPath);
         response.addCookie(cookie);
         return cookie;
     }
@@ -120,7 +117,7 @@ public class RequestUtils extends Base {
     public static void cancleCookie(String contextPath, HttpServletResponse response, String name, String domain) {
         Cookie cookie = new Cookie(name, null);
         cookie.setMaxAge(0);
-        cookie.setPath(isBlank(contextPath) ? "/" : contextPath);
+        cookie.setPath(empty(contextPath) ? SEPARATOR : contextPath);
         if (notEmpty(domain)) {
             cookie.setDomain(domain);
         }

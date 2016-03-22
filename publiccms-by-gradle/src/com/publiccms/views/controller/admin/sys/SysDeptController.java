@@ -31,7 +31,7 @@ public class SysDeptController extends AbstractController {
     @Autowired
     private SysDeptPageService sysDeptPageService;
 
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(SysDept entity, Integer[] categoryIds, String[] pages, String[] dynamicPages, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
@@ -40,7 +40,7 @@ public class SysDeptController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.dept", getIpAddress(request), getDate(), entity.getId()
@@ -60,7 +60,7 @@ public class SysDeptController extends AbstractController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer id, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
         List<Integer> list = service.delete(site.getId(), id);

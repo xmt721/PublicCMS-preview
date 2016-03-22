@@ -2,10 +2,10 @@
 	<#assign a=object/>
 </@_pageData>
 <div class="pageContent">
-	<form method="post" action="cmsPage/save.do?callbackType=closeCurrent&navTabId=cmsPage/${type}PlaceList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+	<form method="post" action="cmsPage/save.do?callbackType=closeCurrent&navTabId=cmsPage/${(a.type)!type!}placeDataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
 		<input name="id" type="hidden" value="${(a.id)!}" />
-		<input name="path" type="hidden" value="${(path?html)!}" />
-		<input name="type" type="hidden" value="${type?html}" />
+		<input name="path" type="hidden" value="${(a.path?html)!(path?html)!}" />
+		<input name="type" type="hidden" value="${(a.type)!type!}" />
 		<input name="itemType" type="hidden" value="${(a.itemType)!}" />
 		<input name="itemId" type="hidden" value="${(a.itemId)!}" />
 		<div class="pageFormContent" layoutH="57">
@@ -31,13 +31,13 @@
 				<dt>封面：</dt>
 				<dd>
 					<input name="cover" value="${(a.cover)!}" maxlength="300" size="40" type="text"/>
-					<a class="btnAttach" href="file/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+					<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 					<#include "../include_page/preview.html"/>
 					<@preview 'page' 'input[name=cover]'/>
 				</dd>
 			</dl>
 			<#include "../include_page/extendData.html"/>
-			<@_metadata path='include'+path type=type><#assign a=object/></@_metadata>
+			<@_metadata path='include'+(a.path)!path!'' type=(a.type)!type!''><#assign a=object/></@_metadata>
 			<#assign pageExtendList=(a.pageExtendList)![]/>
 			<#assign extendValues=getPageDataAttribute(a.id)!/>
 			<@extendData 'extendDataList' pageExtendList extendValues/>

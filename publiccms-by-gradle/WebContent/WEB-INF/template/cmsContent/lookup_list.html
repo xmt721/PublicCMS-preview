@@ -1,4 +1,3 @@
-<@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
@@ -30,6 +29,7 @@
 	</form>
 </div>
 <div>
+<@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="91" rel="content_list">
 		<thead>
 			<tr>
@@ -106,5 +106,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/pageDialog.html"/>
-</div>
 </@_contentList>
+</div>

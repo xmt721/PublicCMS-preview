@@ -1,7 +1,6 @@
 package com.publiccms.views.method;
 
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,6 @@ import freemarker.template.TemplateModelException;
 
 @Component
 public class GetMd5Method extends BaseMethod {
-    Random r = new Random();
 
     /*
      * (non-Javadoc)

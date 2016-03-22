@@ -82,7 +82,7 @@ public class CmsCategoryController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(CmsCategory entity, CmsCategoryAttribute attribute,
             @ModelAttribute CmsCategoryParamters categoryParamters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
@@ -92,7 +92,7 @@ public class CmsCategoryController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { "siteId", "childIds", "tagTypeIds", "url", "disabled",
+            entity = service.update(entity.getId(), entity, new String[] { "siteId", "childIds", "tagTypeIds", "url", "disabled",
                     "extendId", "contents", "typeId" });
             if (oldEntity.getParentId() != entity.getParentId()) {
                 service.generateChildIds(site.getId(), oldEntity.getParentId());
@@ -241,7 +241,7 @@ public class CmsCategoryController extends AbstractController {
      * @param session
      * @return
      */
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
         if (notEmpty(ids)) {
             SysSite site = getSite(request);

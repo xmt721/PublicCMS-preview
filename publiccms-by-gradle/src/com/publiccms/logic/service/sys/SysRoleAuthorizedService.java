@@ -34,12 +34,12 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
         return dao.deleteByRoleId(roleId);
     }
 
-    public void dealRoleMoudles(Integer roleId, List<SysMoudle> moudles) {
+    public void dealRoleMoudles(Integer roleId, boolean showAllMoudle, List<SysMoudle> moudles, Set<String> pageUrls) {
         if (notEmpty(roleId)) {
             Set<String> urls = new HashSet<String>();
             if (notEmpty(moudles)) {
                 for (SysMoudle moudle : moudles) {
-                    if (notEmpty(moudle.getUrl())) {
+                    if (notEmpty(moudle.getUrl()) && !showAllMoudle) {
                         int index = moudle.getUrl().indexOf("?");
                         urls.add(moudle.getUrl().substring(0, index > 0 ? index : moudle.getUrl().length()));
                     }
@@ -51,6 +51,10 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
                 }
             }
 
+            if (showAllMoudle) {
+                urls.addAll(pageUrls);
+            }
+
             @SuppressWarnings("unchecked")
             List<SysRoleAuthorized> list = (List<SysRoleAuthorized>) getPage(roleId, null, null, null).getList();
             for (SysRoleAuthorized roleAuthorized : list) {
@@ -60,7 +64,6 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
                     delete(roleAuthorized.getId());
                 }
             }
-
             if (notEmpty(urls)) {
                 for (String url : urls) {
                     save(new SysRoleAuthorized(roleId, url));

@@ -5,7 +5,7 @@
 		<div id="tags${typeId!}"></div>
 		<input name="tag[${typeId!}].id" type="hidden"/>
 		<input name="tag[${typeId!}].typeId" type="hidden"/>
-		<input name="tag[${typeId!}].name" type="text" size="30" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="cmsTag/suggest.html"/>
+		<input name="tag[${typeId!}].name" type="text" size="30" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="common/tagSuggest.html"/>
 		<a class="button" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].typeId\']',navTab.getCurrentPanel()).val());return false;"><span>增加</span></a>
 		<span class="info">点击某个标签可以将其删除</span>
 	</dd>

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsPageDataService;
 import com.publiccms.views.pojo.CmsContentStatistics;
+import com.publiccms.views.pojo.CmsPageDataStatistics;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.base.Cacheable;
 
@@ -17,8 +19,12 @@ import com.sanluan.common.base.Cacheable;
 public class StatisticsComponent extends Base implements Cacheable {
     private static List<Integer> cachedlist = new ArrayList<Integer>();
     private static Map<Integer, CmsContentStatistics> cachedMap = new HashMap<Integer, CmsContentStatistics>();
+    private static List<Integer> placeCachedlist = new ArrayList<Integer>();
+    private static Map<Integer, CmsPageDataStatistics> placeCachedMap = new HashMap<Integer, CmsPageDataStatistics>();
     @Autowired
     private CmsContentService contentService;
+    @Autowired
+    private CmsPageDataService pageDataService;
 
     private void clearCache(int size) {
         if (size < cachedlist.size()) {
@@ -28,6 +34,27 @@ public class StatisticsComponent extends Base implements Cacheable {
             }
             contentService.updateStatistics(list);
         }
+    }
+
+    private void clearPlaceCache(int size) {
+        if (size < placeCachedlist.size()) {
+            List<CmsPageDataStatistics> list = new ArrayList<CmsPageDataStatistics>();
+            for (int i = 0; i < size / 10; i++) {
+                list.add(placeCachedMap.remove(placeCachedlist.remove(0)));
+            }
+            pageDataService.updateStatistics(list);
+        }
+    }
+
+    public CmsPageDataStatistics placeClicks(Integer id) {
+        CmsPageDataStatistics pageDataStatistics = placeCachedMap.get(id);
+        if (empty(pageDataStatistics)) {
+            pageDataStatistics = new CmsPageDataStatistics(id, 1, pageDataService.getEntity(id));
+            clearPlaceCache(100);
+            placeCachedlist.add(id);
+            placeCachedMap.put(id, pageDataStatistics);
+        }
+        return pageDataStatistics;
     }
 
     public CmsContentStatistics clicks(Integer id) {

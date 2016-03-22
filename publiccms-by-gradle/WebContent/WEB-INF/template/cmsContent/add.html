@@ -85,14 +85,14 @@
 			<dl class="nowrap">
 				<dt>正文：</dt>
 				<dd style="width:80%">
-					<textarea name="txt" class="required editor" style="width: 100%;" rows="20">${(attribute.text?html)!}</textarea>
+					<textarea name="text" class="required editor" style="width: 100%;" rows="20">${(attribute.text?html)!}</textarea>
 				</dd>
 			</dl>
 		</#if>
 			<dl>
 				<dt>定时发布：</dt>
 				<dd>
-					<input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('#publishDate').show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('#publishDate').hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
+					<input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('#publishDate',navTab.getCurrentPanel()).show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('#publishDate',navTab.getCurrentPanel()).hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
 				</dd>
 			</dl>
 			<dl id="publishDate" style="display:none">
@@ -111,18 +111,18 @@
 				<dt>封面：</dt>
 				<dd>
 					<input name="cover" value="${(a.cover)!}" maxlength="300" size="40" type="text"/>
-					<a class="btnAttach" href="file/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+					<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 					<#include "../include_page/preview.html"/>
 					<@preview 'content' 'input[name=cover]'/>
 				</dd>
 			</dl>
 <#include "../include_page/extendData.html"/>
-<#if category?has_content>
+<#if category?has_content&&category.extendId?has_content>
 	<@_sysExtendFieldList extendId=category.extendId>
 		<@extendData 'categoryExtendDataList' page.list attribute!{}/>
 	</@_sysExtendFieldList>
 </#if>
-<#if model?has_content>
+<#if model?has_content&&model.extendId?has_content>
 	<@_sysExtendFieldList extendId=model.extendId>
 		<@extendData 'modelExtendDataList' page.list attribute!{}/>
 	</@_sysExtendFieldList>

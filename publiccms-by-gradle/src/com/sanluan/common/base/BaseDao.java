@@ -35,31 +35,31 @@ public abstract class BaseDao<E> extends Base {
         return addDays(date, 1);
     }
 
-    public QueryHandler getQueryHandler(String sql) {
+    public static QueryHandler getQueryHandler(String sql) {
         return new QueryHandler(sql);
     }
 
-    public QueryHandler getDeleteQueryHandler(String sql) {
+    public static QueryHandler getDeleteQueryHandler(String sql) {
         return getQueryHandler("delete").append(sql);
     }
 
-    public QueryHandler getCountQueryHandler(String sql) {
+    public static QueryHandler getCountQueryHandler(String sql) {
         return getQueryHandler("select count(*)").append(sql);
     }
 
-    public QueryHandler getQueryHandler() {
+    public static QueryHandler getQueryHandler() {
         return new QueryHandler();
     }
 
-    public String like(String var) {
+    public static String like(String var) {
         return "%" + var + "%";
     }
 
-    public String likeEnd(String var) {
+    public static String likeEnd(String var) {
         return "%" + var;
     }
 
-    public String likeStart(String var) {
+    public static String likeStart(String var) {
         return var + "%";
     }
 

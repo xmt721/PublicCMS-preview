@@ -24,6 +24,12 @@ public class SysMoudleDao extends BaseDao<SysMoudle> {
 
     @Override
     protected SysMoudle init(SysMoudle entity) {
+        if (empty(entity.getAuthorizedUrl())) {
+            entity.setAuthorizedUrl(null);
+        }
+        if (empty(entity.getUrl())) {
+            entity.setUrl(null);
+        }
         return entity;
     }
 

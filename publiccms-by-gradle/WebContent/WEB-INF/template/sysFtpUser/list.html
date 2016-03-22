@@ -1,5 +1,3 @@
-<@_sysFtpUserList admin=true siteId=siteId name=name 
-            pageIndex=pageNum count=numPerPage>
 <#if siteId?has_content>
 	<@_sysSite id=siteId>
 		<#assign site=object/>
@@ -37,6 +35,8 @@
 			<li><a class="delete" href="sysFtpUser/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
 		</ul>
 	</div>
+<@_sysFtpUserList admin=true siteId=siteId name=name 
+            pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
@@ -65,5 +65,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/page.html"/>
-</div>
 </@_sysFtpUserList>
+</div>

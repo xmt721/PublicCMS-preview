@@ -4,6 +4,7 @@ import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
 import static com.sanluan.common.tools.RequestUtils.addCookie;
+import static com.sanluan.common.tools.RequestUtils.getCookie;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 
@@ -11,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -97,7 +99,7 @@ public class LoginController extends AbstractController {
         String authToken = UUID.randomUUID().toString();
         addCookie(request.getContextPath(), response, COOKIES_USER, user.getId() + COOKIES_USER_SPLIT + authToken,
                 Integer.MAX_VALUE, null);
-        sysUserTokenService.save(new SysUserToken(user.getId(), authToken, CHANNEL_WEB, getDate(), ip));
+        sysUserTokenService.save(new SysUserToken(authToken, user.getId(), CHANNEL_WEB, getDate(), ip));
         service.updateLoginStatus(user.getId(), ip);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
         if (notEmpty(returnUrl)) {
@@ -171,7 +173,7 @@ public class LoginController extends AbstractController {
             setUserToSession(session, entity);
             addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
                     Integer.MAX_VALUE, null);
-            sysUserTokenService.save(new SysUserToken(entity.getId(), authToken, CHANNEL_WEB, getDate(), ip));
+            sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL_WEB, getDate(), ip));
         }
         return domain.getRegisterPath();
     }
@@ -191,7 +193,7 @@ public class LoginController extends AbstractController {
                 || virifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
             return getMappingJacksonValue(model, callback);
         }
-        sysEmailTokenService.delete(sysEmailToken.getId());
+        sysEmailTokenService.delete(sysEmailToken.getAuthToken());
         service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
         clearUserTimeToSession(session);
         model.addAttribute(MESSAGE, "verifyEmail.success");
@@ -205,6 +207,13 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout(String returnUrl, HttpServletRequest request, HttpServletResponse response) {
+        Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+        if (null != userCookie && notEmpty(userCookie.getValue())) {
+            String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
+            if (userData.length > 1) {
+                sysUserTokenService.delete(userData[1]);
+            }
+        }
         clearUserToSession(request.getContextPath(), request.getSession(), response);
         if (notEmpty(returnUrl)) {
             try {

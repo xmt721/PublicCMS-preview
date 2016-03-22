@@ -1,6 +1,5 @@
-<@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-	<form id="pagerForm" action="cmsPage/lookup_content_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
+	<form id="pagerForm" action="cmsPage/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
 			<ul class="searchContent two">
@@ -30,6 +29,7 @@
 	</form>
 </div>
 <div>
+<@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="128" rel="lookup_content_list">
 		<thead>
 			<tr>
@@ -39,13 +39,13 @@
 				<th>发布用户</th>
 				<th>分类</th>
 				<th>模型</th>
-				<th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
-				<th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
-				<th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
-				<th width="60" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-				<th width="60">创建日期</th>
+				<th width="40" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
+				<th width="40" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
+				<th width="40" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
+				<th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
+				<th width="70">创建日期</th>
 				<th width="50">状态/审核用户</th>
-				<th width="40">子内容</th>
+				<th width="60">子内容</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,7 +64,7 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>
-					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({itemId:'1', itemType:'content', url:'${a.url}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}',cover:'${(a.cover!)?js_string}'}); return false;" title="选择">选择</a>
+					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}',cover:'${(a.cover!)?js_string}'}); return false;" title="选择">选择</a>
 				</td>
 				<td>${a.id}</td>
 				<td>
@@ -106,5 +106,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/pageDialog.html"/>
-</div>
 </@_contentList>
+</div>

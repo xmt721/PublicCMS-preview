@@ -11,8 +11,8 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsCategoryDao extends BaseDao<CmsCategory> {
-    public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean disabled,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean hidden,
+            Boolean disabled, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -28,6 +28,9 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         if (notEmpty(allowContribute)) {
             queryHandler.condition("bean.allowContribute = :allowContribute").setParameter("allowContribute", allowContribute);
         }
+        if (notEmpty(hidden)) {
+            queryHandler.condition("bean.hidden = :hidden").setParameter("hidden", hidden);
+        }
         if (notEmpty(disabled)) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
@@ -37,6 +40,9 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
 
     @Override
     protected CmsCategory init(CmsCategory entity) {
+        if (empty(entity.getChildIds())) {
+            entity.setChildIds(null);
+        }
         return entity;
     }
 

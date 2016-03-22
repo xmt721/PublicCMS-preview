@@ -23,8 +23,8 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
     private CmsTagTypeDao dao;
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, pageIndex, pageSize);
+    public PageHandler getPage(Integer siteId, String name, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, name, pageIndex, pageSize);
     }
 
     public void delete(int siteId, Integer[] ids) {
@@ -51,6 +51,6 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
                 }
             }
         }
-        return idList.toArray(new Integer[] {});
+        return idList.toArray(new Integer[idList.size()]);
     }
 }

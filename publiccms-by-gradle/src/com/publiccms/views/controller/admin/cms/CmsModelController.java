@@ -45,7 +45,7 @@ public class CmsModelController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(CmsModel entity, @ModelAttribute CmsModelParamters modelParamters, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
@@ -54,7 +54,7 @@ public class CmsModelController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "disabled", "extendId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "disabled", "extendId" });
             if (notEmpty(entity.getId())) {
                 if (empty(extendService.getEntity(entity.getExtendId()))) {
                     SysExtend extend = new SysExtend();
@@ -86,7 +86,7 @@ public class CmsModelController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         CmsModel entity = service.getEntity(id);

@@ -1,18 +1,23 @@
 package com.sanluan.common.tools;
 
+import static org.springframework.web.servlet.support.RequestContextUtils.findWebApplicationContext;
+
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.support.RequestContextUtils;
+
+import com.sanluan.common.base.Base;
 
 /**
  * 
  * LanguagesUtils 获得国际化信息
  *
  */
-public final class LanguagesUtils {
+public final class LanguagesUtils extends Base {
     /**
      * 
      * @param request
@@ -26,14 +31,15 @@ public final class LanguagesUtils {
      *      Object[], Locale)
      */
     public static String getMessage(HttpServletRequest request, String code, Object... args) {
-        WebApplicationContext messageSource = RequestContextUtils.findWebApplicationContext(request);
-        if (null == messageSource) {
-            throw new IllegalStateException("WebApplicationContext not found!");
-        }
+        WebApplicationContext messageSource = findWebApplicationContext(request);
         String result;
-        try {
-            result = messageSource.getMessage(code, args, RequestContextUtils.getLocale(request));
-        } catch (Exception e) {
+        if (notEmpty(messageSource)) {
+            try {
+                result = messageSource.getMessage(code, args, RequestContextUtils.getLocale(request));
+            } catch (NoSuchMessageException e) {
+                result = code;
+            }
+        } else {
             result = code;
         }
         return result;

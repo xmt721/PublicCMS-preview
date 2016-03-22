@@ -1,4 +1,3 @@
-<@_sysMoudleList parentId=parentId	pageIndex=pageNum count=numPerPage>
 <#if parentId?has_content>
 	<@_sysMoudle id=parentId>
 		<#assign parent=object/>
@@ -33,6 +32,7 @@
 			<li><a class="delete" href="sysMoudle/delete.do?id={sid}" title="确定要删除这条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
 		</ul>
 	</div>
+<@_sysMoudleList parentId=parentId	pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
@@ -67,5 +67,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/page.html"/>
-</div>
 </@_sysMoudleList>
+</div>

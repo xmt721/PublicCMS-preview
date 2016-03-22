@@ -1,4 +1,3 @@
-<@_sysSiteList name=name  pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
 		<#include "../include_page/paramters.html"/>
@@ -27,6 +26,7 @@
 			<li><a class="delete" href="sysSite/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
 		</ul>
 	</div>
+<@_sysSiteList name=name  pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
@@ -58,5 +58,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/page.html"/>
-</div>
 </@_sysSiteList>
+</div>

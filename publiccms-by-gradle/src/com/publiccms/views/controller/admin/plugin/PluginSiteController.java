@@ -33,7 +33,7 @@ public class PluginSiteController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "pluginCode" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "pluginCode" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.plugin.site", getIpAddress(request), getDate(), "plugin:"

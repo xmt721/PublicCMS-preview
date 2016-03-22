@@ -53,7 +53,7 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
                 setUnauthorizedUrl("/common/unauthorizedUrl.html");
                 setLoginJsonUrl("/common/ajaxTimeout.html");
                 setNeedNotLoginUrls(new String[] { "/logout", "/common/", "/login" });
-                setNeedNotAuthorizedUrls(new String[] { "/admin","/index","/main","/menus" });
+                setNeedNotAuthorizedUrls(new String[] { "/index","/main","/menus" });
             }
         };
     }

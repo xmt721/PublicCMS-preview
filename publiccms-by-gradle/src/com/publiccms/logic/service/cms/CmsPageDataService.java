@@ -2,6 +2,7 @@ package com.publiccms.logic.service.cms;
 
 // Generated 2015-12-24 10:49:03 by com.sanluan.common.source.SourceMaker
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.cms.CmsPageData;
 import com.publiccms.logic.dao.cms.CmsPageDataDao;
+import com.publiccms.views.pojo.CmsPageDataStatistics;
 import com.sanluan.common.base.BaseService;
 import com.sanluan.common.handler.PageHandler;
 
@@ -26,6 +28,15 @@ public class CmsPageDataService extends BaseService<CmsPageData> {
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, path, type, itemType, itemId, startPublishDate, endPublishDate, status, disabled,
                 orderField, orderType, pageIndex, pageSize);
+    }
+
+    public void updateStatistics(Collection<CmsPageDataStatistics> entitys) {
+        for (CmsPageDataStatistics pageDataStatistics : entitys) {
+            CmsPageData entity = getEntity(pageDataStatistics.getId());
+            if (notEmpty(entity)) {
+                entity.setClicks(entity.getClicks() + pageDataStatistics.getClicks());
+            }
+        }
     }
 
     public void check(int siteId, Integer[] ids) {

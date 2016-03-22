@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.logic.dao.sys.SysAppTokenDao;
 import com.sanluan.common.base.BaseService;
+import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
 public class SysAppTokenService extends BaseService<SysAppToken> {
-
     @Transactional(readOnly = true)
-    public SysAppToken getEntity(String authToken) {
-        return getEntity(authToken, "authToken");
+    public PageHandler getPage(Integer appId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(appId, pageIndex, pageSize);
     }
 
     public int delete(Date createDate) {

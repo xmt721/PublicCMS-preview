@@ -3,10 +3,12 @@ package com.publiccms.views.controller.web.changyan;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
 import static com.sanluan.common.tools.RequestUtils.addCookie;
+import static com.sanluan.common.tools.RequestUtils.getCookie;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -60,7 +62,7 @@ public class ChangyanController extends AbstractController {
             setUserToSession(session, entity);
             addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
                     Integer.MAX_VALUE, null);
-            sysUserTokenService.save(new SysUserToken(entity.getId(), authToken, CHANNEL, getDate(), ip));
+            sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL, getDate(), ip));
             loginResult.setUser_id(entity.getId());
         } else {
             SysUser sysuser = service.getEntity(user.getUser_id());
@@ -70,7 +72,7 @@ public class ChangyanController extends AbstractController {
                 String authToken = UUID.randomUUID().toString();
                 addCookie(request.getContextPath(), response, COOKIES_USER, sysuser.getId() + COOKIES_USER_SPLIT + authToken,
                         Integer.MAX_VALUE, null);
-                sysUserTokenService.save(new SysUserToken(sysuser.getId(), authToken, CHANNEL, getDate(), ip));
+                sysUserTokenService.save(new SysUserToken(authToken, sysuser.getId(), CHANNEL, getDate(), ip));
                 service.updateLoginStatus(sysuser.getId(), ip);
                 logLoginService.save(new LogLogin(site.getId(), sysuser.getName(), sysuser.getId(), ip, CHANNEL, true, getDate(),
                         null));
@@ -83,6 +85,13 @@ public class ChangyanController extends AbstractController {
 
     @RequestMapping("loginout")
     public MappingJacksonValue login(String callback, HttpServletRequest request, HttpServletResponse response) {
+        Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+        if (null != userCookie && notEmpty(userCookie.getValue())) {
+            String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
+            if (userData.length > 1) {
+                sysUserTokenService.delete(userData[1]);
+            }
+        }
         clearUserToSession(request.getContextPath(), request.getSession(), response);
         return getMappingJacksonValue(LOGOUTRESULT, callback);
     }

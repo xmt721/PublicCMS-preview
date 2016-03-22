@@ -33,7 +33,7 @@ public class PluginVoteController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId", "itemExtendId", "userCounts" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "itemExtendId", "userCounts" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.plugin.vote", getIpAddress(request), getDate(), entity

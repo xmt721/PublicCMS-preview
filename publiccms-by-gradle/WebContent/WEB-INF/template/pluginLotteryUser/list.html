@@ -1,6 +1,3 @@
-<@_pluginLotteryUserList lotteryId=lotteryId userId=userId 
-            winning=winning startCreateDate=startCreateDate endCreateDate=endCreateDate 
-            orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
 		<#include "../include_page/paramters.html"/>
@@ -43,6 +40,9 @@
 			<li><a class="delete" href="pluginLotteryUser/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
 		</ul>
 	</div>
+<@_pluginLotteryUserList lotteryId=lotteryId userId=userId 
+            winning=winning startCreateDate=startCreateDate endCreateDate=endCreateDate 
+            orderType=orderType pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
@@ -68,5 +68,5 @@
 		</tbody>
 	</table>
 	<#include "../include_page/page.html"/>
-</div>
 </@_pluginLotteryUserList>
+</div>

@@ -2,7 +2,8 @@ package com.publiccms.views.controller.admin.sys;
 
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,7 +30,7 @@ public class SysTaskAdminController extends AbstractController {
     @Autowired
     private ScheduledTask scheduledTask;
 
-    @RequestMapping(SAVE)
+    @RequestMapping("save")
     public String save(SysTask entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
@@ -37,7 +38,7 @@ public class SysTaskAdminController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.update(entity.getId(), entity, new String[] { ID, "siteId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.task", getIpAddress(request), getDate(), entity.getId()
@@ -124,18 +125,18 @@ public class SysTaskAdminController extends AbstractController {
 
     @RequestMapping("status")
     @ResponseBody
-    public ModelMap status(Integer[] ids, HttpServletRequest request, ModelMap model) {
+    public Map<String, Integer> status(Integer[] ids, HttpServletRequest request, ModelMap model) {
         SysSite site = getSite(request);
-        List<SysTask> list = service.getEntitys(ids);
-        for (SysTask entity : list) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for (SysTask entity : service.getEntitys(ids)) {
             if (site.getId() == entity.getSiteId()) {
-                model.addAttribute(entity.getId().toString(), entity.getStatus());
+                map.put(entity.getId().toString(), entity.getStatus());
             }
         }
-        return model;
+        return map;
     }
 
-    @RequestMapping(DELETE)
+    @RequestMapping("delete")
     public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysTask entity = service.getEntity(id);

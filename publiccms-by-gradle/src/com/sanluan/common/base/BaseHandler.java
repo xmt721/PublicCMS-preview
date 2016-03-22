@@ -1,5 +1,6 @@
 package com.sanluan.common.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,12 +29,16 @@ public abstract class BaseHandler extends Base implements RenderHandler {
     public static final String PARAMETER_TYPE_INTEGERARRAY = "integerArray";
     public static final String PARAMETER_TYPE_STRINGARRAY = "stringArray";
     protected Map<String, Object> map = new LinkedHashMap<String, Object>();
-    private List<Map<String, Object>> parameterList;
-    private boolean regristerParamter;
+    protected List<Map<String, Object>> parameterList;
+    protected boolean regristerParamters;
+    protected boolean renderd = false;
 
-    public BaseHandler(List<Map<String, Object>> parameterList, boolean regristerParamter) {
-        this.parameterList = parameterList;
-        this.regristerParamter = regristerParamter;
+    public void regristerParamters() throws Exception {
+        this.regristerParamters = getBooleanWithoutRegrister(PARAMETERS_CONTROLLER, false);
+        if (regristerParamters) {
+            parameterList = new ArrayList<Map<String, Object>>();
+            put(PARAMETERS_NAME, parameterList);
+        }
     }
 
     protected void regristerParamter(String type, String name) {
@@ -41,7 +46,7 @@ public abstract class BaseHandler extends Base implements RenderHandler {
     }
 
     protected void regristerParamter(final String type, final String name, final Object defaultValue) {
-        if (regristerParamter) {
+        if (regristerParamters) {
             parameterList.add(new HashMap<String, Object>() {
                 private static final long serialVersionUID = 1L;
                 {
@@ -80,6 +85,17 @@ public abstract class BaseHandler extends Base implements RenderHandler {
     /*
      * (non-Javadoc)
      * 
+     * @see com.sanluan.common.handler.RenderHandler#getString(java.lang.String)
+     */
+    @Override
+    public String getString(String name) throws Exception {
+        regristerParamter(PARAMETER_TYPE_STRING, name);
+        return getStringWithoutRegrister(name);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.sanluan.common.handler.RenderHandler#getString(java.lang.String,
      * java.lang.String)
      */
@@ -88,6 +104,18 @@ public abstract class BaseHandler extends Base implements RenderHandler {
         String result = getString(name);
         regristerParamter(PARAMETER_TYPE_STRING, name, defaultValue);
         return notEmpty(result) ? result : defaultValue;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.sanluan.common.handler.RenderHandler#getInteger(java.lang.String)
+     */
+    @Override
+    public Integer getInteger(String name) throws Exception {
+        regristerParamter(PARAMETER_TYPE_INTEGER, name);
+        return getIntegerWithoutRegrister(name);
     }
 
     /*
@@ -171,6 +199,18 @@ public abstract class BaseHandler extends Base implements RenderHandler {
      * (non-Javadoc)
      * 
      * @see
+     * com.sanluan.common.handler.RenderHandler#getBoolean(java.lang.String)
+     */
+    @Override
+    public Boolean getBoolean(String name) throws Exception {
+        regristerParamter(PARAMETER_TYPE_BOOLEAN, name);
+        return getBooleanWithoutRegrister(name);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
      * com.sanluan.common.handler.RenderHandler#getBoolean(java.lang.String,
      * java.lang.Boolean)
      */
@@ -178,5 +218,17 @@ public abstract class BaseHandler extends Base implements RenderHandler {
     public Boolean getBoolean(String name, Boolean defaultValue) throws Exception {
         regristerParamter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegrister(name, defaultValue);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.sanluan.common.handler.RenderHandler#getStringArray(java.lang.String)
+     */
+    @Override
+    public String[] getStringArray(String name) throws Exception {
+        regristerParamter(PARAMETER_TYPE_STRINGARRAY, name);
+        return getStringArrayWithoutRegrister(name);
     }
 }

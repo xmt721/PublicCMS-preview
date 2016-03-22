@@ -28,7 +28,7 @@ public class CmsSiteController extends AbstractController {
     public String save(SysSite entity, String roleName, String userName, String password, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        service.update(site.getId(), entity, new String[] { ID });
+        entity = service.update(site.getId(), entity, new String[] { "id" });
         logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                 LogLoginService.CHANNEL_WEB_MANAGER, "update.site", getIpAddress(request), getDate(), entity.getId() + ":"
                         + entity.getName()));

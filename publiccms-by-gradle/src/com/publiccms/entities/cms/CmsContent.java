@@ -96,6 +96,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
     @Field
     private String description;
     @MyColumn(title = "标签")
+    @Field
     private String tagIds;
     @MyColumn(title = "封面")
     private String cover;

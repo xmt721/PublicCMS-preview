@@ -3,9 +3,9 @@ package com.publiccms.logic.component;
 import static com.publiccms.common.constants.CommonConstants.DEFAULT_PAGE_BREAK_TAG;
 import static com.publiccms.common.tools.ExtendUtils.getExtendMap;
 import static com.publiccms.logic.component.SiteComponent.CONTEXT_SITE;
-import static com.publiccms.logic.component.TemplateCacheComponent.CONTENT_CACHE;
 import static com.publiccms.logic.component.SiteComponent.expose;
 import static com.publiccms.logic.component.SiteComponent.getFullFileName;
+import static com.publiccms.logic.component.TemplateCacheComponent.CONTENT_CACHE;
 import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_STATIC;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeFileByFile;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByString;
@@ -101,6 +101,7 @@ public class TemplateComponent extends Base implements Cacheable {
             expose(model, site);
             model.put("metadata", metadata);
             filePath = makeStringByString(filePath, staticConfiguration, model);
+            model.put("url", site.getSitePath() + filePath);
             if (notEmpty(pageIndex) && 1 < pageIndex) {
                 int index = filePath.lastIndexOf('.');
                 filePath = filePath.substring(0, index) + '_' + pageIndex + filePath.substring(index, filePath.length());
@@ -175,12 +176,16 @@ public class TemplateComponent extends Base implements Cacheable {
         model.put("category", category);
 
         CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
-        Map<String, String> map = getExtendMap(attribute.getData());
-        map.put("text", attribute.getText());
-        map.put("source", attribute.getSource());
-        map.put("sourceUrl", attribute.getSourceUrl());
-        map.put("wordCount", String.valueOf(attribute.getWordCount()));
-        model.put("attribute", map);
+        if (notEmpty(attribute)) {
+            Map<String, String> map = getExtendMap(attribute.getData());
+            map.put("text", attribute.getText());
+            map.put("source", attribute.getSource());
+            map.put("sourceUrl", attribute.getSourceUrl());
+            map.put("wordCount", String.valueOf(attribute.getWordCount()));
+            model.put("attribute", map);
+        } else {
+            model.put("attribute", attribute);
+        }
         if (empty(filePath)) {
             filePath = category.getContentPath();
         }
@@ -222,8 +227,11 @@ public class TemplateComponent extends Base implements Cacheable {
         if (notEmpty(entity.getPath())) {
             try {
                 if (notEmpty(entity.getTemplatePath())) {
-                    createCategoryFile(site, entity, getFullFileName(site, entity.getTemplatePath()), entity.getPath(),
-                            pageIndex, totalPage);
+                    categoryService.updateStaticUrl(
+                            entity.getId(),
+                            site.getSitePath()
+                                    + createCategoryFile(site, entity, getFullFileName(site, entity.getTemplatePath()),
+                                            entity.getPath(), pageIndex, totalPage));
                 } else {
                     Map<String, Object> model = new HashMap<String, Object>();
                     model.put("category", entity);
@@ -261,11 +269,15 @@ public class TemplateComponent extends Base implements Cacheable {
         }
         model.put("category", entity);
         CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
-        Map<String, String> map = getExtendMap(attribute.getData());
-        map.put("title", attribute.getTitle());
-        map.put("keywords", attribute.getKeywords());
-        map.put("description", attribute.getDescription());
-        model.put("attribute", map);
+        if (notEmpty(attribute)) {
+            Map<String, String> map = getExtendMap(attribute.getData());
+            map.put("title", attribute.getTitle());
+            map.put("keywords", attribute.getKeywords());
+            map.put("description", attribute.getDescription());
+            model.put("attribute", map);
+        } else {
+            model.put("attribute", attribute);
+        }
 
         if (notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
@@ -293,8 +305,9 @@ public class TemplateComponent extends Base implements Cacheable {
                 pageSize = metadata.getSize();
             }
             Map<String, Object> model = new HashMap<String, Object>();
-            model.put("page", pageDataService.getPage(site.getId(), null, templatePath, PAGE_TYPE_STATIC, null, null, null,
-                    getDate(), CmsPageDataService.STATUS_NORMAL, false, null, null, 1, pageSize));
+            model.put("page", pageDataService.getPage(site.getId(), null, templatePath.substring(INCLUDE_DIRECTORY.length()),
+                    PAGE_TYPE_STATIC, null, null, null, getDate(), CmsPageDataService.STATUS_NORMAL, false, null, null, 1,
+                    pageSize));
             createStaticFile(site, getFullFileName(site, templatePath), templatePath, null, metadata, model);
         }
     }

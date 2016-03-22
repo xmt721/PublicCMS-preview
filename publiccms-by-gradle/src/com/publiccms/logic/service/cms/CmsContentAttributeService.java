@@ -27,7 +27,7 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
         CmsContentAttribute attribute = getEntity(contentId);
         if (notEmpty(attribute)) {
             if (notEmpty(entity)) {
-                update(attribute.getContentId(), attribute, new String[] { "contentId" });
+                update(attribute.getContentId(), entity, new String[] { "contentId" });
             } else {
                 delete(attribute.getContentId());
             }

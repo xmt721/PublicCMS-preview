@@ -32,7 +32,8 @@
 					<dt>名称：</dt>
 					<dd>
 						<input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
-						<label><input name="allowContribute" type="checkbox"/>允许投稿</label>
+						<label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')}/>允许投稿</label>
+						<label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')}/>隐藏</label>
 					</dd>
 				</dl>
 				<dl class="nowrap">
@@ -66,7 +67,7 @@
 					<dt>排序：</dt>
 					<dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
 				</dl>
-<#if categoryType?has_content>
+<#if categoryType?has_content&&categoryType.extendId?has_content>
 	<#include "../include_page/extendData.html"/>
 	<@_sysExtendFieldList extendId=categoryType.extendId>
 		<@extendData 'extendDataList' page.list attribute/>
@@ -82,14 +83,14 @@
 				<dl class="nowrap">
 					<dt>关键词：</dt>
 					<dd>
-						<textarea name="keywords" maxlength="100" style="width: 100%;" rows="3">${(attribute.keywords)!}</textarea>
+						<textarea name="keywords" maxlength="100" style="width: 80%;" rows="2">${(attribute.keywords)!}</textarea>
 						<span class="info">请填写与分类内容相关的关键词，多个关键词应该使用空格分开，最好保持在10个以下</span>
 					</dd>
 				</dl>
 				<dl class="nowrap">
 					<dt>描述：</dt>
 					<dd>
-						<textarea name="description" maxlength="300" style="width: 100%;" rows="3">${(attribute.description)!}</textarea>
+						<textarea name="description" maxlength="300" style="width: 80%;" rows="2">${(attribute.description)!}</textarea>
 						<span class="info">请填写与分类内容相关的描述，字数控制应该70-100个汉字或者140-200个英文字符</span>
 					</dd>
 				</dl>
@@ -148,16 +149,18 @@ function checkCategoryModel(){
 checkCategoryModel();
 </script>
 			</fieldset>
-<#if id?has_content||parentId?has_content>
 			<script>
+<#if id?has_content||parentId?has_content>
 	<@_categoryModelList categoryId=id!parentId>
 		<#list page.list as a>
 				$('input[name=model_${a.modelId}]',navTab.getCurrentPanel()).click(); 
 				$('input[name=templatePath_${a.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
 		</#list>
 	</@_categoryModelList>
+</#if>
 			</script>
-	<@_sysExtendFieldList itemId=id!parentId>
+<#if a?has_content&&a.extendId?has_content>
+	<@_sysExtendFieldList extendId=a.extendId>
 		<#assign contentExtendList=page.list>
 	</@_sysExtendFieldList>
 </#if>

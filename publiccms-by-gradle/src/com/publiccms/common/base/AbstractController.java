@@ -35,9 +35,6 @@ public abstract class AbstractController extends BaseController {
     protected static final String TEMPLATE_ERROR = "common/ajaxError";
     protected static final String MESSAGE = "message";
     protected static final String SUCCESS = "success";
-    protected static final String DELETE = "delete";
-    protected static final String SAVE = "save";
-    protected static final String ID = "id";
 
     public static final Pattern MOBILE_PATTERN = Pattern.compile("^(13|14|15|17|18|)\\d{9}$");
     public static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]*$");

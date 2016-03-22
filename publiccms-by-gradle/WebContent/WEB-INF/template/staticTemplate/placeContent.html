@@ -11,13 +11,11 @@ function refresh${type}TemplatePlace(){
 	<#if 'dynamic'=type><a href="staticTemplate/chipLookup.html?chip=include&editor=dynamicTemplatePlaceEditor" target="dialog" mask="true">静态化推荐位</a></#if>
 	<a href="${type}Template/chipLookup.html?chip=include&editor=${type}TemplatePlaceEditor" target="dialog" mask="true">推荐位</a>
  	<a href="${type}Template/chipLookup.html?chip=ftl&editor=${type}TemplatePlaceEditor" target="dialog" mask="true">模板片段</a>
-<#if !path?has_content||!path?starts_with('/ftl/')>
-	<a href="${type}Template/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="${type}TemplateMetadata"><span>创建模板片段</span></a>
-</#if>
-	<a href="cmsTemplate/delete.do?path=${'/include'+path?html?url}&type=${type}" title="确定要删除该模板吗?" target="ajaxTodo" rel="staticTemplate/list">删除模板</a>
+	<a href="${type}Template/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="${type}Template/metadata"><span>创建模板片段</span></a>
+	<a href="cmsTemplate/delete.do?path=${'/include'+path?html?url}&type=${type}" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
  </h2>
 <div class="pageContent">
-	<form method="post" action="cmsTemplate/save.do?navTabId=staticTemplate" class="pageForm required-validate" onsubmit="refresh${type}TemplatePlace();return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="cmsTemplate/save.do?navTabId=${type}Template/placeList" class="pageForm required-validate" onsubmit="refresh${type}TemplatePlace();return validateCallback(this, navTabAjaxDone);">
 		<div class="pageFormContent" layoutH="98" style="background:#ffffff;">
 	   		<div>
 				<input name="path" type="hidden" value="${'/include'+path?html}"/>
@@ -36,7 +34,7 @@ function refresh${type}TemplatePlace(){
 		</div>
 		<div class="formBar">
 			<ul>
-				<li><a class="button" href="${type}Template/placeMetadata.html?path=${(path?url)!}" target="ajax" rel="${type}TemplateBox"><span>推荐位元数据</span></a></li>
+				<li><a class="button" href="${type}Template/placeMetadata.html?path=${(path?url)!}" target="ajax" rel="${type}TemplatePlace"><span>推荐位元数据</span></a></li>
 				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
 				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
 			</ul>

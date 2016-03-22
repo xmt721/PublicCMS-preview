@@ -3,9 +3,9 @@
 	<form method="post" action="sysApp/save.do?callbackType=closeCurrent&navTabId=sysApp/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 		<div class="pageFormContent" layoutH="57">
 			<input name="id" type="hidden" value="${id!}" />
-			<input class="required" name="appKey" type="text" size="30" value="${(a.appKey)!getUUID()}"/>
-			<input class="required" name="appSecret" type="text" size="30" value="${(a.appSecret)!getUUID()}"/>
-			<dl>
+			<input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
+			<input name="appSecret" type="hidden" value="${(a.appSecret)!getUUID()}"/>
+			<dl class="nowrap">
 				<dt>渠道：</dt>
 				<dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
 			</dl>

@@ -11,10 +11,13 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsTagTypeDao extends BaseDao<CmsTagType> {
-    public PageHandler getPage(Integer siteId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, String name, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTagType bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (notEmpty(name)) {
+            queryHandler.condition("bean.name like :name").setParameter("name", likeStart(name));
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);

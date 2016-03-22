@@ -20,11 +20,6 @@ public abstract class BaseHttpDirective extends BaseDirective implements HttpDir
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
             String callback, HttpServletResponse response) throws IOException, Exception {
-        HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, parameterList,
-                regristerParamter, callback, response);
-        execute(handler);
-        if (regristerParamter) {
-            regristerParamter = false;
-        }
+        execute(new HttpParameterHandler(httpMessageConverter, mediaType, request, callback, response));
     }
 }
