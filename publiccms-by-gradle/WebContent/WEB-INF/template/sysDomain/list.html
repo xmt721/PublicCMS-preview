@@ -20,8 +20,8 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="edit" href="sysDomain/add.html?id={sid}" target="navTab" rel="sysDomain/edit" title="修改域名"><span>修改</span></a></li>
-			<li><a class="delete" href="sysDomain/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
+			<li><a href="sysDomain/add.html?id={sid}" target="navTab" rel="sysDomain/edit"><i class="icon-edit icon-large"></i> 修改域名</a></li>
+			<li><a href="sysDomain/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
 		</ul>
 	</div>
 <@_sysDomainList admin=true siteId=siteId pageIndex=pageNum count=numPerPage>

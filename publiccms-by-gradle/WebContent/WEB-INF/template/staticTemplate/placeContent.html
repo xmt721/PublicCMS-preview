@@ -11,7 +11,7 @@ function refresh${type}TemplatePlace(){
 	<#if 'dynamic'=type><a href="staticTemplate/chipLookup.html?chip=include&editor=dynamicTemplatePlaceEditor" target="dialog" mask="true">静态化推荐位</a></#if>
 	<a href="${type}Template/chipLookup.html?chip=include&editor=${type}TemplatePlaceEditor" target="dialog" mask="true">推荐位</a>
  	<a href="${type}Template/chipLookup.html?chip=ftl&editor=${type}TemplatePlaceEditor" target="dialog" mask="true">模板片段</a>
-	<a href="${type}Template/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="${type}Template/metadata"><span>创建模板片段</span></a>
+	<a href="${type}Template/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="${type}Template/metadata">创建模板片段</a>
 	<a href="cmsTemplate/delete.do?path=${'/include'+path?html?url}&type=${type}" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
  </h2>
 <div class="pageContent">

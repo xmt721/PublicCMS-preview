@@ -4,9 +4,9 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="pluginSite/add.html" target="navTab" rel="pluginSite/add"><span>添加</span></a></li>
-			<li><a class="edit" href="pluginSite/add.html?id={sid}" target="navTab" rel="pluginSite/edit"><span>修改</span></a></li>
-			<li><a class="delete" href="pluginSite/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
+			<li><a href="pluginSite/add.html" target="navTab" rel="pluginSite/add"><i class="icon-plus-sign-alt icon-large"></i> 添加</a></li>
+			<li><a href="pluginSite/add.html?id={sid}" target="navTab" rel="pluginSite/edit"><i class="icon-edit icon-large"></i> 修改</a></li>
+			<li><a href="pluginSite/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
 		</ul>
 	</div>
 <@_pluginSiteList pluginCode=pluginCode pageIndex=pageNum count=numPerPage>

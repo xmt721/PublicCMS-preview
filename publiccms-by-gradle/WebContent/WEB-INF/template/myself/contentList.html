@@ -39,14 +39,14 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<#if parent?has_content>
-				<li><a class="icon" href="myself/contentList.html?parentId=${(parent.parentId)!}" target="navTab" rel="myself/contentList" title="我的内容"><span>返回上一级</span></a></li>
+				<li><a href="myself/contentList.html?parentId=${(parent.parentId)!}" target="navTab" rel="myself/contentList"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
 				<li class="line">line</li>
 			</#if>
-			<li><a class="edit" href="cmsContent/add.html?id={sid}&navTabId=myself/contentList" target="navTab" rel="myself/contentList/edit" title="修改我的内容"><span>修改</span></a></li>
-			<li><a class="delete" href="cmsContent/delete.do" title="确定要删除这些记录么?"  target="selectedTodo" rel="ids"><span>批量删除</span></a></li>
+			<li><a href="cmsContent/add.html?id={sid}&navTabId=myself/contentList" target="navTab" rel="myself/contentList/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
+			<li><a href="cmsContent/delete.do" title="确定要删除这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 			<li class="line">line</li>
-			<li><a class="icon" href="cmsContent/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><span>批量刷新</span></a></li>
-			<li><a class="icon" href="cmsContent/publish.do" title="确定要生成这些记录么?"  target="selectedTodo" rel="ids"><span>批量生成</span></a></li>
+			<li><a href="cmsContent/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
+			<li><a href="cmsContent/publish.do" title="确定要生成这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-globe icon-large"></i> 批量生成</a></li>
 		</ul>
 	</div>
 <@_contentList admin=true status=status modelId=modelId parentId=parentId emptyParent=true title=title userId=admin.id 

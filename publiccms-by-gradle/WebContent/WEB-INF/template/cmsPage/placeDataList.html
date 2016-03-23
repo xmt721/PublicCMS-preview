@@ -39,16 +39,16 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="cmsPage/placeDataAdd.html?path=${(path?url!)}&type=${type}" target="navTab" rel="cmsPageData/add"><span>添加推荐位数据</span></a></li>
-			<li><a class="edit" href="cmsPage/placeDataAdd.html?id={sid}" target="navTab" rel="cmsPageData/edit"><span>修改推荐位数据</span></a></li>
-			<li><a class="delete" href="cmsPage/delete.do?id={sid}" title="确定要删除这条记录么?" target="ajaxTodo"><span>删除</span></a></li>
-			<li><a class="icon" href="cmsPage/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><span>批量刷新</span></a></li>
-			<li><a class="icon" href="cmsPage/check.do" title="确定要审核这些记录么?"  target="selectedTodo" rel="ids"><span>批量审核</span></a></li>
+			<li><a href="cmsPage/placeDataAdd.html?path=${(path?url!)}&type=${type}" target="navTab" rel="cmsPageData/add"><i class="icon-plus-sign-alt icon-large"></i> 添加推荐位数据</a></li>
+			<li><a href="cmsPage/placeDataAdd.html?id={sid}" target="navTab" rel="cmsPageData/edit"><i class="icon-edit icon-large"></i> 修改推荐位数据</a></li>
+			<li><a href="cmsPage/delete.do?id={sid}" title="确定要删除这条记录么?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+			<li><a href="cmsPage/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
+			<li><a href="cmsPage/check.do" title="确定要审核这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
 			<#if 'static'=type>
-				<li><a class="icon" href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo"><span>发布</span></a></li>
+				<li><a href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo"><i class="icon-globe icon-large"></i> 发布</a></li>
 			</#if>
 			<li class="line">line</li>
-			<li><a class="icon" href="cmsPage/clear.do?path=${(path?url!)}&type=${type}" title="确定要清空这些记录么?"  target="ajaxTodo"><span>全部清空</span></a></li>
+			<li><a href="cmsPage/clear.do?path=${(path?url!)}&type=${type}" title="确定要清空这些记录么?"  target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
 		</ul>
 	</div>
 <@_pageDataList path=path admin=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate 

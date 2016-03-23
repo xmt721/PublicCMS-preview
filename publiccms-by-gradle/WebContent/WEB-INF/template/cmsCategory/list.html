@@ -6,26 +6,26 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>
-			<li><a class="add" href="cmsCategory/add.html?parentId=${categoryId!}" target="navTab" rel="cmsCategory/add"><span>添加分类</span></a></li>
+			<li><a href="cmsCategory/add.html?parentId=${categoryId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> 添加分类</a></li>
 	<@_categoryTypeList count=5>
 		<#list page.list as a>
-			<li><a class="add" href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><span>添加${(a.name)!}分类</span></a></li>
+			<li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> 添加${(a.name)!}分类</a></li>
 		</#list>
 		<#if page.totalCount gt 5>
-			<li><a class="icon" href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><span>添加更多分类</span></a></li>
+			<li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> 添加更多分类</a></li>
 		</#if>
 	</@_categoryTypeList>
-			<li><a class="edit" href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><span>修改</span></a></li>
+			<li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><i class="icon-edit icon-large"></i> 修改</a></li>
 </#if>
 		<#if authorizedMap['cmsCategory/delete']>
-			<li><a class="delete" href="cmsCategory/delete.do" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><span>批量删除</span></a></li>
+			<li><a href="cmsCategory/delete.do" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 			<li class="line">line</li>
 		</#if>
 		<#if authorizedMap['cmsCategory/publish']>
-			<li><a class="icon" href="cmsCategory/publish.do" title="确定要生成该些记录吗?" target="selectedTodo" rel="ids"><span>批量生成分类首页</span></a></li>
+			<li><a href="cmsCategory/publish.do" title="确定要生成该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-globe icon-large"></i> 批量生成分类首页</a></li>
 		</#if>
 		<#if authorizedMap['cmsCategory/moveParameters']>
-			<li><a class="icon" href="cmsCategory/moveParameters.html" target="dialog" mask="true"><span>批量移动</span></a></li>
+			<li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> 批量移动</a></li>
 		</#if>
 		</ul>
 	</div>

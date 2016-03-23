@@ -22,14 +22,14 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<#if parent?has_content>
-				<li><a class="icon" href="sysMoudle/list?parentId=${(parent.parentId)!}&deep=${deep-1}" target="navTab" rel="sysMoudle/list" title="模块管理"><span>返回上一级</span></a></li>
+				<li><a href="sysMoudle/list?parentId=${(parent.parentId)!}&deep=${deep-1}" target="navTab" rel="sysMoudle/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
 				<li class="line">line</li>
 			</#if>
 			<#if deep lte 3>
-				<li><a class="add" href="sysMoudle/add.html?parentId=${parentId!}" target="navTab" rel="sysMoudle/add"><span>添加<@t.m 'button.moudle.add.'+deep/></span></a></li>
+				<li><a href="sysMoudle/add.html?parentId=${parentId!}" target="navTab" rel="sysMoudle/add"><i class="icon-plus-sign-alt icon-large"></i> 添加<@t.m 'button.moudle.add.'+deep/></a></li>
 			</#if>
-			<li><a class="edit" href="sysMoudle/add.html?id={sid}" target="navTab" rel="sysMoudle/edit"><span>修改<@t.m 'button.moudle.add.'+deep/></span></a></li>
-			<li><a class="delete" href="sysMoudle/delete.do?id={sid}" title="确定要删除这条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
+			<li><a href="sysMoudle/add.html?id={sid}" target="navTab" rel="sysMoudle/edit"><i class="icon-edit icon-large"></i> 修改<@t.m 'button.moudle.add.'+deep/></a></li>
+			<li><a href="sysMoudle/delete.do?id={sid}" title="确定要删除这条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
 		</ul>
 	</div>
 <@_sysMoudleList parentId=parentId	pageIndex=pageNum count=numPerPage>

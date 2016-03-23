@@ -9,7 +9,7 @@ function refreshTaskTemplate(){
 <h2 class="contentTitle">
  		<a href="taskTemplate/chipLookup.html" target="dialog" mask="true">模板片段</a>
 	<#if !path?has_content||!path?starts_with('/ftl/')>
-		<a href="taskTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="taskTemplate/metadata"><span>创建模板片段</span></a>
+		<a href="taskTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="taskTemplate/metadata">创建模板片段</a>
 	</#if>
 	<a href="cmsTemplate/delete.do?path=${path?html?url}&type=task" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a>
  </h2>

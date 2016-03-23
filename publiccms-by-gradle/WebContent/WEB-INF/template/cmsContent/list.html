@@ -53,7 +53,7 @@
 		<div class="panelBar">
 			<ul class="toolBar">
 				<#if parent?has_content>
-					<li><a class="icon" href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${(parent.categoryId)!}" target="navTab" rel="cmsContent/list" title="内容管理"><span>返回上一级</span></a></li>
+					<li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${(parent.categoryId)!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
 					<li class="line">line</li>
 				</#if>
 <#if authorizedMap['cmsContent/add']>
@@ -62,33 +62,33 @@
 			<#list page.list as a>
 				<@_categoryModelList modelId=a.id categoryId=categoryId>
 					<#if page.totalCount gt 0>
-				<li><a class="add" href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><span>添加${(a.name)!}</span></a></li>
+				<li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> 添加${(a.name)!}</a></li>
 					</#if>
 				</@_categoryModelList>
 			</#list>
 			<#if page.totalCount gt 5>
-				<li><a class="icon" href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><span>添加更多内容</span></a></li>
+				<li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> 添加更多内容</a></li>
 			</#if>
 		</@_modelList>
 				<li class="line">line</li>
 	</#if>
-				<li><a class="edit" href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit" title="修改内容"><span>修改</span></a></li>
+				<li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
 </#if>
 			<#if authorizedMap['cmsContent/delete']>
-				<li><a class="delete" href="cmsContent/delete.do" title="确定要删除这些记录么?"  target="selectedTodo" rel="ids"><span>批量删除</span></a></li>
+				<li><a href="cmsContent/delete.do" title="确定要删除这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 				<li class="line">line</li>
 			</#if>
 			<#if authorizedMap['cmsContent/check']>
-				<li><a class="icon" href="cmsContent/check.do" title="确定要审核这些记录么?"  target="selectedTodo" rel="ids"><span>批量审核</span></a></li>
+				<li><a href="cmsContent/check.do" title="确定要审核这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
 			</#if>
 			<#if authorizedMap['cmsContent/refresh']>
-				<li><a class="icon" href="cmsContent/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><span>批量刷新</span></a></li>
+				<li><a href="cmsContent/refresh.do" title="确定要刷新这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
 			</#if>
 			<#if authorizedMap['cmsContent/publish']>
-				<li><a class="icon" href="cmsContent/publish.do" title="确定要生成这些记录么?"  target="selectedTodo" rel="ids"><span>批量生成</span></a></li>
+				<li><a href="cmsContent/publish.do" title="确定要生成这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-globe icon-large"></i> 批量生成</a></li>
 			</#if>
 			<#if authorizedMap['cmsContent/moveParameters']>
-				<li><a class="icon"href="cmsContent/moveParameters.html" target="dialog" mask="true"><span>批量移动</span></a></li>
+				<li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> 批量移动</a></li>
 			</#if>
 			</ul>
 		</div>

@@ -76,7 +76,7 @@
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
 	<div class="accordionHeader">
-		<h2><span>Folder</span>${a.name?html}</h2>
+		<h2>${a.name}</h2>
 	</div>
 	<div class="accordionContent">
 		<ul class="tree treeFolder">
@@ -118,7 +118,7 @@
 				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
 				<#list page.list as a>
 					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
-			<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.name?html}</a></li>
+			<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.name}</a></li>
 					</#if>
 				</#list>
 			</@_sysMoudleList>
