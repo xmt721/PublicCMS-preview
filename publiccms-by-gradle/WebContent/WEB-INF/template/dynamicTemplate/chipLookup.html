@@ -4,9 +4,9 @@
 	<div class="pageFormContent" layoutH="58">
 		<ul class="tree treeFolder">
 <#if chip='ftl'>
-	<@chipTree editor '/ftl' 'static' '<@_include path="' '"/>'/>
+	<@chipTree editor '/ftl' 'dynamic' '<@include path="' '"/>'/>
 <#else>
-	<@chipTree editor '/include' 'static' '<@_metadata path="' 'path type="dynamic"><@_pageDataList path=path type=type count=object.size><@_include path=path/></@_pageDataList></@_metadata>'/>
+	<@chipTree editor '/include' 'dynamic' '<@_metadata path="' '" type="dynamic"><@_pageDataList path=path type=type count=object.size><@include path=path/></@_pageDataList></@_metadata>'/>
 </#if>
 		</ul>
 	</div>

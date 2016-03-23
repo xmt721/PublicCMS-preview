@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>散乱 为你而变</title>
+	<@include path="/ftl/header.ftl"/> <#-- 页头 -->
+</head>
+<body>
+	<header><@noCache><@include path="/ftl/top.ftl"/> <#-- 用户登录 --></@noCache></header>
+	<main>
+		<div>
+			<ul class="cards clearfix">
+				<li>
+					<section>
+						<div class="pages">
+							<h2><a href="freemarker_test.html">FreeMarker在线测试</a></h2>
+							<p>作者：<a href="#">湖水没了</a></p>
+							<p>创建时间：${.now}</p>
+						</div>
+					</section>
+					<section>
+						<div class="contents">
+							<h2><a href="#">HELLO</a></h2>
+							<p>作者：<a href="#">湖水没了</a></p>
+							<p>创建时间：${.now}</p>
+						</div>
+					</section>
+				</li>
+			</ul>
+		</div>
+	</main>
+	<@include path="/ftl/footer.ftl"/> <#-- 页尾 -->
+</body>
+</html>

@@ -18,7 +18,7 @@
 		</form>
     </div>
     <p class="login_msg">
-		演示账号密码:test/test<br/>
+		<@_checkMasterSite><#if result>演示账号密码:test/test<br/></#if></@_checkMasterSite>
     	<#if error??>
 			<@t.m error/>
 		</#if>

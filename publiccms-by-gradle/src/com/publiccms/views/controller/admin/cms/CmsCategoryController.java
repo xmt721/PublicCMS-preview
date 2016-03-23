@@ -100,18 +100,14 @@ public class CmsCategoryController extends AbstractController {
             }
             if (notEmpty(entity.getId())) {
                 if (empty(extendService.getEntity(entity.getExtendId()))) {
-                    SysExtend extend = new SysExtend();
-                    extendService.save(extend);
-                    service.updateExtendId(entity.getId(), extend.getId());
+                    service.updateExtendId(entity.getId(), (Integer) extendService.save(new SysExtend()));
                 }
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.category", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));
             }
         } else {
-            SysExtend extend = new SysExtend();
-            extendService.save(extend);
-            entity.setExtendId(extend.getId());
+            entity.setExtendId( (Integer) extendService.save(new SysExtend()));
             entity.setSiteId(site.getId());
             service.save(entity);
             service.addChildIds(entity.getParentId(), entity.getId());

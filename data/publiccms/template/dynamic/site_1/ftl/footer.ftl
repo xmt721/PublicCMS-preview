@@ -11,12 +11,4 @@
 		<div class="copyright">&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved. 京ICP备15009690号</div>
 	</div>
 </footer>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?bd81f02e5329554415de9ee15f916a98";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
+<@_metadata path='/index.html' type='static'>${object.extendData.code}</@_metadata>

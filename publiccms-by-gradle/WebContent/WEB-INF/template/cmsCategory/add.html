@@ -104,7 +104,7 @@
 	<ul>
 			<#list page.list as a>
 		<li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
-			<label>${a.id}:${a.name!}静态化模板路径：</label>
+			<label>${a.id}:${a.name!}</label>
 			<input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
 			<a class="btnLook" href="staticTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
 			<@childModel a index+1/>

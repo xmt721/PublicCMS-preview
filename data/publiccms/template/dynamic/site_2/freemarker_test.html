@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<title>FreeMarker在线测试 - 散乱</title>
-<link rel="stylesheet" type="text/css" href="${res}/codemirror/lib/codemirror.css" />
-<script src="${res}/codemirror/lib/codemirror.js"></script>
-<script src="${res}/codemirror/mode/xml/xml.js"></script>
-<script src="${res}/codemirror/mode/javascript/javascript.js"></script>
-<script src="${res}/codemirror/mode/css/css.js"></script>
-<script src="${res}/codemirror/mode/htmlmixed/htmlmixed.js"></script>
-<script src="${res}/codemirror/mode/freemarker/freemarker.js"></script>
-<script src="${res}/codemirror/mode/freemarkermixed/freemarkermixed.js"></script>
+	<title>FreeMarker在线测试 - 散乱</title>
+	<@include path="/ftl/header.ftl"/> <#-- 页头 -->
+    <link rel="stylesheet" type="text/css" href="${site.resourcePath}codemirror/lib/codemirror.css" />
+    <script src="${site.resourcePath}codemirror/lib/codemirror.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/xml/xml.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/javascript/javascript.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/css/css.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/freemarker/freemarker.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/freemarkermixed/freemarkermixed.js"></script>
 </head>
 <body>
+	<header><@noCache><@include path="/ftl/top.ftl"/> <#-- 用户登录 --></@noCache></header>
 	<main>
 		<div>
 			<h2>
@@ -46,7 +48,7 @@
 			</script>
 			<fieldset>
 	    		<legend>预览</legend>
-				<p><#if template?has_content>${(dealTemplate(template,.data_model)?html)!}</#if></p>
+				<p><#if template?has_content>${(getTemplateResult(template)?html)!}</#if></p>
 			</fieldset>
 			<div id="SOHUCS" style="padding:10px;" sid="freemarker_test"></div>
 			<script>
@@ -65,5 +67,6 @@
 			</script>
 		</div>
 	</main>
+  	<@include path="/ftl/footer.ftl"/> <#-- 页尾 -->
 </body>
 </html>

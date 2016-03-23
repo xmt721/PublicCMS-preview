@@ -24,15 +24,15 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
 public class SysUserTokenAdminController extends AbstractController {
 
     @RequestMapping("delete")
-    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String authToken, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        SysUserToken entity = service.getEntity(id);
+        SysUserToken entity = service.getEntity(authToken);
         int userId = getAdminFromSession(session).getId();
         if (notEmpty(entity)) {
             if (virifyNotEquals("siteId", userId, entity.getUserId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            service.delete(id);
+            service.delete(authToken);
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.ftpuser",
                     getIpAddress(request), getDate(), entity.getAuthToken() + " channel:" + entity.getChannel() + " ip:"
                             + entity.getLoginIp()));

@@ -1,3 +1,4 @@
+<#list page.list>
 <style>
 #right-images .owl-item img{
   display: block;
@@ -19,14 +20,14 @@
 <div>
 	<h3>精彩图集</h3>
 	<div id="right-images" class="owl-carousel owl-theme">
-<#list page.list as a>
+<#items as a>
 		<div class="item">
 			<a href="${a.url!}" target="_blank">
 				<img class="lazyOwl" data-src="${site.resourcePath+a.cover!}" alt="${a.title!}">
 				<h4>${a.title}</h4>
 			</a>
 		</div>
-</#list>
+</#items>
 	</div>
 </div>
 <script>
@@ -46,3 +47,4 @@ $("#right-images").owlCarousel({
     lazyLoad:true
 });
 </script>
+</#list>

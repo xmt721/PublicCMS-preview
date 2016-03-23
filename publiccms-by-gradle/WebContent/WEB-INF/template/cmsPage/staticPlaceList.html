@@ -14,7 +14,7 @@
 				<#if 'dynamic'=type>
 					<a href="javascript:;" onclick="return false;">${(metaDataMap[a.fileName].alias)!a.fileName} (不可编辑)</a>
 				<#else>
-					<a href="cmsPage/publishPlace.html?path=${(path+'/'+a.fileName)?url}" target="ajax" rel="pageBox">${(metaDataMap[a.fileName].alias)!a.fileName (不可编辑)}</a>
+					<a href="cmsPage/publishPlace.html?path=${(path+'/'+a.fileName)?url}" target="ajax" rel="pageBox">${(metaDataMap[a.fileName].alias)!a.fileName} (不可编辑)</a>
 				</#if>
 			<#else>
 				<a href="cmsPage/placeDataList.html?path=${(path+'/'+a.fileName)?url}&type=${type}" target="navTab" rel="cmsPage/${type}placeDataList" title="推荐位:${(metaDataMap[a.fileName].alias)!a.fileName}">${(metaDataMap[a.fileName].alias)!a.fileName}</a>

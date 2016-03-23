@@ -5,13 +5,11 @@ import static com.publiccms.logic.component.TemplateCacheComponent.CACHE_VAR;
 import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.split;
-import static org.apache.commons.lang3.time.DateUtils.addSeconds;
 import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,13 +58,13 @@ public class TemplateCacheComponent extends Base implements Cacheable {
      * @param model
      * @return
      */
-    public String getCachedPath(String requestPath, String fullTemplatePath, int cacheTime, String acceptParamters, SysSite site,
-            HttpServletRequest request, ModelMap modelMap) {
+    public String getCachedPath(String requestPath, String fullTemplatePath, int cacheMillisTime, String acceptParamters,
+            SysSite site, HttpServletRequest request, ModelMap modelMap) {
         ModelMap model = (ModelMap) modelMap.clone();
         expose(model, site, request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
         model.put(CACHE_VAR, true);
         return createCache(requestPath, fullTemplatePath, fullTemplatePath + getRequestParamtersString(request, acceptParamters),
-                cacheTime, model);
+                cacheMillisTime, model);
     }
 
     private String getRequestParamtersString(HttpServletRequest request, String acceptParamters) {
@@ -105,9 +103,9 @@ public class TemplateCacheComponent extends Base implements Cacheable {
         deleteCachedFile(getCachedFilePath(""));
     }
 
-    private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheTime, ModelMap model) {
+    private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheMillisTime, ModelMap model) {
         String cacheFilePath = getCachedFilePath(cachePath);
-        if (check(cacheFilePath, cacheTime)) {
+        if (check(cacheFilePath, cacheMillisTime)) {
             return CACHE_URL_PREFIX + CACHE_FILE_DIRECTORY + cachePath;
         } else {
             try {
@@ -122,12 +120,10 @@ public class TemplateCacheComponent extends Base implements Cacheable {
         }
     }
 
-    private boolean check(String cacheFilePath, int time) {
+    private boolean check(String cacheFilePath, int millisTime) {
         File dest = new File(cacheFilePath);
-        if (dest.exists()) {
-            if ((new Date(dest.lastModified())).after(addSeconds(new Date(), -time))) {
-                return true;
-            }
+        if (dest.exists() && dest.lastModified() > (System.currentTimeMillis() - millisTime)) {
+            return true;
         }
         return false;
     }

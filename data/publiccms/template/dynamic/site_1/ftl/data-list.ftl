@@ -8,11 +8,11 @@
 			<img src="<@_thumb path=a.cover width=144 height=192/>" alt="${a.title}"/>
 </#if>
 <#if a.hasImages>
-		<@_contentFilesList contentId=a.id count=2>
+		<@_contentFileList contentId=a.id image=true count=2>
 			<#list page.list as i>
-				<img src="<@_thumb path=a.cover width=144 height=192/>" alt="${a.title}"/>
+				<img src="<@_thumb path=i.filePath width=144 height=192/>" alt="${a.title}"/>
 			</#list>
-		</@_contentFilesList>
+		</@_contentFileList>
 </#if>
 		</a>
 		<p class="clearfix-before"><@t.cut a.description!'' 100 '...'/><a href="<#if a.onlyUrl>content/redirect.do<#else>content.html</#if>?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a></p>

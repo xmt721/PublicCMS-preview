@@ -17,7 +17,7 @@
 						<@pageTree type path/>
 					</ul>
 				<#else>
-					<a href="cmsPage/${('dynamic'=type)?then('dynamicPlaceList','staticPlacelist')}.html?path=${path?url}&type=${type}" target="navTab" title="${('static'=type)?then('静态','动态')}页面:${a.fileName}" rel="cmsPage/${type}PlaceList">
+					<a href="cmsPage/${('dynamic'=type)?then('dynamicPlaceList','staticPlaceList')}.html?path=${path?url}&type=${type}" target="navTab" title="${('static'=type)?then('静态','动态')}页面:${a.fileName}" rel="cmsPage/${type}PlaceList">
 						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 					</a>
 				</#if>

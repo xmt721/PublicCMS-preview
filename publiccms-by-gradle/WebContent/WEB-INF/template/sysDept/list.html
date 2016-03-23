@@ -37,7 +37,7 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<#if parent?has_content>
-				<li><a class="icon" href="sysDept/list.html?parentId=${(parent.parentId)!}" target="navTab" rel="sysDept" title="部门管理"><span>返回上一级</span></a></li>
+				<li><a class="icon" href="sysDept/list.html?parentId=${(parent.parentId)!}" target="navTab" rel="sysDept/list" title="部门管理"><span>返回上一级</span></a></li>
 				<li class="line">line</li>
 			</#if>
 			<li><a class="add" href="sysDept/add.html?parentId=${parentId!}" target="navTab" rel="sysDept/add"><span>添加部门</span></a></li>

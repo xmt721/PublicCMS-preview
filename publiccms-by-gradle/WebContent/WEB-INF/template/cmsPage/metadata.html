@@ -6,7 +6,12 @@
 			<dd>
 				<input name="path" type="hidden" value="${path?html}"/>
 				<input name="type" type="hidden" value="${type?html}"/>
-				<#if (a.publishPath)?has_content>
+				<#if 'dynamic'=type>
+					<a class="button" href="${site.dynamicPath+path}" target="_blank"><span>查看页面</span></a>
+					<#if 10 lte (a.cacheTime)!0>
+						<a class="button" href="cmsPage/clearPageCache.do?path=${path?url}" target="ajaxTodo"><span>清除缓存</span></a>
+					</#if>
+				<#elseif (a.publishPath)?has_content>
 					<a class="button" href="cmsTemplate/publish.do?path=${path?url}" target="ajaxTodo"><span>生成页面</span></a>
 					<a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><span>查看页面</span></a>
 				</#if>

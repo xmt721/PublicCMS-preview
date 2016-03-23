@@ -24,7 +24,7 @@
 		<@echoBread category.id/>
 	</div>
 	<div class="container">
-<@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
+<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
 		<div class="data-list left-content">
 	<@import path="/ftl/tools.ftl" namespace="t"/>
 
@@ -44,12 +44,12 @@
 			</#if>
 		</div>
 		<aside>
-			<!--#include virtual="/include/category/list.html/1.html"--><#-- 右侧编辑推荐 -->
-			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
+			<!--#include virtual="/include/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"--> <#-- 编辑推荐 -->
+			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
 			<div>
 				<h3>热门排行</h3>
 				<ul class="rank">
-<@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderType='desc' orderField='clicks' count=10>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
 	<#list page.list as a>
 					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>

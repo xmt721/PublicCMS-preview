@@ -54,7 +54,7 @@
 							</div>
 							<div class="gallery-loading" data-gallery="loading"><img src="${site.resourcePath!}gallery/images/loading.gif" /></div>
 							<div class="gallery-end" data-gallery="end">
-<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
+<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
 	<#list page.list as a>
 									<a href="${a.url!}">
 										<img<#if a.cover?has_content> src="<@_thumb path=a.cover width=200 height=150/>"</#if> style="margin-top:20px;" alt="${a.title!}">
@@ -83,7 +83,7 @@
 		</#list>
 	</#if>
 </@_contentList>
-<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
+<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
 	<#list page.list as a>
 								<span class="gallery-next">
 									<a href="${a.url!}">

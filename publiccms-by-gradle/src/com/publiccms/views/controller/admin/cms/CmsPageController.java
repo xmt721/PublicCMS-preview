@@ -1,6 +1,7 @@
 package com.publiccms.views.controller.admin.cms;
 
 import static com.publiccms.common.tools.ExtendUtils.getExtendString;
+import static com.publiccms.logic.component.SiteComponent.getFullFileName;
 import static com.publiccms.logic.service.cms.CmsPageDataService.ITEM_TYPE_CUSTOM;
 import static com.publiccms.logic.service.cms.CmsPageDataService.STATUS_NORMAL;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
@@ -21,6 +22,7 @@ import com.publiccms.entities.cms.CmsPageData;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.MetadataComponent;
+import com.publiccms.logic.component.TemplateCacheComponent;
 import com.publiccms.logic.service.cms.CmsPageDataAttributeService;
 import com.publiccms.logic.service.cms.CmsPageDataService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -41,6 +43,8 @@ public class CmsPageController extends AbstractController {
     private CmsPageDataAttributeService attributeService;
     @Autowired
     private MetadataComponent metadataComponent;
+    @Autowired
+    private TemplateCacheComponent templateCacheComponent;
 
     /**
      * @param entity
@@ -67,8 +71,8 @@ public class CmsPageController extends AbstractController {
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path",
-                    "createDate", "disabled" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "status", "userId", "type", "clicks",
+                    "path", "createDate", "disabled" });
             if (notEmpty(entity.getId())) {
                 logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
@@ -164,6 +168,25 @@ public class CmsPageController extends AbstractController {
             service.delete(site.getId(), path, type);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "clear.pagedata", getIpAddress(request), getDate(), path));
+        }
+        return TEMPLATE_DONE;
+    }
+
+    /**
+     * @param path
+     * @param type
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("clearPageCache")
+    public String clearPageCache(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (notEmpty(path)) {
+            SysSite site = getSite(request);
+            templateCacheComponent.deleteCachedFile(getFullFileName(site, path));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "clear.pageCache", getIpAddress(request), getDate(), path));
         }
         return TEMPLATE_DONE;
     }

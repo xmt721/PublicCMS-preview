@@ -18,7 +18,7 @@ $(function(){
 });
 </script>
 <div class="pageContent">
-	<form method="post" action="cmsTemplate/saveMetadata.do?navTabId=staticTemplate/placeList&callbackType=${callbackType!}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="cmsTemplate/saveMetadata.do?navTabId=${type}Template/placeList&callbackType=${callbackType!}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 		<input name="type" type="hidden" value="${type}"/>
 		<input name="path" type="hidden" value="${path}"/>
 		<div class="pageFormContent" layoutH="57" style="background:#ffffff;">

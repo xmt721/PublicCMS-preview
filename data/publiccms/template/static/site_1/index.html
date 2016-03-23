@@ -18,7 +18,7 @@
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <@_modelList>
 	<#list page.list?reverse as model>
-		<@_contentList status=1 modelId=model.id endPublishDate=.now orderField='publishDate' orderType='desc' count=3>
+		<@_contentList modelId=model.id count=3>
 			<#if page.totalCount gt 0>
 				<h3>最新${model.name!}</h3>
 				<#list page.list as a>
@@ -33,7 +33,7 @@
 			<div>
 				<h3>热门文章</h3>
 				<ul class="rank">
-<@_contentList status=1 modelId=1 endPublishDate=.now orderType='desc' orderField='clicks' count=10>
+<@_contentList modelId=1 orderField='clicks' count=10>
 	<#list page.list as a>
 					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
@@ -43,14 +43,14 @@
 			<div>
 				<h3>热门图集</h3>
 				<ul class="rank">
-<@_contentList status=1 modelId=3 endPublishDate=.now orderType='desc' orderField='clicks' count=10>
+<@_contentList modelId=3 orderField='clicks' count=10>
 	<#list page.list as a>
 					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
 </@_contentList>
 				</ul>
 			</div>
-			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
+			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
 			<@include path="/ftl/index.html/1.html"/><#-- 开源中国 -->
 		</aside>
 	</div>

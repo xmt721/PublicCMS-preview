@@ -347,17 +347,17 @@ public class TemplateComponent extends Base implements Cacheable {
         staticFilePath.mkdirs();
         staticConfiguration.setDirectoryForTemplateLoading(staticFilePath);
         copyConfig(adminConfiguration, staticConfiguration);
-        Map<String, Object> dynamicFreemarkerVariables = new HashMap<String, Object>(freemarkerVariables);
-        dynamicFreemarkerVariables.put(CONTENT_CACHE, new NoCacheDirective());
-        staticConfiguration.setAllSharedVariables(new SimpleHash(dynamicFreemarkerVariables, staticConfiguration
-                .getObjectWrapper()));
+        staticConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, staticConfiguration.getObjectWrapper()));
 
         dynamicConfiguration = new Configuration(Configuration.getVersion());
         File dynamicFilePath = new File(siteComponent.getDynamicTemplateFilePath());
         dynamicFilePath.mkdirs();
         dynamicConfiguration.setDirectoryForTemplateLoading(dynamicFilePath);
         copyConfig(adminConfiguration, dynamicConfiguration);
-        dynamicConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, dynamicConfiguration.getObjectWrapper()));
+        Map<String, Object> dynamicFreemarkerVariables = new HashMap<String, Object>(freemarkerVariables);
+        dynamicFreemarkerVariables.put(CONTENT_CACHE, new NoCacheDirective());
+        dynamicConfiguration.setAllSharedVariables(new SimpleHash(dynamicFreemarkerVariables, dynamicConfiguration
+                .getObjectWrapper()));
 
         taskConfiguration = new Configuration(Configuration.getVersion());
         File taskFilePath = new File(siteComponent.getTaskTemplateFilePath());

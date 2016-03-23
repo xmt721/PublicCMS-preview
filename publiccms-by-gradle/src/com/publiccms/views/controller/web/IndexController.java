@@ -72,8 +72,8 @@ public class IndexController extends AbstractController {
                 billingRequestParamtersToModel(request, metadata.getAcceptParamters(), model);
             }
             if (notEmpty(metadata.getCacheTime()) && 10 <= metadata.getCacheTime()) {
-                return templateCacheComponent.getCachedPath(requestPath,  siteComponent.getViewNamePreffix(site, domain), metadata.getCacheTime(),
-                        metadata.getAcceptParamters(), site, request, model);
+                return templateCacheComponent.getCachedPath(requestPath, siteComponent.getViewNamePreffix(site, domain)
+                        + requestPath, metadata.getCacheTime() * 1000, metadata.getAcceptParamters(), site, request, model);
             }
         }
         return requestPath;

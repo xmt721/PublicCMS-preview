@@ -65,7 +65,7 @@ public class LoginController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "doLogin", method = RequestMethod.POST)
     public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
@@ -148,7 +148,7 @@ public class LoginController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "doRegister", method = RequestMethod.POST)
     public String register(SysUser entity, String repassword, String callback, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);

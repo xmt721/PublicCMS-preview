@@ -89,9 +89,9 @@ public class FreeMarkerUtils extends Base {
                     throw e;
                 }
             }
-            log.info(destFilePath + "    saved！");
+            log.info(destFilePath + "    saved!");
         } else {
-            log.error(destFilePath + "    already exists！");
+            log.error(destFilePath + "    already exists!");
         }
     }
 

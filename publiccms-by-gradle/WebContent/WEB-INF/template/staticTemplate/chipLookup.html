@@ -4,7 +4,7 @@
 	<div class="pageFormContent" layoutH="58">
 		<ul class="tree treeFolder">
 <#if chip='ftl'>
-	<@chipTree editor '/ftl' 'static' '<@_include path="' '"/>'/>
+	<@chipTree editor '/ftl' 'static' '<@include path="' '"/>'/>
 <#else>
 	<@chipTree editor '/include' 'static' '<!--#include virtual="' '"-->'/>
 </#if>

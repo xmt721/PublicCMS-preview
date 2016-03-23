@@ -1,7 +1,7 @@
 <@_content id=id>
 	<#assign content=object/>
 	<@_category id=object.categoryId><#assign category=object/></@_category>
-	<#assign text=(getContentAttr(object.id).text)!/>
+	<#assign text=(getContentAttribute(object.id).text)!/>
 </@_content>
 <!DOCTYPE html>
 <html lang="zh">
@@ -9,7 +9,7 @@
 	<title>${content.title} - ${category.name} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-	<@include path="/include/header.html"/>
+	<@include path="/ftl/header.ftl"/>
 <style>
 article .cover{ float:left;}
 article .cover img{ width:144px;height:192px;}
@@ -19,7 +19,7 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 </style>
 </head>
 <body>
-<@include path="/include/nav.html"/>
+<@include path="/ftl/nav.ftl"/>
 <main>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
@@ -86,6 +86,6 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 		</aside>
 	</div>
 </main>
-<@include path="/include/footer.html"/>
+<@include path="/ftl/footer.ftl"/>
 </body>
 </html>

@@ -56,7 +56,7 @@
 			<div>
 				<h3>热门排行</h3>
 				<ul class="rank">
-<@_contentList status=1 categoryId=category.id containChild=true orderField='clicks' count=10>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
 	<#list page.list as a>
 					<li><a href="content.html?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
