@@ -6,9 +6,9 @@
 	<title>PublicCMS开源版管理后台</title>
 	<link href="${res}/themes/css/core.css" rel="stylesheet" media="screen"/>
 	<link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
-	<link rel="stylesheet" href="${res}/fontawesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${res}/font-awesome/css/font-awesome.min.css">
 	<!--[if IE 7]>
-	<link rel="stylesheet" href="${res}/fontawesome/css/font-awesome-ie7.min.css">
+	<link rel="stylesheet" href="${res}/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
 	<!--[if lte IE 9]>
 		<link href="${res}/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
@@ -78,13 +78,13 @@ function editorSyn(ename){
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
 			<#if !parentId?has_content><#assign parentId=a.id/></#if>
-			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)?html}"><span>${a.name?html}</span></a></li>
+			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)?html}">${a.name}</a></li>
 		</#if>
 	</#list>
 </@_sysMoudleList>
 	<@_checkMasterSite>
 		<#if result>
-			<li><a href="sysSite/menu.html"><span>站点</span></a></li>
+			<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
 		</#if>
 	</@_checkMasterSite>
 	</ul>
@@ -108,7 +108,7 @@ function editorSyn(ename){
 		<div class="tabsPageHeader">
 			<div class="tabsPageHeaderContent">
 				<ul class="navTab-tab">
-					<li tabid="main" class="main"><a href="javascript:;"><i class="icon-home"></i> 工作台</a></li>
+					<li tabid="main" class="main"><a href="javascript:;"><i class="icon-home icon-large"></i> 工作台</a></li>
 				</ul>
 			</div>
 			<div class="tabsLeft">left</div>
@@ -116,7 +116,7 @@ function editorSyn(ename){
 			<div class="tabsMore">more</div>
 		</div>
 		<ul class="tabsMoreList">
-			<li><a href="javascript:;"><i class="icon-home"></i> 工作台</a></li>
+			<li><a href="javascript:;"><i class="icon-home icon-large"></i> 工作台</a></li>
 		</ul>
 		<div class="navTab-panel tabsPageContent layoutBox">
 			<div class="page unitBox">

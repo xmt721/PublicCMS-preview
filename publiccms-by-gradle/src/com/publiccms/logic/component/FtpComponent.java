@@ -30,8 +30,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.annotation.PreDestroy;
 
@@ -48,8 +48,8 @@ import com.sanluan.common.base.Base;
 @Component
 public class FtpComponent extends Base {
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
-    public static final DateFormat LIST_DATE_FORMAT = new SimpleDateFormat("MM dd HH:mm");
-    public static final DateFormat LIST_DATE_FORMAT1 = new SimpleDateFormat("MM dd yyyy");
+    public static final DateFormat LIST_DATE_FORMAT = new SimpleDateFormat("MMM dd HH:mm", Locale.ENGLISH);
+    public static final DateFormat LIST_DATE_FORMAT1 = new SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH);
     public static final String BLANKSPACE = " ";
     public static final String ROOT = SEPARATOR;
     public static final String VIRTUAL_PATH_STATIC = ROOT + STATIC_FILE_PATH;
@@ -597,49 +597,19 @@ public class FtpComponent extends Base {
             try {
                 PrintWriter dout = new PrintWriter(transportSocket.getOutputStream(), true);
                 output.println("150 Opening ASCII mode data connection.");
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
                 if (ROOT.equals(path) || VIRTUAL_PATH_TEMPLATE.equals(path) || VIRTUAL_PATH_STATIC.equals(path)) {
                     String[] paths = ROOT.equals(path) ? VIRTUAL_ROOT_PATHS
                             : VIRTUAL_PATH_TEMPLATE.equals(path) ? VIRTUAL_TEMPLATE_PATHS : VIRTUAL_STATIC_PATHS;
                     for (String virtualPath : paths) {
                         File file = new File(rootPath + getSitePath(path + virtualPath));
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(file.isDirectory() ? 'd' : '-');
-                        sb.append("rw-rw-rw-");
-                        cal.setTimeInMillis(file.lastModified());
-                        sb.append(BLANKSPACE)
-                                .append(file.isDirectory() ? file.list().length : 1)
-                                .append(" 0 0 ")
-                                .append(String.valueOf(file.length()))
-                                .append(BLANKSPACE)
-                                .append(year == cal.get(Calendar.YEAR) ? LIST_DATE_FORMAT.format(cal.getTime())
-                                        : LIST_DATE_FORMAT1.format(cal.getTime())).append(BLANKSPACE);
-                        sb.append(file.getName());
-                        dout.println(sb.toString());
+                        dout.println(getListString(file));
                     }
                 } else {
                     DirectoryStream<Path> stream = null;
                     try {
                         stream = Files.newDirectoryStream(Paths.get(rootPath + getSitePath(path)));
                         for (Path entry : stream) {
-                            File file = entry.toFile();
-                            StringBuffer sb = new StringBuffer();
-                            sb.append(file.isDirectory() ? 'd' : '-');
-                            StringBuffer sb1 = new StringBuffer();
-                            sb1.append(file.canRead() ? 'r' : '-').append(file.canWrite() ? 'w' : '-').append('-');
-                            String rightString = sb1.toString();
-                            sb.append(rightString).append(rightString).append(rightString);
-                            cal.setTimeInMillis(file.lastModified());
-                            sb.append(BLANKSPACE)
-                                    .append(file.isDirectory() ? file.list().length : 1)
-                                    .append(" 0 0 ")
-                                    .append(String.valueOf(file.length()))
-                                    .append(BLANKSPACE)
-                                    .append(year == cal.get(Calendar.YEAR) ? LIST_DATE_FORMAT.format(cal.getTime())
-                                            : LIST_DATE_FORMAT1.format(cal.getTime())).append(BLANKSPACE);
-                            sb.append(entry.getFileName().toString());
-                            dout.println(sb.toString());
+                            dout.println(getListString(entry.toFile()));
                         }
                     } catch (IOException e) {
                     } finally {
@@ -661,6 +631,28 @@ public class FtpComponent extends Base {
             } catch (Exception e) {
                 output.println("451 failed to send.");
             }
+        }
+
+        private String getListString(File file) {
+            StringBuffer sb = new StringBuffer();
+            sb.append(file.isDirectory() ? 'd' : '-');
+            StringBuffer rightsb = new StringBuffer();
+            rightsb.append(file.canRead() ? 'r' : '-').append(file.canWrite() ? 'w' : '-')
+                    .append(file.isDirectory() ? '-' : file.canExecute() ? 'x' : '-');
+            String rightString = rightsb.toString();
+            sb.append(rightString).append(rightString).append(rightString);
+            Date fileModifiedDate = new Date(file.lastModified());
+            sb.append(BLANKSPACE)
+                    .append(BLANKSPACE)
+                    .append(BLANKSPACE)
+                    .append(file.isDirectory() ? 3 : 1)
+                    .append(" user group ")
+                    .append(String.valueOf(file.length()))
+                    .append(BLANKSPACE)
+                    .append(System.currentTimeMillis() - file.lastModified() > 183L * 24L * 60L * 60L * 1000L ? LIST_DATE_FORMAT
+                            .format(fileModifiedDate) : LIST_DATE_FORMAT1.format(fileModifiedDate)).append(BLANKSPACE);
+            sb.append(file.getName());
+            return sb.toString();
         }
 
         private String getSitePath(String path) throws IOException {

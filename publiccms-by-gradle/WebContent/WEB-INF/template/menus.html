@@ -79,38 +79,46 @@
 		<h2>${a.name}</h2>
 	</div>
 	<div class="accordionContent">
-		<ul class="tree treeFolder">
 	<#switch a.url!''>
 		<#case 'cmsContent/list'>
-			<li>
-				<@_sysDept id=admin.deptId>
-					<#assign  dept=object/>
-				</@_sysDept>
-				<#if dept?has_content&&dept.ownsAllCategory>
-					<a href="cmsContent/list.html" target="navTab" rel="cmsContent/list">内容分类</a>
-				<#else>
-					<a href="javascript:;" onclick="return false;">内容分类</a>
-				</#if>
-				<ul>
-					<@contentCategoryTree/>
-				</ul>
-			</li>
+			<ul class="tree treeFolder">
+				<li>
+					<@_sysDept id=admin.deptId>
+						<#assign  dept=object/>
+					</@_sysDept>
+					<#if dept?has_content&&dept.ownsAllCategory>
+						<a href="cmsContent/list.html" target="navTab" rel="cmsContent/list">内容分类</a>
+					<#else>
+						<a href="javascript:;" onclick="return false;">内容分类</a>
+					</#if>
+					<ul>
+						<@contentCategoryTree/>
+					</ul>
+				</li>
+			</ul>
 			<#break>
 		<#case 'cmsCategory/list'>
-			<li>
-				<a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list">分类</a>
-				<ul>
-					<@categoryTree/>
-				</ul>
-			</li>
+			<ul class="tree treeFolder">
+				<li>
+					<a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list">分类</a>
+					<ul>
+						<@categoryTree/>
+					</ul>
+				</li>
+			</ul>
 			<#break>
 		<#case 'cmsPage/staticPlaceList'>
-			<@pageTree/>
+			<ul class="tree treeFolder">
+				<@pageTree/>
+			</ul>
 			<#break>
 		<#case 'cmdPage/dynamicPlaceList'>
-			<@pageTree 'dynamic'/>
+			<ul class="tree treeFolder">
+				<@pageTree 'dynamic'/>
+			</ul>
 			<#break>
 		<#default>
+			<ul class="tree">
 			<@_sysMoudleList parentId=a.id>
 				<#list page.list as a>
 					<@t.merge 'childMoudleIds' a.id!/>
@@ -118,12 +126,12 @@
 				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
 				<#list page.list as a>
 					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
-			<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.name}</a></li>
+				<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.name}</a></li>
 					</#if>
 				</#list>
 			</@_sysMoudleList>
+			</ul>
 	</#switch>
-		</ul>
 	</div>
 		</#if>
 	</#list>

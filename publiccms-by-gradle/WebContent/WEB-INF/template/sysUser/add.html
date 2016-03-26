@@ -42,8 +42,8 @@
 				<dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
 			</dl>
 			<fieldset class="superuserAccess" style="display:none">
-				<legend>角色</legend>
-				<ul class="tree treeFolder treeCheck expand">
+				<legend><i class="icon-user-md icon-large"></i> 角色</legend>
+				<ul class="tree treeCheck expand">
 			<@_sysRoleList parentId=parentId>
 				<#list page.list as a>
 					<li><a tname="roleIds" tvalue="${a.id}">${a.name}</a></li>

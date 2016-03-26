@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,7 +28,7 @@ public class CmsWord implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private int id;
+    private Integer id;
     @MyColumn(title = "名称", condition = true, like = true)
     private String name;
     @MyColumn(title = "站点", condition = true)
@@ -41,8 +43,7 @@ public class CmsWord implements java.io.Serializable {
     public CmsWord() {
     }
 
-    public CmsWord(int id, String name, int siteId, int searchCount, boolean hidden, Date createDate) {
-        this.id = id;
+    public CmsWord(String name, int siteId, int searchCount, boolean hidden, Date createDate) {
         this.name = name;
         this.siteId = siteId;
         this.searchCount = searchCount;
@@ -51,12 +52,13 @@ public class CmsWord implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
