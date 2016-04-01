@@ -176,8 +176,8 @@ public class UeditorAdminController extends AbstractController {
                     CloseableHttpResponse response = httpclient.execute(httpget);
                     HttpEntity entity = response.getEntity();
                     if (notEmpty(entity)) {
-                        String suffix = CONTENT_TYPE_MAP.get(entity.getContentType());
-                        if (null == suffix) {
+                        String suffix = CONTENT_TYPE_MAP.get(entity.getContentType().getName());
+                        if (empty(suffix)) {
                             suffix = ".jpg";
                         }
                         String fileName = fileComponent.getUploadFileName(suffix);

@@ -53,21 +53,25 @@ public class WebContextInterceptor extends BaseInterceptor {
         if (null == user) {
             Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
             if (null != userCookie && isNotBlank(userCookie.getValue())) {
-                String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
-                if (userData.length > 1) {
-                    try {
-                        Integer userId = Integer.parseInt(userData[0]);
-                        SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
-                        if (null != userToken && userId == userToken.getUserId() && CHANNEL_WEB.equals(userToken.getChannel())
-                                && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
-                            user.setPassword(null);
-                            setUserToSession(session, user);
-                        } else {
-                            sysUserTokenService.delete(userToken.getAuthToken());
+                String value = userCookie.getValue();
+                if (null != value) {
+                    String[] userData = value.split(COOKIES_USER_SPLIT);
+                    if (userData.length > 1) {
+                        try {
+                            Integer userId = Integer.parseInt(userData[0]);
+                            SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
+                            if (null != userToken && userId == userToken.getUserId()
+                                    && CHANNEL_WEB.equals(userToken.getChannel())
+                                    && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
+                                user.setPassword(null);
+                                setUserToSession(session, user);
+                            } else {
+                                sysUserTokenService.delete(userToken.getAuthToken());
+                                cancleCookie(contextPath, response, COOKIES_USER, null);
+                            }
+                        } catch (NumberFormatException e) {
                             cancleCookie(contextPath, response, COOKIES_USER, null);
                         }
-                    } catch (NumberFormatException e) {
-                        cancleCookie(contextPath, response, COOKIES_USER, null);
                     }
                 }
             }
@@ -81,9 +85,12 @@ public class WebContextInterceptor extends BaseInterceptor {
                 } else {
                     Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
                     if (null != userCookie && isNotBlank(userCookie.getValue())) {
-                        String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
-                        if (userData.length > 1) {
-                            sysUserTokenService.delete(userData[1]);
+                        String value = userCookie.getValue();
+                        if (null != value) {
+                            String[] userData = value.split(COOKIES_USER_SPLIT);
+                            if (userData.length > 1) {
+                                sysUserTokenService.delete(userData[1]);
+                            }
                         }
                     }
                     clearUserToSession(contextPath, session, response);

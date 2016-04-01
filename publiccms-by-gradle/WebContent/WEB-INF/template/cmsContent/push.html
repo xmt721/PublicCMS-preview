@@ -10,7 +10,11 @@
 		</p>
 		<p>
 	<#list page.list as a>
-			<a href="${a.url!}" target="_blank">${a.title}</a><br/>
+		<@t.merge 'contentIds' a.contentId!/>
+	</#list>
+	<@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+	<#list page.list as a>
+			<a href="${contentMap[a.contentId?string].url!}" target="_blank">${contentMap[a.contentId?string].title}</a><br/>
 	</#list>
 		</p>
 </@_contentRelatedList>
@@ -26,7 +30,8 @@
 		</p>
 		<p>
 	<#list page.list as a>
-		${a.path}<br/>
+		
+		${a.path?a.path?last_index_of('/')} <@_metadata path='include'+a.path type='static'>${(object.alias)!}</@_metadata><br/>
 	</#list>
 		</p>
 </@_pageDataList>
@@ -42,7 +47,7 @@
 		</p>
 		<p>
 	<#list page.list as a>
-		${a.path}<br/>
+		${a.path} <@_metadata path='include'+a.path type='dynamic'>${(object.alias)!}</@_metadata><br/>
 	</#list>
 		</p>
 </@_pageDataList>

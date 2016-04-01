@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
 	<title>${metadata.alias!}</title>
-		<@include path="/ftl/header.ftl"/> <#-- 公共头部 -->
+		<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
 	<script type="text/javascript">
 	$(function(){$('.login-form input').eq(0).focus();});
 	</script>
 </head>
 <body>
-<@include path="/ftl/nav.ftl"/> <#-- 导航 -->
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
 <main>
     <div class="container">
    	<#if user?has_content>
@@ -32,6 +32,6 @@
 	</#if>
     </div>
 </main>
-<@include path="/ftl/footer.ftl"/> <#-- 公共尾部 -->
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
 </body>
 </html>

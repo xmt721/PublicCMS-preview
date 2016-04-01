@@ -9,6 +9,7 @@ import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -127,9 +128,9 @@ public class HttpParameterHandler extends BaseHandler {
         if (notEmpty(result)) {
             String temp = trimToEmpty(result);
             if (FULL_DATE_LENGTH == temp.length()) {
-                return FULL_DATE_FORMAT.parse(temp);
+                return new SimpleDateFormat(FULL_DATE_FORMAT).parse(temp);
             } else if (SHORT_DATE_LENGTH == temp.length()) {
-                return SHORT_DATE_FORMAT.parse(temp);
+                return new SimpleDateFormat(SHORT_DATE_FORMAT).parse(temp);
             }
         }
         return null;

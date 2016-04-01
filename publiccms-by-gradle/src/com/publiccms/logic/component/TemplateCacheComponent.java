@@ -109,10 +109,11 @@ public class TemplateCacheComponent extends Base implements Cacheable {
             return CACHE_URL_PREFIX + CACHE_FILE_DIRECTORY + cachePath;
         } else {
             try {
-                templateComponent.getDynamicConfiguration().clearTemplateCache();
                 FreeMarkerUtils.makeFileByFile(fullTemplatePath, cacheFilePath, templateComponent.getDynamicConfiguration(),
                         model);
-                return CACHE_URL_PREFIX + CACHE_FILE_DIRECTORY + cachePath;
+                String templateName = CACHE_URL_PREFIX + CACHE_FILE_DIRECTORY + cachePath;
+                templateComponent.getDynamicConfiguration().removeTemplateFromCache(templateName);
+                return templateName;
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return requestPath;

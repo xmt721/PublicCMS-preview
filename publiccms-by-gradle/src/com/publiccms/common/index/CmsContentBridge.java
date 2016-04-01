@@ -24,7 +24,6 @@ public class CmsContentBridge implements FieldBridge {
         CmsContentAttribute entity = contentAttributeService.getEntity(content.getId());
         if (null != entity) {
             content.setDescription(content.getDescription() + entity.getText());
-            value = content;
         }
     }
 }

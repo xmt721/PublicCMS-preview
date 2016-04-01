@@ -12,10 +12,10 @@
 	<title>${content.title} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-	<@include path="/ftl/header.ftl"/>
+	<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
 </head>
 <body>
-<@include path="/ftl/nav.ftl"/>
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
 <main>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
@@ -59,35 +59,27 @@
 			</script>
 		</article>
 		<aside>
-			<@_pageDataList path="/include/system/article.html/1.html">
-				<@include path=path/><#-- 文章右侧-编辑推荐 -->
-			</@_pageDataList>
-			<@_pageDataList path="/include/category/list.html/2.html">
-				<@include path=path/><#-- 精彩图集 -->
-			</@_pageDataList>
-<#if content.tags?has_content>
-	<@_contentTagList tagIds=content.tags contentIds=content.id>
-			<#list page.list as a>
-				<@t.merge 'contentIds' a.contentId/>
-			</#list>
+			<!--#include virtual="/include/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"--> <#-- 编辑推荐 -->
+			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
 			<div style="border-bottom: 1px solid #eee;">
 				<h3>相关推荐</h3>
 				<ul>
-		<@_content ids=(t.contentIds)!>
-			<#if map?has_content>
-				<#list map?keys as k>
-					<#assign a=map[k]!/>
-					<#if a?has_content><li><a href="content.html?id=${a.id}" target="_blank" title="${a.title}"><@t.cut a.title 20 '...'/></a></li></#if>
-				</#list>
-			</#if>
-		</@_content>
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<@_contentRelatedList contentId=content.id count=10>
+	<#list page.list as a>
+                  <li><a href="${a.url!}" target="_blank" title="${a.title}"><@t.cut a.title 20 '...'/></a></li>
+	</#list>
+	<@_search tagId=content.tagIds pageIndex=1 count=10-page.list?size>
+		<#list page.list as a>
+                        <li><a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank" title="${a.title}"><@t.cut a.title 20 '...'/></a></li>
+		</#list>
+	</@_search>
+</@_contentRelatedList>
 				</ul>
 			</div>
-	</@_contentTagList>
-</#if>
 		</aside>
 	</div>
 </main>
-<@include path="/ftl/footer.ftl"/>
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
 </body>
 </html>

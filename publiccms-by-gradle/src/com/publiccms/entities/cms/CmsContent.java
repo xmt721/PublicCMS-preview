@@ -24,6 +24,7 @@ import org.hibernate.search.annotations.FacetEncodingType;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.FullTextFilterDef;
+import org.hibernate.search.annotations.FullTextFilterDefs;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +33,7 @@ import com.publiccms.common.base.Staticable;
 import com.publiccms.common.index.CmsContentBridge;
 import com.publiccms.common.index.CmsContentInterceptor;
 import com.publiccms.common.index.PublishDateFilterFactory;
+import com.publiccms.common.index.SiteIdFilterFactory;
 import com.publiccms.common.index.StringBridge;
 import com.sanluan.common.source.entity.MyColumn;
 
@@ -42,7 +44,8 @@ import com.sanluan.common.source.entity.MyColumn;
 @Table(name = "cms_content")
 @Analyzer(impl = StandardAnalyzer.class)
 @ClassBridge(impl = CmsContentBridge.class)
-@FullTextFilterDef(name = "publishDate", impl = PublishDateFilterFactory.class)
+@FullTextFilterDefs({ @FullTextFilterDef(name = "publishDate", impl = PublishDateFilterFactory.class),
+        @FullTextFilterDef(name = "siteId", impl = SiteIdFilterFactory.class) })
 @Indexed(interceptor = CmsContentInterceptor.class)
 public class CmsContent implements java.io.Serializable, Staticable {
 
@@ -53,6 +56,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
     @MyColumn(title = "ID")
     private Integer id;
     @MyColumn(title = "站点", condition = true)
+    @Field
     private int siteId;
     @MyColumn(title = "标题", condition = true, like = true, or = true)
     @Field

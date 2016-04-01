@@ -209,9 +209,12 @@ public class LoginController extends AbstractController {
     public String logout(String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
         if (null != userCookie && notEmpty(userCookie.getValue())) {
-            String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
-            if (userData.length > 1) {
-                sysUserTokenService.delete(userData[1]);
+            String value = userCookie.getValue();
+            if (null != value) {
+                String[] userData = value.split(COOKIES_USER_SPLIT);
+                if (userData.length > 1) {
+                    sysUserTokenService.delete(userData[1]);
+                }
             }
         }
         clearUserToSession(request.getContextPath(), request.getSession(), response);

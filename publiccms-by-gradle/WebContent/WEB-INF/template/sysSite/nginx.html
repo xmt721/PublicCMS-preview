@@ -19,14 +19,14 @@ upstream publiccms_site_${siteId} {
 
 		<#assign dynamicPath=a.dynamicPath/>
 		<#if 0 = dynamicPath?index_of('http') || 0 = dynamicPath?index_of('//')>
-			<#assign dynamicPath=dynamicPath?substring(dynamicPath?index_of('//')+2)/>
+			<#assign dynamicPath=dynamicPath[dynamicPath?index_of('//')+2..]/>
 		</#if>
 		<#if dynamicPath?index_of('/') gt 0>
-			<#assign dynamicLocation=dynamicPath?substring(dynamicPath?index_of('/'))/>
-			<#assign dynamicPath=dynamicPath?substring(0,dynamicPath?index_of('/'))/>
+			<#assign dynamicLocation=dynamicPath[dynamicPath?index_of('/')..]/>
+			<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')]/>
 		</#if>
 		<#if dynamicPath?index_of(':') gt 0>
-			<#assign dynamicPort=dynamicPath?substring(sitePath?index_of(':')+1)/>
+			<#assign dynamicPort=dynamicPath[sitePath?index_of(':')+1..]/>
 		</#if>
 		<#assign ports =[dynamicPort!80]/>
 		<#assign domains=[]/>
@@ -67,7 +67,7 @@ server {
 		alias ${rootPath}/staticfile/web/site_${siteId}/include/;
 	}
 			<#if a.resourcePath?starts_with(a.dynamicPath)>
-	location /${a.resourcePath?substring(a.dynamicPath.length)} {
+	location /${a.resourcePath[a.dynamicPath.length..]} {
 		alias ${rootPath}/staticfile/resource/site_${siteId}/;
 	}
 			</#if>
@@ -77,16 +77,16 @@ server {
 
 	<#assign sitePath=a.sitePath/>
 	<#if 0 = sitePath?index_of('http') || 0 = sitePath?index_of('//')>
-		<#assign sitePath=sitePath?substring(sitePath?index_of('//')+2)/>
+		<#assign sitePath=sitePath[sitePath?index_of('//')+2..]/>
 	</#if>
 	<#if sitePath?index_of('/') gt 0>
-		<#assign siteLocation=sitePath?substring(sitePath?index_of('/'))/>
-		<#assign sitePath=sitePath?substring(0,sitePath?index_of('/'))/>
+		<#assign siteLocation=sitePath[sitePath?index_of('/')..]/>
+		<#assign sitePath=sitePath[0..sitePath?index_of('/')]/>
 	</#if>
 	<#if sitePath?index_of(':') gt 0>
-		<#assign sitePort=sitePath?substring(sitePath?index_of(':')+1)/>
+		<#assign sitePort=sitePath[sitePath?index_of(':')+1..]/>
 		<#if sitePort?index_of('/') gt 0>
-			<#assign sitePort=sitePath?substring(0,sitePort?index_of('/'))/>
+			<#assign sitePort=sitePath[0..sitePort?index_of('/')]/>
 		</#if>
 	</#if>
 server {
@@ -103,7 +103,7 @@ server {
 	}
 	
 	<#if a.resourcePath?starts_with(a.sitePath)>
-	location /${a.resourcePath?substring(a.sitePath?length)} {
+	location /${a.resourcePath[a.sitePath?length..]} {
 		alias ${rootPath}/staticfile/resource/site_${siteId}/;
 	}
 	</#if>
@@ -111,16 +111,16 @@ server {
 <#if !a.resourcePath?starts_with(a.sitePath)&&!a.resourcePath?starts_with(a.dynamicPath)>
 	<#assign resourcePath=a.resourcePath/>
 	<#if 0 = resourcePath?index_of('http') || 0 = resourcePath?index_of('//')>
-		<#assign resourcePath=resourcePath?substring(resourcePath?index_of('//')+2)/>
+		<#assign resourcePath=resourcePath[resourcePath?index_of('//')+2..]/>
 	</#if>
 	<#if resourcePath?index_of('/') gt 0>
-		<#assign resourceLocation=resourcePath?substring(resourcePath?index_of('/'))/>
-		<#assign resourcePath=resourcePath?substring(0,resourcePath?index_of('/'))/>
+		<#assign resourceLocation=resourcePath[resourcePath?index_of('/')..]/>
+		<#assign resourcePath=resourcePath[0..resourcePath?index_of('/')]/>
 	</#if>
 	<#if resourcePath?index_of(':') gt 0>
-		<#assign resourcePort=resourcePath?substring(resourcePath?index_of(':')+1)/>
+		<#assign resourcePort=resourcePath[resourcePath?index_of(':')+1..]/>
 		<#if resourcePort?index_of('/') gt 0>
-			<#assign resourcePort=resourcePath?substring(0,resourcePort?index_of('/'))/>
+			<#assign resourcePort=resourcePath[0..resourcePort?index_of('/')]/>
 		</#if>
 	</#if>
 server {

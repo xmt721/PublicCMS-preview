@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>${(attribute.title?html)!category.name?html} - PublicCMS</title>
+	<title>${(attribute.title?html)!category.name?html}</title>
 	<meta name="keywords" content="${(attribute.keywords?html)!}"/>
 	<meta name="description" content="${(attribute.description?html)!}"/>
 	<link href="${site.resourcePath!}css/bootstrap.min.3.3.5.css" rel="stylesheet"/>
@@ -26,9 +26,9 @@
 		<@echoBread category.id/>
 	</div>
 	<div class="container">
-<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
 		<div class="product-list left-content">
-	<@import path="/ftl/tools.ftl" namespace="t"/>
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
 	<#list page.list as a>
 		<@include path="/ftl/product-list.ftl"/>
 	</#list>
@@ -44,6 +44,7 @@
 			<#else>
 				<@include path="/ftl/category_page.ftl"/>
 			</#if>
+ </@_contentList>
 		</div>
 		<aside>
 			<!--#include virtual="/include/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"--> <#-- 编辑推荐 -->
@@ -59,7 +60,6 @@
 				</ul>
 			</div>
 		</aside>
-</@_contentList>
 	</div>
 </main>
 <!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->

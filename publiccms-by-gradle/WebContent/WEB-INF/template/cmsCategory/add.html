@@ -84,7 +84,7 @@
 					<dt>关键词：</dt>
 					<dd>
 						<textarea name="keywords" maxlength="100" style="width: 80%;" rows="2">${(attribute.keywords)!}</textarea>
-						<span class="info">请填写与分类内容相关的关键词，多个关键词应该使用空格分开，最好保持在10个以下</span>
+						<span class="info">请填写与分类内容相关的关键词，多个关键词应该使用逗号分开，最好保持在10个以下</span>
 					</dd>
 				</dl>
 				<dl class="nowrap">
@@ -138,10 +138,10 @@
 				</dl>
 <script>
 function checkCategoryModel(){
-	$('.categoryModelContentPath',navTab.getCurrentPanel()).hide().removeClass("required");
+	$('.categoryModelContentPath',navTab.getCurrentPanel()).hide().find('input[name=contentPath]').removeClass("required");
 	$('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
 		if($(this).find('input[type=checkbox]').is(':checked')){
-			$('.categoryModelContentPath',navTab.getCurrentPanel()).show().addClass("required");
+			$('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
 			return ;
 		}
 	});

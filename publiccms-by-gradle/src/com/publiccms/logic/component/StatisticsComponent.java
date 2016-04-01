@@ -52,8 +52,10 @@ public class StatisticsComponent extends Base implements Cacheable {
             pageDataStatistics = new CmsPageDataStatistics(id, 1, pageDataService.getEntity(id));
             clearPlaceCache(100);
             placeCachedlist.add(id);
-            placeCachedMap.put(id, pageDataStatistics);
+        } else {
+            pageDataStatistics.setClicks(pageDataStatistics.getClicks() + 1);
         }
+        placeCachedMap.put(id, pageDataStatistics);
         return pageDataStatistics;
     }
 
@@ -63,8 +65,10 @@ public class StatisticsComponent extends Base implements Cacheable {
             contentStatistics = new CmsContentStatistics(id, 1, 0, 0, contentService.getEntity(id));
             clearCache(300);
             cachedlist.add(id);
-            cachedMap.put(id, contentStatistics);
+        } else {
+            contentStatistics.setClicks(contentStatistics.getClicks() + 1);
         }
+        cachedMap.put(id, contentStatistics);
         return contentStatistics;
     }
 
@@ -74,10 +78,10 @@ public class StatisticsComponent extends Base implements Cacheable {
             contentStatistics = new CmsContentStatistics(id, 0, 1, 0, contentService.getEntity(id));
             clearCache(300);
             cachedlist.add(id);
-            cachedMap.put(id, contentStatistics);
         } else {
             contentStatistics.setComments(contentStatistics.getComments() + 1);
         }
+        cachedMap.put(id, contentStatistics);
         return contentStatistics;
     }
 
@@ -87,16 +91,17 @@ public class StatisticsComponent extends Base implements Cacheable {
             contentStatistics = new CmsContentStatistics(id, 0, 0, 1, contentService.getEntity(id));
             clearCache(300);
             cachedlist.add(id);
-            cachedMap.put(id, contentStatistics);
         } else {
             contentStatistics.setComments(contentStatistics.getComments() + 1);
         }
+        cachedMap.put(id, contentStatistics);
         return contentStatistics;
     }
 
     @Override
     public void clear() {
         contentService.updateStatistics(cachedMap.values());
+        pageDataService.updateStatistics(placeCachedMap.values());
         cachedlist.clear();
         cachedMap.clear();
     }

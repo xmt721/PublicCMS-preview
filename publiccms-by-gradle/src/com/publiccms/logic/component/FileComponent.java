@@ -60,13 +60,16 @@ public class FileComponent extends Base implements Cacheable {
                 List<FileInfo> tempList = new ArrayList<FileInfo>();
                 stream = Files.newDirectoryStream(Paths.get(dirPath));
                 for (Path entry : stream) {
-                    String fileName = entry.getFileName().toString();
-                    if (!METADATA_FILE.equalsIgnoreCase(fileName) && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
-                        BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                        if (attrs.isDirectory()) {
-                            fileList.add(new FileInfo(fileName, true, attrs));
-                        } else {
-                            tempList.add(new FileInfo(fileName, false, attrs));
+                    Path fileNamePath = entry.getFileName();
+                    if (notEmpty(fileNamePath)) {
+                        String fileName = fileNamePath.toString();
+                        if (!METADATA_FILE.equalsIgnoreCase(fileName) && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                            BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
+                            if (attrs.isDirectory()) {
+                                fileList.add(new FileInfo(fileName, true, attrs));
+                            } else {
+                                tempList.add(new FileInfo(fileName, false, attrs));
+                            }
                         }
                     }
                 }

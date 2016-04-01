@@ -33,10 +33,11 @@ header .logo{float:left;}
 header .search{text-align:right;height:45px;}
 header .search form{margin-top:20px;}
 header .search form input{height:20px;padding:0px;line-height:20px;}
-header nav{float:right;margin-top:20px; margin-right:-26px;}
+header nav{float:right;margin-top:20px;}
 header nav ul li{float:left;display:inline;font-size:16px;font-weight:bold;color:#333;line-height:35px;height:50px;}
 header nav ul li.selected a{background-color:#333;color:#fff;}
 header nav ul li a{padding:0 25px;display:block; border-right:1px solid #d4d4d4;}
+header nav ul li:last-child a{border-right:0px;}
 header nav ul li a:hover,header nav ul li.selected a:hover{color:#a7f;}
 header nav ul li ul{width:120px;line-height:30px;list-style-type:none;text-align:left;position:absolute;display:none;z-index:999;}
 header nav ul li ul li{float:left;width:100%;height:30px;margin:0 0 3px 0;font-size:14px;}

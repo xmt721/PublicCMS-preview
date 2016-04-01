@@ -1,13 +1,14 @@
+<@_tag id=tagId><#assign tagName=object.name/></@_tag>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
 	<title>高级搜索 - PublicCMS</title>
 	<meta name="keywords" content="高级搜索"/>
-	<meta name="description" content="高级搜索  ${word!}"/>
-	<@include path="/ftl/header.ftl"/> <#-- 公共头部 -->
+	<meta name="description" content="高级搜索  ${word!tagName!}"/>
+	<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
 </head>
 <body>
-<@include path="/ftl/nav.ftl"/> <#-- 导航 -->
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
 <main>
 	<div class="container bread">
 		<a href="${site.dynamicPath!}">首页</a>
@@ -16,22 +17,24 @@
 		<div class="data-list left-content">
 			<div class="search">
 				<form action="facetSearch.html" method="get">
-					<input type="text" name="word" value="${word!}"/>
-					<input type="submit" value="搜索"/>
+						<input type="text" name="word" value="${word!tagName!}"/>
+						<input type="submit" value="搜索"/>
 				</form>
+				<#if tagId?has_content>
+						标签:${tagName}
+				</#if>
 			</div>
 <@import path="/ftl/tools.ftl" namespace="t"/>
-<#if word?has_content>
-	<@_facetSearch word=word categoryId=categoryId modelId=modelId pageIndex=page count=10>
+<#if word?has_content||tagId?has_content>
+	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=page count=10>
 		<#if page.totalCount gt 0>
 			<#assign prePath='facetSearch.html?word='+(word!'')?url+'&categoryId='+(categoryId!'')?url+'&modelId='+(modelId!'')?url+'&'/>
 			<#assign modelFacet=page.map['modelId']!/>
 			<#assign categoryFacet=page.map['categoryId']!/>
-
 			<#list page.list as a>
-				<@include path="/ftl/data-list.ftl"/>
+				<@include path="/ftl/search-list.ftl"/>
 			</#list>
-			<@include path="/ftl/search_page.ftl"/>
+			<@include path="/ftl/search-page.ftl"/>
 		</#if>
 	</@_facetSearch>
 </#if>
@@ -69,12 +72,11 @@
 					</ul>
 				</div>
 			</#if>
-			<@_pageDataList path="/include/category/list.html/1.html">
-				<@include path=path/><#-- 编辑推荐 -->
-			</@_pageDataList>
+			<!--#include virtual="/include/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"--> <#-- 编辑推荐 -->
+			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
 		</aside>
 	</div>
 </main>
-<@include path="/ftl/footer.ftl"/> <#-- 公共尾部 -->
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
 </body>
 </html>

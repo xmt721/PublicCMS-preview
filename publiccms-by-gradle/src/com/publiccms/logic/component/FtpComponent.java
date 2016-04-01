@@ -28,7 +28,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -47,9 +46,9 @@ import com.sanluan.common.base.Base;
 
 @Component
 public class FtpComponent extends Base {
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
-    public static final DateFormat LIST_DATE_FORMAT = new SimpleDateFormat("MMM dd HH:mm", Locale.ENGLISH);
-    public static final DateFormat LIST_DATE_FORMAT1 = new SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH);
+    public static final String DATE_FORMAT = "yyyyMMddHHmmss";
+    public static final String LIST_DATE_FORMAT = "MMM dd HH:mm";
+    public static final String LIST_DATE_FORMAT1 = "MMM dd yyyy";
     public static final String BLANKSPACE = " ";
     public static final String ROOT = SEPARATOR;
     public static final String VIRTUAL_PATH_STATIC = ROOT + STATIC_FILE_PATH;
@@ -454,7 +453,7 @@ public class FtpComponent extends Base {
             try {
                 File file = new File(getCurrentPath(param));
                 if (file.exists()) {
-                    output.println("213 " + DATE_FORMAT.format(new Date(file.lastModified())));
+                    output.println("213 " + new SimpleDateFormat(DATE_FORMAT).format(new Date(file.lastModified())));
                 } else {
                     output.println("550 file does't exist");
                 }
@@ -614,7 +613,7 @@ public class FtpComponent extends Base {
                     } catch (IOException e) {
                     } finally {
                         try {
-                            if (notEmpty(param)) {
+                            if (notEmpty(stream)) {
                                 stream.close();
                             }
                         } catch (IOException e) {
@@ -649,8 +648,9 @@ public class FtpComponent extends Base {
                     .append(" user group ")
                     .append(String.valueOf(file.length()))
                     .append(BLANKSPACE)
-                    .append(System.currentTimeMillis() - file.lastModified() > 183L * 24L * 60L * 60L * 1000L ? LIST_DATE_FORMAT
-                            .format(fileModifiedDate) : LIST_DATE_FORMAT1.format(fileModifiedDate)).append(BLANKSPACE);
+                    .append(System.currentTimeMillis() - file.lastModified() > 183L * 24L * 60L * 60L * 1000L ? new SimpleDateFormat(
+                            LIST_DATE_FORMAT, Locale.ENGLISH).format(fileModifiedDate) : new SimpleDateFormat(LIST_DATE_FORMAT1,
+                            Locale.ENGLISH).format(fileModifiedDate)).append(BLANKSPACE);
             sb.append(file.getName());
             return sb.toString();
         }

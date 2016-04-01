@@ -1,6 +1,6 @@
 <#if siteId?has_content>
 	<@_sysSite id=siteId>
-		<#assign site=object/>
+		<#assign sysSite=object/>
 	</@_sysSite>
 </#if>
 <div class="pageHeader">
@@ -8,9 +8,9 @@
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
 			<ul class="searchContent">
-				<#if site?has_content>
+				<#if sysSite?has_content>
 					<li>
-						<label>站点：</label>${site.name}
+						<label>站点：</label>${sysSite.name}
 					</li>
 				</#if>
 			</ul>

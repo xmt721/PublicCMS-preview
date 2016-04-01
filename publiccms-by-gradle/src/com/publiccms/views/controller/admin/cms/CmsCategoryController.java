@@ -94,8 +94,10 @@ public class CmsCategoryController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, new String[] { "siteId", "childIds", "tagTypeIds", "url", "disabled",
                     "extendId", "contents", "typeId" });
-            if (oldEntity.getParentId() != entity.getParentId()) {
+            if (notEmpty(oldEntity.getParentId()) && !oldEntity.getParentId().equals(entity.getParentId())) {
                 service.generateChildIds(site.getId(), oldEntity.getParentId());
+                service.generateChildIds(site.getId(), entity.getParentId());
+            } else if (notEmpty(entity.getParentId()) && empty(oldEntity.getParentId())) {
                 service.generateChildIds(site.getId(), entity.getParentId());
             }
             if (notEmpty(entity.getId())) {
@@ -107,7 +109,7 @@ public class CmsCategoryController extends AbstractController {
                                 + ":" + entity.getName()));
             }
         } else {
-            entity.setExtendId( (Integer) extendService.save(new SysExtend()));
+            entity.setExtendId((Integer) extendService.save(new SysExtend()));
             entity.setSiteId(site.getId());
             service.save(entity);
             service.addChildIds(entity.getParentId(), entity.getId());

@@ -72,14 +72,10 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     public List<CmsContent> check(int siteId, Integer userId, Integer[] ids) {
         List<CmsContent> entityList = new ArrayList<CmsContent>();
-        Date now = getDate();
         for (CmsContent entity : getEntitys(ids)) {
             if (notEmpty(entity) && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(userId);
-                if (now.after(entity.getPublishDate())) {
-                    entity.setPublishDate(now);
-                }
                 entityList.add(entity);
             }
         }

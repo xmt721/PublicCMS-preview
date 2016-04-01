@@ -198,7 +198,7 @@ public class ApplicationConfig extends Base {
     }
 
     /**
-     * 文件操作组件
+     * 模板操作组件
      * 
      * @return
      */

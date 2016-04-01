@@ -1442,6 +1442,7 @@ CREATE TABLE IF NOT EXISTS `plugin_vote` (
   `interval_hour` int(11) NOT NULL COMMENT '投票间隔小时',
   `max_vote` int(11) NOT NULL COMMENT '最大投票数',
   `anonymous` tinyint(1) NOT NULL COMMENT '匿名投票',
+  `user_counts` int(11) NOT NULL COMMENT '参与用户数',
   `url` varchar(2048) NOT NULL COMMENT '地址',
   `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) default NULL COMMENT '描述',

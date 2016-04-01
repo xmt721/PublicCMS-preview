@@ -28,6 +28,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             query = getQuery(textFields, null, text);
         }
         query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate());
+        query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
         return getPage(query, pageIndex, pageSize);
     }
 
@@ -39,7 +40,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         } else {
             query = getQuery(textFields, facetFields, text);
         }
-        query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate()).setParameter("siteId", siteId);
+        query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate());
+        query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
         return getFacetPage(query, facetFields, new HashMap<String, String>() {
             private static final long serialVersionUID = 1L;
             {

@@ -285,6 +285,7 @@ public class CmsContentController extends AbstractController {
                 entity.setDescription(entity.getDescription());
             }
             cmsContentRelatedService.save(entity);
+            publish(new Integer[] { entity.getContentId() }, request, session, model);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "related.content", getIpAddress(request), getDate(), related.getId()
                             + ":" + related.getTitle() + " to " + content.getId() + ":" + content.getTitle()));

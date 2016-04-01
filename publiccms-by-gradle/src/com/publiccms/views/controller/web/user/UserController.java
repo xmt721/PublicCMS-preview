@@ -77,9 +77,12 @@ public class UserController extends AbstractController {
             if (!virifyNotEquals("password", user.getPassword(), encode(oldpassword), model)) {
                 Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
                 if (null != userCookie && notEmpty(userCookie.getValue())) {
-                    String[] userData = userCookie.getValue().split(COOKIES_USER_SPLIT);
-                    if (userData.length > 1) {
-                        sysUserTokenService.delete(userData[1]);
+                    String value = userCookie.getValue();
+                    if (null != value) {
+                        String[] userData = value.split(COOKIES_USER_SPLIT);
+                        if (userData.length > 1) {
+                            sysUserTokenService.delete(userData[1]);
+                        }
                     }
                 }
                 clearUserToSession(request.getContextPath(), session, response);
