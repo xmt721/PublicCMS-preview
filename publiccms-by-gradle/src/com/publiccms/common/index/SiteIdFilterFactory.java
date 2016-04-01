@@ -1,10 +1,9 @@
 package com.publiccms.common.index;
 
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.QueryWrapperFilter;
-import org.apache.lucene.search.TermQuery;
 import org.hibernate.search.annotations.Factory;
 import org.hibernate.search.filter.impl.CachingWrapperFilter;
 
@@ -13,7 +12,7 @@ public class SiteIdFilterFactory {
 
     @Factory
     public Filter getFilter() {
-        Query query = new TermQuery(new Term("siteId", siteId.toString()));
+        Query query = NumericRangeQuery.newIntRange("siteId", siteId, siteId, true, true);
         return new CachingWrapperFilter(new QueryWrapperFilter(query));
     }
 

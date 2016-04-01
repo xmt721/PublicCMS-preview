@@ -56,7 +56,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
     @MyColumn(title = "ID")
     private Integer id;
     @MyColumn(title = "站点", condition = true)
-    @Field
+    @Field(analyze = Analyze.NO)
     private int siteId;
     @MyColumn(title = "标题", condition = true, like = true, or = true)
     @Field
