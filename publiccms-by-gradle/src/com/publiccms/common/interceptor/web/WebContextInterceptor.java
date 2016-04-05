@@ -5,7 +5,7 @@ import static com.publiccms.common.base.AbstractController.getUserFromSession;
 import static com.publiccms.common.base.AbstractController.getUserTimeFromSession;
 import static com.publiccms.common.base.AbstractController.setUserToSession;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
-import static com.publiccms.common.constants.CommonConstants.PUBLICCMS_VERSION;
+import static com.publiccms.common.constants.CmsVersion.getVersion;
 import static com.publiccms.common.constants.CommonConstants.X_POWERED;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
@@ -46,7 +46,7 @@ public class WebContextInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        response.addHeader(X_POWERED, PUBLICCMS_VERSION);
+        response.addHeader(X_POWERED, getVersion());
         HttpSession session = request.getSession();
         String contextPath = request.getContextPath();
         SysUser user = getUserFromSession(session);

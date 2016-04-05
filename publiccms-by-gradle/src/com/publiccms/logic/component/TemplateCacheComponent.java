@@ -24,6 +24,7 @@ import com.sanluan.common.base.Base;
 import com.sanluan.common.base.Cacheable;
 import com.sanluan.common.tools.FreeMarkerUtils;
 
+import freemarker.core.DirectiveCallPlace;
 import freemarker.core.Environment;
 import freemarker.core.TemplateElement;
 import freemarker.template.TemplateBooleanModel;
@@ -69,18 +70,12 @@ public class TemplateCacheComponent extends Base implements Cacheable {
 
     private String getRequestParamtersString(HttpServletRequest request, String acceptParamters) {
         StringBuilder sb = new StringBuilder();
-        boolean flag = true;
         sb.append("/default.html");
         for (String paramterName : split(acceptParamters, ",")) {
             String[] values = request.getParameterValues(paramterName);
             if (isNotEmpty(values)) {
                 for (int i = 0; i < values.length; i++) {
-                    if (flag) {
-                        flag = false;
-                        sb.append("_");
-                    } else {
-                        sb.append("&");
-                    }
+                    sb.append("_");
                     sb.append(paramterName);
                     sb.append("=");
                     sb.append(values[i]);
@@ -104,16 +99,17 @@ public class TemplateCacheComponent extends Base implements Cacheable {
     }
 
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheMillisTime, ModelMap model) {
-        String cacheFilePath = getCachedFilePath(cachePath);
-        if (check(cacheFilePath, cacheMillisTime)) {
-            return CACHE_URL_PREFIX + CACHE_FILE_DIRECTORY + cachePath;
+        String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
+        String cachedFilePath = getCachedFilePath(cachedtemplatePath);
+        String cachedPath = CACHE_URL_PREFIX + cachedtemplatePath;
+        if (checkCacheFile(cachedFilePath, cacheMillisTime)) {
+            return cachedPath;
         } else {
             try {
-                FreeMarkerUtils.makeFileByFile(fullTemplatePath, cacheFilePath, templateComponent.getDynamicConfiguration(),
+                FreeMarkerUtils.makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getDynamicConfiguration(),
                         model);
-                String templateName = CACHE_URL_PREFIX + CACHE_FILE_DIRECTORY + cachePath;
-                templateComponent.getDynamicConfiguration().removeTemplateFromCache(templateName);
-                return templateName;
+                templateComponent.getDynamicConfiguration().removeTemplateFromCache(cachedtemplatePath);
+                return cachedPath;
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return requestPath;
@@ -121,7 +117,7 @@ public class TemplateCacheComponent extends Base implements Cacheable {
         }
     }
 
-    private boolean check(String cacheFilePath, int millisTime) {
+    private boolean checkCacheFile(String cacheFilePath, int millisTime) {
         File dest = new File(cacheFilePath);
         if (dest.exists() && dest.lastModified() > (System.currentTimeMillis() - millisTime)) {
             return true;
@@ -130,7 +126,7 @@ public class TemplateCacheComponent extends Base implements Cacheable {
     }
 
     private String getCachedFilePath(String path) {
-        return siteComponent.getDynamicTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
+        return siteComponent.getDynamicTemplateFilePath() + path;
     }
 }
 
@@ -166,7 +162,7 @@ class NoCacheDirective extends Base implements TemplateDirectiveModel {
                     if (notEmpty(elements)) {
                         int i = 1;
                         TemplateElement currentElement = elements[elements.length - i];
-                        while (currentElement.getClass().getName() != "freemarker.core.UnifiedCall" && i <= elements.length) {
+                        while (currentElement instanceof DirectiveCallPlace && i < elements.length) {
                             i++;
                             currentElement = elements[elements.length - i];
                         }

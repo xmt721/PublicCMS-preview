@@ -34,7 +34,7 @@
 				<dt>缓存时间(秒):</dt>
 				<dd>
 					<input name="cacheTime" class="required" type="text" value="${(a.cacheTime)!0}"/>
-					<span class="info">值大于10时，模板将被缓存</span>
+					<span class="info">值大于10时，模板将被缓存,您可以使用noCache指令指定不使用缓存的模板片段：<#noparse>&lt;@noCache&gt;登陆用户：${user.nickName}&lt;/@noCache&gt;</#noparse></span>
 				</dd>
 			</dl>
 			<#if (a.needLogin)?has_content&&a.needLogin>

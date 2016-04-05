@@ -49,8 +49,8 @@ public class StatisticsComponent extends Base implements Cacheable {
     public CmsPageDataStatistics placeClicks(Integer id) {
         CmsPageDataStatistics pageDataStatistics = placeCachedMap.get(id);
         if (empty(pageDataStatistics)) {
-            pageDataStatistics = new CmsPageDataStatistics(id, 1, pageDataService.getEntity(id));
             clearPlaceCache(100);
+            pageDataStatistics = new CmsPageDataStatistics(id, 1, pageDataService.getEntity(id));
             placeCachedlist.add(id);
         } else {
             pageDataStatistics.setClicks(pageDataStatistics.getClicks() + 1);
@@ -62,8 +62,8 @@ public class StatisticsComponent extends Base implements Cacheable {
     public CmsContentStatistics clicks(Integer id) {
         CmsContentStatistics contentStatistics = cachedMap.get(id);
         if (empty(contentStatistics)) {
-            contentStatistics = new CmsContentStatistics(id, 1, 0, 0, contentService.getEntity(id));
             clearCache(300);
+            contentStatistics = new CmsContentStatistics(id, 1, 0, 0, contentService.getEntity(id));
             cachedlist.add(id);
         } else {
             contentStatistics.setClicks(contentStatistics.getClicks() + 1);
@@ -75,8 +75,8 @@ public class StatisticsComponent extends Base implements Cacheable {
     public CmsContentStatistics comments(Integer id) {
         CmsContentStatistics contentStatistics = cachedMap.get(id);
         if (empty(contentStatistics)) {
-            contentStatistics = new CmsContentStatistics(id, 0, 1, 0, contentService.getEntity(id));
             clearCache(300);
+            contentStatistics = new CmsContentStatistics(id, 0, 1, 0, contentService.getEntity(id));
             cachedlist.add(id);
         } else {
             contentStatistics.setComments(contentStatistics.getComments() + 1);
@@ -88,8 +88,8 @@ public class StatisticsComponent extends Base implements Cacheable {
     public CmsContentStatistics scores(Integer id) {
         CmsContentStatistics contentStatistics = cachedMap.get(id);
         if (empty(contentStatistics)) {
-            contentStatistics = new CmsContentStatistics(id, 0, 0, 1, contentService.getEntity(id));
             clearCache(300);
+            contentStatistics = new CmsContentStatistics(id, 0, 0, 1, contentService.getEntity(id));
             cachedlist.add(id);
         } else {
             contentStatistics.setComments(contentStatistics.getComments() + 1);
@@ -100,8 +100,10 @@ public class StatisticsComponent extends Base implements Cacheable {
 
     @Override
     public void clear() {
-        contentService.updateStatistics(cachedMap.values());
         pageDataService.updateStatistics(placeCachedMap.values());
+        placeCachedlist.clear();
+        placeCachedMap.clear();
+        contentService.updateStatistics(cachedMap.values());
         cachedlist.clear();
         cachedMap.clear();
     }

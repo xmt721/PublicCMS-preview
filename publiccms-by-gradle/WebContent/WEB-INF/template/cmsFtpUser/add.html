@@ -7,18 +7,6 @@
 				<dt>用户名：</dt>
 				<dd>
 					<input class="required" name="name" type="text" size="30" value="${(a.name)!admin.name+.now?string('yyyyMM')}"/>
-					<#assign dynamicPath=base/>
-					<#if 0 = dynamicPath?index_of('http') || 0 = dynamicPath?index_of('//')>
-						<#assign dynamicPath=dynamicPath[dynamicPath?index_of('//')+2..]/>
-					</#if>
-					<#if dynamicPath?index_of('/') gt 0>
-						<#assign dynamicLocation=dynamicPath[dynamicPath?index_of('/')..]/>
-						<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')]/>
-					</#if>
-					<#if dynamicPath?index_of(':') gt 0>
-						<#assign dynamicPath=dynamicPath[sitePath?index_of(':')+1..]/>
-					</#if>
-					<span class="info">请访问 ftp://${dynamicPath}</span>
 				</dd>
 			</dl>
 			<dl class="nowrap">

@@ -23,7 +23,7 @@ upstream publiccms_site_${siteId} {
 		</#if>
 		<#if dynamicPath?index_of('/') gt 0>
 			<#assign dynamicLocation=dynamicPath[dynamicPath?index_of('/')..]/>
-			<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')]/>
+			<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')-1]/>
 		</#if>
 		<#if dynamicPath?index_of(':') gt 0>
 			<#assign dynamicPort=dynamicPath[sitePath?index_of(':')+1..]/>
@@ -81,12 +81,13 @@ server {
 	</#if>
 	<#if sitePath?index_of('/') gt 0>
 		<#assign siteLocation=sitePath[sitePath?index_of('/')..]/>
-		<#assign sitePath=sitePath[0..sitePath?index_of('/')]/>
+		<#assign sitePath=sitePath[0..sitePath?index_of('/')-1]/>
 	</#if>
 	<#if sitePath?index_of(':') gt 0>
 		<#assign sitePort=sitePath[sitePath?index_of(':')+1..]/>
+		<#assign sitePath=sitePath[0..sitePath?index_of(':')-1]/>
 		<#if sitePort?index_of('/') gt 0>
-			<#assign sitePort=sitePath[0..sitePort?index_of('/')]/>
+			<#assign sitePort=sitePath[0..sitePort?index_of('/')-1]/>
 		</#if>
 	</#if>
 server {
@@ -115,10 +116,11 @@ server {
 	</#if>
 	<#if resourcePath?index_of('/') gt 0>
 		<#assign resourceLocation=resourcePath[resourcePath?index_of('/')..]/>
-		<#assign resourcePath=resourcePath[0..resourcePath?index_of('/')]/>
+		<#assign resourcePath=resourcePath[0..resourcePath?index_of('/')-1]/>
 	</#if>
 	<#if resourcePath?index_of(':') gt 0>
 		<#assign resourcePort=resourcePath[resourcePath?index_of(':')+1..]/>
+		<#assign resourcePath=resourcePath[0..resourcePath?index_of(':')-1]/>
 		<#if resourcePort?index_of('/') gt 0>
 			<#assign resourcePort=resourcePath[0..resourcePort?index_of('/')]/>
 		</#if>

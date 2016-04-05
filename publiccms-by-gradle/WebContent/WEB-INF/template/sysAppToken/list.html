@@ -38,7 +38,7 @@
 			<#list page.list as a>
 				<@t.merge 'appIds' a.appId!/>
 			</#list>
-			<@_sysApp ids=t.appIds!><#assign appMap=map!/></@_sysUser>
+			<@_sysApp ids=t.appIds!><#assign appMap=map!/></@_sysApp>
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.appId}">

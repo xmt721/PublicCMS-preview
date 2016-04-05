@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.tools;
 
-import static com.publiccms.common.constants.CommonConstants.PUBLICCMS_VERSION;
+import static com.publiccms.common.constants.CmsVersion.getVersion;
 import java.io.IOException;
 
 import org.springframework.core.SpringVersion;
@@ -17,13 +17,13 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class VersionDirective extends AbstractTemplateDirective {
 
-    @Override 
+    @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         handler.put("spring", SpringVersion.getVersion());
         handler.put("hibernate", org.hibernate.Version.getVersionString());
         handler.put("hibernateSearch", org.hibernate.search.engine.Version.getVersionString());
         handler.put("lucene", org.apache.lucene.util.Version.LATEST.toString());
-        handler.put("cms", PUBLICCMS_VERSION);
+        handler.put("cms", getVersion());
         handler.render();
     }
 

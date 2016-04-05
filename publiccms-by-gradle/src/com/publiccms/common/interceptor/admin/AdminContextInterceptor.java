@@ -2,7 +2,7 @@ package com.publiccms.common.interceptor.admin;
 
 import static com.publiccms.common.base.AbstractController.getAdminFromSession;
 import static com.publiccms.common.base.AbstractController.setAdminToSession;
-import static com.publiccms.common.constants.CommonConstants.PUBLICCMS_VERSION;
+import static com.publiccms.common.constants.CmsVersion.getVersion;
 import static com.publiccms.common.constants.CommonConstants.X_POWERED;
 import static com.sanluan.common.tools.RequestUtils.getEncodePath;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -41,7 +41,7 @@ public class AdminContextInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        response.addHeader(X_POWERED, PUBLICCMS_VERSION);
+        response.addHeader(X_POWERED, getVersion());
         String path = urlPathHelper.getLookupPathForRequest(request);
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
         if (AdminInitializer.BASEPATH.equals(path)) {
