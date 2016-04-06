@@ -19,9 +19,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsContentFileService extends BaseService<CmsContentFile> {
 
-    @Autowired
-    private CmsContentFileDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer contentId, Integer userId, Boolean image, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
@@ -60,4 +57,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
             }
         }
     }
+    
+    @Autowired
+    private CmsContentFileDao dao;
 }

@@ -18,11 +18,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
 
-    @Autowired
-    private CmsCategoryDao dao;
-    @Autowired
-    private LogOperateDao logOperateDao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean hidden,
             Boolean disabled, Integer pageIndex, Integer pageSize) {
@@ -140,4 +135,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             entity.setContents(entity.getContents() + num);
         }
     }
+
+    @Autowired
+    private CmsCategoryDao dao;
+    @Autowired
+    private LogOperateDao logOperateDao;
 }

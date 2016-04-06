@@ -22,11 +22,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
-    @Autowired
-    private CmsCategoryModelDao dao;
-    @Autowired
-    private CmsModelDao modelDao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(modelId,categoryId,  pageIndex, pageSize);
@@ -65,4 +60,9 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
     public CmsCategoryModel getEntity(int modelId, int categoryId) {
         return dao.getEntity(modelId, categoryId);
     }
+
+    @Autowired
+    private CmsCategoryModelDao dao;
+    @Autowired
+    private CmsModelDao modelDao;
 }

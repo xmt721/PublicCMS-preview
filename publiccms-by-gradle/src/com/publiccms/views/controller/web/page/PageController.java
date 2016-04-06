@@ -4,6 +4,7 @@ import static com.publiccms.common.tools.ExtendUtils.getExtendString;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,13 +82,13 @@ public class PageController extends AbstractController {
      * @return
      */
     @RequestMapping("redirect")
-    public String clicks(Integer id, HttpServletRequest request) {
+    public void clicks(Integer id, HttpServletRequest request, HttpServletResponse response) {
         SysSite site = getSite(request);
         CmsPageDataStatistics pageDataStatistics = statisticsComponent.placeClicks(id);
         if (notEmpty(pageDataStatistics.getEntity()) && site.getId() == pageDataStatistics.getEntity().getSiteId()) {
-            return REDIRECT + pageDataStatistics.getEntity().getUrl();
+            redirectPermanently(response, pageDataStatistics.getEntity().getUrl());
         } else {
-            return REDIRECT + site.getSitePath();
+            redirectPermanently(response, site.getSitePath());
         }
     }
 }

@@ -15,9 +15,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsContentAttributeService extends BaseService<CmsContentAttribute> {
 
-    @Autowired
-    private CmsContentAttributeDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer pageIndex, Integer pageSize) {
         return dao.getPage(pageIndex, pageSize);
@@ -38,4 +35,7 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
             }
         }
     }
+
+    @Autowired
+    private CmsContentAttributeDao dao;
 }

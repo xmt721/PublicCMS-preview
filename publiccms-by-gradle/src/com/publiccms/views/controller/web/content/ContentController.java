@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.CmsContentParamters;
+import com.publiccms.views.pojo.CmsContentRelatedStatistics;
 import com.publiccms.views.pojo.CmsContentStatistics;
 
 /**
@@ -184,19 +186,36 @@ public class ContentController extends AbstractController {
     }
 
     /**
+     * 内容推荐重定向并计数
+     * 
+     * @param id
+     * @return
+     */
+    @RequestMapping("related/redirect")
+    public void relatedRedirect(Integer id, HttpServletRequest request, HttpServletResponse response) {
+        CmsContentRelatedStatistics contentRelatedStatistics = statisticsComponent.relatedClicks(id);
+        SysSite site = getSite(request);
+        if (notEmpty(contentRelatedStatistics.getEntity())) {
+            redirectPermanently(response, contentRelatedStatistics.getEntity().getUrl());
+        } else {
+            redirectPermanently(response, site.getSitePath());
+        }
+    }
+
+    /**
      * 内容链接重定向并计数
      * 
      * @param id
      * @return
      */
     @RequestMapping("redirect")
-    public String clicks(Integer id, HttpServletRequest request) {
+    public void redirect(Integer id, HttpServletRequest request, HttpServletResponse response) {
         CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
         SysSite site = getSite(request);
         if (notEmpty(contentStatistics.getEntity()) && site.getId() == contentStatistics.getEntity().getSiteId()) {
-            return REDIRECT + contentStatistics.getEntity().getUrl();
+            redirectPermanently(response, contentStatistics.getEntity().getUrl());
         } else {
-            return REDIRECT + site.getSitePath();
+            redirectPermanently(response, site.getSitePath());
         }
     }
 

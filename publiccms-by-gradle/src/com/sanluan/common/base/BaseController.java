@@ -6,6 +6,8 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 
  * BaseController
@@ -15,6 +17,11 @@ public abstract class BaseController extends Base {
     protected static final String REDIRECT = REDIRECT_URL_PREFIX;
     protected static final String FORWARD = FORWARD_URL_PREFIX;
     protected static final String ERROR = "error";
+
+    protected static void redirectPermanently(HttpServletResponse response, String url) {
+        response.setHeader("Location", url);
+        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+    }
 
     /**
      * @param field

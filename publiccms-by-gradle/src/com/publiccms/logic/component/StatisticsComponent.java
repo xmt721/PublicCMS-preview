@@ -8,8 +8,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPageDataService;
+import com.publiccms.views.pojo.CmsContentRelatedStatistics;
 import com.publiccms.views.pojo.CmsContentStatistics;
 import com.publiccms.views.pojo.CmsPageDataStatistics;
 import com.sanluan.common.base.Base;
@@ -21,8 +23,12 @@ public class StatisticsComponent extends Base implements Cacheable {
     private static Map<Integer, CmsContentStatistics> cachedMap = new HashMap<Integer, CmsContentStatistics>();
     private static List<Integer> placeCachedlist = new ArrayList<Integer>();
     private static Map<Integer, CmsPageDataStatistics> placeCachedMap = new HashMap<Integer, CmsPageDataStatistics>();
+    private static List<Integer> relatedCachedlist = new ArrayList<Integer>();
+    private static Map<Integer, CmsContentRelatedStatistics> relatedCachedMap = new HashMap<Integer, CmsContentRelatedStatistics>();
     @Autowired
     private CmsContentService contentService;
+    @Autowired
+    private CmsContentRelatedService contentRelatedService;
     @Autowired
     private CmsPageDataService pageDataService;
 
@@ -44,6 +50,29 @@ public class StatisticsComponent extends Base implements Cacheable {
             }
             pageDataService.updateStatistics(list);
         }
+    }
+
+    private void clearRelatedCache(int size) {
+        if (size < relatedCachedlist.size()) {
+            List<CmsContentRelatedStatistics> list = new ArrayList<CmsContentRelatedStatistics>();
+            for (int i = 0; i < size / 10; i++) {
+                list.add(relatedCachedMap.remove(relatedCachedlist.remove(0)));
+            }
+            contentRelatedService.updateStatistics(list);
+        }
+    }
+
+    public CmsContentRelatedStatistics relatedClicks(Integer id) {
+        CmsContentRelatedStatistics contentRelatedStatistics = relatedCachedMap.get(id);
+        if (empty(contentRelatedStatistics)) {
+            clearRelatedCache(100);
+            contentRelatedStatistics = new CmsContentRelatedStatistics(id, 1, contentRelatedService.getEntity(id));
+            relatedCachedlist.add(id);
+        } else {
+            contentRelatedStatistics.setClicks(contentRelatedStatistics.getClicks() + 1);
+        }
+        relatedCachedMap.put(id, contentRelatedStatistics);
+        return contentRelatedStatistics;
     }
 
     public CmsPageDataStatistics placeClicks(Integer id) {
@@ -103,6 +132,9 @@ public class StatisticsComponent extends Base implements Cacheable {
         pageDataService.updateStatistics(placeCachedMap.values());
         placeCachedlist.clear();
         placeCachedMap.clear();
+        contentRelatedService.updateStatistics(relatedCachedMap.values());
+        relatedCachedlist.clear();
+        relatedCachedMap.clear();
         contentService.updateStatistics(cachedMap.values());
         cachedlist.clear();
         cachedMap.clear();

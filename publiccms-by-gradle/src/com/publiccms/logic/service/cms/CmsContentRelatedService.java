@@ -2,6 +2,7 @@ package com.publiccms.logic.service.cms;
 
 // Generated 2016-1-25 10:53:21 by com.sanluan.common.source.SourceMaker
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.logic.dao.cms.CmsContentRelatedDao;
+import com.publiccms.views.pojo.CmsContentRelatedStatistics;
 import com.sanluan.common.base.BaseService;
 import com.sanluan.common.handler.PageHandler;
 
@@ -19,13 +21,19 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
 
-    @Autowired
-    private CmsContentRelatedDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer contentId, Integer relatedContentId, Integer userId, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, relatedContentId, userId, orderField, orderType, pageIndex, pageSize);
+    }
+
+    public void updateStatistics(Collection<CmsContentRelatedStatistics> entitys) {
+        for (CmsContentRelatedStatistics contentRelatedStatistics : entitys) {
+            CmsContentRelated entity = getEntity(contentRelatedStatistics.getId());
+            if (notEmpty(entity)) {
+                entity.setClicks(entity.getClicks() + contentRelatedStatistics.getClicks());
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -49,4 +57,7 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
             }
         }
     }
+
+    @Autowired
+    private CmsContentRelatedDao dao;
 }
