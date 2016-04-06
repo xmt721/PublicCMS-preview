@@ -20,6 +20,7 @@ public class InitializeFreeMarkerView extends FreeMarkerView {
     protected static final String CONTEXT_USER = "user";
     public static SiteComponent siteComponent;
 
+    @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
         expose(model, siteComponent.getSite(request.getServerName(), request.getServerPort()), request.getScheme(),
                 request.getServerName(), request.getServerPort(), request.getContextPath());

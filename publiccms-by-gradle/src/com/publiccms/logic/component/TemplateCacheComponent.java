@@ -94,26 +94,25 @@ public class TemplateCacheComponent extends Base implements Cacheable {
         deleteQuietly(new File(getCachedFilePath(path)));
     }
 
+    @Override
     public void clear() {
         deleteCachedFile(getCachedFilePath(""));
     }
 
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheMillisTime, ModelMap model) {
+        String cachedFilePath = getCachedFilePath(cachePath);
         String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
-        String cachedFilePath = getCachedFilePath(cachedtemplatePath);
         String cachedPath = CACHE_URL_PREFIX + cachedtemplatePath;
         if (checkCacheFile(cachedFilePath, cacheMillisTime)) {
             return cachedPath;
-        } else {
-            try {
-                FreeMarkerUtils.makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getDynamicConfiguration(),
-                        model);
-                templateComponent.getDynamicConfiguration().removeTemplateFromCache(cachedtemplatePath);
-                return cachedPath;
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return requestPath;
-            }
+        }
+        try {
+            FreeMarkerUtils.makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getDynamicConfiguration(), model);
+            templateComponent.getDynamicConfiguration().removeTemplateFromCache(cachedtemplatePath);
+            return cachedPath;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return requestPath;
         }
     }
 
@@ -126,7 +125,7 @@ public class TemplateCacheComponent extends Base implements Cacheable {
     }
 
     private String getCachedFilePath(String path) {
-        return siteComponent.getDynamicTemplateFilePath() + path;
+        return siteComponent.getDynamicTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
     }
 }
 

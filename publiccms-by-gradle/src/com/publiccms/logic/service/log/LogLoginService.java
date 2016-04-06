@@ -16,9 +16,6 @@ import com.sanluan.common.handler.PageHandler;
 public class LogLoginService extends BaseService<LogLogin> {
     public static final String CHANNEL_WEB_MANAGER = "web_manager", CHANNEL_WEB = "web";
 
-    @Autowired
-    private LogLoginDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer userId, Date startCreateDate, Date endCreateDate, String channel,
             Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
@@ -37,4 +34,7 @@ public class LogLoginService extends BaseService<LogLogin> {
     public int delete(Integer siteId, Date createDate) {
         return dao.delete(siteId, createDate);
     }
+
+    @Autowired
+    private LogLoginDao dao;
 }

@@ -50,7 +50,7 @@ public class PluginSiteController extends AbstractController {
     }
 
     @RequestMapping("delete")
-    public String delete(String pluginCode, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String pluginCode, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
         service.delete(site.getId(), pluginCode);
         logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,

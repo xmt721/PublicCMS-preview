@@ -52,9 +52,8 @@ public class SysRoleMoudleDao extends BaseDao<SysRoleMoudle> {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleMoudle bean where bean.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     public int deleteByMoudleId(Integer moudleId) {
@@ -62,9 +61,8 @@ public class SysRoleMoudleDao extends BaseDao<SysRoleMoudle> {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleMoudle bean where bean.moudleId = :moudleId");
             queryHandler.setParameter("moudleId", moudleId);
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     @Override

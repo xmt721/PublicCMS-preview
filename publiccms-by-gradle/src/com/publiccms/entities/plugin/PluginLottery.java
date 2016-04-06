@@ -213,6 +213,7 @@ public class PluginLottery implements java.io.Serializable , Staticable {
         return this.url;
     }
 
+    @Override
     public void setUrl(String url) {
         this.url = url;
     }

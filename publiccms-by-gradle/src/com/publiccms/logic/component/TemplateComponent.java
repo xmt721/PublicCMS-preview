@@ -243,9 +243,8 @@ public class TemplateComponent extends Base implements Cacheable {
                 return false;
             }
             return true;
-        } else {
-            return false;
         }
+        return false;
 
     }
 

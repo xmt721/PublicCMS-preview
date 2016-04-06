@@ -15,9 +15,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysFtpUserService extends BaseService<SysFtpUser> {
 
-    @Autowired
-    private SysFtpUserDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, name, pageIndex, pageSize);
@@ -26,4 +23,7 @@ public class SysFtpUserService extends BaseService<SysFtpUser> {
     public SysFtpUser findByName(String name) {
         return dao.getEntity(name, "name");
     }
+
+    @Autowired
+    private SysFtpUserDao dao;
 }

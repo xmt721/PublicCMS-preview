@@ -1,8 +1,8 @@
 package com.publiccms.logic.service.sys;
 
 import static org.apache.commons.lang3.ArrayUtils.removeElement;
-import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static org.apache.commons.lang3.StringUtils.split;
+import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.util.Date;
 
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.dao.log.LogLoginDao;
 import com.publiccms.logic.dao.sys.SysUserDao;
 import com.sanluan.common.base.BaseService;
 import com.sanluan.common.handler.PageHandler;
@@ -19,11 +18,7 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysUserService extends BaseService<SysUser> {
-    @Autowired
-    private SysUserDao dao;
-    @Autowired
-    private LogLoginDao logLoginDao;
-
+    
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
             Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
@@ -87,4 +82,7 @@ public class SysUserService extends BaseService<SysUser> {
         }
         return entity;
     }
+
+    @Autowired
+    private SysUserDao dao;
 }

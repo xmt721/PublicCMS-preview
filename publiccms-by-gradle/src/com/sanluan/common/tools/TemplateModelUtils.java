@@ -182,11 +182,10 @@ public class TemplateModelUtils extends Base {
                 values[i] = converString(smodel.get(i));
             }
             return values;
-        } else {
-            String str = converString(model);
-            if (notEmpty(str)) {
-                return split(str, ',');
-            }
+        }
+        String str = converString(model);
+        if (notEmpty(str)) {
+            return split(str, ',');
         }
         return null;
     }

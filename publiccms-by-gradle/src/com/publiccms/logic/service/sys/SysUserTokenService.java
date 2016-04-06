@@ -14,8 +14,6 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysUserTokenService extends BaseService<SysUserToken> {
-    @Autowired
-    private SysUserTokenDao dao;
 
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer userId, String channel, String orderType, Integer pageIndex, Integer pageSize) {
@@ -25,4 +23,7 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
     public SysUserToken getEntity(String authToken) {
         return getEntity(authToken, "authToken");
     }
+    
+    @Autowired
+    private SysUserTokenDao dao;
 }

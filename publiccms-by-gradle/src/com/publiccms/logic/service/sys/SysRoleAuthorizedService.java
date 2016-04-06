@@ -22,9 +22,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
 
-    @Autowired
-    private SysRoleAuthorizedDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer roleId, String url, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, url, pageIndex, pageSize);
@@ -89,4 +86,7 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
         }
         return 0;
     }
+    
+    @Autowired
+    private SysRoleAuthorizedDao dao;
 }

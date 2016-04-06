@@ -23,6 +23,7 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
         super(webApplicationContext);
     }
 
+    @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             super.render(mv, request, response);

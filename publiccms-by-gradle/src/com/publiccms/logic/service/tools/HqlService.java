@@ -13,9 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class HqlService extends BaseService<Object> {
-    @Autowired
-    private HqlDao dao;
-
+    
     public int update(String hql) {
         return dao.update(hql);
     }
@@ -32,4 +30,7 @@ public class HqlService extends BaseService<Object> {
     public void clear() {
         dao.clear();
     }
+    
+    @Autowired
+    private HqlDao dao;
 }

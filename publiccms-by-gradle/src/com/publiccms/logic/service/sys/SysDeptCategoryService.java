@@ -20,9 +20,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysDeptCategoryService extends BaseService<SysDeptCategory> {
 
-    @Autowired
-    private SysDeptCategoryDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer deptId, Integer categoryId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(deptId, categoryId, pageIndex, pageSize);
@@ -70,4 +67,7 @@ public class SysDeptCategoryService extends BaseService<SysDeptCategory> {
             }
         }
     }
+
+    @Autowired
+    private SysDeptCategoryDao dao;
 }

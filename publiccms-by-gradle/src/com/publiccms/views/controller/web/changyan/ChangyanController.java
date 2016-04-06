@@ -45,7 +45,7 @@ public class ChangyanController extends AbstractController {
     private LogLoginService logLoginService;
 
     @RequestMapping("login")
-    public MappingJacksonValue login(User user, Integer cy_user_id, String callback, HttpServletRequest request,
+    public MappingJacksonValue login(User user, String callback, HttpServletRequest request,
             HttpSession session, HttpServletResponse response) {
         LoginResult loginResult = new LoginResult();
         String ip = getIpAddress(request);
@@ -100,8 +100,7 @@ public class ChangyanController extends AbstractController {
     }
 
     @RequestMapping("getUserInfo")
-    public MappingJacksonValue getUserInfo(String callback, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response) {
+    public MappingJacksonValue getUserInfo(String callback, HttpSession session) {
         SysUser sysUser = getUserFromSession(session);
         UserInfo userinfo = new UserInfo();
         if (notEmpty(sysUser)) {

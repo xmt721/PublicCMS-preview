@@ -27,8 +27,7 @@ public class GetTextFromHtmlMethod extends BaseMethod {
         String html = getString(0, arguments);
         if (notEmpty(html)) {
             return removeHtmlTag(html);
-        } else {
-            return null;
         }
+        return null;
     }
 }

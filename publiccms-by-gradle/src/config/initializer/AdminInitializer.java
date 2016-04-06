@@ -22,6 +22,7 @@ import config.ApplicationConfig;
  * AdminInitializer Servlet3.0 工程入口类
  *
  */
+@SuppressWarnings("unused")
 public class AdminInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
     public static final String BASEPATH = "/admin";
 
@@ -37,14 +38,17 @@ public class AdminInitializer extends AbstractAnnotationConfigDispatcherServletI
         return new ErrorToNotFoundDispatcherServlet(servletAppContext);
     }
 
+    @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] { AdminConfig.class };
     }
 
+    @Override
     protected String getServletName() {
         return this.getClass().getSimpleName();
     }
 
+    @Override
     protected String[] getServletMappings() {
         return new String[] { BASEPATH + "/*" };
     }

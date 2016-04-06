@@ -28,9 +28,8 @@ public class SysRoleUserDao extends BaseDao<SysRoleUser> {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleUser bean where bean.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     public int deleteByUserId(Integer userId) {
@@ -38,9 +37,8 @@ public class SysRoleUserDao extends BaseDao<SysRoleUser> {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleUser bean where bean.userId = :userId");
             queryHandler.setParameter("userId", userId);
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
     
     @Override

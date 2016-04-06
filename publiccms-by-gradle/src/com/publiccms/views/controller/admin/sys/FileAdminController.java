@@ -18,15 +18,12 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.FileComponent;
-import com.publiccms.logic.component.MetadataComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
 @Controller
 @RequestMapping("file")
 public class FileAdminController extends AbstractController {
-    @Autowired
-    private MetadataComponent metadataComponent;
     @Autowired
     private FileComponent fileComponent;
 

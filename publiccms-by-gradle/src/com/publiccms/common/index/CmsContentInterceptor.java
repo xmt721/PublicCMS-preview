@@ -24,9 +24,8 @@ public class CmsContentInterceptor implements EntityIndexingInterceptor<CmsConte
     public IndexingOverride onUpdate(CmsContent entity) {
         if (CmsContentService.STATUS_NORMAL == entity.getStatus() && !entity.isDisabled()) {
             return IndexingOverride.UPDATE;
-        } else {
-            return IndexingOverride.REMOVE;
         }
+        return IndexingOverride.REMOVE;
     }
 
     @Override

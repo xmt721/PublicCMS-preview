@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
@@ -25,8 +24,7 @@ public class CmsSiteController extends AbstractController {
     private SysSiteService service;
 
     @RequestMapping("save")
-    public String save(SysSite entity, String roleName, String userName, String password, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String save(SysSite entity, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
         entity = service.update(site.getId(), entity, new String[] { "id" });
         logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),

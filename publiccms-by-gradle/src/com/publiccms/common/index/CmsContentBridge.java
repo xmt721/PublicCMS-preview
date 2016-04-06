@@ -19,6 +19,7 @@ public class CmsContentBridge implements FieldBridge {
         CmsContentBridge.contentAttributeService = contentAttributeService;
     }
 
+    @Override
     public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {
         CmsContent content = (CmsContent) value;
         CmsContentAttribute entity = contentAttributeService.getEntity(content.getId());

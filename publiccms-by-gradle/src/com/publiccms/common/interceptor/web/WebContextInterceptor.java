@@ -4,10 +4,10 @@ import static com.publiccms.common.base.AbstractController.clearUserToSession;
 import static com.publiccms.common.base.AbstractController.getUserFromSession;
 import static com.publiccms.common.base.AbstractController.getUserTimeFromSession;
 import static com.publiccms.common.base.AbstractController.setUserToSession;
-import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
 import static com.publiccms.common.constants.CmsVersion.getVersion;
-import static com.publiccms.common.constants.CommonConstants.X_POWERED;
+import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
 import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
+import static com.publiccms.common.constants.CommonConstants.X_POWERED;
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
 import static com.sanluan.common.tools.RequestUtils.cancleCookie;
 import static com.sanluan.common.tools.RequestUtils.getCookie;
@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.SiteComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.sanluan.common.base.BaseInterceptor;
@@ -41,8 +40,6 @@ public class WebContextInterceptor extends BaseInterceptor {
     private SysUserService sysUserService;
     @Autowired
     private SysUserTokenService sysUserTokenService;
-    @Autowired
-    private SiteComponent siteComponent;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {

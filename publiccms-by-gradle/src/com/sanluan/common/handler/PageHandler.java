@@ -90,9 +90,8 @@ public class PageHandler extends Base implements java.io.Serializable {
     public int getNextPage() {
         if (isLastPage()) {
             return pageIndex;
-        } else {
-            return pageIndex + 1;
         }
+        return pageIndex + 1;
     }
 
     /**
@@ -101,9 +100,8 @@ public class PageHandler extends Base implements java.io.Serializable {
     public int getPrePage() {
         if (isFirstPage()) {
             return pageIndex;
-        } else {
-            return pageIndex - 1;
         }
+        return pageIndex - 1;
     }
 
     /**

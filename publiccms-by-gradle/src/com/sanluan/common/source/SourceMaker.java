@@ -42,7 +42,7 @@ public class SourceMaker extends Base {
     public static final String JAVA_BASE_PATH = "src/";
     public static final String WEB_BASE_PATH = "WebContent/template/";
 
-    public static void main(String[] args) throws ClassNotFoundException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException {
         SourceMaker sourceMaker = new SourceMaker();
         boolean overwrite = false;// 是否覆盖已有代码
         String basePackage = "com.publiccms";// 基础包名

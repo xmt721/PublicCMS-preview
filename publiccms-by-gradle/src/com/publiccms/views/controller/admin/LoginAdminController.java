@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +24,11 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.CacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
-import com.publiccms.logic.service.sys.SysUserTokenService;
 
 @Controller
 public class LoginAdminController extends AbstractController {
     @Autowired
     private SysUserService service;
-    @Autowired
-    private SysUserTokenService sysUserTokenService;
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
@@ -40,7 +36,7 @@ public class LoginAdminController extends AbstractController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
+            ModelMap model) {
         SysSite site = getSite(request);
         if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
             model.addAttribute("username", username);
@@ -74,24 +70,21 @@ public class LoginAdminController extends AbstractController {
                 log.error(e.getMessage());
                 return REDIRECT + "index.html";
             }
-        } else {
-            return REDIRECT + "index.html";
         }
+        return REDIRECT + "index.html";
     }
 
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
-    public String loginDialog(String username, String password, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
-        if ("login".equals(login(username, password, null, request, session, response, model))) {
+    public String loginDialog(String username, String password, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if ("login".equals(login(username, password, null, request, session, model))) {
             return TEMPLATE_ERROR;
-        } else {
-            return TEMPLATE_DONE;
         }
+        return TEMPLATE_DONE;
     }
 
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
-    public String changeMyselfPassword(Integer id, String oldpassword, String password, String repassword,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String changeMyselfPassword(String oldpassword, String password, String repassword, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysUser user = service.getEntity(getAdminFromSession(session).getId());
         if (virifyNotEquals("siteId", site.getId(), user.getSiteId(), model)) {
@@ -119,7 +112,7 @@ public class LoginAdminController extends AbstractController {
     }
 
     @RequestMapping(value = "clearCache")
-    public String clearCache(HttpServletRequest request) {
+    public String clearCache() {
         cacheComponent.clear();
         return TEMPLATE_DONE;
     }

@@ -75,9 +75,8 @@ public class CmsPageDataDao extends BaseDao<CmsPageData> {
             queryHandler.condition("bean.path = :path").setParameter("path", path);
             queryHandler.condition("bean.type = :type").setParameter("type", type);
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     @Override

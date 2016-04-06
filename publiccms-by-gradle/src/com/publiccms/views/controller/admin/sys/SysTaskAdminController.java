@@ -125,7 +125,7 @@ public class SysTaskAdminController extends AbstractController {
 
     @RequestMapping("status")
     @ResponseBody
-    public Map<String, Integer> status(Integer[] ids, HttpServletRequest request, ModelMap model) {
+    public Map<String, Integer> status(Integer[] ids, HttpServletRequest request) {
         SysSite site = getSite(request);
         Map<String, Integer> map = new HashMap<String, Integer>();
         for (SysTask entity : service.getEntitys(ids)) {

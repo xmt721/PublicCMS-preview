@@ -132,18 +132,15 @@ public class RequestUtils extends Base {
         String ip = request.getHeader("X-Real-IP");
         if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
             return ip;
-        } else {
-            ip = request.getHeader("X-Forwarded-For");
-            if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-                int index = ip.indexOf(',');
-                if (index != -1) {
-                    return ip.substring(0, index);
-                } else {
-                    return ip;
-                }
-            } else {
-                return request.getRemoteAddr();
-            }
         }
+        ip = request.getHeader("X-Forwarded-For");
+        if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+            int index = ip.indexOf(',');
+            if (index != -1) {
+                return ip.substring(0, index);
+            }
+            return ip;
+        }
+        return request.getRemoteAddr();
     }
 }

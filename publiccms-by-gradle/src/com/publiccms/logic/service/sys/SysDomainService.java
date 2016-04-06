@@ -14,8 +14,6 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysDomainService extends BaseService<SysDomain> {
-    @Autowired
-    private SysDomainDao dao;
 
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer pageIndex, Integer pageSize) {
@@ -25,4 +23,7 @@ public class SysDomainService extends BaseService<SysDomain> {
     public SysDomain getEntity(String name) {
         return getEntity(name, "name");
     }
+    
+    @Autowired
+    private SysDomainDao dao;
 }

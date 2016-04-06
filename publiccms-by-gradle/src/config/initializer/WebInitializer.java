@@ -18,6 +18,7 @@ import config.WebConfig;
  * WebInitializer Servlet3.0 工程入口类
  *
  */
+@SuppressWarnings("unused")
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -29,6 +30,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return new MultiSiteDispatcherServlet(servletAppContext);
     }
 
+    @Override
     protected String getServletName() {
         return this.getClass().getSimpleName();
     }

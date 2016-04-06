@@ -55,9 +55,8 @@ public class LogOperateDao extends BaseDao<LogOperate> {
                 queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
             }
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     @Override

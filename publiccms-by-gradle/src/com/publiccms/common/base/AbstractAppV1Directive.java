@@ -42,6 +42,7 @@ public abstract class AbstractAppV1Directive extends AbstractAppDirective implem
         return null;
     }
 
+    @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysApp app = null;
         SysUser user = null;
@@ -60,6 +61,7 @@ public abstract class AbstractAppV1Directive extends AbstractAppDirective implem
 
     public abstract boolean needApp();
 
+    @Override
     public String getVersion() {
         return VERSION;
     }

@@ -55,33 +55,32 @@ public class AdminContextInterceptor extends BaseInterceptor {
             SysUser user = getAdminFromSession(request.getSession());
             if (null == user) {
                 try {
-                    redirectLogin(ctxPath, path, request.getQueryString(), request, response);
+                    redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
                 } catch (IllegalStateException | IOException e) {
                     return true;
                 }
-            } else {
-                user = sysUserService.getEntity(user.getId());
-                user.setPassword(null);
-                setAdminToSession(request.getSession(), user);
-                if (!user.isDisabled() && !user.isSuperuserAccess()) {
-                    try {
-                        redirectLogin(ctxPath, path, request.getQueryString(), request, response);
-                        return false;
-                    } catch (IllegalStateException | IOException e) {
-                        return true;
-                    }
-                } else if (verifyNeedAuthorized(path)) {
-                    if (isNotBlank(path) && !SEPARATOR.equals(path)) {
-                        int index = path.lastIndexOf(".");
-                        path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
-                        if (0 == roleAuthorizedService.count(user.getRoles(), path) && !ownsAllRight(user.getRoles())) {
-                            try {
-                                response.sendRedirect(ctxPath + unauthorizedUrl);
-                                return false;
-                            } catch (IOException e) {
-                                return true;
-                            }
+            }
+            user = sysUserService.getEntity(user.getId());
+            user.setPassword(null);
+            setAdminToSession(request.getSession(), user);
+            if (!user.isDisabled() && !user.isSuperuserAccess()) {
+                try {
+                    redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
+                    return false;
+                } catch (IllegalStateException | IOException e) {
+                    return true;
+                }
+            } else if (verifyNeedAuthorized(path)) {
+                if (isNotBlank(path) && !SEPARATOR.equals(path)) {
+                    int index = path.lastIndexOf(".");
+                    path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
+                    if (0 == roleAuthorizedService.count(user.getRoles(), path) && !ownsAllRight(user.getRoles())) {
+                        try {
+                            response.sendRedirect(ctxPath + unauthorizedUrl);
+                            return false;
+                        } catch (IOException e) {
+                            return true;
                         }
                     }
                 }
@@ -90,13 +89,13 @@ public class AdminContextInterceptor extends BaseInterceptor {
         return true;
     }
 
-    private void redirectLogin(String ctxPath, String path, String queryString, HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
-        if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
+    private void redirectLogin(String ctxPath, String path, String queryString, String requestedWith, HttpServletResponse response)
+            throws IOException {
+        if ("XMLHttpRequest".equalsIgnoreCase(requestedWith)) {
             response.sendRedirect(ctxPath + loginJsonUrl);
         } else {
             response.sendRedirect(ctxPath + loginUrl + "?returnUrl="
-                    + getEncodePath(AdminInitializer.BASEPATH + path, request.getQueryString()));
+                    + getEncodePath(AdminInitializer.BASEPATH + path, queryString));
         }
     }
 

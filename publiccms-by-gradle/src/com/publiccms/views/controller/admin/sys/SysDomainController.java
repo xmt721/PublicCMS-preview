@@ -56,7 +56,7 @@ public class SysDomainController extends AbstractController {
     }
 
     @RequestMapping("delete")
-    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(Integer id, HttpServletRequest request, HttpSession session) {
         SysDomain entity = service.getEntity(id);
         if (notEmpty(entity)) {
             service.delete(id);

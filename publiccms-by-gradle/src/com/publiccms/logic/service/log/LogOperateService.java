@@ -16,9 +16,6 @@ import com.sanluan.common.handler.PageHandler;
 public class LogOperateService extends BaseService<LogOperate> {
     public static final String OPERATE_UPLOADFILE = "uploadfile";
 
-    @Autowired
-    private LogOperateDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, String channel, String operate, Integer userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
@@ -37,4 +34,7 @@ public class LogOperateService extends BaseService<LogOperate> {
             }
         }
     }
+
+    @Autowired
+    private LogOperateDao dao;
 }

@@ -17,9 +17,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class LogTaskService extends BaseService<LogTask> {
 
-    @Autowired
-    private LogTaskDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
             String orderType, Integer pageIndex, Integer pageSize) {
@@ -37,4 +34,7 @@ public class LogTaskService extends BaseService<LogTask> {
             }
         }
     }
+
+    @Autowired
+    private LogTaskDao dao;
 }

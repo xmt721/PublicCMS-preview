@@ -9,6 +9,7 @@ import freemarker.template.Configuration;
 public class WebFreeMarkerViewResolver extends FreeMarkerViewResolver {
     private Configuration configuration;
 
+    @Override
     protected AbstractUrlBasedView buildView(String viewName) throws Exception {
         FreeMarkerView view = (FreeMarkerView) super.buildView(viewName);
         if (null != configuration) {

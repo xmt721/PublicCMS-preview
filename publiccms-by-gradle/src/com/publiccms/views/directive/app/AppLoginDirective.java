@@ -26,6 +26,7 @@ import com.sanluan.common.tools.RequestUtils;
 @Component
 public class AppLoginDirective extends AbstractAppV1Directive {
 
+    @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String username = handler.getString("username");
         String password = handler.getString("password");

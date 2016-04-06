@@ -151,6 +151,7 @@ public class FtpComponent extends Base {
             }
         }
 
+        @Override
         public void run() {
             try {
                 boolean flag = true;
@@ -288,10 +289,10 @@ public class FtpComponent extends Base {
                             output.println("215 " + System.getProperty("os.name"));
                             break;
                         case "TYPE":// 数据类型（A=ASCII,E=EBCDIC,I=binary）
-                            if (param.equals("A")) {
+                            if ("A".equals(param)) {
                                 type = State.TYPE_ASCII;
                                 output.println("200 changed to ASCII.");
-                            } else if (param.equals("I")) {
+                            } else if ("I".equals(param)) {
                                 type = State.TYPE_IMAGE;
                                 output.println("200 changed to BINARY.");
                             } else {
@@ -330,9 +331,8 @@ public class FtpComponent extends Base {
                     state = State.STATE_NEED_PASSWORD;
                     userPath = empty(user.getPath()) ? "" : user.getPath();
                     return true;
-                } else {
-                    output.println("501 user does't exist.");
                 }
+                output.println("501 user does't exist.");
             } else {
                 output.println("501 error command,need login.");
             }
@@ -349,9 +349,8 @@ public class FtpComponent extends Base {
                 if (notEmpty(password) && encode(password).equalsIgnoreCase(user.getPassword())) {
                     welcome();
                     return true;
-                } else {
-                    output.println("530 login failed.");
                 }
+                output.println("530 login failed.");
             } else {
                 output.println("501 error command,need password.");
             }

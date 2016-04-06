@@ -104,9 +104,8 @@ public class MetadataComponent extends Base implements Cacheable {
             } catch (IOException e) {
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -130,9 +129,8 @@ public class MetadataComponent extends Base implements Cacheable {
             } catch (IOException e) {
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

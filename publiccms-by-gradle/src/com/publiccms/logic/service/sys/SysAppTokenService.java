@@ -16,6 +16,7 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysAppTokenService extends BaseService<SysAppToken> {
+    
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer appId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(appId, pageIndex, pageSize);

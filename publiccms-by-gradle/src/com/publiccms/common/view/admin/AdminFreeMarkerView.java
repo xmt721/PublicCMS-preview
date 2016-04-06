@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.publiccms.common.view.InitializeFreeMarkerView;
 
 public class AdminFreeMarkerView extends InitializeFreeMarkerView {
+    @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
         Enumeration<String> parameters = request.getParameterNames();
         while (parameters.hasMoreElements()) {

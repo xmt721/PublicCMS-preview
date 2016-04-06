@@ -22,8 +22,7 @@ public class GetRandomMethod extends BaseMethod {
         Integer max = getInteger(0, arguments);
         if (notEmpty(max)) {
             return r.nextInt(max);
-        } else {
-            return r.nextInt();
         }
+        return r.nextInt();
     }
 }

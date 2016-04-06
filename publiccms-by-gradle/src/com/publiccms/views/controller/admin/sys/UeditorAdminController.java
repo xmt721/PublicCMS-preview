@@ -209,7 +209,7 @@ public class UeditorAdminController extends AbstractController {
     @SuppressWarnings("unchecked")
     @RequestMapping(params = "action=" + ACTION_LISTFILE)
     @ResponseBody
-    public Map<String, Object> listfile(String file, Integer start, HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> listfile(Integer start, HttpServletRequest request, HttpSession session) {
         if (empty(start)) {
             start = 0;
         }

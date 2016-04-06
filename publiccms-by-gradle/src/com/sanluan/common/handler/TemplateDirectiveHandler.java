@@ -105,7 +105,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
         return reduceMap;
     }
 
-    private void reduce(Map<String, TemplateModel> reduceMap) throws TemplateModelException {
+    private void reduce(Map<String, TemplateModel> reduceMap) {
         Namespace namespace = environment.getCurrentNamespace();
         for (String key : map.keySet()) {
             namespace.remove(key);
@@ -170,9 +170,8 @@ public class TemplateDirectiveHandler extends BaseHandler {
         HttpRequestHashModel httpRequestHashModel = (HttpRequestHashModel) environment.getGlobalVariable("Request");
         if (notEmpty(httpRequestHashModel)) {
             return httpRequestHashModel.getRequest();
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -180,8 +179,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
         TemplateModel model = environment.getGlobalVariable(name);
         if (notEmpty(model)) {
             return converBean(model);
-        } else {
-            return null;
         }
+        return null;
     }
 }

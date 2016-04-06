@@ -17,9 +17,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysRoleService extends BaseService<SysRole> {
 
-    @Autowired
-    private SysRoleDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer deptId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(deptId, pageIndex, pageSize);
@@ -46,4 +43,7 @@ public class SysRoleService extends BaseService<SysRole> {
         }
         return false;
     }
+
+    @Autowired
+    private SysRoleDao dao;
 }

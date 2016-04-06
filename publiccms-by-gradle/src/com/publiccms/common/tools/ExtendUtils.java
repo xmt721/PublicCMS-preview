@@ -42,9 +42,8 @@ public class ExtendUtils extends Base {
             } catch (IOException | ClassCastException e) {
                 return new HashMap<String, String>();
             }
-        } else {
-            return new HashMap<String, String>();
         }
+        return new HashMap<String, String>();
 
     }
 

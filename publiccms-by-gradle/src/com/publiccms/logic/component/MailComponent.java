@@ -91,6 +91,7 @@ class SendThread extends Thread {
         this.mailSender = mailSender;
     }
 
+    @Override
     public void run() {
         int i = 0;
         while (i < 3) {

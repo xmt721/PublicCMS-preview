@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
-import com.publiccms.logic.dao.log.LogOperateDao;
 import com.sanluan.common.base.BaseService;
 import com.sanluan.common.handler.PageHandler;
 
@@ -138,6 +137,4 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     @Autowired
     private CmsCategoryDao dao;
-    @Autowired
-    private LogOperateDao logOperateDao;
 }

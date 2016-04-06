@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.sanluan.common.handler.RenderHandler;
 
 import freemarker.template.TemplateException;
@@ -37,9 +35,5 @@ public class CreateTemplateFileDirective extends AbstractTaskDirective {
 
     @Autowired
     private TemplateComponent templateComponent;
-    @Autowired
-    private CmsCategoryService categoryService;
-    @Autowired
-    private CmsContentService contentService;
 
 }

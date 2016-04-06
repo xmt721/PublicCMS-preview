@@ -18,9 +18,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysDeptService extends BaseService<SysDept> {
 
-    @Autowired
-    private SysDeptDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer parentId, Integer userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, parentId, userId, pageIndex, pageSize);
@@ -41,4 +38,7 @@ public class SysDeptService extends BaseService<SysDept> {
         }
         return idList;
     }
+
+    @Autowired
+    private SysDeptDao dao;
 }

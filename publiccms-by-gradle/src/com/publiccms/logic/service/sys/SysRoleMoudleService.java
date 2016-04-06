@@ -20,9 +20,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysRoleMoudleService extends BaseService<SysRoleMoudle> {
 
-    @Autowired
-    private SysRoleMoudleDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer roleId, Integer moudleId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, moudleId, pageIndex, pageSize);
@@ -68,4 +65,7 @@ public class SysRoleMoudleService extends BaseService<SysRoleMoudle> {
     public int deleteByMoudleId(Integer moudleId) {
         return dao.deleteByMoudleId(moudleId);
     }
+
+    @Autowired
+    private SysRoleMoudleDao dao;
 }

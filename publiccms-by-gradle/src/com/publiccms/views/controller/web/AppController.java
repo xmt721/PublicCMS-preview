@@ -99,8 +99,7 @@ public class AppController extends AbstractController {
      */
     @RequestMapping("app/{version}/apis.json")
     @ResponseBody
-    public MappingJacksonValue directives(@PathVariable String version, String callback, HttpServletRequest request,
-            HttpServletResponse response) {
+    public MappingJacksonValue directives(@PathVariable String version, String callback) {
         MappingJacksonValue mappingJacksonValue;
         Map<String, AbstractAppDirective> actionMap = appMap.get(version);
         if (notEmpty(actionMap)) {

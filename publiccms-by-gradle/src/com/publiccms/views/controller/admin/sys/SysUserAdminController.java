@@ -61,9 +61,8 @@ public class SysUserAdminController extends AbstractController {
             if (notEmpty(entity.getPassword())) {
                 if (virifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return TEMPLATE_ERROR;
-                } else {
-                    entity.setPassword(encode(entity.getPassword()));
                 }
+                entity.setPassword(encode(entity.getPassword()));
             } else {
                 entity.setPassword(user.getPassword());
                 if (empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
@@ -100,7 +99,7 @@ public class SysUserAdminController extends AbstractController {
     }
 
     @RequestMapping(value = "enable", method = RequestMethod.POST)
-    public String enable(Integer id, String repassword, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String enable(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (virifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
             return TEMPLATE_ERROR;
         }
@@ -119,7 +118,7 @@ public class SysUserAdminController extends AbstractController {
     }
 
     @RequestMapping(value = "disable", method = RequestMethod.POST)
-    public String disable(Integer id, String repassword, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String disable(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (virifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
             return TEMPLATE_ERROR;
         }

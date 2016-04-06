@@ -14,8 +14,6 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysSiteService extends BaseService<SysSite> {
-    @Autowired
-    private SysSiteDao dao;
 
     @Transactional(readOnly = true)
     public PageHandler getPage(Boolean disabled, String name, Integer pageIndex, Integer pageSize) {
@@ -29,4 +27,7 @@ public class SysSiteService extends BaseService<SysSite> {
         }
         return entity;
     }
+    
+    @Autowired
+    private SysSiteDao dao;
 }

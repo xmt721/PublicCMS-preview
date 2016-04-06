@@ -35,6 +35,7 @@ public class MultiSiteDispatcherServlet extends ErrorToNotFoundDispatcherServlet
         super(webApplicationContext);
     }
 
+    @Override
     protected View resolveViewName(String viewName, Map<String, Object> model, Locale locale, HttpServletRequest request)
             throws Exception {
         String multiSiteViewName;

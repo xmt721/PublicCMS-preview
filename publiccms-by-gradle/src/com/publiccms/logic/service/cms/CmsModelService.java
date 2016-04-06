@@ -17,9 +17,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsModelService extends BaseService<CmsModel> {
 
-    @Autowired
-    private CmsModelDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer parentId, Boolean hasChild, Boolean onlyUrl, Boolean hasImages,
             Boolean hasFiles, Boolean disabled, Integer pageIndex, Integer pageSize) {
@@ -40,4 +37,7 @@ public class CmsModelService extends BaseService<CmsModel> {
             entity.setDisabled(true);
         }
     }
+
+    @Autowired
+    private CmsModelDao dao;
 }

@@ -23,8 +23,7 @@ public class GetMd5Method extends BaseMethod {
         String string = getString(0, arguments);
         if (notEmpty(string)) {
             return encode(string);
-        } else {
-            return null;
         }
+        return null;
     }
 }

@@ -14,6 +14,7 @@ import com.publiccms.common.view.InitializeFreeMarkerView;
  *
  */
 public class WebFreeMarkerView extends InitializeFreeMarkerView {
+    @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
         model.put(CONTEXT_USER, getUserFromSession(request.getSession()));
         super.exposeHelpers(model, request);

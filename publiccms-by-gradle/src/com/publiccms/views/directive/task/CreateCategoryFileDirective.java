@@ -12,7 +12,6 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.sanluan.common.handler.RenderHandler;
 
 import freemarker.template.TemplateException;
@@ -45,7 +44,5 @@ public class CreateCategoryFileDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Autowired
     private CmsCategoryService categoryService;
-    @Autowired
-    private CmsContentService contentService;
 
 }

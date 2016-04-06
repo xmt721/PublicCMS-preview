@@ -73,8 +73,7 @@ public class GetHtmlMethod extends BaseMethod {
                 }
             }
             return html;
-        } else {
-            return null;
         }
+        return null;
     }
 }

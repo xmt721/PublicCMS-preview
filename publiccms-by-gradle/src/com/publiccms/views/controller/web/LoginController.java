@@ -109,9 +109,8 @@ public class LoginController extends AbstractController {
                 log.error(e.getMessage());
             }
             return REDIRECT + returnUrl;
-        } else {
-            return REDIRECT + "index.html";
         }
+        return REDIRECT + "index.html";
     }
 
     /**
@@ -162,19 +161,18 @@ public class LoginController extends AbstractController {
                 || virifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
                 || virifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model)) {
             return domain.getRegisterPath();
-        } else {
-            String ip = getIpAddress(request);
-            entity.setPassword(encode(entity.getPassword()));
-            entity.setLastLoginIp(ip);
-            entity.setSiteId(site.getId());
-            service.save(entity);
-            String authToken = UUID.randomUUID().toString();
-            entity.setPassword(null);
-            setUserToSession(session, entity);
-            addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
-                    Integer.MAX_VALUE, null);
-            sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL_WEB, getDate(), ip));
         }
+        String ip = getIpAddress(request);
+        entity.setPassword(encode(entity.getPassword()));
+        entity.setLastLoginIp(ip);
+        entity.setSiteId(site.getId());
+        service.save(entity);
+        String authToken = UUID.randomUUID().toString();
+        entity.setPassword(null);
+        setUserToSession(session, entity);
+        addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
+                Integer.MAX_VALUE, null);
+        sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL_WEB, getDate(), ip));
         return domain.getRegisterPath();
     }
 
@@ -186,8 +184,7 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping("verifyEmail")
     @ResponseBody
-    public MappingJacksonValue verifyEmail(String authToken, String callback, HttpSession session, HttpServletRequest request,
-            ModelMap model) {
+    public MappingJacksonValue verifyEmail(String authToken, String callback, HttpSession session, ModelMap model) {
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (virifyNotEmpty("verifyEmail.authToken", authToken, model)
                 || virifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
@@ -226,9 +223,8 @@ public class LoginController extends AbstractController {
                 log.error(e.getMessage());
                 return REDIRECT + "index.html";
             }
-        } else {
-            return REDIRECT + "index.html";
         }
+        return REDIRECT + "index.html";
     }
 
     protected boolean virifyNotEnablie(SysUser user, ModelMap model) {

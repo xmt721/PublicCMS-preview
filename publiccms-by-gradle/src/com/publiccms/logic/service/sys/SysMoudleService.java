@@ -19,9 +19,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysMoudleService extends BaseService<SysMoudle> {
 
-    @Autowired
-    private SysMoudleDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer parentId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(parentId, pageIndex, pageSize);
@@ -39,4 +36,7 @@ public class SysMoudleService extends BaseService<SysMoudle> {
         }
         return urls;
     }
+    
+    @Autowired
+    private SysMoudleDao dao;
 }

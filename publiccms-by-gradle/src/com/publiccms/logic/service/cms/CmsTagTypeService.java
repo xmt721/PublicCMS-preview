@@ -19,9 +19,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsTagTypeService extends BaseService<CmsTagType> {
 
-    @Autowired
-    private CmsTagTypeDao dao;
-
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, String name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, name, pageIndex, pageSize);
@@ -53,4 +50,7 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
         }
         return idList.toArray(new Integer[idList.size()]);
     }
+
+    @Autowired
+    private CmsTagTypeDao dao;
 }

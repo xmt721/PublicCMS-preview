@@ -53,9 +53,8 @@ public class SysRoleAuthorizedDao extends BaseDao<SysRoleAuthorized> {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleAuthorized bean where bean.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     @Override
