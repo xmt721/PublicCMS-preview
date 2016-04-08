@@ -29,7 +29,7 @@ public class MultiSiteImportDirective extends Base implements TemplateDirectiveM
         String path = converString(((Map<String, TemplateModel>) parameters).get("path"));
         @SuppressWarnings("unchecked")
         String namespace = converString(((Map<String, TemplateModel>) parameters).get("namespace"));
-        if (notEmpty(path) && notEmpty(path) && notEmpty(environment)) {
+        if (notEmpty(path) && notEmpty(namespace) && notEmpty(environment)) {
             environment.importLib(getFullFileName(site, path), namespace);
         }
     }

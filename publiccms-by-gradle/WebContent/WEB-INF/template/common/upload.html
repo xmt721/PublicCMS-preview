@@ -50,7 +50,7 @@ function selectFile(path){
 				$('ul li a',$.pdialog.getCurrent()).hover(function(){
 					var filenames=$(this).text().toLowerCase().split('.');
 					if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
-						if(-1<$(this).text().indexof("://")||0==$(this).text().indexof("//")){
+						if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
 							$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).text());
 						}else{
 							$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',resourcePath+$(this).text());
