@@ -102,15 +102,12 @@ public class LoginController extends AbstractController {
         sysUserTokenService.save(new SysUserToken(authToken, user.getId(), CHANNEL_WEB, getDate(), ip));
         service.updateLoginStatus(user.getId(), ip);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
-        if (notEmpty(returnUrl)) {
-            try {
-                returnUrl = URLDecoder.decode(returnUrl, DEFAULT_CHARSET);
-            } catch (UnsupportedEncodingException e) {
-                log.error(e.getMessage());
-            }
-            return REDIRECT + returnUrl;
+        try {
+            returnUrl = URLDecoder.decode(returnUrl, DEFAULT_CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            log.error(e.getMessage());
         }
-        return REDIRECT + "index.html";
+        return REDIRECT + returnUrl;
     }
 
     /**
@@ -148,7 +145,7 @@ public class LoginController extends AbstractController {
      * @return
      */
     @RequestMapping(value = "doRegister", method = RequestMethod.POST)
-    public String register(SysUser entity, String repassword, String callback, HttpServletRequest request, HttpSession session,
+    public String register(SysUser entity, String repassword, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         SysDomain domain = getDomain(request);
@@ -173,7 +170,7 @@ public class LoginController extends AbstractController {
         addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
                 Integer.MAX_VALUE, null);
         sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL_WEB, getDate(), ip));
-        return domain.getRegisterPath();
+        return REDIRECT + returnUrl;
     }
 
     /**
@@ -184,17 +181,17 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping("verifyEmail")
     @ResponseBody
-    public MappingJacksonValue verifyEmail(String authToken, String callback, HttpSession session, ModelMap model) {
+    public String verifyEmail(String authToken, String returnUrl, HttpSession session, ModelMap model) {
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (virifyNotEmpty("verifyEmail.authToken", authToken, model)
                 || virifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
-            return getMappingJacksonValue(model, callback);
+            return REDIRECT + returnUrl;
         }
         sysEmailTokenService.delete(sysEmailToken.getAuthToken());
         service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
         clearUserTimeToSession(session);
         model.addAttribute(MESSAGE, "verifyEmail.success");
-        return getMappingJacksonValue(model, callback);
+        return REDIRECT + returnUrl;
     }
 
     /**

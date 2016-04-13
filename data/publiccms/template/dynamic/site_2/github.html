@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<title>Github插件 - 散乱</title>
+	<title>Github仓库插件 - 散乱</title>
 	<@include path="/ftl/header.ftl"/> <#-- 页头 -->
 </head>
 <body>
@@ -9,20 +9,20 @@
 	<main>
 		<div>
 				<h2>
-				Github项目挂件
+				Github仓库挂件
 				</h2>
 				<fieldset>
-			    	<legend>Github项目</legend>
-					<p class="text-center"><input name="login" type="text" placeholder="用户"/></p>
-					<p class="text-center"><input name="repo"  type="text" placeholder="项目"/></p>
-					<p class="text-center"><label><input name="hideGetLink"  type="checkbox"/>隐藏获取链接</label></p>
+			    	<legend>Github仓库</legend>
+					<p class="text-center"><label>用户(User):<input name="login" type="text" placeholder="用户" value="ecomfe"/></label></p>
+					<p class="text-center"><label>仓库(Repositories):<input name="repo"  type="text" placeholder="仓库" value="echarts"/></label></p>
+					<p class="text-center"><label><input name="hideGetLink"  type="checkbox"/>隐藏获取链接(Hide Get Link)</label></p>
 					<p class="text-center">
-						<input type="button" class="button" onclick="preview()" value="预览"/>
+						<input type="button" class="button" onclick="preview()" value="预览(Preview)"/>
 					</p>
 				</fieldset>
 			<script>
 				function preview(){
-					if(!$('input[name=login]').val()&&!$('input[name=repo]').val()){
+					if(!$('input[name=login]').val()||!$('input[name=repo]').val()){
 						$('input[name=login]').val('sanluan');
 						$('input[name=repo]').val('PublicCMS');
 						__.footer.message('用户和项目不能为空').addClass('red').delay(3000).fadeOut(function(){$(this).remove();});
@@ -34,10 +34,13 @@
 					$('#widget').attr('src',url);
 					$('textarea[name=url]').val("<div style=\"width:380px;height:300px;border:1px solid #eee;\"><iframe frameborder=\"0\" width=\"100%\" height=\"100%\" src=\'"+url+"\"></iframe></div>");
 				}
+				$(function(){
+					preview();
+				});
 			</script>
 			<fieldset>
-	    		<legend>预览</legend>
-				<p><label>引用代码：</label><textarea name="url" style="width: 400px;height: 40px;"></textarea></p>
+	    		<legend>预览(Preview)</legend>
+				<p><label>引用代码(Code)：</label><textarea name="url" style="width: 400px;height: 40px;"></textarea></p>
 				<div style="width:380px;height:300px;border:1px solid #eee;"><iframe id="widget" frameborder="0" width="100%" height="100%"></iframe></div>
 			</fieldset>
 			<div id="SOHUCS" style="padding:10px;" sid="github-widget"></div>

@@ -1,4 +1,5 @@
 <#assign type=type!'static'/>
+<@_metadata path='/include'+path type=type><#assign a=object/></@_metadata>
 <style>
 .CodeMirror{height:100%;font-size:14px;}
 </style>
@@ -12,6 +13,9 @@ function refresh${type}TemplatePlace(){
 	<a href="${type}Template/chipLookup.html?chip=include&editor=${type}TemplatePlaceEditor" target="dialog" mask="true">推荐位</a>
  	<a href="${type}Template/chipLookup.html?chip=ftl&editor=${type}TemplatePlaceEditor" target="dialog" mask="true">模板片段</a>
 	<a href="${type}Template/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="${type}Template/metadata">创建模板片段</a>
+	<#if (a.allowContribute)?has_content&&a.allowContribute>
+		<a href="${type}Template/placeForm.html?path=${path?html?url}" target="navTab" rel="${type}Template/placeForm">前台表单模板</a>
+	</#if>
 	<a href="cmsTemplate/delete.do?path=${'/include'+path?html?url}&type=${type}" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
  </h2>
 <div class="pageContent">

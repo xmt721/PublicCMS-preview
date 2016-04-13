@@ -88,15 +88,14 @@ public class ContentController extends AbstractController {
      * @return
      */
     @RequestMapping("save")
-    @ResponseBody
-    public MappingJacksonValue save(CmsContent entity, CmsContentAttribute attribute,
-            @ModelAttribute CmsContentParamters contentParamters, String txt, Boolean timing, Boolean draft,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
+            String txt, Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         SysSite site = getSite(request);
         SysUser user = getAdminFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService.getEntity(entity.getModelId(), entity.getCategoryId());
         if (virifyNotEmpty("categoryModel", categoryModel, model)) {
-            return new MappingJacksonValue(model);
+            return REDIRECT + returnUrl;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (notEmpty(category) && site.getId() != category.getSiteId()) {
@@ -108,7 +107,7 @@ public class ContentController extends AbstractController {
         }
 
         if (virifyNotEmpty("category", category, model) || virifyNotEmpty("model", cmsModel, model)) {
-            return new MappingJacksonValue(model);
+            return REDIRECT + returnUrl;
         }
         if (notEmpty(draft) && draft) {
             entity.setStatus(CmsContentService.STATUS_DRAFT);
@@ -124,7 +123,7 @@ public class ContentController extends AbstractController {
         if (notEmpty(entity.getId())) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return new MappingJacksonValue(model);
+                return REDIRECT + returnUrl;
             }
             String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "createDate", "clicks",
                     "comments", "scores", "childs", "checkUserId" };
@@ -182,7 +181,7 @@ public class ContentController extends AbstractController {
             attribute.setData(null);
         }
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
-        return new MappingJacksonValue(model);
+        return REDIRECT + returnUrl;
     }
 
     /**

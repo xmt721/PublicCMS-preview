@@ -4,6 +4,7 @@ package com.publiccms.logic.dao.cms;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.search.FullTextQuery;
 import org.springframework.stereotype.Repository;
@@ -23,36 +24,33 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     public PageHandler query(Integer siteId, String text, String tagId, Integer pageIndex, Integer pageSize) {
         FullTextQuery query;
         if (notEmpty(tagId)) {
-            query = getQuery(tagFields, null, tagId);
+            query = getQuery(tagFields, tagId);
         } else {
-            query = getQuery(textFields, null, text);
+            query = getQuery(textFields, text);
         }
         query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate());
         query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
         return getPage(query, pageIndex, pageSize);
     }
 
-    public FacetPageHandler facetQuery(Integer siteId, final String categoryId, final String modelId, String text, String tagId,
+    public FacetPageHandler facetQuery(Integer siteId, String categoryId, String modelId, String text, String tagId,
             Integer pageIndex, Integer pageSize) {
         FullTextQuery query;
         if (notEmpty(tagId)) {
-            query = getQuery(tagFields, facetFields, tagId);
+            query = getFacetQuery(tagFields, facetFields, tagId, 10);
         } else {
-            query = getQuery(textFields, facetFields, text);
+            query = getFacetQuery(textFields, facetFields, text, 10);
         }
         query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate());
         query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
-        return getFacetPage(query, facetFields, new HashMap<String, String>() {
-            private static final long serialVersionUID = 1L;
-            {
-                if (notEmpty(categoryId)) {
-                    put("categoryId", categoryId);
-                }
-                if (notEmpty(modelId)) {
-                    put("modelId", modelId);
-                }
-            }
-        }, pageIndex, pageSize);
+        Map<String, String> valueMap = new HashMap<String, String>();
+        if (notEmpty(modelId)) {
+            valueMap.put("modelId", modelId);
+        }
+        if (notEmpty(categoryId)) {
+            valueMap.put("categoryId", categoryId);
+        }
+        return getFacetPage(query, facetFields, valueMap, pageIndex, pageSize);
     }
 
     public int deleteByCategoryIds(int siteId, Integer[] categoryIds) {

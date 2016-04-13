@@ -11,7 +11,7 @@ public class PageHandler extends Base implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    
+
     public static final int DEFAULT_PAGE_SIZE = 30;
     public static final int MAX_PAGE_SIZE = 100;
 
@@ -27,7 +27,7 @@ public class PageHandler extends Base implements java.io.Serializable {
      * @param maxResults
      */
     public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxResults) {
-        setTotalCount(notEmpty(maxResults) && maxResults < totalCount ? maxResults : totalCount);
+        setTotalCount(totalCount, maxResults);
         setPageSize(notEmpty(pageSize) ? pageSize : 0);
         setPageIndex(notEmpty(pageIndex) ? pageIndex : 1);
         init();
@@ -61,6 +61,14 @@ public class PageHandler extends Base implements java.io.Serializable {
      */
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    /**
+     * @param totalCount
+     *            the totalCount to set
+     */
+    public void setTotalCount(Integer totalCount, Integer maxResults) {
+        setTotalCount(notEmpty(maxResults) && maxResults < totalCount ? maxResults : totalCount);
     }
 
     /**

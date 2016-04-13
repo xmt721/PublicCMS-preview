@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +69,7 @@ public class UserController extends AbstractController {
      * @return
      */
     @RequestMapping(value = "changePassword")
-    public MappingJacksonValue changePassword(String oldpassword, String password, String repassword, String callback,
+    public String changePassword(String oldpassword, String password, String repassword, String returnUrl,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysUser user = getUserFromSession(session);
         if (!virifyNotEmpty("password", password, model) && !virifyNotEquals("repassword", password, repassword, model)) {
@@ -94,7 +93,7 @@ public class UserController extends AbstractController {
                 }
             }
         }
-        return getMappingJacksonValue(model, callback);
+        return REDIRECT + returnUrl;
     }
 
     /**
@@ -105,7 +104,7 @@ public class UserController extends AbstractController {
      * @return
      */
     @RequestMapping(value = "saveEmail")
-    public MappingJacksonValue saveEmail(String email, String callback, HttpServletRequest request, HttpSession session,
+    public String saveEmail(String email, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
         if (!virifyNotEmpty("email", email, model) && !virifyNotEMail("email", email, model)
@@ -132,6 +131,6 @@ public class UserController extends AbstractController {
             }
             model.addAttribute(MESSAGE, "saveEmail.success");
         }
-        return getMappingJacksonValue(model, callback);
+        return REDIRECT+ returnUrl;
     }
 }

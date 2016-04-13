@@ -6,9 +6,10 @@
 		</form>
 	</div>
 	<div class="container">
+		<a href="#" class="nav-icon"></a>
 		<div class="logo">
-			<a href="${site.sitePath}"><img src="${site.resourcePath!}image/logo.png"/></a>
-			<a href="http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175"><img src="http://pub.idqqimg.com/wpa/images/group.png" alt="Public CMS" title="Public CMS"></a>
+			<a href="${site.sitePath}"><img src="${site.resourcePath!}image/logo.png" alt="Public CMS"/></a>
+			<a href="http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175"><img src="http://pub.idqqimg.com/wpa/images/group.png" alt="Public CMS"></a>
 		</div>
 		<nav>
 			<ul>
@@ -35,3 +36,4 @@
 		</nav>
 	</div>
 </header>
+<script>$('.nav-icon').click(function(){$('header nav>ul').fadeToggle()});</script>

@@ -1,53 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>PublicCMS - 永久免费开源JAVA CMS(内容管理系统),最新技术框架</title>
-  <@_metadata path='/index.html' type='static'>
-	<meta name="keywords" content="${(object.extendData.keywords?html)!}"/>
-	<meta name="description" content="${(object.extendData.description?html)!}"/>
-  </@_metadata>
-	<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+	<title>正在跳转...</title>
+	<meta http-equiv="refresh" content="0;url=${site.sitePath}"> 
 </head>
 <body>
-<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
-<script>
-	$("header nav ul li a:contains('首页')").parent().addClass('selected');
-</script>
-<main>
-	<div class="container">
-      	<!--#include virtual="/include/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"--> <#-- 焦点图 -->
-		<div class="data-list left-content">
-<@import path="ftl/tools.ftl" namespace="t"/>
-<@_modelList>
-	<#list page.list?reverse as model>
-		<@_contentList status=1 modelId=model.id count=3>
-			<#if page.totalCount gt 0>
-				<h3>动态页面最新${model.name!}</h3>
-				<#list page.list as a>
-						<@include path="/ftl/data-list.ftl"/>
-				</#list>
-			</#if>
-		</@_contentList>
-	</#list>
-</@_modelList>
-		</div>
-		<aside>
-			<div>
-				<h3>动态页面热门排行</h3>
-				<ul class="rank">
-<@_contentList orderField='clicks' count=10>
-	<#list page.list as a>
-					<li><a href="content.html?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
-	</#list>
-</@_contentList>
-				</ul>
-			</div>
-			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
-            <!--#include virtual="/include/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"--> <#-- 开源中国 -->
-            <!--#include virtual="/include/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"--> <#-- github -->
-		</aside>
-	</div>
-</main>
-<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
+	正在跳转...
 </body>
 </html>

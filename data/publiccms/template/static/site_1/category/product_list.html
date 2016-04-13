@@ -14,13 +14,13 @@
 	$("header nav ul li a:contains('${category.name}')").parent().addClass('selected');
 </script>
 <main>
-	<div class="container nav">
+	<nav class="container">
 		<@_categoryList parentId=category.parentId>
 			<#list page.list as a>
 				<a href="${a.url!}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
 			</#list>
 		</@_categoryList>
-	</div>
+	</nav>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
 		<@echoBread category.id/>

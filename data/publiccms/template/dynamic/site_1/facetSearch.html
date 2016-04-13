@@ -27,14 +27,13 @@
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <#if word?has_content||tagId?has_content>
 	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=page count=10>
+		<#assign modelFacet=page.map['modelId']!/>
+	    <#assign categoryFacet=page.map['categoryId']!/>
 		<#if page.totalCount gt 0>
-			<#assign prePath='facetSearch.html?word='+(word!'')?url+'&categoryId='+(categoryId!'')?url+'&modelId='+(modelId!'')?url+'&'/>
-			<#assign modelFacet=page.map['modelId']!/>
-			<#assign categoryFacet=page.map['categoryId']!/>
 			<#list page.list as a>
 				<@include path="/ftl/search-list.ftl"/>
 			</#list>
-			<@include path="/ftl/search-page.ftl"/>
+			<@include path="/ftl/facetSearch-page.ftl"/>
 		</#if>
 	</@_facetSearch>
 </#if>
@@ -48,10 +47,10 @@
 					<#assign modelMap=map!/>
 				</@_model>
 				<div style="border-bottom: 1px solid #eee;">
-					<h3>模型</h3>
+					<h3>按模型过滤</h3>
 					<ul>
 					<#list modelFacet?keys as k>
-						<li><a href="facetSearch.html?word=${(word?url)!}&modelId=${modelMap[k].id}&categoryId=${(categoryId?url)!}">${modelMap[k].name}(${modelFacet[k]})</a></li>
+						<li><a href="facetSearch.html?word=${(word?url)!}&modelId=${k}&categoryId=${(categoryId?url)!}">${modelMap[k].name}(${modelFacet[k]})</a></li>
 					</#list>
 					</ul>
 				</div>
@@ -64,10 +63,10 @@
 					<#assign categoryMap=map!/>
 				</@_category>
 				<div style="border-bottom: 1px solid #eee;">
-					<h3>分类</h3>
+					<h3>按分类过滤</h3>
 					<ul>
 					<#list categoryFacet?keys as k>
-						<li><a href="facetSearch.html?word=${(word?url)!}&modelId=${(modelId?url)!}&categoryId=${categoryMap[k].id}">${categoryMap[k].name}(${categoryFacet[k]})</a></li>
+						<li><a href="facetSearch.html?word=${(word?url)!}&modelId=${(modelId?url)!}&categoryId=${k}">${categoryMap[k].name}(${categoryFacet[k]})</a></li>
 					</#list>
 					</ul>
 				</div>

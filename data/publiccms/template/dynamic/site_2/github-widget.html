@@ -2,8 +2,10 @@
 <#assign login=login!'sanluan'/>
 <#assign repo=repo!'PublicCMS'/>
 <#assign url='https://api.github.com/repos/'+login+'/'+repo/>
-<#assign data=getHtml(url)?eval/>
-<#assign commits=getHtml(url+'/commits?per_page=3')?eval/>
+<#assign data=getHtml(url)/>
+<#assign data=data?eval/>
+<#assign commits=getHtml(url+'/commits?per_page=3')/>
+<#assign commits=commits?eval/>
 <html>
 <head>
 	<title>${(data.name)!}</title>
@@ -25,7 +27,7 @@
 					<svg aria-hidden="true" class="octicon octicon-eye" height="16" role="img" version="1.1" viewBox="0 0 16 16" width="14"><path d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6c4.94 0 7.94-6 7.94-6S13 2 8.06 2z m-0.06 10c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4z m2-4c0 1.11-0.89 2-2 2s-2-0.89-2-2 0.89-2 2-2 2 0.89 2 2z"></path></svg>
 					Watch
 				</a>
-				<a class="social-count" href="${(data.html_url)!}/watchers" target="_blank">${(data.watchers_count)!}</a>
+				<a class="social-count" href="${(data.html_url)!}/watchers" target="_blank">${(data.subscribers_count)!}</a>
 			</li>
 			<li>
 				<a href="${(data.html_url)!}"  target="_blank"class="btn btn-sm btn-with-count tooltipped tooltipped-n" aria-label="You must be signed in to star a repository">
@@ -63,7 +65,7 @@
 </#list>
 </#if>
 	<#if !hideGetLink?has_content>
-		<p style="text-align: right;"><a href="${base}/github.html" target="_blank">获取我的Github项目挂件</a></p>
+		<p style="text-align: right;"><a href="${base}/github.html" target="_blank">Get my Github Repositories Widget!</a></p>
 	</#if>
 	<script>
 		var _hmt=_hmt||[];

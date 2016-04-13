@@ -1,4 +1,4 @@
-	<a href="${site.dynamicPath}">首页</a> &gt;
+	<a href="${site.sitePath}">首页</a> &gt;
 <#macro echoBread parentId>
 	<#if parentId?has_content>
 		<@_category id=parentId>

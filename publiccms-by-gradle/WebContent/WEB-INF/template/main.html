@@ -52,43 +52,186 @@
 	<div class="divider"></div>
 <@_checkMasterSite>
 	<#if result>
-<@_memory>
 	<div class="unit">
-		<p>
-			<label>已用内存：</label>${((totalMemory-freeMemory)/1048576)?string("0.##")}MB
-		</p>
-		<p>
-			<label>空闲内存：</label>${(freeMemory/1048576)?string("0.##")}MB
-		</p>
-		<p>
-			<label>占用内存：</label>${(totalMemory/1048576)?string("0.##")}MB
-		</p>
-		<p>
-			<label>最大内存：</label>${(maxMemory/1048576)?string("0.##")}MB
-		</p>
+		<p id="memory" style="width:380px;height:200px;"></p>
+		<p id="memory_count" style="width:380px;height:200px;"></p>
+		<p id="disk" style="width:380px;height:200px;"></p>
 	</div>
-	<div class="divider"></div>
+<script>
+<@_memory>
+var memoryChart={
+	chart:echarts.init(document.getElementById('memory')),
+	countChart:echarts.init(document.getElementById('memory_count')),
+	data:{
+		freeMemory:[],
+		usedMemory:[],
+		unUsedMemory:[]
+	},
+	time:[],
+	toDecimal:function(number) {  
+        var value = parseFloat(number);  
+        if (isNaN(value)) {  
+            return 0;  
+        }  
+        value = Math.round(number*100)/100;  
+        return value;  
+    }  
+};
+memoryChart.time.push("${.now?string('hh:mm')}");
+memoryChart.data.freeMemory.push(memoryChart.toDecimal(${freeMemory}/1048576));
+memoryChart.data.usedMemory.push(memoryChart.toDecimal((${totalMemory}-${freeMemory})/1048576));
+memoryChart.data.unUsedMemory.push(memoryChart.toDecimal((${maxMemory}-${totalMemory})/1048576));
+memoryChart.chart.setOption({
+	title: {
+        text: '内存监测'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: memoryChart.time
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+   	    name:'实际使用',
+   	    type:'line',
+   	    stack: '总量',
+   	    areaStyle: {normal: {}},
+   	    data:memoryChart.data.usedMemory
+   	},
+   	{
+   	    name:'闲置内存',
+   	    type:'line',
+   	    stack: '总量',
+   	    areaStyle: {normal: {}},
+   	    data:memoryChart.data.freeMemory
+   	},
+   	{
+   	    name:'可用剩余',
+   	    type:'line',
+   	    stack: '总量',
+   	    areaStyle: {normal: {}},
+   	    data:memoryChart.data.unUsedMemory
+   	}]
+});
+memoryChart.countChart.setOption({
+	title : {
+        text: '内存使用(最大可用：${(maxMemory/1048576)?string("0.##")}MB)',
+        subtext: '占用内存：${(totalMemory/1048576)?string("0.##")}MB',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)",
+        position: [10, 10]
+    },
+    series : [
+        {
+            name: '内存使用',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:${((totalMemory-freeMemory)/1048576)?string("0.##")}, name:'已用'},
+                {value:${(freeMemory/1048576)?string("0.##")}, name:'闲置'}
+            ]
+        }
+    ]
+});
+if(window.memoryInterval){
+	clearInterval(window.memoryInterval);
+}
+window.memoryInterval=setInterval(function () {
+	$.getJSON("common/memory.html", function(data) {
+		memoryChart.time.push(data.time);
+		memoryChart.data.freeMemory.push(memoryChart.toDecimal(data.freeMemory/1048576));
+		memoryChart.data.usedMemory.push(memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576));
+		memoryChart.data.unUsedMemory.push(memoryChart.toDecimal((data.maxMemory-data.totalMemory)/1048576));
+		if(memoryChart.time.length > 100){
+			memoryChart.time.shift();
+			memoryChart.data.freeMemory.shift();
+			memoryChart.data.usedMemory.shift();
+			memoryChart.data.unUsedMemory.shift();
+		}
+		memoryChart.countChart.setOption({
+			title:{
+				subtext: '占用内存：'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB',
+			},
+			series: [{
+	             name: '内存使用',
+	             type: 'pie',
+	             radius : '55%',
+	             center: ['50%', '60%'],
+	             data:[
+	                 {value:memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576), name:'已用'},
+	                 {value:memoryChart.toDecimal(data.freeMemory/1048576), name:'闲置'}
+	             ]
+	         }]
+		});
+		memoryChart.chart.setOption({
+	        xAxis: {
+	            data: memoryChart.time
+	        },
+	        series: [
+	    	{
+	    	    name:'实际使用',
+	    	    type:'line',
+	    	    stack: '总量',
+	    	    areaStyle: {normal: {}},
+	    	    data:memoryChart.data.usedMemory
+	    	},
+	    	{
+	    	    name:'闲置内存',
+	    	    type:'line',
+	    	    stack: '总量',
+	    	    areaStyle: {normal: {}},
+	    	    data:memoryChart.data.freeMemory
+	    	},
+	    	{
+	    	    name:'可用剩余',
+	    	    type:'line',
+	    	    stack: '总量',
+	    	    areaStyle: {normal: {}},
+	    	    data:memoryChart.data.unUsedMemory
+	    	}]
+	    });
+	});
+	$("#background,#progressBar").hide();
+}, 20000);
 </@_memory>
 <@_disk>
-	<div class="unit">
-		<p>
-			<label>站点文件目录:</label>${rootPath!}
-		</p>
-		<p>
-			<label>已用磁盘空间：</label>${((totalSpace-freeSpace)/1048576)?string("0.##")}MB
-		</p>
-		<p>
-			<label>空闲磁盘空间：</label>${(freeSpace/1048576)?string("0.##")}MB
-		</p>
-		<p>
-			<label>可用磁盘空间：</label>${(usableSpace/1048576)?string("0.##")}MB
-		</p>
-		<p>
-			<label>总磁盘空间：</label>${(totalSpace/1048576)?string("0.##")}MB
-		</p>
-	</div>
-	<div class="divider"></div>
+echarts.init(document.getElementById('disk')).setOption({
+	title : {
+        text: '站点磁盘：${(totalSpace/1048576)?string("0.##")}MB',
+        subtext: '${(rootPath?js_string)!}',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)",
+        position: [10, 10]
+    },
+    series : [
+        {
+            name: '磁盘空间',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:${((totalSpace-freeSpace)/1048576)?string("0.##")}, name:'已用'},
+                {value:${(freeSpace/1048576)?string("0.##")}, name:'空闲'}
+            ]
+        }
+    ]
+});
 </@_disk>
+</script>
+	<div class="divider"></div>
 <@_systemProperties>
 	<div class="unit">
 		<p>
@@ -183,12 +326,18 @@
 			(<a href="http://fontawesome.io/3.2.1/license/" target="_blank">SIL OFL 1.1</a>)
 		</p>
 		<p>
+			<label>Echarts：</label>
+			<a id="EchartsVersion" href="http://echarts.baidu.com/" target="_blank"></a>
+			(<a href="https://github.com/ecomfe/echarts/blob/master/LICENSE" target="_blank">License(BSD)</a>)
+		</p>
+		<p>
 			<label>UEditor：</label>
 			<a id="UEditorVersion" href="http://ueditor.baidu.com/website/" target="_blank"></a>
 			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
 		</p>
 		<script>
 			$('#JQueryVersion').text(jQuery.fn.jquery);
+			$('#EchartsVersion').text(echarts.version);
 			$('#UEditorVersion').text(UE.version);
 			$('#jUIVersion').text(DWZ.version);
 		</script>
