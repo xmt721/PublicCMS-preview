@@ -70,7 +70,7 @@
 	<@_templateList path=filepath type=type>
 		<@_metadata dir=filepath type=type><#local metaDataMap=object/></@_metadata>
 		<#list list as a>
-			<#if 'ftl'!=a.fileName&&'include'!=a.fileName>
+			<#if 'ftl'!=a.fileName>
 				<li>
 					<#local path=filepath+'/'+a.fileName>
 					<a tname="${name}" tvalue="${path?html}">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>

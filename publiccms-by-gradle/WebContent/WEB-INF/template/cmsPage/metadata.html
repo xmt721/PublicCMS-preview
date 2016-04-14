@@ -18,7 +18,6 @@
 			</dd>
 		</dl>
 		<#include "../include_page/extendData.html"/>
-		<@_metadata path=path type=type><#assign a=object/></@_metadata>
 		<#assign metadataExtendList=(a.metadataExtendList)![]/>
 		<#assign extendValues=(a.extendData)!/>
 		<@extendData 'extendDataList' metadataExtendList extendValues/>

@@ -26,14 +26,15 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
     }
 
     @SuppressWarnings("unchecked")
-    public void update(int contentId, List<CmsContentFile> files, List<CmsContentFile> images) {
+    public void update(int contentId, Integer userId, List<CmsContentFile> files, List<CmsContentFile> images) {
         Set<Integer> idList = new HashSet<Integer>();
         if (notEmpty(images)) {
             for (CmsContentFile entity : images) {
                 if (notEmpty(entity.getId())) {
-                    update(entity.getId(), entity, new String[] { "id", "contentId", "isImage" });
+                    update(entity.getId(), entity, new String[] { "id", "userId", "contentId", "image" });
                 } else {
                     entity.setImage(true);
+                    entity.setUserId(userId);
                     entity.setContentId(contentId);
                     save(entity);
                 }
@@ -43,9 +44,10 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
         if (notEmpty(files)) {
             for (CmsContentFile entity : files) {
                 if (notEmpty(entity.getId())) {
-                    update(entity.getId(), entity, new String[] { "id", "contentId", "isImage" });
+                    update(entity.getId(), entity, new String[] { "id", "userId", "contentId", "image" });
                 } else {
                     entity.setContentId(contentId);
+                    entity.setUserId(userId);
                     save(entity);
                 }
                 idList.add(entity.getId());
@@ -57,7 +59,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
             }
         }
     }
-    
+
     @Autowired
     private CmsContentFileDao dao;
 }

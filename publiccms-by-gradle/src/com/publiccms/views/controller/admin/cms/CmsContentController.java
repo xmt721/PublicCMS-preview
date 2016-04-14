@@ -133,6 +133,8 @@ public class CmsContentController extends AbstractController {
         if (virifyNotEmpty("category", category, model) || virifyNotEmpty("model", cmsModel, model)) {
             return TEMPLATE_ERROR;
         }
+        entity.setHasFiles(cmsModel.isHasFiles());
+        entity.setHasImages(cmsModel.isHasImages());
         if (notEmpty(draft) && draft) {
             entity.setStatus(CmsContentService.STATUS_DRAFT);
         } else {
@@ -175,7 +177,7 @@ public class CmsContentController extends AbstractController {
         Integer[] tagIds = tagService.update(site.getId(), contentParamters.getTags());
         service.updateTagIds(entity.getId(), arrayToCommaDelimitedString(tagIds));// 更新保存标签
         if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
+            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
                     entity.isHasImages() ? contentParamters.getImages() : null);// 更新保存图集，附件
         }
 

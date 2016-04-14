@@ -89,8 +89,7 @@ public class ContentController extends AbstractController {
      */
     @RequestMapping("save")
     public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
-            String txt, Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+            Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysUser user = getAdminFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService.getEntity(entity.getModelId(), entity.getCategoryId());
@@ -109,6 +108,8 @@ public class ContentController extends AbstractController {
         if (virifyNotEmpty("category", category, model) || virifyNotEmpty("model", cmsModel, model)) {
             return REDIRECT + returnUrl;
         }
+        entity.setHasFiles(cmsModel.isHasFiles());
+        entity.setHasImages(cmsModel.isHasImages());
         if (notEmpty(draft) && draft) {
             entity.setStatus(CmsContentService.STATUS_DRAFT);
         } else {
@@ -120,7 +121,7 @@ public class ContentController extends AbstractController {
         } else if (notEmpty(timing) && timing && now.after(entity.getPublishDate())) {
             entity.setPublishDate(now);
         }
-        if (notEmpty(entity.getId())) {
+        if (notEmpty(entity)) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return REDIRECT + returnUrl;
@@ -148,12 +149,12 @@ public class ContentController extends AbstractController {
                     getIpAddress(request), now, entity.getId() + ":" + entity.getTitle()));
         }
         if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
+            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
                     entity.isHasImages() ? contentParamters.getImages() : null);// 更新保存图集，附件
         }
 
         if (null != attribute.getText()) {
-            attribute.setWordCount(removeHtmlTag(txt).length());
+            attribute.setWordCount(removeHtmlTag(attribute.getText()).length());
         }
         Map<String, String> map = null;
         if (notEmpty(extendService.getEntity(cmsModel.getExtendId()))) {

@@ -132,11 +132,9 @@
 <#if model?has_content&&(model.hasImages||model.hasFiles)>
 	<#include "../include_page/contentFiles.html"/>
 	<#if model.hasImages>
-		<input name="hasImages" type="hidden" value="true" />
 		<@contentFiles true id!/>
 	</#if>
 	<#if model.hasFiles>
-		<input name="hasFiles" type="hidden" value="true" />
 		<@contentFiles false id!/>
 	</#if>
 </#if>

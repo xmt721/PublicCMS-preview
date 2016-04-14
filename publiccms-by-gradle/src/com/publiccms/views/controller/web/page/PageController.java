@@ -1,6 +1,7 @@
 package com.publiccms.views.controller.web.page;
 
 import static com.publiccms.common.tools.ExtendUtils.getExtendString;
+import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +70,7 @@ public class PageController extends AbstractController {
             logOperateService.save(new LogOperate(site.getId(), getUserFromSession(session).getId(), LogLoginService.CHANNEL_WEB,
                     "save.pagedata", getIpAddress(request), getDate(), entity.getPath()));
         }
-        String filePath = siteComponent.getTemplateFilePath(site, entity.getType(), entity.getPath());
+        String filePath = siteComponent.getTemplateFilePath(site, entity.getType(), INCLUDE_DIRECTORY + entity.getPath());
         String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath, pageDataParamters.getExtendDataList()));
         attributeService.updateAttribute(entity.getId(), extentString);
         return REDIRECT + returnUrl;

@@ -2,6 +2,7 @@ package com.publiccms.views.controller.admin.cms;
 
 import static com.publiccms.common.tools.ExtendUtils.getExtendString;
 import static com.publiccms.logic.component.SiteComponent.getFullFileName;
+import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
 import static com.publiccms.logic.service.cms.CmsPageDataService.ITEM_TYPE_CUSTOM;
 import static com.publiccms.logic.service.cms.CmsPageDataService.STATUS_NORMAL;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
@@ -85,7 +86,7 @@ public class CmsPageController extends AbstractController {
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "save.pagedata",
                     getIpAddress(request), getDate(), entity.getPath()));
         }
-        String filePath = siteComponent.getTemplateFilePath(site, entity.getType(), entity.getPath());
+        String filePath = siteComponent.getTemplateFilePath(site, entity.getType(), INCLUDE_DIRECTORY + entity.getPath());
         String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath, pageDataParamters.getExtendDataList()));
         attributeService.updateAttribute(entity.getId(), extentString);
         return TEMPLATE_DONE;
