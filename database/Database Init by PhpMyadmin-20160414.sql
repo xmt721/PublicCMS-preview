@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2016 年 04 月 13 日 21:29
+-- 生成日期: 2016 年 04 月 14 日 11:13
 -- 服务器版本: 5.0.90-community-nt
 -- PHP 版本: 5.2.17
 
@@ -62,19 +62,19 @@ CREATE TABLE IF NOT EXISTS `cms_category` (
 --
 
 INSERT INTO `cms_category` (`id`, `site_id`, `name`, `parent_id`, `type_id`, `child_ids`, `tag_type_ids`, `english_name`, `template_path`, `path`, `has_static`, `url`, `content_path`, `page_size`, `allow_contribute`, `sort`, `hidden`, `disabled`, `contents`, `extend_id`) VALUES
-(1, 1, '演示', NULL, NULL, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/demonstrate/index.html', '${content.publishDate?string(''yyyy/MM/dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, 0),
-(6, 1, '汽车', 1, NULL, NULL, '', 'car', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/car/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, 0),
-(7, 1, '社会', 1, NULL, NULL, '', 'social', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/social/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, 0),
-(8, 1, '美图', 1, NULL, NULL, '', 'picture', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/picture/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, 0),
-(9, 1, '系统介绍', 1, NULL, NULL, '', 'introduction', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/introduction/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 2, 0),
-(12, 1, '文章', 1, NULL, NULL, '', 'article', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/article/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 0, 0),
+(1, 1, '演示', NULL, NULL, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/demonstrate/index.html', '${content.publishDate?string(''yyyy/MM/dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, NULL),
+(6, 1, '汽车', 1, NULL, NULL, '', 'car', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/car/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, NULL),
+(7, 1, '社会', 1, NULL, NULL, '', 'social', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/social/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, NULL),
+(8, 1, '美图', 1, NULL, NULL, '', 'picture', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/picture/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 0, NULL),
+(9, 1, '系统介绍', 1, NULL, NULL, '', 'introduction', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/introduction/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, 2, NULL),
+(12, 1, '文章', 1, NULL, NULL, '', 'article', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/article/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 0, NULL),
 (11, 1, '测试', NULL, NULL, NULL, NULL, 'test', '/category/parent.html', '${category.englishName}/index.html', 0, 'test/index.html', '${content.publishDate?string(''yyyy/MM/dd'')}/${content.id}.html', 20, 0, 0, 0, 1, 0, NULL),
 (13, 1, '下载', NULL, NULL, NULL, NULL, 'download', '', 'https://github.com/sanluan/PublicCMS', 0, 'https://github.com/sanluan/PublicCMS', '', 20, 0, 0, 0, 1, 0, NULL),
 (14, 1, '图书', 1, NULL, NULL, NULL, 'book', '/category/parent.html', 'demonstrate/${category.englishName}/index.html', 0, 'demonstrate/book/index.html', '${content.publishDate?string(''yyyy/MM/dd'')}/${content.id}.html', 20, 0, 0, 0, 1, 0, NULL),
-(15, 1, '小说', 1, NULL, NULL, '', 'novel', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/novel/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 0, 0),
+(15, 1, '小说', 1, NULL, NULL, '', 'novel', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/novel/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 0, NULL),
 (16, 1, 'OSChina下载', 13, NULL, NULL, NULL, 'download', '', 'http://git.oschina.net/sanluan/PublicCMS', 0, 'http://git.oschina.net/sanluan/PublicCMS', '', 20, 0, 0, 0, 1, 0, NULL),
-(17, 1, '科技', 1, NULL, NULL, '', 'science', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/science/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 0, 0),
-(18, 1, '商品', 1, NULL, NULL, '', 'product', '/category/product_list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/product/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, -3, 0),
+(17, 1, '科技', 1, NULL, NULL, '', 'science', '/category/list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/science/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 0, NULL),
+(18, 1, '商品', 1, NULL, NULL, '', 'product', '/category/product_list.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/product/index.html', '${category.englishName}/${content.publishDate?string(''yyyy/MM-dd'')}/${content.id}.html', 10, 0, 0, 0, 0, -3, NULL),
 (19, 1, '案例', NULL, NULL, NULL, '', 'case', '/category/parent.html', '${category.englishName}/index.html', 1, '//www.publiccms.com/case/index.html', '${content.publishDate?string(''yyyy/MM/dd'')}/${content.id}.html', 20, 0, 0, 0, 0, 2, 2),
 (20, 2, '代码分享', NULL, NULL, NULL, '1,2', 'code', '', 'category.html?id=${category.id}', 0, '//www.sanluan.com/category.html?id=20', '', 20, 1, 0, 0, 0, 0, 3);
 
@@ -1704,57 +1704,19 @@ CREATE TABLE IF NOT EXISTS `sys_email_token` (
 
 CREATE TABLE IF NOT EXISTS `sys_extend` (
   `id` int(11) NOT NULL auto_increment,
+  `item_type` varchar(20) NOT NULL COMMENT '扩展类型',
+  `item_id` int(11) NOT NULL COMMENT '扩展项目ID',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `sys_extend`
 --
 
-INSERT INTO `sys_extend` (`id`) VALUES
-(1),
-(2),
-(3),
-(4),
-(5),
-(6),
-(7),
-(8),
-(9),
-(10),
-(11),
-(12),
-(13),
-(14),
-(15),
-(16),
-(17),
-(18),
-(19),
-(20),
-(21),
-(22),
-(23),
-(24),
-(25),
-(26),
-(27),
-(28),
-(29),
-(30),
-(31),
-(32),
-(33),
-(34),
-(35),
-(36),
-(37),
-(38),
-(39),
-(40),
-(41),
-(42),
-(43);
+INSERT INTO `sys_extend` (`id`, `item_type`, `item_id`) VALUES
+(1, 'model', 7),
+(2, 'category', 19),
+(3, 'category', 20);
 
 -- --------------------------------------------------------
 
@@ -2190,6 +2152,7 @@ INSERT INTO `sys_user` (`id`, `site_id`, `name`, `password`, `nick_name`, `dept_
 
 CREATE TABLE IF NOT EXISTS `sys_user_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '登陆授权',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -2197,7 +2160,8 @@ CREATE TABLE IF NOT EXISTS `sys_user_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `user_id` (`user_id`),
   KEY `create_date` (`create_date`),
-  KEY `channel` (`channel`)
+  KEY `channel` (`channel`),
+  KEY `site_id` (`site_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户令牌';
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

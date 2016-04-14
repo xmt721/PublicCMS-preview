@@ -34,7 +34,7 @@ public class PluginSiteController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "pluginCode" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.plugin.site", getIpAddress(request), getDate(), "plugin:"
                                 + entity.getPluginCode()));

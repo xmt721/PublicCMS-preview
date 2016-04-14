@@ -34,7 +34,7 @@ public class SysDomainController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.domain", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));

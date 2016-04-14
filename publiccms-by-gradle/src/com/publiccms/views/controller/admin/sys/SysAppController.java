@@ -34,7 +34,7 @@ public class SysAppController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "channel" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.app", getIpAddress(request), getDate(), entity.getId() + ":"
                                 + entity.getAppKey()));

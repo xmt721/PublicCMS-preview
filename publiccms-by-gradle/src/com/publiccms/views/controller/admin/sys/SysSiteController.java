@@ -50,9 +50,11 @@ public class SysSiteController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             entity = service.update(entity.getId(), entity, new String[] { "id" });
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.site", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+            if (notEmpty(entity)) {
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.site", getIpAddress(request), getDate(), entity.getId()
+                                + ":" + entity.getName()));
+            }
         } else {
             if (virifyNotEmpty("userName", userName, model) || virifyNotUserName("password", password, model)) {
                 return TEMPLATE_ERROR;
@@ -84,11 +86,11 @@ public class SysSiteController extends AbstractController {
             String ip = getIpAddress(request);
             for (SysDomain domain : (List<SysDomain>) domainService.getPage(entity.getId(), null, null).getList()) {
                 domainService.delete(domain.getId());
-                logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain", ip,
-                        now, entity.getId() + ":" + entity.getName()));
+                logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain",
+                        ip, now, entity.getId() + ":" + entity.getName()));
             }
-            logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", ip, now,
-                    entity.getId() + ":" + entity.getName()));
+            logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", ip,
+                    now, entity.getId() + ":" + entity.getName()));
         }
         return TEMPLATE_DONE;
     }

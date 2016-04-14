@@ -44,7 +44,7 @@ public class SysMoudleController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             entity = service.update(entity.getId(), entity, new String[] { "id" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 @SuppressWarnings("unchecked")
                 List<SysRoleMoudle> roleMoudleList = (List<SysRoleMoudle>) roleMoudleService.getPage(null, entity.getId(), null,
                         null).getList();

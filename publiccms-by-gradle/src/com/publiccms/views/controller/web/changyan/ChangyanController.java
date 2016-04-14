@@ -45,8 +45,8 @@ public class ChangyanController extends AbstractController {
     private LogLoginService logLoginService;
 
     @RequestMapping("login")
-    public MappingJacksonValue login(User user, String callback, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response) {
+    public MappingJacksonValue login(User user, String callback, HttpServletRequest request, HttpSession session,
+            HttpServletResponse response) {
         LoginResult loginResult = new LoginResult();
         String ip = getIpAddress(request);
         SysSite site = getSite(request);
@@ -62,7 +62,7 @@ public class ChangyanController extends AbstractController {
             setUserToSession(session, entity);
             addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
                     Integer.MAX_VALUE, null);
-            sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL, getDate(), ip));
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL, getDate(), ip));
             loginResult.setUser_id(entity.getId());
         } else {
             SysUser sysuser = service.getEntity(user.getUser_id());
@@ -72,7 +72,7 @@ public class ChangyanController extends AbstractController {
                 String authToken = UUID.randomUUID().toString();
                 addCookie(request.getContextPath(), response, COOKIES_USER, sysuser.getId() + COOKIES_USER_SPLIT + authToken,
                         Integer.MAX_VALUE, null);
-                sysUserTokenService.save(new SysUserToken(authToken, sysuser.getId(), CHANNEL, getDate(), ip));
+                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), sysuser.getId(), CHANNEL, getDate(), ip));
                 service.updateLoginStatus(sysuser.getId(), ip);
                 logLoginService.save(new LogLogin(site.getId(), sysuser.getName(), sysuser.getId(), ip, CHANNEL, true, getDate(),
                         null));

@@ -155,7 +155,7 @@ public class CmsContentController extends AbstractController {
                 ignoreProperties = addAll(ignoreProperties, new String[] { "url" });
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.content", getIpAddress(request), now, entity.getId() + ":" + entity.getTitle()));
             }

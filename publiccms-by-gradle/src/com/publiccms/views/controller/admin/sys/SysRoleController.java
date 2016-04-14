@@ -54,7 +54,7 @@ public class SysRoleController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.role", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));

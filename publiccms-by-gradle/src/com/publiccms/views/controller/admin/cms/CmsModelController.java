@@ -55,21 +55,20 @@ public class CmsModelController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "disabled", "extendId" });
-            if (notEmpty(entity.getId())) {
-                if (empty(extendService.getEntity(entity.getExtendId()))) {
-                    service.updateExtendId(entity.getId(),  (Integer) extendService.save(new SysExtend()));
-                }
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(entity.getSiteId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.model", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));
             }
         } else {
-            entity.setExtendId( (Integer) extendService.save(new SysExtend()));
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.model", getIpAddress(request), getDate(), entity.getId() + ":"
                             + entity.getName()));
+        }
+        if (empty(extendService.getEntity(entity.getExtendId()))) {
+            service.updateExtendId(entity.getId(), (Integer) extendService.save(new SysExtend("model", entity.getId())));
         }
         extendFieldService.update(entity.getExtendId(), modelParamters.getContentExtends());
         return TEMPLATE_DONE;

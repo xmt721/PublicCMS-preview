@@ -99,7 +99,7 @@ public class LoginController extends AbstractController {
         String authToken = UUID.randomUUID().toString();
         addCookie(request.getContextPath(), response, COOKIES_USER, user.getId() + COOKIES_USER_SPLIT + authToken,
                 Integer.MAX_VALUE, null);
-        sysUserTokenService.save(new SysUserToken(authToken, user.getId(), CHANNEL_WEB, getDate(), ip));
+        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
         service.updateLoginStatus(user.getId(), ip);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
         try {
@@ -169,7 +169,7 @@ public class LoginController extends AbstractController {
         setUserToSession(session, entity);
         addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
                 Integer.MAX_VALUE, null);
-        sysUserTokenService.save(new SysUserToken(authToken, entity.getId(), CHANNEL_WEB, getDate(), ip));
+        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL_WEB, getDate(), ip));
         return REDIRECT + returnUrl;
     }
 

@@ -60,21 +60,20 @@ public class CmsCategoryTypeController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "extendId" });
-            if (notEmpty(entity.getId())) {
-                if (empty(extendService.getEntity(entity.getExtendId()))) {
-                    service.updateExtendId(entity.getId(),  (Integer) extendService.save(new SysExtend()));
-                }
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.categoryType", getIpAddress(request), getDate(), entity
                                 .getId() + ":" + entity.getName()));
             }
         } else {
-            entity.setExtendId( (Integer) extendService.save(new SysExtend()));
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.categoryType", getIpAddress(request), getDate(), entity.getId()
                             + ":" + entity.getName()));
+        }
+        if (empty(extendService.getEntity(entity.getExtendId()))) {
+            service.updateExtendId(entity.getId(), (Integer) extendService.save(new SysExtend("categoryType", entity.getId())));
         }
         extendFieldService.update(entity.getExtendId(), categoryTypeParamters.getCategoryExtends());// 修改或增加分类类型扩展字段
         return TEMPLATE_DONE;
@@ -98,6 +97,7 @@ public class CmsCategoryTypeController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);
+            extendService.delete(entity.getExtendId());
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.categoryType", getIpAddress(request), getDate(), id.toString()));
         }

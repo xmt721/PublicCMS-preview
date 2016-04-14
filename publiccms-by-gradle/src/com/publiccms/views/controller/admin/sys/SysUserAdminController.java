@@ -71,8 +71,8 @@ public class SysUserAdminController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "registeredDate", "siteId", "authToken", "lastLoginDate",
                     "lastLoginIp", "loginCount", "disabled" });
-            roleUserService.dealRoleUsers(entity.getId(), roleIds);
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
+                roleUserService.dealRoleUsers(entity.getId(), roleIds);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.user", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));

@@ -1,7 +1,6 @@
 package com.publiccms.common.interceptor.admin;
 
 import static com.publiccms.common.base.AbstractController.getAdminFromSession;
-import static com.publiccms.common.base.AbstractController.setAdminToSession;
 import static com.publiccms.common.constants.CmsVersion.getVersion;
 import static com.publiccms.common.constants.CommonConstants.X_POWERED;
 import static com.sanluan.common.tools.RequestUtils.getEncodePath;
@@ -62,8 +61,6 @@ public class AdminContextInterceptor extends BaseInterceptor {
                 }
             }
             user = sysUserService.getEntity(user.getId());
-            user.setPassword(null);
-            setAdminToSession(request.getSession(), user);
             if (!user.isDisabled() && !user.isSuperuserAccess()) {
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);

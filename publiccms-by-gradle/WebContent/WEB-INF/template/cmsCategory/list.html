@@ -60,6 +60,7 @@
 				<td>${a.sort!}</td>
 				<td>${a.hidden?then('隐藏','')}</td>
 				<td>
+					<a href="cmsCategory/add.html?parentId=${a.id}" target="navTab" rel="cmsCategory/add">添加子分类</a>
 				<#if authorizedMap['cmsCategory/add']>
 					<a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类">修改</a>
 				</#if>

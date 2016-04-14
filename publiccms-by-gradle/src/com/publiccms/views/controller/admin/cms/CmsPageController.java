@@ -73,7 +73,7 @@ public class CmsPageController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "status", "userId", "type", "clicks",
                     "path", "createDate", "disabled" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
             }

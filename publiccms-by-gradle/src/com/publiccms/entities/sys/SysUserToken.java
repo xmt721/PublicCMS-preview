@@ -1,6 +1,6 @@
 package com.publiccms.entities.sys;
 
-// Generated 2016-2-24 12:08:34 by Hibernate Tools 4.3.1
+// Generated 2016-4-14 10:10:32 by Hibernate Tools 4.3.1
 
 import java.util.Date;
 
@@ -26,6 +26,8 @@ public class SysUserToken implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "授权码")
     private String authToken;
+    @MyColumn(title = "站点", condition = true)
+    private int siteId;
     @MyColumn(title = "用户", condition = true)
     private int userId;
     @MyColumn(title = "授权渠道", condition = true)
@@ -38,8 +40,9 @@ public class SysUserToken implements java.io.Serializable {
     public SysUserToken() {
     }
 
-    public SysUserToken(String authToken, int userId, String channel, Date createDate, String loginIp) {
+    public SysUserToken(String authToken, int siteId, int userId, String channel, Date createDate, String loginIp) {
         this.authToken = authToken;
+        this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
         this.createDate = createDate;
@@ -54,6 +57,15 @@ public class SysUserToken implements java.io.Serializable {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public int getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(int siteId) {
+        this.siteId = siteId;
     }
 
     @Column(name = "user_id", nullable = false)

@@ -94,28 +94,27 @@ public class CmsCategoryController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, new String[] { "siteId", "childIds", "tagTypeIds", "url", "disabled",
                     "extendId", "contents", "typeId" });
-            if (notEmpty(oldEntity.getParentId()) && !oldEntity.getParentId().equals(entity.getParentId())) {
-                service.generateChildIds(site.getId(), oldEntity.getParentId());
-                service.generateChildIds(site.getId(), entity.getParentId());
-            } else if (notEmpty(entity.getParentId()) && empty(oldEntity.getParentId())) {
-                service.generateChildIds(site.getId(), entity.getParentId());
-            }
-            if (notEmpty(entity.getId())) {
-                if (empty(extendService.getEntity(entity.getExtendId()))) {
-                    service.updateExtendId(entity.getId(), (Integer) extendService.save(new SysExtend()));
+            if (notEmpty(entity)) {
+                if (notEmpty(oldEntity.getParentId()) && !oldEntity.getParentId().equals(entity.getParentId())) {
+                    service.generateChildIds(site.getId(), oldEntity.getParentId());
+                    service.generateChildIds(site.getId(), entity.getParentId());
+                } else if (notEmpty(entity.getParentId()) && empty(oldEntity.getParentId())) {
+                    service.generateChildIds(site.getId(), entity.getParentId());
                 }
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.category", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));
             }
         } else {
-            entity.setExtendId((Integer) extendService.save(new SysExtend()));
             entity.setSiteId(site.getId());
             service.save(entity);
             service.addChildIds(entity.getParentId(), entity.getId());
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.category", getIpAddress(request), getDate(), entity.getId() + ":"
                             + entity.getName()));
+        }
+        if (empty(extendService.getEntity(entity.getExtendId()))) {
+            service.updateExtendId(entity.getId(), (Integer) extendService.save(new SysExtend("category", entity.getId())));
         }
 
         Integer[] tagTypeIds = tagTypeService.update(site.getId(), categoryParamters.getTagTypes());

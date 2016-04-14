@@ -34,7 +34,7 @@ public class PluginVoteController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "itemExtendId", "userCounts" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.plugin.vote", getIpAddress(request), getDate(), entity
                                 .getId() + ":" + entity.getTitle()));

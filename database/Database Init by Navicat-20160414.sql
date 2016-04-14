@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql
+Source Server         : localhost
 Source Server Version : 50090
 Source Host           : localhost:3306
 Source Database       : public_cms
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50090
 File Encoding         : 65001
 
-Date: 2016-04-13 21:28:49
+Date: 2016-04-14 11:11:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,19 +53,19 @@ CREATE TABLE `cms_category` (
 -- ----------------------------
 -- Records of cms_category
 -- ----------------------------
-INSERT INTO `cms_category` VALUES ('1', '1', '演示', null, null, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/demonstrate/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `cms_category` VALUES ('6', '1', '汽车', '1', null, null, '', 'car', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/car/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `cms_category` VALUES ('7', '1', '社会', '1', null, null, '', 'social', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/social/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `cms_category` VALUES ('8', '1', '美图', '1', null, null, '', 'picture', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/picture/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `cms_category` VALUES ('9', '1', '系统介绍', '1', null, null, '', 'introduction', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/introduction/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '2', '0');
-INSERT INTO `cms_category` VALUES ('12', '1', '文章', '1', null, null, '', 'article', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/article/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', '0');
+INSERT INTO `cms_category` VALUES ('1', '1', '演示', null, null, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/demonstrate/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('6', '1', '汽车', '1', null, null, '', 'car', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/car/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('7', '1', '社会', '1', null, null, '', 'social', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/social/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('8', '1', '美图', '1', null, null, '', 'picture', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/picture/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('9', '1', '系统介绍', '1', null, null, '', 'introduction', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/introduction/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '2', null);
+INSERT INTO `cms_category` VALUES ('12', '1', '文章', '1', null, null, '', 'article', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/article/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
 INSERT INTO `cms_category` VALUES ('11', '1', '测试', null, null, null, null, 'test', '/category/parent.html', '${category.englishName}/index.html', '0', 'test/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '1', '0', null);
 INSERT INTO `cms_category` VALUES ('13', '1', '下载', null, null, null, null, 'download', '', 'https://github.com/sanluan/PublicCMS', '0', 'https://github.com/sanluan/PublicCMS', '', '20', '0', '0', '0', '1', '0', null);
 INSERT INTO `cms_category` VALUES ('14', '1', '图书', '1', null, null, null, 'book', '/category/parent.html', 'demonstrate/${category.englishName}/index.html', '0', 'demonstrate/book/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '1', '0', null);
-INSERT INTO `cms_category` VALUES ('15', '1', '小说', '1', null, null, '', 'novel', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/novel/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', '0');
+INSERT INTO `cms_category` VALUES ('15', '1', '小说', '1', null, null, '', 'novel', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/novel/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
 INSERT INTO `cms_category` VALUES ('16', '1', 'OSChina下载', '13', null, null, null, 'download', '', 'http://git.oschina.net/sanluan/PublicCMS', '0', 'http://git.oschina.net/sanluan/PublicCMS', '', '20', '0', '0', '0', '1', '0', null);
-INSERT INTO `cms_category` VALUES ('17', '1', '科技', '1', null, null, '', 'science', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/science/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', '0');
-INSERT INTO `cms_category` VALUES ('18', '1', '商品', '1', null, null, '', 'product', '/category/product_list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/product/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '-3', '0');
+INSERT INTO `cms_category` VALUES ('17', '1', '科技', '1', null, null, '', 'science', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/science/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('18', '1', '商品', '1', null, null, '', 'product', '/category/product_list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/product/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '-3', null);
 INSERT INTO `cms_category` VALUES ('19', '1', '案例', null, null, null, '', 'case', '/category/parent.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '2', '2');
 INSERT INTO `cms_category` VALUES ('20', '2', '代码分享', null, null, null, '1,2', 'code', '', 'category.html?id=${category.id}', '0', '//www.sanluan.com/category.html?id=20', '', '20', '1', '0', '0', '0', '0', '3');
 
@@ -1579,55 +1579,17 @@ CREATE TABLE `sys_email_token` (
 DROP TABLE IF EXISTS `sys_extend`;
 CREATE TABLE `sys_extend` (
   `id` int(11) NOT NULL auto_increment,
+  `item_type` varchar(20) NOT NULL COMMENT '扩展类型',
+  `item_id` int(11) NOT NULL COMMENT '扩展项目ID',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_extend
 -- ----------------------------
-INSERT INTO `sys_extend` VALUES ('1');
-INSERT INTO `sys_extend` VALUES ('2');
-INSERT INTO `sys_extend` VALUES ('3');
-INSERT INTO `sys_extend` VALUES ('4');
-INSERT INTO `sys_extend` VALUES ('5');
-INSERT INTO `sys_extend` VALUES ('6');
-INSERT INTO `sys_extend` VALUES ('7');
-INSERT INTO `sys_extend` VALUES ('8');
-INSERT INTO `sys_extend` VALUES ('9');
-INSERT INTO `sys_extend` VALUES ('10');
-INSERT INTO `sys_extend` VALUES ('11');
-INSERT INTO `sys_extend` VALUES ('12');
-INSERT INTO `sys_extend` VALUES ('13');
-INSERT INTO `sys_extend` VALUES ('14');
-INSERT INTO `sys_extend` VALUES ('15');
-INSERT INTO `sys_extend` VALUES ('16');
-INSERT INTO `sys_extend` VALUES ('17');
-INSERT INTO `sys_extend` VALUES ('18');
-INSERT INTO `sys_extend` VALUES ('19');
-INSERT INTO `sys_extend` VALUES ('20');
-INSERT INTO `sys_extend` VALUES ('21');
-INSERT INTO `sys_extend` VALUES ('22');
-INSERT INTO `sys_extend` VALUES ('23');
-INSERT INTO `sys_extend` VALUES ('24');
-INSERT INTO `sys_extend` VALUES ('25');
-INSERT INTO `sys_extend` VALUES ('26');
-INSERT INTO `sys_extend` VALUES ('27');
-INSERT INTO `sys_extend` VALUES ('28');
-INSERT INTO `sys_extend` VALUES ('29');
-INSERT INTO `sys_extend` VALUES ('30');
-INSERT INTO `sys_extend` VALUES ('31');
-INSERT INTO `sys_extend` VALUES ('32');
-INSERT INTO `sys_extend` VALUES ('33');
-INSERT INTO `sys_extend` VALUES ('34');
-INSERT INTO `sys_extend` VALUES ('35');
-INSERT INTO `sys_extend` VALUES ('36');
-INSERT INTO `sys_extend` VALUES ('37');
-INSERT INTO `sys_extend` VALUES ('38');
-INSERT INTO `sys_extend` VALUES ('39');
-INSERT INTO `sys_extend` VALUES ('40');
-INSERT INTO `sys_extend` VALUES ('41');
-INSERT INTO `sys_extend` VALUES ('42');
-INSERT INTO `sys_extend` VALUES ('43');
+INSERT INTO `sys_extend` VALUES ('1', 'model', '7');
+INSERT INTO `sys_extend` VALUES ('2', 'category', '19');
+INSERT INTO `sys_extend` VALUES ('3', 'category', '20');
 
 -- ----------------------------
 -- Table structure for sys_extend_field
@@ -2027,6 +1989,7 @@ INSERT INTO `sys_user` VALUES ('7', '5', 'admin', 'dbdc2d8254ff5fc85b35803a78bea
 DROP TABLE IF EXISTS `sys_user_token`;
 CREATE TABLE `sys_user_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '登陆授权',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -2034,7 +1997,8 @@ CREATE TABLE `sys_user_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `user_id` (`user_id`),
   KEY `create_date` (`create_date`),
-  KEY `channel` (`channel`)
+  KEY `channel` (`channel`),
+  KEY `site_id` (`site_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户令牌';
 
 -- ----------------------------

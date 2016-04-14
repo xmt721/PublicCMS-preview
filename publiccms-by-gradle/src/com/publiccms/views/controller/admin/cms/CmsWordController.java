@@ -32,7 +32,7 @@ public class CmsWordController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId" });
-            if (notEmpty(entity.getId())) {
+            if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(entity.getSiteId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.word", getIpAddress(request), getDate(), entity.getId()
                                 + ":" + entity.getName()));
