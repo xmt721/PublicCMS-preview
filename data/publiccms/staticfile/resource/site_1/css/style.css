@@ -8,7 +8,7 @@ a img{border:none;}
 .clearfix-before:before{display:block; content:"."; height:0; clear:both; visibility:hidden;}
 
 .container{width:1200px;margin:0 auto;clear:both;overflow:hidden;padding:0px;}
-header{width:100%;border-bottom:2px solid #a4a4a4;padding:0px;}
+header{width:100%;border-bottom:2px solid #a4a4a4;padding:0px;background-color:#ebebeb;}
 header .logo{float:left;}
 header .nav-icon{background:url(../image/head-nav.png) 50% 50% no-repeat;background-size: 40%;width: 50px;height: 50px;float:right;display:none;}
 header .search{text-align:right;height:45px;}

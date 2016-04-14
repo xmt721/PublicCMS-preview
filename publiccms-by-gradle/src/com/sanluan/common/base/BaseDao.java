@@ -320,8 +320,8 @@ public abstract class BaseDao<E> extends Base {
         }
         if (0 < page.getTotalCount()) {
             if (notEmpty(facetFields)) {
+                FacetManager facetManager = fullTextQuery.getFacetManager();
                 for (String facetField : facetFields) {
-                    FacetManager facetManager = fullTextQuery.getFacetManager();
                     List<Facet> facets = facetManager.getFacets(facetField + FACET_NAME_SUFFIX);
                     Map<String, Integer> facetMap = new LinkedHashMap<String, Integer>();
                     for (Facet facet : facets) {
