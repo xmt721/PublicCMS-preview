@@ -1,5 +1,8 @@
 package com.publiccms.logic.component;
 
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.synchronizedMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +21,8 @@ import com.sanluan.common.base.Cacheable;
 @Component
 public class PluginComponent extends Base implements Cacheable {
     private Map<String, Pluginable> pluginMap = new HashMap<String, Pluginable>();
-    private static List<Integer> cachedlist = new ArrayList<Integer>();
-    private Map<Integer, Map<String, String>> cachedMap = new HashMap<Integer, Map<String, String>>();
+    private static List<Integer> cachedlist = synchronizedList(new ArrayList<Integer>());
+    private static Map<Integer, Map<String, String>> cachedMap = synchronizedMap(new HashMap<Integer, Map<String, String>>());
 
     @Autowired
     public void init(List<Pluginable> widgetList) {

@@ -44,11 +44,11 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate());
         query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
         Map<String, String> valueMap = new HashMap<String, String>();
-        if (notEmpty(modelId)) {
-            valueMap.put("modelId", modelId);
-        }
         if (notEmpty(categoryId)) {
             valueMap.put("categoryId", categoryId);
+        }
+        if (notEmpty(modelId)) {
+            valueMap.put("modelId", modelId);
         }
         return getFacetPage(query, facetFields, valueMap, pageIndex, pageSize);
     }

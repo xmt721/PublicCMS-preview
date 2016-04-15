@@ -1,5 +1,8 @@
 package com.publiccms.logic.component;
 
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.synchronizedMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +22,12 @@ import com.sanluan.common.base.Cacheable;
 
 @Component
 public class StatisticsComponent extends Base implements Cacheable {
-    private static List<Integer> cachedlist = new ArrayList<Integer>();
-    private static Map<Integer, CmsContentStatistics> cachedMap = new HashMap<Integer, CmsContentStatistics>();
-    private static List<Integer> placeCachedlist = new ArrayList<Integer>();
-    private static Map<Integer, CmsPageDataStatistics> placeCachedMap = new HashMap<Integer, CmsPageDataStatistics>();
-    private static List<Integer> relatedCachedlist = new ArrayList<Integer>();
-    private static Map<Integer, CmsContentRelatedStatistics> relatedCachedMap = new HashMap<Integer, CmsContentRelatedStatistics>();
+    private static List<Integer> contentCachedlist = synchronizedList(new ArrayList<Integer>());
+    private static Map<Integer, CmsContentStatistics> cachedMap = synchronizedMap(new HashMap<Integer, CmsContentStatistics>());
+    private static List<Integer> placeCachedlist = synchronizedList(new ArrayList<Integer>());
+    private static Map<Integer, CmsPageDataStatistics> placeCachedMap = synchronizedMap(new HashMap<Integer, CmsPageDataStatistics>());
+    private static List<Integer> relatedCachedlist = synchronizedList(new ArrayList<Integer>());
+    private static Map<Integer, CmsContentRelatedStatistics> relatedCachedMap = synchronizedMap(new HashMap<Integer, CmsContentRelatedStatistics>());
     @Autowired
     private CmsContentService contentService;
     @Autowired
@@ -33,10 +36,10 @@ public class StatisticsComponent extends Base implements Cacheable {
     private CmsPageDataService pageDataService;
 
     private void clearCache(int size) {
-        if (size < cachedlist.size()) {
+        if (size < contentCachedlist.size()) {
             List<CmsContentStatistics> list = new ArrayList<CmsContentStatistics>();
             for (int i = 0; i < size / 10; i++) {
-                list.add(cachedMap.remove(cachedlist.remove(0)));
+                list.add(cachedMap.remove(contentCachedlist.remove(0)));
             }
             contentService.updateStatistics(list);
         }
@@ -93,7 +96,7 @@ public class StatisticsComponent extends Base implements Cacheable {
         if (empty(contentStatistics)) {
             clearCache(300);
             contentStatistics = new CmsContentStatistics(id, 1, 0, 0, contentService.getEntity(id));
-            cachedlist.add(id);
+            contentCachedlist.add(id);
         } else {
             contentStatistics.setClicks(contentStatistics.getClicks() + 1);
         }
@@ -106,7 +109,7 @@ public class StatisticsComponent extends Base implements Cacheable {
         if (empty(contentStatistics)) {
             clearCache(300);
             contentStatistics = new CmsContentStatistics(id, 0, 1, 0, contentService.getEntity(id));
-            cachedlist.add(id);
+            contentCachedlist.add(id);
         } else {
             contentStatistics.setComments(contentStatistics.getComments() + 1);
         }
@@ -119,7 +122,7 @@ public class StatisticsComponent extends Base implements Cacheable {
         if (empty(contentStatistics)) {
             clearCache(300);
             contentStatistics = new CmsContentStatistics(id, 0, 0, 1, contentService.getEntity(id));
-            cachedlist.add(id);
+            contentCachedlist.add(id);
         } else {
             contentStatistics.setComments(contentStatistics.getComments() + 1);
         }
@@ -136,7 +139,7 @@ public class StatisticsComponent extends Base implements Cacheable {
         relatedCachedlist.clear();
         relatedCachedMap.clear();
         contentService.updateStatistics(cachedMap.values());
-        cachedlist.clear();
+        contentCachedlist.clear();
         cachedMap.clear();
     }
 }

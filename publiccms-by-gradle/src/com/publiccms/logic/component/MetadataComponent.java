@@ -3,6 +3,8 @@ package com.publiccms.logic.component;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.synchronizedMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,8 @@ import com.sanluan.common.base.Cacheable;
 public class MetadataComponent extends Base implements Cacheable {
     private ObjectMapper objectMapper = new ObjectMapper();
     public static String METADATA_FILE = "metadata.data";
-    private static List<String> cachedlist = new ArrayList<String>();
-    private static Map<String, Map<String, CmsPageMetadata>> cachedMap = new HashMap<String, Map<String, CmsPageMetadata>>();
+    private static List<String> cachedlist = synchronizedList(new ArrayList<String>());
+    private static Map<String, Map<String, CmsPageMetadata>> cachedMap = synchronizedMap(new HashMap<String, Map<String, CmsPageMetadata>>());
 
     private void clearCache(int size) {
         if (size < cachedlist.size()) {

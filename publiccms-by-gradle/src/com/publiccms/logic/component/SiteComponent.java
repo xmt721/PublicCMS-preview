@@ -1,6 +1,8 @@
 package com.publiccms.logic.component;
 
 import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_DYNAMIC;
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.synchronizedMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +32,10 @@ public class SiteComponent extends Base implements Cacheable {
     public static final String TEMPLATE_PATH_TASK = "task";
     public static final String TEMPLATE_PATH_DYNAMIC = "dynamic";
 
-    private static List<SysDomain> cachedSitelist = new ArrayList<SysDomain>();
-    private static List<String> cachedDomainlist = new ArrayList<String>();
-    private static Map<SysDomain, SysSite> cachedSiteMap = new HashMap<SysDomain, SysSite>();
-    private static Map<String, SysDomain> cachedDomainMap = new HashMap<String, SysDomain>();
+    private static List<SysDomain> cachedSitelist = synchronizedList(new ArrayList<SysDomain>());
+    private static List<String> cachedDomainlist = synchronizedList(new ArrayList<String>());
+    private static Map<SysDomain, SysSite> cachedSiteMap = synchronizedMap(new HashMap<SysDomain, SysSite>());
+    private static Map<String, SysDomain> cachedDomainMap = synchronizedMap(new HashMap<String, SysDomain>());
     public static final String SITE_PATH_PREFIX = "/site_";
     public static final String CONTEXT_SITE = "site";
     public static final String CONTEXT_INCLUDE = "include";

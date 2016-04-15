@@ -1,5 +1,7 @@
 package com.publiccms.logic.component;
 
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.synchronizedMap;
 import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.apache.commons.io.FileUtils.writeStringToFile;
@@ -33,8 +35,8 @@ import com.sanluan.common.base.Cacheable;
  */
 @Component
 public class FileComponent extends Base implements Cacheable {
-    private static List<String> cachedlist = new ArrayList<String>();
-    private static Map<String, List<FileInfo>> cachedMap = new HashMap<String, List<FileInfo>>();
+    private static List<String> cachedlist = synchronizedList(new ArrayList<String>());
+    private static Map<String, List<FileInfo>> cachedMap = synchronizedMap(new HashMap<String, List<FileInfo>>());
 
     private void clearCache(int size) {
         if (size < cachedlist.size()) {
