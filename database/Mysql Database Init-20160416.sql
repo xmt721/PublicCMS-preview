@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50090
 File Encoding         : 65001
 
-Date: 2016-04-14 11:11:49
+Date: 2016-04-16 11:11:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -891,8 +891,7 @@ CREATE TABLE `cms_page_data` (
   `id` int(11) NOT NULL auto_increment,
   `site_id` int(11) NOT NULL COMMENT '站点ID',
   `path` varchar(255) NOT NULL COMMENT '模板路径',
-  `type` varchar(50) NOT NULL COMMENT '模板类型',
-  `user_id` int(11) NOT NULL COMMENT '推荐用户',
+  `user_id` int(11) NOT NULL COMMENT '提交用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
   `item_id` int(11) default NULL COMMENT '推荐项目ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
@@ -912,7 +911,6 @@ CREATE TABLE `cms_page_data` (
   KEY `status` (`status`),
   KEY `item_id` (`item_id`),
   KEY `item_type` (`item_type`),
-  KEY `type` (`type`),
   KEY `user_id` (`user_id`),
   KEY `clicks` (`clicks`)
 ) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='页面数据';
@@ -920,42 +918,42 @@ CREATE TABLE `cms_page_data` (
 -- ----------------------------
 -- Records of cms_page_data
 -- ----------------------------
-INSERT INTO `cms_page_data` VALUES ('1', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 'static', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/introduction/2015/08-11/142.html', '2015/11/15/17-35-240834-18490682.jpg', '2016-03-21 21:25:19', '2016-03-21 21:24:54', '1', '6', '0');
-INSERT INTO `cms_page_data` VALUES ('2', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 'static', '1', 'content', '159', '美食', '//www.publiccms.com/picture/2015/08-13/159.html', '2015/11/15/17-35-150887-240130090.jpg', '2016-03-21 21:26:26', '2016-03-21 21:26:08', '1', '4', '0');
-INSERT INTO `cms_page_data` VALUES ('3', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 'static', '1', 'content', '9', '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', '2015/11/15/17-35-0606061972977756.jpg', '2016-03-21 21:28:57', '2016-03-21 21:28:36', '1', '8', '0');
-INSERT INTO `cms_page_data` VALUES ('4', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 'static', '1', 'content', '179', 'PublicCMS系统使用手册下载', '//www.publiccms.com/introduction/2015/10-09/179.html', '2015/11/15/17-34-560426-203327271.jpg', '2016-03-21 21:30:25', '2016-03-21 21:43:45', '1', '18', '0');
-INSERT INTO `cms_page_data` VALUES ('5', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', 'static', '1', 'content', '195', '我们的婚纱照', '//www.publiccms.com/picture/2015/11-15/195.html', '2015/11/15/17-34-450591-326203189.jpg', '2016-03-21 21:31:04', '2016-03-20 21:30:46', '1', '4', '0');
-INSERT INTO `cms_page_data` VALUES ('6', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', 'static', '1', 'custom', null, 'Public CMS QQ群', 'http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175', '', '2016-03-21 22:10:33', '2016-03-21 22:10:26', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('7', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', 'static', '1', 'custom', null, 'FreeMarker语法在线测试', 'http://sanluan.com/freemarker_test.html', '', '2016-03-21 22:11:57', '2016-03-21 22:11:47', '1', '4', '0');
-INSERT INTO `cms_page_data` VALUES ('8', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', 'static', '1', 'custom', null, '百度搜索：PublicCMS', 'https://www.baidu.com/s?wd=publiccms', '', '2016-03-21 22:12:12', '2016-03-21 22:12:00', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('9', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', 'static', '1', 'custom', null, 'FreeMarker2.3.23中文手册', 'http://www.kerneler.com/freemarker2.3.23/', '', '2016-03-21 22:12:24', '2016-03-21 22:12:14', '1', '5', '0');
-INSERT INTO `cms_page_data` VALUES ('10', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', 'static', '1', 'custom', null, 'FreeMarker2.3.23视频教程', 'http://www.elsyy.com/course/6841', '', '2016-03-21 22:12:51', '2016-03-21 22:12:37', '1', '4', '0');
-INSERT INTO `cms_page_data` VALUES ('11', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', 'static', '1', 'custom', null, '管理后台', '//cms.publiccms.com/admin/', '', '2016-03-21 22:13:54', '2016-03-21 22:13:49', '1', '0', '1');
-INSERT INTO `cms_page_data` VALUES ('12', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', 'static', '1', 'custom', null, '后台UI', '//image.publiccms.com/ui/', '', '2016-03-21 22:14:06', '2016-03-21 22:13:56', '1', '22', '0');
-INSERT INTO `cms_page_data` VALUES ('13', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', 'static', '1', 'custom', null, '洪越源码', 'http://www.softhy.net/soft/36775.htm', '', '2016-03-23 11:03:50', '2016-03-23 11:03:31', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('14', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', 'static', '1', 'custom', null, 'ASP300源码', 'http://www.asp300.com/SoftView/13/SoftView_59265.html', '', '2016-03-23 11:04:10', '2016-03-23 11:03:53', '1', '2', '0');
-INSERT INTO `cms_page_data` VALUES ('15', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', 'static', '1', 'custom', null, '脚本之家', 'http://www.jb51.net/codes/389534.html', '', '2016-03-23 11:04:24', '2016-03-23 11:04:11', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('16', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', 'static', '1', 'custom', null, '站长之家下载', 'http://down.chinaz.com/soft/37488.htm', '', '2016-03-23 11:04:42', '2016-03-23 11:04:33', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('17', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', 'static', '1', 'custom', null, '成品网站模板超市', 'http://demo.edge-cloud.cn/', '', '2016-03-23 11:12:03', '2016-03-23 11:12:32', '1', '6', '1');
-INSERT INTO `cms_page_data` VALUES ('18', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', 'static', '1', 'custom', null, 'QQ联系作者', 'http://wpa.qq.com/msgrd?v=3&uin=315415433&site=qq&menu=yes', '', '2016-03-23 11:12:23', '2016-03-23 11:12:05', '1', '4', '0');
-INSERT INTO `cms_page_data` VALUES ('19', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', 'static', '1', 'custom', null, 'PublicCMS@Github', 'https://github.com/sanluan/PublicCMS.', '', '2016-03-23 11:13:33', '2016-03-23 11:13:25', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('20', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', 'static', '1', 'custom', null, 'PublicCMS@开源中国', 'http://git.oschina.net/sanluan/PublicCMS', '', '2016-03-23 11:13:48', '2016-03-23 11:13:35', '1', '5', '0');
-INSERT INTO `cms_page_data` VALUES ('21', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', 'static', '1', 'custom', null, 'PublicCMS@CSDN', 'https://code.csdn.net/zyyy358/publiccms', '', '2016-03-23 11:14:03', '2016-03-23 11:13:50', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('22', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', 'static', '1', 'custom', null, 'PublicCMS-preview@开源中国', 'http://git.oschina.net/sanluan/PublicCMS-preview', '', '2016-03-23 11:14:30', '2016-03-23 11:14:09', '1', '5', '0');
-INSERT INTO `cms_page_data` VALUES ('23', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', 'static', '1', 'custom', null, '搞机哥-博客', 'http://www.gaojig.com/', '', '2016-03-23 11:15:16', '2016-03-23 11:15:07', '1', '14', '0');
-INSERT INTO `cms_page_data` VALUES ('24', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', 'static', '1', 'custom', null, '锋云科技', 'http://www.edge-cloud.cn/', '', '2016-03-23 11:15:28', '2016-03-23 11:15:21', '1', '20', '0');
-INSERT INTO `cms_page_data` VALUES ('25', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', 'static', '1', 'content', '4', '唯美动漫图片', '//www.publiccms.com/8/4.html', '2015/08/07/11-24-1308292097994334.jpg', '2016-03-23 11:22:57', '2016-03-23 11:22:04', '1', '4', '0');
-INSERT INTO `cms_page_data` VALUES ('26', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', 'static', '1', 'content', '9', '昂科拉', '//www.publiccms.com/6/9.html', '2015/08/07/11-24-3602801209954489.jpg', '2016-03-23 11:23:55', '2016-03-23 11:23:31', '1', '2', '0');
-INSERT INTO `cms_page_data` VALUES ('27', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', 'static', '1', 'content', '19', '微软：不要在Win10中使用第三方“隐私保护”工具', '//www.publiccms.com/2015/08/06/19.html', '', '2016-03-23 11:27:26', '2016-03-23 11:27:06', '1', '0', '0');
-INSERT INTO `cms_page_data` VALUES ('28', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', 'static', '1', 'content', '30', '女子吃了泡发2天的木耳 致多器官衰竭不治身亡', '//www.publiccms.com/2015/08-07/30.html', '', '2016-03-23 11:27:42', '2016-03-23 11:27:28', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('29', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', 'static', '1', 'content', '22', '江苏仪征新集一玩具厂起大火 火光冲天', '//www.publiccms.com/7/22.html', '', '2016-03-23 11:27:55', '2016-03-23 11:27:44', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('30', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', 'static', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/9/142.html', '', '2016-03-23 11:28:08', '2016-03-23 11:27:57', '1', '6', '0');
-INSERT INTO `cms_page_data` VALUES ('31', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', 'static', '1', 'content', '18', 'PublicCMS进入测试阶段，即将正式发布', '//www.publiccms.com/9/18.html', '', '2016-03-23 11:28:21', '2016-03-23 11:28:14', '1', '7', '0');
-INSERT INTO `cms_page_data` VALUES ('32', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', 'static', '1', 'content', '217', '酷冷至尊烈焰枪旗舰版机械键盘 有线104键游戏全背光 樱桃轴正品', 'http://s.click.taobao.com/t?e=m%3D2%26s%3Dk%2FRaMwaPpnYcQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMV3pVOinSGgeRitN3%2FurF3zO1KWqeCJhFmPYiLpdxhFe%2B6GA20g%2FvatSQhIbbzwChQUDqeizZVd13GFiMU8U2DTHAGIcyZQCxSGFCzYOOqAQ&pvid=50_106.2.199.138_346_1458707425019', '', '2016-03-28 11:21:01', '2016-03-28 11:17:37', '1', '3', '0');
-INSERT INTO `cms_page_data` VALUES ('33', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', 'static', '1', 'custom', null, 'BD工具网', 'http://www.bdtool.net/', '', '2016-03-28 14:29:39', '2016-03-28 14:29:34', '1', '23', '0');
-INSERT INTO `cms_page_data` VALUES ('34', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', 'static', '1', 'custom', null, '在线项目计划', 'http://www.oiplan.com/user/index.do', '', '2016-03-28 16:35:01', '2016-03-28 16:34:48', '1', '25', '0');
-INSERT INTO `cms_page_data` VALUES ('35', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', 'static', '1', 'custom', null, '动态站点', '//cms.publiccms.com/', '', '2016-03-31 18:50:06', '2016-03-31 18:49:54', '1', '16', '1');
-INSERT INTO `cms_page_data` VALUES ('36', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', 'static', '1', 'custom', null, '成品网站模板超市', 'http://www.edge-cloud.cn/wangzhanjianshe-30-1.html', '', '2016-04-13 16:05:14', '2016-04-13 16:04:55', '1', '2', '0');
+INSERT INTO `cms_page_data` VALUES ('1', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/introduction/2015/08-11/142.html', '2015/11/15/17-35-240834-18490682.jpg', '2016-03-21 21:25:19', '2016-03-21 21:24:54', '1', '6', '0');
+INSERT INTO `cms_page_data` VALUES ('2', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '159', '美食', '//www.publiccms.com/picture/2015/08-13/159.html', '2015/11/15/17-35-150887-240130090.jpg', '2016-03-21 21:26:26', '2016-03-21 21:26:08', '1', '4', '0');
+INSERT INTO `cms_page_data` VALUES ('3', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '9', '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', '2015/11/15/17-35-0606061972977756.jpg', '2016-03-21 21:28:57', '2016-03-21 21:28:36', '1', '8', '0');
+INSERT INTO `cms_page_data` VALUES ('4', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '179', 'PublicCMS系统使用手册下载', '//www.publiccms.com/introduction/2015/10-09/179.html', '2015/11/15/17-34-560426-203327271.jpg', '2016-03-21 21:30:25', '2016-03-21 21:43:45', '1', '18', '0');
+INSERT INTO `cms_page_data` VALUES ('5', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '195', '我们的婚纱照', '//www.publiccms.com/picture/2015/11-15/195.html', '2015/11/15/17-34-450591-326203189.jpg', '2016-03-21 21:31:04', '2016-03-20 21:30:46', '1', '4', '0');
+INSERT INTO `cms_page_data` VALUES ('6', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'Public CMS QQ群', 'http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175', '', '2016-03-21 22:10:33', '2016-03-21 22:10:26', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('7', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'FreeMarker语法在线测试', 'http://sanluan.com/freemarker_test.html', '', '2016-03-21 22:11:57', '2016-03-21 22:11:47', '1', '4', '0');
+INSERT INTO `cms_page_data` VALUES ('8', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, '百度搜索：PublicCMS', 'https://www.baidu.com/s?wd=publiccms', '', '2016-03-21 22:12:12', '2016-03-21 22:12:00', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('9', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'FreeMarker2.3.23中文手册', 'http://www.kerneler.com/freemarker2.3.23/', '', '2016-03-21 22:12:24', '2016-03-21 22:12:14', '1', '5', '0');
+INSERT INTO `cms_page_data` VALUES ('10', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'FreeMarker2.3.23视频教程', 'http://www.elsyy.com/course/6841', '', '2016-03-21 22:12:51', '2016-03-21 22:12:37', '1', '4', '0');
+INSERT INTO `cms_page_data` VALUES ('11', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', '1', 'custom', null, '管理后台', '//cms.publiccms.com/admin/', '', '2016-03-21 22:13:54', '2016-03-21 22:13:49', '1', '0', '1');
+INSERT INTO `cms_page_data` VALUES ('12', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', '1', 'custom', null, '后台UI', '//image.publiccms.com/ui/', '', '2016-03-21 22:14:06', '2016-03-21 22:13:56', '1', '22', '0');
+INSERT INTO `cms_page_data` VALUES ('13', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', '1', 'custom', null, '洪越源码', 'http://www.softhy.net/soft/36775.htm', '', '2016-03-23 11:03:50', '2016-03-23 11:03:31', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('14', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', '1', 'custom', null, 'ASP300源码', 'http://www.asp300.com/SoftView/13/SoftView_59265.html', '', '2016-03-23 11:04:10', '2016-03-23 11:03:53', '1', '2', '0');
+INSERT INTO `cms_page_data` VALUES ('15', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', '1', 'custom', null, '脚本之家', 'http://www.jb51.net/codes/389534.html', '', '2016-03-23 11:04:24', '2016-03-23 11:04:11', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('16', '1', '/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html', '1', 'custom', null, '站长之家下载', 'http://down.chinaz.com/soft/37488.htm', '', '2016-03-23 11:04:42', '2016-03-23 11:04:33', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('17', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', '1', 'custom', null, '成品网站模板超市', 'http://demo.edge-cloud.cn/', '', '2016-03-23 11:12:03', '2016-03-23 11:12:32', '1', '6', '1');
+INSERT INTO `cms_page_data` VALUES ('18', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', '1', 'custom', null, 'QQ联系作者', 'http://wpa.qq.com/msgrd?v=3&uin=315415433&site=qq&menu=yes', '', '2016-03-23 11:12:23', '2016-03-23 11:12:05', '1', '4', '0');
+INSERT INTO `cms_page_data` VALUES ('19', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS@Github', 'https://github.com/sanluan/PublicCMS.', '', '2016-03-23 11:13:33', '2016-03-23 11:13:25', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('20', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS@开源中国', 'http://git.oschina.net/sanluan/PublicCMS', '', '2016-03-23 11:13:48', '2016-03-23 11:13:35', '1', '5', '0');
+INSERT INTO `cms_page_data` VALUES ('21', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS@CSDN', 'https://code.csdn.net/zyyy358/publiccms', '', '2016-03-23 11:14:03', '2016-03-23 11:13:50', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('22', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS-preview@开源中国', 'http://git.oschina.net/sanluan/PublicCMS-preview', '', '2016-03-23 11:14:30', '2016-03-23 11:14:09', '1', '5', '0');
+INSERT INTO `cms_page_data` VALUES ('23', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', '1', 'custom', null, '搞机哥-博客', 'http://www.gaojig.com/', '', '2016-03-23 11:15:16', '2016-03-23 11:15:07', '1', '14', '0');
+INSERT INTO `cms_page_data` VALUES ('24', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', '1', 'custom', null, '锋云科技', 'http://www.edge-cloud.cn/', '', '2016-03-23 11:15:28', '2016-03-23 11:15:21', '1', '20', '0');
+INSERT INTO `cms_page_data` VALUES ('25', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', '1', 'content', '4', '唯美动漫图片', '//www.publiccms.com/8/4.html', '2015/08/07/11-24-1308292097994334.jpg', '2016-03-23 11:22:57', '2016-03-23 11:22:04', '1', '4', '0');
+INSERT INTO `cms_page_data` VALUES ('26', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', '1', 'content', '9', '昂科拉', '//www.publiccms.com/6/9.html', '2015/08/07/11-24-3602801209954489.jpg', '2016-03-23 11:23:55', '2016-03-23 11:23:31', '1', '2', '0');
+INSERT INTO `cms_page_data` VALUES ('27', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '19', '微软：不要在Win10中使用第三方“隐私保护”工具', '//www.publiccms.com/2015/08/06/19.html', '', '2016-03-23 11:27:26', '2016-03-23 11:27:06', '1', '0', '0');
+INSERT INTO `cms_page_data` VALUES ('28', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '30', '女子吃了泡发2天的木耳 致多器官衰竭不治身亡', '//www.publiccms.com/2015/08-07/30.html', '', '2016-03-23 11:27:42', '2016-03-23 11:27:28', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('29', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '22', '江苏仪征新集一玩具厂起大火 火光冲天', '//www.publiccms.com/7/22.html', '', '2016-03-23 11:27:55', '2016-03-23 11:27:44', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('30', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/9/142.html', '', '2016-03-23 11:28:08', '2016-03-23 11:27:57', '1', '6', '0');
+INSERT INTO `cms_page_data` VALUES ('31', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '18', 'PublicCMS进入测试阶段，即将正式发布', '//www.publiccms.com/9/18.html', '', '2016-03-23 11:28:21', '2016-03-23 11:28:14', '1', '7', '0');
+INSERT INTO `cms_page_data` VALUES ('32', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '217', '酷冷至尊烈焰枪旗舰版机械键盘 有线104键游戏全背光 樱桃轴正品', 'http://s.click.taobao.com/t?e=m%3D2%26s%3Dk%2FRaMwaPpnYcQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMV3pVOinSGgeRitN3%2FurF3zO1KWqeCJhFmPYiLpdxhFe%2B6GA20g%2FvatSQhIbbzwChQUDqeizZVd13GFiMU8U2DTHAGIcyZQCxSGFCzYOOqAQ&pvid=50_106.2.199.138_346_1458707425019', '', '2016-03-28 11:21:01', '2016-03-28 11:17:37', '1', '3', '0');
+INSERT INTO `cms_page_data` VALUES ('33', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', '1', 'custom', null, 'BD工具网', 'http://www.bdtool.net/', '', '2016-03-28 14:29:39', '2016-03-28 14:29:34', '1', '23', '0');
+INSERT INTO `cms_page_data` VALUES ('34', '1', '/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html', '1', 'custom', null, '在线项目计划', 'http://www.oiplan.com/user/index.do', '', '2016-03-28 16:35:01', '2016-03-28 16:34:48', '1', '25', '0');
+INSERT INTO `cms_page_data` VALUES ('35', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', '1', 'custom', null, '动态站点', '//cms.publiccms.com/', '', '2016-03-31 18:50:06', '2016-03-31 18:49:54', '1', '16', '1');
+INSERT INTO `cms_page_data` VALUES ('36', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', '1', 'custom', null, '成品网站模板超市', 'http://www.edge-cloud.cn/wangzhanjianshe-30-1.html', '', '2016-04-13 16:05:14', '2016-04-13 16:04:55', '1', '2', '0');
 
 -- ----------------------------
 -- Table structure for cms_page_data_attribute
@@ -1519,12 +1517,10 @@ DROP TABLE IF EXISTS `sys_dept_page`;
 CREATE TABLE `sys_dept_page` (
   `id` int(11) NOT NULL auto_increment,
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
-  `type` varchar(50) NOT NULL COMMENT '页面类型',
   `page` varchar(255) NOT NULL COMMENT '页面',
   PRIMARY KEY  (`id`),
   KEY `dept_id` (`dept_id`),
-  KEY `page` (`page`),
-  KEY `type` (`type`)
+  KEY `page` (`page`)
 ) ENGINE=MyISAM AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COMMENT='部门页面';
 
 -- ----------------------------
@@ -1553,9 +1549,9 @@ CREATE TABLE `sys_domain` (
 INSERT INTO `sys_domain` VALUES ('1', 'cms.publiccms.com', '1', '', '/login.html', '');
 INSERT INTO `sys_domain` VALUES ('2', 'www.sanluan.com', '2', '', '/login.html', '/register.html');
 INSERT INTO `sys_domain` VALUES ('3', 'cms.kerneler.com', '3', '', '', '');
-INSERT INTO `sys_domain` VALUES ('4', 'cms.oldhunter.com', '4', '', '', '');
+INSERT INTO `sys_domain` VALUES ('4', 'cms.demo1.publiccms.com', '4', '', '', '');
 INSERT INTO `sys_domain` VALUES ('5', 'cms.publicms.com', '5', '', '', '');
-INSERT INTO `sys_domain` VALUES ('6', 'cms.demo1.publiccms.com', '6', '', '', '');
+INSERT INTO `sys_domain` VALUES ('6', 'cms.oldhunter.com', '6', '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_email_token
@@ -1679,12 +1675,11 @@ INSERT INTO `sys_moudle` VALUES ('21', '生成', null, 'cmsContent/publish', '12
 INSERT INTO `sys_moudle` VALUES ('22', '移动', 'cmsContent/moveParameters', 'cmsContent/move', '12', '0');
 INSERT INTO `sys_moudle` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', '12', '0');
 INSERT INTO `sys_moudle` VALUES ('24', '<i class=\"icon-folder-open icon-large\"></i> 分类管理', 'cmsCategory/list', null, '3', '0');
-INSERT INTO `sys_moudle` VALUES ('25', '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,staticTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '24', '0');
+INSERT INTO `sys_moudle` VALUES ('25', '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '24', '0');
 INSERT INTO `sys_moudle` VALUES ('26', '删除', null, 'cmsCategory/delete', '24', '0');
 INSERT INTO `sys_moudle` VALUES ('27', '生成', 'cmsCategory/publishParameters', 'cmsCategory/publish', '24', '0');
 INSERT INTO `sys_moudle` VALUES ('28', '移动', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '24', '0');
-INSERT INTO `sys_moudle` VALUES ('29', '<i class=\"icon-file-alt icon-large\"></i> 静态页面管理', 'cmsPage/staticPlaceList', 'sysUser/lookup,placeDataList', '4', '0');
-INSERT INTO `sys_moudle` VALUES ('30', '<i class=\"icon-globe icon-large\"></i> 动态页面管理', 'cmdPage/dynamicPlaceList', 'sysUser/lookup,placeDataList', '4', '0');
+INSERT INTO `sys_moudle` VALUES ('29', '<i class=\"icon-globe icon-large\"></i> 页面管理', 'cmsPage/placeList', 'sysUser/lookup,cmsPage/placeDataList', '4', '0');
 INSERT INTO `sys_moudle` VALUES ('31', '<i class=\"icon-road icon-large\"></i> 分类扩展', null, null, '3', '0');
 INSERT INTO `sys_moudle` VALUES ('32', '<i class=\"icon-road icon-large\"></i> 分类类型', 'cmsCategoryType/list', null, '31', '0');
 INSERT INTO `sys_moudle` VALUES ('33', '<i class=\"icon-tags icon-large\"></i> 标签分类', 'cmsTagType/list', null, '31', '0');
@@ -1693,28 +1688,18 @@ INSERT INTO `sys_moudle` VALUES ('35', '删除', null, 'cmsTagType/delete', '33'
 INSERT INTO `sys_moudle` VALUES ('36', '增加/修改', 'cmsCategoryType/add', 'cmsCategoryType/save', '32', '0');
 INSERT INTO `sys_moudle` VALUES ('37', '删除', null, 'cmsCategoryType/delete', '32', '0');
 INSERT INTO `sys_moudle` VALUES ('38', '<i class=\"icon-code icon-large\"></i> 模板管理', null, null, '5', '0');
-INSERT INTO `sys_moudle` VALUES ('39', '<i class=\"icon-file-alt icon-large\"></i> 静态化模板', 'staticTemplate/list', 'staticTemplate/directory', '38', '0');
-INSERT INTO `sys_moudle` VALUES ('40', '<i class=\"icon-globe icon-large\"></i> 动态模板', 'dynamicTemplate/list', 'dynamicTemplate/directory', '38', '0');
-INSERT INTO `sys_moudle` VALUES ('41', '修改模板', 'staticTemplate/metadata', 'cmsTemplate/saveMetadata,staticTemplate/content,cmsTemplate/save,staticTemplate/chipLookup', '39', '0');
-INSERT INTO `sys_moudle` VALUES ('42', '修改推荐位', 'staticTemplate/placeList', 'staticTemplate/placeMetadata,dynamicTemplate/placeContent,dynamicTemplate/placeForm,cmsTemplate/saveMetadata,staticTemplate/createPlace', '39', '0');
+INSERT INTO `sys_moudle` VALUES ('39', '<i class=\"icon-globe icon-large\"></i> 页面模板', 'cmsTemplate/list', 'cmsTemplate/directory', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('41', '修改模板', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata,cmsTemplate/content,cmsTemplate/save,cmsTemplate/chipLookup', '39', '0');
+INSERT INTO `sys_moudle` VALUES ('42', '修改推荐位', 'cmsTemplate/placeList', 'cmsTemplate/placeMetadata,cmsTemplate/placeContent,cmsTemplate/placeForm,cmsTemplate/saveMetadata,cmsTemplate/createPlace', '39', '0');
 INSERT INTO `sys_moudle` VALUES ('43', '删除模板', null, 'cmsTemplate/delete', '39', '0');
-INSERT INTO `sys_moudle` VALUES ('44', '修改模板', 'dynamicTemplate/metadata', 'cmsTemplate/saveMetadata,dynamicTemplate/content,cmsTemplate/save,dynamicTemplate/chipLookup', '40', '0');
-INSERT INTO `sys_moudle` VALUES ('45', '修改推荐位', 'dynamicTemplate/placeList', 'dynamicTemplate/placeMetadata,dynamicTemplate/placeContent,dynamicTemplate/placeForm,cmsTemplate/saveMetadata,dynamicTemplate/createPlace', '40', '0');
-INSERT INTO `sys_moudle` VALUES ('46', '删除模板', null, 'cmsTemplate/delete', '40', '0');
 INSERT INTO `sys_moudle` VALUES ('47', '生成页面', null, 'cmsTemplate/publish', '29', '0');
-INSERT INTO `sys_moudle` VALUES ('48', '保存页面元数据', 'cmsPage/saveMetaData', 'file/doUpload', '29', '0');
+INSERT INTO `sys_moudle` VALUES ('48', '保存页面元数据', '', 'cmsPage/saveMetaData,file/doUpload', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('49', '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPage/save', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('50', '删除推荐位数据', null, 'cmsPage/delete', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('51', '刷新推荐位数据', null, 'cmsPage/refresh', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('52', '审核推荐位数据', null, 'cmsPage/check', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('53', '发布推荐位', null, 'cmsTemplate/publishPlace', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('54', '清空推荐位数据', null, 'cmsPage/clear', '29', '0');
-INSERT INTO `sys_moudle` VALUES ('55', '保存页面元数据', null, 'cmsPage/saveMetaData', '30', '0');
-INSERT INTO `sys_moudle` VALUES ('56', '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsPage/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPage/save', '30', '0');
-INSERT INTO `sys_moudle` VALUES ('57', '删除推荐位数据', null, 'cmsPage/delete', '30', '0');
-INSERT INTO `sys_moudle` VALUES ('58', '刷新推荐位数据', null, 'cmsPage/refresh', '30', '0');
-INSERT INTO `sys_moudle` VALUES ('59', '审核推荐位数据', null, 'cmsPage/check', '30', '0');
-INSERT INTO `sys_moudle` VALUES ('60', '清空推荐位数据', null, 'cmsPage/clear', '30', '0');
 INSERT INTO `sys_moudle` VALUES ('61', '<i class=\"icon-user icon-large\"></i> 用户管理', null, null, '5', '0');
 INSERT INTO `sys_moudle` VALUES ('62', '<i class=\"icon-cogs icon-large\"></i> 系统维护', null, null, '5', '0');
 INSERT INTO `sys_moudle` VALUES ('63', '<i class=\"icon-list-alt icon-large\"></i> 日志管理', null, null, '5', '0');
@@ -1744,7 +1729,7 @@ INSERT INTO `sys_moudle` VALUES ('86', '修改脚本', 'taskTemplate/metadata', 
 INSERT INTO `sys_moudle` VALUES ('87', '删除脚本', null, 'cmsTemplate/delete', '85', '0');
 INSERT INTO `sys_moudle` VALUES ('88', '<i class=\"icon-unlock-alt icon-large\"></i> 用户登录授权', 'sysUserToken/list', 'sysUser/lookup', '61', '0');
 INSERT INTO `sys_moudle` VALUES ('89', '删除', null, 'sysUserToken/delete', '88', '0');
-INSERT INTO `sys_moudle` VALUES ('90', '增加/修改', 'cmsModel/add', 'cmsModel/save,staticTemplate/lookup', '81', '0');
+INSERT INTO `sys_moudle` VALUES ('90', '增加/修改', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', '81', '0');
 INSERT INTO `sys_moudle` VALUES ('91', '删除', null, 'cmsModel/delete', '81', '0');
 INSERT INTO `sys_moudle` VALUES ('92', '增加/修改', 'sysTask/add', 'sysTask/save,sysTask/example,taskTemplate/lookup', '82', '0');
 INSERT INTO `sys_moudle` VALUES ('93', '删除', null, 'sysTask/delete', '82', '0');
@@ -1754,7 +1739,7 @@ INSERT INTO `sys_moudle` VALUES ('96', '恢复', null, 'sysTask/resume', '82', '
 INSERT INTO `sys_moudle` VALUES ('97', '重新初始化', null, 'sysTask/recreate', '82', '0');
 INSERT INTO `sys_moudle` VALUES ('98', '增加/修改', 'cmsFtpUser/add', 'cmsFtpUser/save', '83', '0');
 INSERT INTO `sys_moudle` VALUES ('99', '删除', null, 'cmsFtpUser/delete', '83', '0');
-INSERT INTO `sys_moudle` VALUES ('100', '修改', 'cmsDomain/add', 'cmsDomain/save', '84', '0');
+INSERT INTO `sys_moudle` VALUES ('100', '修改', 'cmsDomain/add', 'cmsDomain/save,cmsTemplate/directoryLookup,cmsTemplate/lookup', '84', '0');
 INSERT INTO `sys_moudle` VALUES ('102', '修改', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', '8', '0');
 INSERT INTO `sys_moudle` VALUES ('103', '删除', null, 'cmsContent/delete', '8', '0');
 INSERT INTO `sys_moudle` VALUES ('104', '刷新', null, 'cmsContent/refresh', '8', '0');
@@ -1798,7 +1783,7 @@ CREATE TABLE `sys_role_authorized` (
   PRIMARY KEY  (`id`),
   KEY `role_id` (`role_id`),
   KEY `url` (`url`)
-) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
+) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
 
 -- ----------------------------
 -- Records of sys_role_authorized
@@ -1806,7 +1791,6 @@ CREATE TABLE `sys_role_authorized` (
 INSERT INTO `sys_role_authorized` VALUES ('1', '2', 'taskTemplate/metadata');
 INSERT INTO `sys_role_authorized` VALUES ('2', '2', 'sysRole/add');
 INSERT INTO `sys_role_authorized` VALUES ('3', '2', 'myself/contentList');
-INSERT INTO `sys_role_authorized` VALUES ('4', '2', 'dynamicTemplate/placeList');
 INSERT INTO `sys_role_authorized` VALUES ('5', '2', 'cmsTag/list');
 INSERT INTO `sys_role_authorized` VALUES ('6', '2', 'myself/userTokenList');
 INSERT INTO `sys_role_authorized` VALUES ('7', '2', 'sysTask/list');
@@ -1816,26 +1800,19 @@ INSERT INTO `sys_role_authorized` VALUES ('10', '2', 'cmsCategoryType/add');
 INSERT INTO `sys_role_authorized` VALUES ('11', '2', 'sysDept/list');
 INSERT INTO `sys_role_authorized` VALUES ('12', '2', 'sysUserToken/list');
 INSERT INTO `sys_role_authorized` VALUES ('13', '2', 'cmsTag/add');
-INSERT INTO `sys_role_authorized` VALUES ('14', '2', 'staticTemplate/list');
 INSERT INTO `sys_role_authorized` VALUES ('15', '2', 'sysUser/list');
 INSERT INTO `sys_role_authorized` VALUES ('16', '2', 'cmsPage/placeDataAdd');
-INSERT INTO `sys_role_authorized` VALUES ('17', '2', 'cmsPage/saveMetaData');
 INSERT INTO `sys_role_authorized` VALUES ('18', '2', 'cmsContent/moveParameters');
 INSERT INTO `sys_role_authorized` VALUES ('19', '2', 'cmsCategory/moveParameters');
 INSERT INTO `sys_role_authorized` VALUES ('20', '2', 'sysUser/add');
 INSERT INTO `sys_role_authorized` VALUES ('21', '2', 'myself/logLogin');
 INSERT INTO `sys_role_authorized` VALUES ('22', '2', 'myself/logOperate');
-INSERT INTO `sys_role_authorized` VALUES ('23', '2', 'staticTemplate/metadata');
-INSERT INTO `sys_role_authorized` VALUES ('24', '2', 'staticTemplate/placeList');
 INSERT INTO `sys_role_authorized` VALUES ('25', '2', 'myself/password');
 INSERT INTO `sys_role_authorized` VALUES ('26', '2', 'cmsCategory/list');
-INSERT INTO `sys_role_authorized` VALUES ('27', '2', 'cmsPage/staticPlaceList');
 INSERT INTO `sys_role_authorized` VALUES ('28', '2', 'log/operate');
 INSERT INTO `sys_role_authorized` VALUES ('29', '2', 'cmsCategory/publishParameters');
 INSERT INTO `sys_role_authorized` VALUES ('30', '2', 'cmsCategory/add');
 INSERT INTO `sys_role_authorized` VALUES ('31', '2', 'cmsDomain/list');
-INSERT INTO `sys_role_authorized` VALUES ('32', '2', 'dynamicTemplate/list');
-INSERT INTO `sys_role_authorized` VALUES ('33', '2', 'dynamicTemplate/metadata');
 INSERT INTO `sys_role_authorized` VALUES ('34', '2', 'sysRole/list');
 INSERT INTO `sys_role_authorized` VALUES ('35', '2', 'cmsModel/list');
 INSERT INTO `sys_role_authorized` VALUES ('36', '2', 'cmsFtpUser/add');
@@ -1845,7 +1822,6 @@ INSERT INTO `sys_role_authorized` VALUES ('39', '2', 'cmsTagType/add');
 INSERT INTO `sys_role_authorized` VALUES ('40', '2', 'sysDept/add');
 INSERT INTO `sys_role_authorized` VALUES ('41', '2', 'cmsFtpUser/list');
 INSERT INTO `sys_role_authorized` VALUES ('42', '2', 'cmsContent/list');
-INSERT INTO `sys_role_authorized` VALUES ('43', '2', 'cmdPage/dynamicPlaceList');
 INSERT INTO `sys_role_authorized` VALUES ('44', '2', 'log/taskView');
 INSERT INTO `sys_role_authorized` VALUES ('45', '2', 'cmsCategoryType/list');
 INSERT INTO `sys_role_authorized` VALUES ('46', '2', 'cmsModel/add');
@@ -1854,6 +1830,10 @@ INSERT INTO `sys_role_authorized` VALUES ('48', '2', 'taskTemplate/list');
 INSERT INTO `sys_role_authorized` VALUES ('49', '2', 'cmsContent/push');
 INSERT INTO `sys_role_authorized` VALUES ('50', '2', 'log/task');
 INSERT INTO `sys_role_authorized` VALUES ('51', '2', 'cmsPage/placeDataList');
+INSERT INTO `sys_role_authorized` VALUES ('52', '2', 'cmsTemplate/metadata');
+INSERT INTO `sys_role_authorized` VALUES ('53', '2', 'cmsPage/placeList');
+INSERT INTO `sys_role_authorized` VALUES ('54', '2', 'cmsTemplate/list');
+INSERT INTO `sys_role_authorized` VALUES ('55', '2', 'cmsTemplate/placeList');
 
 -- ----------------------------
 -- Table structure for sys_role_moudle
@@ -1903,7 +1883,9 @@ DROP TABLE IF EXISTS `sys_site`;
 CREATE TABLE `sys_site` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
+  `use_static` tinyint(1) NOT NULL COMMENT '启用静态化',
   `site_path` varchar(255) NOT NULL COMMENT '站点地址',
+  `use_ssi` tinyint(1) NOT NULL COMMENT '启用服务器端包含',
   `dynamic_path` varchar(255) NOT NULL COMMENT '动态站点地址',
   `resource_path` varchar(255) NOT NULL COMMENT '资源站点地址',
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
@@ -1914,12 +1896,12 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '//www.publiccms.com/', '//cms.publiccms.com/', '//image.publiccms.com/', '0');
-INSERT INTO `sys_site` VALUES ('2', '散乱', '#', '//www.sanluan.com/', '//image.sanluan.com/', '0');
-INSERT INTO `sys_site` VALUES ('4', 'OldHunter', '//www.oldhunter.com/', '//cms.oldhunter.com/', '//image.oldhunter.com/', '0');
-INSERT INTO `sys_site` VALUES ('3', 'Kerneler', '//www.kerneler.com/', '//cms.kerneler.com/', '//image.kerneler.com/', '0');
-INSERT INTO `sys_site` VALUES ('5', 'PublicMS', '//www.publicms.com/', '//cms.publicms.com/', '//image.publicms.com/', '0');
-INSERT INTO `sys_site` VALUES ('6', '演示站点1', '//demo1.publiccms.com/', '#', '//resource.demo1.publiccms.com/', '0');
+INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//www.publiccms.com/', '1', '//cms.publiccms.com/', '//image.publiccms.com/', '0');
+INSERT INTO `sys_site` VALUES ('2', '散乱', '0', '#', '0', '//www.sanluan.com/', '//image.sanluan.com/', '0');
+INSERT INTO `sys_site` VALUES ('4', 'OldHunter', '1', '//demo1.publiccms.com/', '1', '//cms.demo1.publiccms.com/', '//resource.demo1.publiccms.com/', '0');
+INSERT INTO `sys_site` VALUES ('3', 'Kerneler', '0', '//www.kerneler.com/', '0', '//cms.kerneler.com/', '//image.kerneler.com/', '0');
+INSERT INTO `sys_site` VALUES ('5', 'PublicMS', '0', '//www.publicms.com/', '0', '//cms.publicms.com/', '//image.publicms.com/', '0');
+INSERT INTO `sys_site` VALUES ('6', '演示站点1', '0', '//www.oldhunter.com/', '0', '#', '//resource.oldhunter.com/', '0');
 
 -- ----------------------------
 -- Table structure for sys_task
