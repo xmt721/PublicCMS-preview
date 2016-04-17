@@ -9,11 +9,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptPage;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.common.base.AbstractTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -22,7 +22,6 @@ public class SysDeptPageDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer deptId = handler.getInteger("deptId");
-        String type = handler.getString("type");
         String page = handler.getString("page");
         if (notEmpty(deptId)) {
             if (notEmpty(page)) {
@@ -41,7 +40,7 @@ public class SysDeptPageDirective extends AbstractTemplateDirective {
                         for (String p : pages) {
                             map.put(p, false);
                         }
-                        for (SysDeptPage e : service.getEntitys(deptId, type, pages)) {
+                        for (SysDeptPage e : service.getEntitys(deptId, pages)) {
                             map.put(e.getPage(), true);
                         }
                     }

@@ -2,8 +2,6 @@ package com.publiccms.views.controller.admin.cms;
 
 import static com.publiccms.logic.component.SiteComponent.getFullFileName;
 import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
-import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_STATIC;
-import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_DYNAMIC;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
 import java.io.File;
@@ -62,28 +60,27 @@ public class CmsTemplateAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("save")
-    public String save(String path, String type, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (notEmpty(path)) {
             try {
-                String filePath = siteComponent.getTemplateFilePath(site, type, path);
+                String filePath = siteComponent.getWebTemplateFilePath(site, path);
                 File templateFile = new File(filePath);
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
                 if (notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
-                    if (PAGE_TYPE_DYNAMIC.equals(type)) {
+                    if (metadata.getCacheTime() > 0) {
                         templateCacheComponent.deleteCachedFile(filePath);
                     }
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update." + type + ".template", getIpAddress(request),
-                            getDate(), path));
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.web.template", getIpAddress(request), getDate(), path));
                 } else {
                     fileComponent.createFile(templateFile, content);
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "save." + type + ".template", getIpAddress(request), getDate(),
-                            path));
+                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.template", getIpAddress(request), getDate(), path));
                 }
                 templateComponent.clear();
-                if (PAGE_TYPE_STATIC.equals(type)) {
+                if (notEmpty(metadata.getPublishPath())) {
                     publish(site, path);
                 }
             } catch (IOException | TemplateException e) {
@@ -104,15 +101,15 @@ public class CmsTemplateAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("delete")
-    public String delete(String path, String type, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
-            String filePath = siteComponent.getTemplateFilePath(site, type, path);
+            String filePath = siteComponent.getWebTemplateFilePath(site, path);
             if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
             metadataComponent.deleteMetadata(filePath);
-            sysDeptPageService.delete(null, type, path);
+            sysDeptPageService.delete(null, path);
             templateComponent.clear();
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.template", getIpAddress(request), getDate(), path));
@@ -134,7 +131,7 @@ public class CmsTemplateAdminController extends AbstractController {
             HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
-            String filePath = siteComponent.getTemplateFilePath(site, metadata.getType(), path);
+            String filePath = siteComponent.getWebTemplateFilePath(site, path);
             try {
                 File templateFile = new File(filePath);
                 if (empty(templateFile)) {
@@ -145,7 +142,7 @@ public class CmsTemplateAdminController extends AbstractController {
                     metadata.setExtendDataList(oldmetadata.getExtendDataList());
                 }
                 metadataComponent.updateMetadata(filePath, metadata);
-                if (PAGE_TYPE_STATIC.equals(metadata.getType())) {
+                if (notEmpty(metadata.getPublishPath())) {
                     publish(site, path);
                 }
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
@@ -168,11 +165,12 @@ public class CmsTemplateAdminController extends AbstractController {
     @RequestMapping("publishPlace")
     public String publishPlace(String path, HttpServletRequest request, HttpSession session) {
         try {
-            if (notEmpty(path)) {
-                path = INCLUDE_DIRECTORY + path;
-                SysSite site = getSite(request);
-                templateComponent.staticPlace(site, path,
-                        metadataComponent.getTemplateMetadata(siteComponent.getStaticTemplateFilePath(site, path)));
+            SysSite site = getSite(request);
+            if (notEmpty(path) && site.isUseSsi()) {
+                String placePath = INCLUDE_DIRECTORY + path;
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(site,
+                        placePath));
+                templateComponent.staticPlace(site, placePath, metadata);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "static", getIpAddress(request), getDate(), path));
             }
@@ -202,19 +200,21 @@ public class CmsTemplateAdminController extends AbstractController {
 
     private void publish(SysSite site, String path) throws IOException, TemplateException {
         if (notEmpty(path)) {
-            String placeListPath = INCLUDE_DIRECTORY + path + SEPARATOR;
-            Map<String, CmsPageMetadata> metadataMap = metadataComponent.getMetadataMap(siteComponent.getStaticTemplateFilePath(
-                    site, placeListPath));
-            for (FileInfo fileInfo : fileComponent.getFileList(siteComponent.getStaticTemplateFilePath(site, placeListPath))) {
-                String filePath = placeListPath + fileInfo.getFileName();
-                CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
-                if (empty(metadata)) {
-                    metadata = new CmsPageMetadata();
+            if (site.isUseSsi()) {
+                String placeListPath = INCLUDE_DIRECTORY + path + SEPARATOR;
+                String placeListFilePath = siteComponent.getWebTemplateFilePath(site, placeListPath);
+                Map<String, CmsPageMetadata> metadataMap = metadataComponent.getMetadataMap(placeListFilePath);
+                for (FileInfo fileInfo : fileComponent.getFileList(placeListFilePath)) {
+                    String filePath = placeListPath + fileInfo.getFileName();
+                    CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
+                    if (empty(metadata)) {
+                        metadata = new CmsPageMetadata();
+                    }
+                    templateComponent.staticPlace(site, filePath, metadata);
                 }
-                templateComponent.staticPlace(site, filePath, metadata);
             }
-            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getStaticTemplateFilePath(site, path));
-            if (notEmpty(metadata.getPublishPath())) {
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, path));
+            if (site.isUseStatic() && notEmpty(metadata.getPublishPath())) {
                 templateComponent.createStaticFile(site, getFullFileName(site, path), metadata.getPublishPath(), null, metadata,
                         null);
             }

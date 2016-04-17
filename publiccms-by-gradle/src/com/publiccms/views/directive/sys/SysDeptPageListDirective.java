@@ -17,7 +17,7 @@ public class SysDeptPageListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getInteger("deptId"), handler.getString("type"), handler.getString("page"),
+        PageHandler page = service.getPage(handler.getInteger("deptId"), handler.getString("page"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("count"));
         handler.put("page", page).render();
     }

@@ -16,16 +16,14 @@ public class MetadataDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         String dir = handler.getString("dir");
-        String type = handler.getString("type");
         if (notEmpty(path) && !path.endsWith(SEPARATOR)) {
             handler.put("path", path)
-                    .put("type", type)
                     .put("object",
-                            metadataComponent.getTemplateMetadata(siteComponent.getTemplateFilePath(getSite(handler), type, path)))
+                            metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
                     .render();
         } else if (null != dir) {
-            handler.put("object",
-                    metadataComponent.getMetadataMap(siteComponent.getTemplateFilePath(getSite(handler), type, dir))).render();
+            handler.put("object", metadataComponent.getMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler), dir)))
+                    .render();
         }
     }
 

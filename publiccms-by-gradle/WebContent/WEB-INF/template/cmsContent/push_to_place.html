@@ -2,7 +2,6 @@
 <div class="pageContent">
 	<form method="post" action="cmsPage/save.do?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
 		<input name="path" type="hidden" value="${(path?html)!}" />
-		<input name="type" type="hidden" value="${type?html}" />
 		<input name="itemType" type="hidden" value="content" />
 		<input name="itemId" type="hidden" value="${contentId}" />
 		<div class="pageFormContent" layoutH="57">
@@ -32,7 +31,7 @@
 				</dd>
 			</dl>
 			<#include "../include_page/extendData.html"/>
-			<@_metadata path='include'+path type=type><#assign metadata=object/></@_metadata>
+			<@_metadata path='include'+path><#assign metadata=object/></@_metadata>
 			<#assign pageExtendList=(metadata.pageExtendList)![]/>
 			<#assign extendValues=getPageDataAttribute(object.id)!{}/>
 			<@extendData 'extendDataList' pageExtendList extendValues/>

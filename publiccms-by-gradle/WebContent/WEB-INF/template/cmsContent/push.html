@@ -21,35 +21,20 @@
 	</div>
 	<div class="divider"></div>
 	<div class="unit">
-<@_pageDataList itemType='content' itemId=contentId type='static'>
+<@_pageDataList itemType='content' itemId=contentId>
 		<p>
-			<label>${page.totalCount}个静态页面:</label>
+			<label>${page.totalCount}个页面:</label>
 			<a class="button" href="cmsContent/push_page.html?contentId=${contentId}" target="dialog" rel="push">
-				<span>推荐到静态页面</span>
+				<span>推荐到页面</span>
 			</a>
 		</p>
 		<p>
 	<#list page.list as a>
-		${a.path[0..a.path?last_index_of('/')]}<@_metadata path='include'+a.path type='static'>${(object.alias)!}</@_metadata> (${a.clicks})<br/>
+		${a.path[0..a.path?last_index_of('/')]}<@_metadata path='include'+a.path>${(object.alias)!}</@_metadata> (${a.clicks})<br/>
 	</#list>
 		</p>
 </@_pageDataList>
 	</div>
 	<div class="divider"></div>
-	<div class="unit">
-<@_pageDataList itemType='content' itemId=contentId type='dynamic'>
-		<p>
-			<label>${page.totalCount}个动态页面：</label>
-			<a class="button" href="cmsContent/push_page.html?type=dynamic&contentId=${contentId}" target="dialog" rel="push">
-				<span>推荐到动态页面</span>
-			</a>
-		</p>
-		<p>
-	<#list page.list as a>
-		${a.path[0..a.path?last_index_of('/')]}<@_metadata path='include'+a.path type='dynamic'>${(object.alias)!}</@_metadata> (${a.clicks})<br/>
-	</#list>
-		</p>
-</@_pageDataList>
-	</div>
 	<div class="divider"></div>
 </div>

@@ -107,8 +107,8 @@ public class TemplateCacheComponent extends Base implements Cacheable {
             return cachedPath;
         }
         try {
-            FreeMarkerUtils.makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getDynamicConfiguration(), model);
-            templateComponent.getDynamicConfiguration().removeTemplateFromCache(cachedtemplatePath);
+            FreeMarkerUtils.makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getWebConfiguration(), model);
+            templateComponent.getWebConfiguration().removeTemplateFromCache(cachedtemplatePath);
             return cachedPath;
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -125,7 +125,7 @@ public class TemplateCacheComponent extends Base implements Cacheable {
     }
 
     private String getCachedFilePath(String path) {
-        return siteComponent.getDynamicTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
+        return siteComponent.getWebTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
     }
 }
 

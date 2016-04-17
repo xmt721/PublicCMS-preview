@@ -1,10 +1,10 @@
-<#macro pageTree type='static' filepath=''>
-	<@_templateList path=filepath type=type>
-		<@_metadata dir=filepath type=type><#local metaDataMap=object/></@_metadata>
+<#macro pageTree filepath=''>
+	<@_templateList path=filepath>
+		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
 		<#list list as a>
 			<@t.merge 'pages' filepath+'/'+a.fileName/>
 		</#list>
-		<@_sysDeptPage deptId=admin.deptId!'' type=type pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
+		<@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
 		<#list list as a>
 			<#local path=filepath+'/'+a.fileName>
 			<#if 'ftl'!=a.fileName&&(deptPageMap[path])?has_content&&deptPageMap[path]>
@@ -14,10 +14,10 @@
 						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 					</a>
 					<ul>
-						<@pageTree type path/>
+						<@pageTree path/>
 					</ul>
 				<#else>
-					<a href="cmsPage/${('dynamic'=type)?then('dynamicPlaceList','staticPlaceList')}.html?path=${path?url}&type=${type}" target="navTab" title="${('static'=type)?then('静态','动态')}页面:${a.fileName}" rel="cmsPage/${type}PlaceList">
+					<a href="cmsPage/placeList.html?path=${path?url}" target="navTab" title="页面:${a.fileName}" rel="cmsPage/placeList">
 						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 					</a>
 				</#if>
@@ -105,14 +105,9 @@
 				</li>
 			</ul>
 			<#break>
-		<#case 'cmsPage/staticPlaceList'>
+		<#case 'cmsPage/placeList'>
 			<ul class="tree treeFolder">
 				<@pageTree/>
-			</ul>
-			<#break>
-		<#case 'cmdPage/dynamicPlaceList'>
-			<ul class="tree treeFolder">
-				<@pageTree 'dynamic'/>
 			</ul>
 			<#break>
 		<#default>

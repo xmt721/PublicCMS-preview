@@ -58,37 +58,39 @@ public class CmsPageController extends AbstractController {
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(CmsPageData entity, @ModelAttribute CmsPageDataParamters pageDataParamters, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        int userId = getAdminFromSession(session).getId();
-        if (notEmpty(entity.getPath())) {
+        if (notEmpty(entity) && notEmpty(entity.getPath())) {
             entity.setPath(entity.getPath().replace("//", SEPARATOR));
-        }
-        if (empty(entity.getItemType()) || empty(entity.getItemId())) {
-            entity.setItemType(ITEM_TYPE_CUSTOM);
-            entity.setItemId(null);
-        }
-        if (notEmpty(entity.getId())) {
-            CmsPageData oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+            SysSite site = getSite(request);
+            int userId = getAdminFromSession(session).getId();
+            String placePath = INCLUDE_DIRECTORY + entity.getPath();
+            if (empty(entity.getItemType()) || empty(entity.getItemId())) {
+                entity.setItemType(ITEM_TYPE_CUSTOM);
+                entity.setItemId(null);
             }
-            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "status", "userId", "type", "clicks",
-                    "path", "createDate", "disabled" });
-            if (notEmpty(entity)) {
-                logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
+            if (notEmpty(entity.getId())) {
+                CmsPageData oldEntity = service.getEntity(entity.getId());
+                if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+                    return TEMPLATE_ERROR;
+                }
+                entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "status", "userId", "type",
+                        "clicks", "path", "createDate", "disabled" });
+                if (notEmpty(entity)) {
+                    logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER,
+                            "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
+                }
+            } else {
+                entity.setUserId(userId);
+                entity.setSiteId(site.getId());
+                entity.setStatus(STATUS_NORMAL);
+                service.save(entity);
+                logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "save.pagedata",
+                        getIpAddress(request), getDate(), entity.getPath()));
             }
-        } else {
-            entity.setUserId(userId);
-            entity.setSiteId(site.getId());
-            entity.setStatus(STATUS_NORMAL);
-            service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "save.pagedata",
-                    getIpAddress(request), getDate(), entity.getPath()));
+            String filePath = siteComponent.getWebTemplateFilePath(site, placePath);
+            String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath,
+                    pageDataParamters.getExtendDataList()));
+            attributeService.updateAttribute(entity.getId(), extentString);
         }
-        String filePath = siteComponent.getTemplateFilePath(site, entity.getType(), INCLUDE_DIRECTORY + entity.getPath());
-        String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath, pageDataParamters.getExtendDataList()));
-        attributeService.updateAttribute(entity.getId(), extentString);
         return TEMPLATE_DONE;
     }
 
@@ -139,13 +141,12 @@ public class CmsPageController extends AbstractController {
      * @return
      */
     @RequestMapping("saveMetaData")
-    public String saveMetadata(String path, String type, @ModelAttribute CmsPageDataParamters pageDataParamters, String content,
+    public String saveMetadata(String path, @ModelAttribute CmsPageDataParamters pageDataParamters, String content,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
-            String filePath = siteComponent.getTemplateFilePath(site, type, path);
-            CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(siteComponent.getStaticTemplateFilePath(site,
-                    path));
+            String filePath = siteComponent.getWebTemplateFilePath(site, path);
+            CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(filePath);
             oldmetadata.setExtendDataList(pageDataParamters.getExtendDataList());
             metadataComponent.updateMetadata(filePath, oldmetadata);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
@@ -163,10 +164,10 @@ public class CmsPageController extends AbstractController {
      * @return
      */
     @RequestMapping("clear")
-    public String clear(String path, String type, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String clear(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
-            service.delete(site.getId(), path, type);
+            service.delete(site.getId(), path);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "clear.pagedata", getIpAddress(request), getDate(), path));
         }

@@ -112,19 +112,11 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
-    public void updateStaticUrl(Serializable id, String url) {
+    public void updateUrl(Serializable id, String url, boolean hasStatic) {
         CmsCategory entity = getEntity(id);
         if (notEmpty(entity)) {
             entity.setUrl(url);
-            entity.setHasStatic(true);
-        }
-    }
-
-    public void updateDynamicUrl(Serializable id, String url) {
-        CmsCategory entity = getEntity(id);
-        if (notEmpty(entity)) {
-            entity.setUrl(url);
-            entity.setHasStatic(false);
+            entity.setHasStatic(hasStatic);
         }
     }
 

@@ -2,10 +2,9 @@
 	<#assign a=object/>
 </@_pageData>
 <div class="pageContent">
-	<form method="post" action="cmsPage/save.do?callbackType=closeCurrent&navTabId=cmsPage/${(a.type)!type!}placeDataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+	<form method="post" action="cmsPage/save.do?callbackType=closeCurrent&navTabId=cmsPage/placeDataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
 		<input name="id" type="hidden" value="${(a.id)!}" />
 		<input name="path" type="hidden" value="${(a.path?html)!(path?html)!}" />
-		<input name="type" type="hidden" value="${(a.type)!type!}" />
 		<input name="itemType" type="hidden" value="${(a.itemType)!}" />
 		<input name="itemId" type="hidden" value="${(a.itemId)!}" />
 		<div class="pageFormContent" layoutH="57">
@@ -37,7 +36,7 @@
 				</dd>
 			</dl>
 			<#include "../include_page/extendData.html"/>
-			<@_metadata path='include'+(a.path)!path!'' type=(a.type)!type!''><#assign metadata=object/></@_metadata>
+			<@_metadata path='include'+(a.path)!path!''><#assign metadata=object/></@_metadata>
 			<#assign pageExtendList=(metadata.pageExtendList)![]/>
 			<#assign extendValues=getPageDataAttribute((a.id)!)!{}/>
 			<@extendData 'extendDataList' pageExtendList extendValues/>

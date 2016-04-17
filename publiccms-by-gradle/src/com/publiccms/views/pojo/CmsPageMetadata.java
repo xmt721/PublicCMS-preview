@@ -9,10 +9,10 @@ import com.publiccms.entities.sys.SysExtendField;
 import com.sanluan.common.base.Base;
 
 public class CmsPageMetadata extends Base {
-    private String type;
     private String alias;
     private String publishPath;
     private Integer size;
+    private boolean useDynamic;
     private boolean needLogin;
     private String acceptParamters;
     private Integer cacheTime;
@@ -21,14 +21,6 @@ public class CmsPageMetadata extends Base {
     private List<SysExtendField> metadataExtendList;
     private List<ExtendData> extendDataList;
     private Map<String, String> extendData;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getAlias() {
         return alias;
@@ -121,5 +113,13 @@ public class CmsPageMetadata extends Base {
 
     public void setAcceptParamters(String acceptParamters) {
         this.acceptParamters = acceptParamters;
+    }
+
+    public boolean isUseDynamic() {
+        return useDynamic;
+    }
+
+    public void setUseDynamic(boolean useDynamic) {
+        this.useDynamic = useDynamic;
     }
 }

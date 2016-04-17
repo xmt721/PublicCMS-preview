@@ -20,13 +20,12 @@ import com.sanluan.common.handler.PageHandler;
 public class CmsPageDataService extends BaseService<CmsPageData> {
     public static final int STATUS_CONTRIBUTE = 0, STATUS_NORMAL = 1;
     public static final String ITEM_TYPE_CONTENT = "content", ITEM_TYPE_CATEGORY = "category", ITEM_TYPE_CUSTOM = "custom";
-    public static final String PAGE_TYPE_STATIC = "static", PAGE_TYPE_DYNAMIC = "dynamic";
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer userId, String path, String type, String itemType, Integer itemId,
+    public PageHandler getPage(Integer siteId, Integer userId, String path, String itemType, Integer itemId,
             Date startPublishDate, Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, path, type, itemType, itemId, startPublishDate, endPublishDate, status, disabled,
+        return dao.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate, status, disabled,
                 orderField, orderType, pageIndex, pageSize);
     }
 
@@ -70,8 +69,8 @@ public class CmsPageDataService extends BaseService<CmsPageData> {
         }
     }
 
-    public int delete(int siteId, String path, String type) {
-        return dao.delete(siteId, path, type);
+    public int delete(int siteId, String path) {
+        return dao.delete(siteId, path);
     }
 
     @Autowired

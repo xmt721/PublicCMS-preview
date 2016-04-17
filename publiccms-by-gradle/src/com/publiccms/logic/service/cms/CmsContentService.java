@@ -117,20 +117,11 @@ public class CmsContentService extends BaseService<CmsContent> {
         return entity;
     }
 
-    public CmsContent updateStaticUrl(Serializable id, String url) {
+    public CmsContent updateUrl(Serializable id, String url, boolean hasStatic) {
         CmsContent entity = getEntity(id);
         if (notEmpty(entity)) {
             entity.setUrl(url);
-            entity.setHasStatic(true);
-        }
-        return entity;
-    }
-
-    public CmsContent updateDynamicUrl(Serializable id, String url) {
-        CmsContent entity = getEntity(id);
-        if (notEmpty(entity)) {
-            entity.setUrl(url);
-            entity.setHasStatic(false);
+            entity.setHasStatic(hasStatic);
         }
         return entity;
     }

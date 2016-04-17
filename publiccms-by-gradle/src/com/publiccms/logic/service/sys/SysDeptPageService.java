@@ -1,8 +1,6 @@
 package com.publiccms.logic.service.sys;
 
 // Generated 2016-1-19 11:41:45 by com.sanluan.common.source.SourceMaker
-import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_DYNAMIC;
-import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_STATIC;
 import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.apache.commons.lang3.ArrayUtils.removeElement;
 
@@ -23,13 +21,13 @@ import com.sanluan.common.handler.PageHandler;
 public class SysDeptPageService extends BaseService<SysDeptPage> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer deptId, String type, String page, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(deptId, type, page, pageIndex, pageSize);
+    public PageHandler getPage(Integer deptId, String page, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(deptId, page, pageIndex, pageSize);
     }
 
     @Transactional(readOnly = true)
-    public List<SysDeptPage> getEntitys(Integer deptId, String type, String[] pages) {
-        return dao.getEntitys(deptId, type, pages);
+    public List<SysDeptPage> getEntitys(Integer deptId, String[] pages) {
+        return dao.getEntitys(deptId, pages);
     }
 
     @Transactional(readOnly = true)
@@ -37,45 +35,35 @@ public class SysDeptPageService extends BaseService<SysDeptPage> {
         return dao.getEntity(deptId, page);
     }
 
-    public void updateDeptPages(Integer deptId, String[] pages, String[] dynamicPages) {
+    public void updateDeptPages(Integer deptId, String[] pages) {
         if (notEmpty(deptId)) {
             @SuppressWarnings("unchecked")
-            List<SysDeptPage> list = (List<SysDeptPage>) getPage(deptId, null, null, null, null).getList();
+            List<SysDeptPage> list = (List<SysDeptPage>) getPage(deptId, null, null, null).getList();
             for (SysDeptPage deptPage : list) {
-                if (PAGE_TYPE_STATIC.equalsIgnoreCase(deptPage.getType()) && contains(pages, deptPage.getPage())) {
+                if (contains(pages, deptPage.getPage())) {
                     pages = removeElement(pages, deptPage.getPage());
-                } else if (PAGE_TYPE_DYNAMIC.equalsIgnoreCase(deptPage.getType()) && contains(dynamicPages, deptPage.getPage())) {
-                    dynamicPages = removeElement(dynamicPages, deptPage.getPage());
                 } else {
                     delete(deptPage.getId());
                 }
             }
-            saveDeptPages(deptId, pages, dynamicPages);
+            saveDeptPages(deptId, pages);
         }
     }
 
-    public void delete(Integer deptId, String type, String page) {
-        if (notEmpty(page) && notEmpty(type) || notEmpty(deptId)) {
+    public void delete(Integer deptId, String page) {
+        if (notEmpty(page) || notEmpty(deptId)) {
             @SuppressWarnings("unchecked")
-            List<SysDeptCategory> list = (List<SysDeptCategory>) getPage(deptId, type, page, null, null).getList();
+            List<SysDeptCategory> list = (List<SysDeptCategory>) getPage(deptId, page, null, null).getList();
             for (SysDeptCategory deptCategory : list) {
                 delete(deptCategory.getId());
             }
         }
     }
 
-    public void saveDeptPages(Integer deptId, String[] pages, String[] dynamicPages) {
-        if (notEmpty(deptId)) {
-            if (notEmpty(pages)) {
-                for (String page : pages) {
-                    save(new SysDeptPage(deptId, PAGE_TYPE_STATIC, page));
-                }
-
-            }
-            if (notEmpty(dynamicPages)) {
-                for (String page : dynamicPages) {
-                    save(new SysDeptPage(deptId, PAGE_TYPE_DYNAMIC, page));
-                }
+    public void saveDeptPages(Integer deptId, String[] pages) {
+        if (notEmpty(deptId) && notEmpty(pages)) {
+            for (String page : pages) {
+                save(new SysDeptPage(deptId, page));
             }
         }
     }

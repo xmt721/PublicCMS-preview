@@ -9,17 +9,18 @@ function refreshTaskTemplate(){
 <h2 class="contentTitle">
  		<a href="taskTemplate/chipLookup.html" target="dialog" mask="true">模板片段</a>
 	<#if !path?has_content||!path?starts_with('/ftl/')>
-		<a href="taskTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="taskTemplate/metadata">创建模板片段</a>
+		<a href="taskTemplate/content.html?path=${'/ftl/'?url}" target="ajax" rel="taskTemplateBox">创建模板片段</a>
 	</#if>
-	<a href="cmsTemplate/delete.do?path=${path?html?url}&type=task" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a>
- </h2>
+	<a href="taskTemplate/delete.do?path=${path?html?url}" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a>
+</h2>
 <div class="pageContent">
-	<form method="post" action="cmsTemplate/save.do?navTabId=taskTemplate" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
-		<div class="pageFormContent" layoutH="98" style="background:#ffffff;">
-	   		<div>
-				<input name="path" type="hidden" value="${path?html}"/>
-				<input name="type" type="hidden" value="task"/>
-				<textarea name="content" id="taskTemplateEditor"><@_templateContent path=path type='task'>${(object?html)!}</@_templateContent></textarea>
+	<form method="post" action="taskTemplate/save.do?navTabId=taskTemplate" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
+		<div style="height: 24px;padding: 0 5px;">
+			<label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path?html)!}"/>
+		</div>
+		<div class="pageFormContent" layoutH="122" style="background:#ffffff;">
+	   		<div> 
+				<textarea name="content" id="taskTemplateEditor"><@_taskTemplateContent path=path>${(object?html)!}</@_taskTemplateContent></textarea>
 				<script>
 					var taskTemplateEditor = CodeMirror.fromTextArea(document.getElementById('taskTemplateEditor'), {
 				        mode: "freemarkermixed",
@@ -33,7 +34,6 @@ function refreshTaskTemplate(){
 		</div>
 		<div class="formBar">
 			<ul>
-				<li><a class="button" href="taskTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="taskTemplate/metadata"><span>模板元数据</span></a></li>
 				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
 				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
 			</ul>

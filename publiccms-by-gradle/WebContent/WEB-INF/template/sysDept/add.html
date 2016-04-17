@@ -66,17 +66,17 @@
 					</li>
 				</ul>
 			</fieldset>
-<#macro pageTree name='pages' type='static' filepath=''>
-	<@_templateList path=filepath type=type>
-		<@_metadata dir=filepath type=type><#local metaDataMap=object/></@_metadata>
+<#macro pageTree filepath=''>
+	<@_templateList path=filepath>
+		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
 		<#list list as a>
 			<#if 'ftl'!=a.fileName>
 				<li>
 					<#local path=filepath+'/'+a.fileName>
-					<a tname="${name}" tvalue="${path?html}">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>
+					<a tname="pages" tvalue="${path?html}">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>
 					<#if a.directory>
 					<ul>
-						<@pageTree name type path/>
+						<@pageTree path/>
 					</ul>
 					</#if>
 				</li>
@@ -88,37 +88,12 @@
 </#macro>
 			<fieldset class="ownsAllPage">
 				<legend>页面授权</legend>
-				<div class="tabs" currentIndex="0" eventType="click">
-					<div class="tabsHeader">
-						<div class="tabsHeaderContent">
-							<ul>
-								<li><a href="javascript:;"><span><i class="icon-file-alt icon-large"></i> 静态页面授权</span></a></li>
-								<li><a href="javascript:;"><span><i class="icon-globe icon-large"></i>动态页面授权</span></a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="tabsContent" style="background:#fff">
-						<div>
-							<ul class="tree treeFolder treeCheck expand">
-								<li>
-									<a href="javascript:;" onclick="return false;">所有页面</a>
-									<ul><@pageTree/></ul>
-								</li>
-							</ul>
-						</div>
-						<div>
-							<ul class="tree treeFolder treeCheck expand">
-								<li>
-									<a href="javascript:;" onclick="return false;">所有页面</a>
-									<ul><@pageTree 'dynamicPages' 'dynamic'/></ul>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="tabsFooter">
-						<div class="tabsFooterContent"></div>
-					</div>
-				</div>
+				<ul class="tree treeFolder treeCheck expand">
+					<li>
+						<a href="javascript:;" onclick="return false;">所有页面</a>
+						<ul><@pageTree/></ul>
+					</li>
+				</ul>
 			</fieldset>
 <#if a??>
 <script>
@@ -127,7 +102,7 @@
 	</#if>
 	<@_sysDeptPageList deptId=a.id>
 		<#list page.list as a>
-	$('.ownsAllPage .tree li a[tname=${(a.type='static')?then('pages','dynamicPages')}][tvalue="${a.page?html?js_string}"]',navTab.getCurrentPanel()).attr('checked','checked');
+	$('.ownsAllPage .tree li a[tname=pages][tvalue="${a.page?html?js_string}"]',navTab.getCurrentPanel()).attr('checked','checked');
 		</#list>
 	</@_sysDeptPageList>
 	<#if a.ownsAllCategory>

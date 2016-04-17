@@ -24,10 +24,19 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
     }
 
     @Override
+    protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            super.doDispatch(request, response);
+        } catch (PageNotFoundException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             super.render(mv, request, response);
-        } catch (ServletException e) {
+        } catch (ServletException | PageNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

@@ -6,7 +6,6 @@ import static com.publiccms.logic.component.SiteComponent.CONTEXT_SITE;
 import static com.publiccms.logic.component.SiteComponent.expose;
 import static com.publiccms.logic.component.SiteComponent.getFullFileName;
 import static com.publiccms.logic.component.TemplateCacheComponent.CONTENT_CACHE;
-import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_STATIC;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeFileByFile;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByString;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
@@ -57,9 +56,8 @@ public class TemplateComponent extends Base implements Cacheable {
     private String directivePrefix;
     private String directiveRemoveRegex;
     private String methodRemoveRegex;
-    private Configuration staticConfiguration;
     private Configuration adminConfiguration;
-    private Configuration dynamicConfiguration;
+    private Configuration webConfiguration;
     private Configuration taskConfiguration;
 
     @Autowired
@@ -100,13 +98,13 @@ public class TemplateComponent extends Base implements Cacheable {
             }
             expose(model, site);
             model.put("metadata", metadata);
-            filePath = makeStringByString(filePath, staticConfiguration, model);
+            filePath = makeStringByString(filePath, webConfiguration, model);
             model.put("url", site.getSitePath() + filePath);
             if (notEmpty(pageIndex) && 1 < pageIndex) {
                 int index = filePath.lastIndexOf('.');
                 filePath = filePath.substring(0, index) + '_' + pageIndex + filePath.substring(index, filePath.length());
             }
-            makeFileByFile(templatePath, siteComponent.getStaticFilePath(site, filePath), staticConfiguration, model);
+            makeFileByFile(templatePath, siteComponent.getStaticFilePath(site, filePath), webConfiguration, model);
         }
         return filePath;
     }
@@ -131,22 +129,19 @@ public class TemplateComponent extends Base implements Cacheable {
             }
             if (notEmpty(categoryModel) && notEmpty(category) && !entity.isOnlyUrl()) {
                 try {
-                    if (notEmpty(categoryModel.getTemplatePath())) {
-                        contentService.updateStaticUrl(
-                                entity.getId(),
-                                site.getSitePath()
-                                        + createContentFile(site, entity, category, true,
-                                                getFullFileName(site, categoryModel.getTemplatePath()), null, null));
+                    if (site.isUseStatic() && notEmpty(categoryModel.getTemplatePath())) {
+                        String url = site.getSitePath()
+                                + createContentFile(site, entity, category, true,
+                                        getFullFileName(site, categoryModel.getTemplatePath()), null, null);
+                        contentService.updateUrl(entity.getId(), url, true);
                     } else {
                         Map<String, Object> model = new HashMap<String, Object>();
                         model.put("content", entity);
                         model.put("category", category);
                         model.put(CONTEXT_SITE, site);
-                        contentService
-                                .updateDynamicUrl(
-                                        entity.getId(),
-                                        site.getDynamicPath()
-                                                + makeStringByString(category.getContentPath(), staticConfiguration, model));
+                        String url = site.getDynamicPath()
+                                + makeStringByString(category.getContentPath(), webConfiguration, model);
+                        contentService.updateUrl(entity.getId(), url, false);
                     }
                     return true;
                 } catch (IOException | TemplateException e) {
@@ -226,18 +221,17 @@ public class TemplateComponent extends Base implements Cacheable {
     public boolean createCategoryFile(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage) {
         if (notEmpty(entity.getPath())) {
             try {
-                if (notEmpty(entity.getTemplatePath())) {
-                    categoryService.updateStaticUrl(
-                            entity.getId(),
-                            site.getSitePath()
-                                    + createCategoryFile(site, entity, getFullFileName(site, entity.getTemplatePath()),
-                                            entity.getPath(), pageIndex, totalPage));
+                if (site.isUseStatic() && notEmpty(entity.getTemplatePath())) {
+                    String url = site.getSitePath()
+                            + createCategoryFile(site, entity, getFullFileName(site, entity.getTemplatePath()), entity.getPath(),
+                                    pageIndex, totalPage);
+                    categoryService.updateUrl(entity.getId(), url, true);
                 } else {
                     Map<String, Object> model = new HashMap<String, Object>();
                     model.put("category", entity);
                     model.put(CONTEXT_SITE, site);
-                    categoryService.updateDynamicUrl(entity.getId(),
-                            site.getDynamicPath() + makeStringByString(entity.getPath(), staticConfiguration, model));
+                    String url = site.getDynamicPath() + makeStringByString(entity.getPath(), webConfiguration, model);
+                    categoryService.updateUrl(entity.getId(), url, false);
                 }
             } catch (IOException | TemplateException e) {
                 return false;
@@ -305,8 +299,7 @@ public class TemplateComponent extends Base implements Cacheable {
             }
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("page", pageDataService.getPage(site.getId(), null, templatePath.substring(INCLUDE_DIRECTORY.length()),
-                    PAGE_TYPE_STATIC, null, null, null, getDate(), CmsPageDataService.STATUS_NORMAL, false, null, null, 1,
-                    pageSize));
+                    null, null, null, getDate(), CmsPageDataService.STATUS_NORMAL, false, null, null, 1, pageSize));
             createStaticFile(site, getFullFileName(site, templatePath), templatePath, null, metadata, model);
         }
     }
@@ -341,27 +334,19 @@ public class TemplateComponent extends Base implements Cacheable {
         log.info(templateDirectiveMap.size() + " template directives created:[" + templateDirectives.toString() + "];");
         log.info(methodMap.size() + " methods created:[" + methods.toString() + "];");
 
-        staticConfiguration = new Configuration(Configuration.getVersion());
-        File staticFilePath = new File(siteComponent.getStaticTemplateFilePath());
-        staticFilePath.mkdirs();
-        staticConfiguration.setDirectoryForTemplateLoading(staticFilePath);
-        copyConfig(adminConfiguration, staticConfiguration);
-        staticConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, staticConfiguration.getObjectWrapper()));
-
-        dynamicConfiguration = new Configuration(Configuration.getVersion());
-        File dynamicFilePath = new File(siteComponent.getDynamicTemplateFilePath());
-        dynamicFilePath.mkdirs();
-        dynamicConfiguration.setDirectoryForTemplateLoading(dynamicFilePath);
-        copyConfig(adminConfiguration, dynamicConfiguration);
-        Map<String, Object> dynamicFreemarkerVariables = new HashMap<String, Object>(freemarkerVariables);
-        dynamicFreemarkerVariables.put(CONTENT_CACHE, new NoCacheDirective());
-        dynamicConfiguration.setAllSharedVariables(new SimpleHash(dynamicFreemarkerVariables, dynamicConfiguration
-                .getObjectWrapper()));
+        webConfiguration = new Configuration(Configuration.getVersion());
+        File webFile = new File(siteComponent.getWebTemplateFilePath());
+        webFile.mkdirs();
+        webConfiguration.setDirectoryForTemplateLoading(webFile);
+        copyConfig(adminConfiguration, webConfiguration);
+        Map<String, Object> webFreemarkerVariables = new HashMap<String, Object>(freemarkerVariables);
+        webFreemarkerVariables.put(CONTENT_CACHE, new NoCacheDirective());
+        webConfiguration.setAllSharedVariables(new SimpleHash(webFreemarkerVariables, webConfiguration.getObjectWrapper()));
 
         taskConfiguration = new Configuration(Configuration.getVersion());
-        File taskFilePath = new File(siteComponent.getTaskTemplateFilePath());
-        taskFilePath.mkdirs();
-        taskConfiguration.setDirectoryForTemplateLoading(taskFilePath);
+        File taskFile = new File(siteComponent.getTaskTemplateFilePath());
+        taskFile.mkdirs();
+        taskConfiguration.setDirectoryForTemplateLoading(taskFile);
         copyConfig(adminConfiguration, taskConfiguration);
 
         StringBuffer taskDirectives = new StringBuffer();
@@ -394,13 +379,8 @@ public class TemplateComponent extends Base implements Cacheable {
     @Override
     public void clear() {
         adminConfiguration.clearTemplateCache();
-        staticConfiguration.clearTemplateCache();
-        dynamicConfiguration.clearTemplateCache();
+        webConfiguration.clearTemplateCache();
         taskConfiguration.clearTemplateCache();
-    }
-
-    public Configuration getDynamicConfiguration() {
-        return dynamicConfiguration;
     }
 
     public void setDirectivePrefix(String directivePrefix) {
@@ -419,8 +399,8 @@ public class TemplateComponent extends Base implements Cacheable {
         return directiveRemoveRegex;
     }
 
-    public Configuration getStaticConfiguration() {
-        return staticConfiguration;
+    public Configuration getWebConfiguration() {
+        return webConfiguration;
     }
 
     public Configuration getTaskConfiguration() {

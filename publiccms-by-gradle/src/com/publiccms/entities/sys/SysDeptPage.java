@@ -26,17 +26,14 @@ public class SysDeptPage implements java.io.Serializable {
     private Integer id;
     @MyColumn(title = "部门", condition = true)
     private int deptId;
-    @MyColumn(title = "页面类型", condition = true)
-    private String type;
     @MyColumn(title = "页面", condition = true)
     private String page;
 
     public SysDeptPage() {
     }
 
-    public SysDeptPage(int deptId, String type, String page) {
+    public SysDeptPage(int deptId, String page) {
         this.deptId = deptId;
-        this.type = type;
         this.page = page;
     }
 
@@ -58,15 +55,6 @@ public class SysDeptPage implements java.io.Serializable {
 
     public void setDeptId(int deptId) {
         this.deptId = deptId;
-    }
-
-    @Column(name = "type", nullable = false, length = 50)
-    public String getType() {
-        return this.type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     @Column(name = "page", nullable = false)

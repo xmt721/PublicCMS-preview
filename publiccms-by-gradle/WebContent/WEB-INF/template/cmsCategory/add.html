@@ -43,14 +43,16 @@
 				<#include "../include_page/tagTypes.html"/>
 				<#assign typeIds=(a.tagTypeIds)!''/>
 				<@tagTypes typeIds/>
+			<#if site.useStatic>
 				<dl class="nowrap">
 					<dt>静态化模板路径：</dt>
 					<dd>
 						<input name="templatePath" type="text" maxlength="255" size="40" value="${(a.templatePath)!}"/>
-						<a class="btnLook" href="staticTemplate/lookup.html?field=templatePath" lookupGroup="">选择静态化模板</a>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择静态化模板</a>
 						<span class="info">模板路径为空时不生成静态化页面</span>
 					</dd>
 				</dl>
+			</#if>
 				<dl class="nowrap">
 					<dt>分类页面访问路径：</dt>
 					<dd>
@@ -106,7 +108,7 @@
 		<li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
 			<label>${a.id}:${a.name!}</label>
 			<input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-			<a class="btnLook" href="staticTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
+			<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
 			<@childModel a index+1/>
 		</li>
 			</#list>
@@ -121,11 +123,13 @@
 						<input name="model_${a.id}" type="checkbox" onclick="checkCategoryModel();"/>
 						${a.id}:${a.name!}
 					</dt>
+				<#if site.useStatic>
 					<dd<#if a.onlyUrl> style="display:none"</#if>>
 						<label>静态化模板路径：</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-						<a class="btnLook" href="staticTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
 						<@childModel a/>
 					</dd>
+				</#if>
 				</dl>
 	</#list>
 </@_modelList>

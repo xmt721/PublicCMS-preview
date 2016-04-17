@@ -40,7 +40,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public WebFreeMarkerViewResolver viewResolver() {
         return new WebFreeMarkerViewResolver() {
             {
-                setConfiguration(templateComponent.getDynamicConfiguration());
+                setConfiguration(templateComponent.getWebConfiguration());
                 setViewClass(WebFreeMarkerView.class);
                 setContentType("text/html;charset=UTF-8");
             }

@@ -36,8 +36,6 @@ public class CmsPageData implements java.io.Serializable {
     private int siteId;
     @MyColumn(title = "路径", condition = true)
     private String path;
-    @MyColumn(title = "类型", condition = true)
-    private String type;
     @MyColumn(title = "推荐用户", condition = true)
     private int userId;
     @MyColumn(title = "项目类型", condition = true)
@@ -65,11 +63,10 @@ public class CmsPageData implements java.io.Serializable {
     public CmsPageData() {
     }
 
-    public CmsPageData(int siteId, String path, String type, int userId, String title, Date createDate, Date publishDate,
-            int status, int clicks, boolean disabled) {
+    public CmsPageData(int siteId, String path, int userId, String title, Date createDate, Date publishDate, int status,
+            int clicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
-        this.type = type;
         this.userId = userId;
         this.title = title;
         this.createDate = createDate;
@@ -79,11 +76,10 @@ public class CmsPageData implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPageData(int siteId, String path, String type, int userId, String itemType, Integer itemId, String title,
-            String url, String cover, Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
+    public CmsPageData(int siteId, String path, int userId, String itemType, Integer itemId, String title, String url,
+            String cover, Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
-        this.type = type;
         this.userId = userId;
         this.itemType = itemType;
         this.itemId = itemId;
@@ -124,15 +120,6 @@ public class CmsPageData implements java.io.Serializable {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    @Column(name = "type", nullable = false, length = 50)
-    public String getType() {
-        return this.type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     @Column(name = "user_id", nullable = false)

@@ -1,12 +1,9 @@
 package com.publiccms.logic.component;
 
-import static com.publiccms.logic.component.SiteComponent.STATIC_FILE_PATH;
 import static com.publiccms.logic.component.SiteComponent.STATIC_FILE_PATH_RESOURCE;
 import static com.publiccms.logic.component.SiteComponent.STATIC_FILE_PATH_WEB;
+import static com.publiccms.logic.component.SiteComponent.TASK_FILE_PATH;
 import static com.publiccms.logic.component.SiteComponent.TEMPLATE_PATH;
-import static com.publiccms.logic.component.SiteComponent.TEMPLATE_PATH_DYNAMIC;
-import static com.publiccms.logic.component.SiteComponent.TEMPLATE_PATH_STATIC;
-import static com.publiccms.logic.component.SiteComponent.TEMPLATE_PATH_TASK;
 import static com.publiccms.logic.component.SiteComponent.getFullFileName;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 
@@ -51,14 +48,8 @@ public class FtpComponent extends Base {
     public static final String LIST_DATE_FORMAT1 = "MMM dd yyyy";
     public static final String BLANKSPACE = " ";
     public static final String ROOT = SEPARATOR;
-    public static final String VIRTUAL_PATH_STATIC = ROOT + STATIC_FILE_PATH;
-    public static final String VIRTUAL_PATH_TEMPLATE = ROOT + TEMPLATE_PATH;
-    public static final String[] VIRTUAL_ROOT_PATHS = { "staticfile", "template" };
-    public static final String[] VIRTUAL_STATIC_PATHS = { STATIC_FILE_PATH_WEB, STATIC_FILE_PATH_RESOURCE };
-    public static final String[] VIRTUAL_TEMPLATE_PATHS = { TEMPLATE_PATH_STATIC, TEMPLATE_PATH_TASK, TEMPLATE_PATH_DYNAMIC };
-    public static final String[] VIRTUAL_FILE_PATHS = { VIRTUAL_PATH_STATIC + STATIC_FILE_PATH_RESOURCE,
-            VIRTUAL_PATH_STATIC + STATIC_FILE_PATH_WEB, VIRTUAL_PATH_TEMPLATE + TEMPLATE_PATH_STATIC,
-            VIRTUAL_PATH_TEMPLATE + TEMPLATE_PATH_TASK, VIRTUAL_PATH_TEMPLATE + TEMPLATE_PATH_DYNAMIC };
+    public static final String[] VIRTUAL_FILE_PATHS = { STATIC_FILE_PATH_WEB, STATIC_FILE_PATH_RESOURCE, TASK_FILE_PATH,
+            TEMPLATE_PATH };
     private FtpServer ftpServer;
 
     @Autowired
@@ -595,11 +586,9 @@ public class FtpComponent extends Base {
             try {
                 PrintWriter dout = new PrintWriter(transportSocket.getOutputStream(), true);
                 output.println("150 Opening ASCII mode data connection.");
-                if (ROOT.equals(path) || VIRTUAL_PATH_TEMPLATE.equals(path) || VIRTUAL_PATH_STATIC.equals(path)) {
-                    String[] paths = ROOT.equals(path) ? VIRTUAL_ROOT_PATHS
-                            : VIRTUAL_PATH_TEMPLATE.equals(path) ? VIRTUAL_TEMPLATE_PATHS : VIRTUAL_STATIC_PATHS;
-                    for (String virtualPath : paths) {
-                        File file = new File(rootPath + getSitePath(path + virtualPath));
+                if (ROOT.equals(path)) {
+                    for (String virtualPath : VIRTUAL_FILE_PATHS) {
+                        File file = new File(rootPath + getSitePath(virtualPath));
                         dout.println(getListString(file));
                     }
                 } else {
@@ -655,17 +644,17 @@ public class FtpComponent extends Base {
         }
 
         private String getSitePath(String path) throws IOException {
-            if (SEPARATOR.equals(path)) {
+            if (ROOT.equals(path)) {
                 return path;
             }
             for (String prefix : VIRTUAL_FILE_PATHS) {
-                if (path.startsWith(prefix)) {
-                    int length = prefix.length();
+                if (path.startsWith(ROOT + prefix)) {
+                    int length = ROOT.length() + prefix.length();
                     return path.substring(0, length) + getFullFileName(site, path.substring(length, path.length()));
                 }
             }
-            for (String prefix : VIRTUAL_ROOT_PATHS) {
-                if (path.startsWith(ROOT + prefix)) {
+            for (String prefix : VIRTUAL_FILE_PATHS) {
+                if (path.startsWith(prefix)) {
                     return path;
                 }
             }
@@ -676,7 +665,7 @@ public class FtpComponent extends Base {
             if (empty(path)) {
                 path = currentPath;
             } else {
-                if (!path.startsWith(SEPARATOR)) {
+                if (!path.startsWith(ROOT)) {
                     path = currentPath + path;
                 }
                 if (!path.endsWith(SEPARATOR)) {

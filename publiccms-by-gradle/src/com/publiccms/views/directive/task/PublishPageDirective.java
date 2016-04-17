@@ -27,7 +27,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", SEPARATOR);
-        List<FileInfo> list = fileComponent.getFileList(siteComponent.getStaticTemplateFilePath(getSite(handler), path));
+        List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(getSite(handler), path));
         handler.put("map", deal(getSite(handler), path, list)).render();
     }
 
@@ -52,20 +52,20 @@ public class PublishPageDirective extends AbstractTaskDirective {
 
     private Map<String, Boolean> deal(SysSite site, String path, List<FileInfo> list) {
         path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
-        Map<String, CmsPageMetadata> metadataMap = metadataComponent.getMetadataMap(siteComponent.getStaticTemplateFilePath(site,
+        Map<String, CmsPageMetadata> metadataMap = metadataComponent.getMetadataMap(siteComponent.getWebTemplateFilePath(site,
                 path));
         Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
                 map.putAll(deal(site, filePath + SEPARATOR,
-                        fileComponent.getFileList(siteComponent.getStaticTemplateFilePath(site, filePath))));
+                        fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, filePath))));
             } else {
                 CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
                 String placesPath = INCLUDE_DIRECTORY + filePath + SEPARATOR;
                 map.putAll(dealPlace(site, placesPath,
-                        metadataComponent.getMetadataMap(siteComponent.getStaticTemplateFilePath(site, placesPath)),
-                        fileComponent.getFileList(siteComponent.getStaticTemplateFilePath(site, placesPath))));
+                        metadataComponent.getMetadataMap(siteComponent.getWebTemplateFilePath(site, placesPath)),
+                        fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, placesPath))));
                 if (notEmpty(metadata) && notEmpty(metadata.getPublishPath())) {
                     try {
                         templateComponent.createStaticFile(site, getFullFileName(site, filePath), metadata.getPublishPath(),

@@ -43,36 +43,37 @@ public class PageController extends AbstractController {
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(CmsPageData entity, String returnUrl, @ModelAttribute CmsPageDataParamters pageDataParamters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
         if (notEmpty(entity) && notEmpty(entity.getPath())) {
+            SysSite site = getSite(request);
             entity.setPath(entity.getPath().replace("//", SEPARATOR));
-        }
-        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getTemplateFilePath(site,
-                entity.getType(), entity.getPath()));
-        if (empty(getUserFromSession(session))
-                || virifyCustom("contribute", empty(metadata) || !metadata.isAllowContribute() || !(metadata.getSize() > 0),
-                        model)) {
-            return REDIRECT + returnUrl;
-        }
-        if (notEmpty(entity.getId())) {
-            CmsPageData oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                    || virifyNotEquals("siteId", getUserFromSession(session).getId(), oldEntity.getUserId(), model)) {
+            String placePath = INCLUDE_DIRECTORY + entity.getPath();
+            String filePath = siteComponent.getWebTemplateFilePath(site, placePath);
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
+            if (empty(getUserFromSession(session))
+                    || virifyCustom("contribute", empty(metadata) || !metadata.isAllowContribute() || !(metadata.getSize() > 0),
+                            model)) {
                 return REDIRECT + returnUrl;
             }
-            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "type", "path", "createDate",
-                    "disabled" });
-            logOperateService.save(new LogOperate(site.getId(), getUserFromSession(session).getId(), LogLoginService.CHANNEL_WEB,
-                    "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
-        } else {
-            entity.setSiteId(site.getId());
-            service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), getUserFromSession(session).getId(), LogLoginService.CHANNEL_WEB,
-                    "save.pagedata", getIpAddress(request), getDate(), entity.getPath()));
+            if (notEmpty(entity.getId())) {
+                CmsPageData oldEntity = service.getEntity(entity.getId());
+                if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                        || virifyNotEquals("siteId", getUserFromSession(session).getId(), oldEntity.getUserId(), model)) {
+                    return REDIRECT + returnUrl;
+                }
+                entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "type", "path", "createDate",
+                        "disabled" });
+                logOperateService.save(new LogOperate(site.getId(), getUserFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB, "update.pagedata", getIpAddress(request), getDate(), entity.getPath()));
+            } else {
+                entity.setSiteId(site.getId());
+                service.save(entity);
+                logOperateService.save(new LogOperate(site.getId(), getUserFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB, "save.pagedata", getIpAddress(request), getDate(), entity.getPath()));
+            }
+            String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath,
+                    pageDataParamters.getExtendDataList()));
+            attributeService.updateAttribute(entity.getId(), extentString);
         }
-        String filePath = siteComponent.getTemplateFilePath(site, entity.getType(), INCLUDE_DIRECTORY + entity.getPath());
-        String extentString = getExtendString(metadataComponent.getExtendDataMap(filePath, pageDataParamters.getExtendDataList()));
-        attributeService.updateAttribute(entity.getId(), extentString);
         return REDIRECT + returnUrl;
     }
 

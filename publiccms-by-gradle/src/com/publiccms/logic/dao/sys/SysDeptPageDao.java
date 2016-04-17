@@ -14,13 +14,10 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysDeptPageDao extends BaseDao<SysDeptPage> {
-    public PageHandler getPage(Integer deptId, String type, String page, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer deptId, String page, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysDeptPage bean");
         if (notEmpty(deptId)) {
             queryHandler.condition("bean.deptId = :deptId").setParameter("deptId", deptId);
-        }
-        if (notEmpty(type)) {
-            queryHandler.condition("bean.type = :type").setParameter("type", type);
         }
         if (notEmpty(page)) {
             queryHandler.condition("bean.page = :page").setParameter("page", page);
@@ -29,11 +26,10 @@ public class SysDeptPageDao extends BaseDao<SysDeptPage> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    public SysDeptPage getEntity(Integer deptId, String type, String page) {
-        if (notEmpty(deptId) && notEmpty(type) && notEmpty(page)) {
+    public SysDeptPage getEntity(Integer deptId, String page) {
+        if (notEmpty(deptId) && notEmpty(page)) {
             QueryHandler queryHandler = getQueryHandler("from SysDeptPage bean");
             queryHandler.condition("bean.deptId = :deptId").setParameter("deptId", deptId);
-            queryHandler.condition("bean.type = :type").setParameter("type", type);
             queryHandler.condition("bean.page = :page").setParameter("page", page);
             return getEntity(queryHandler);
         }
@@ -41,11 +37,10 @@ public class SysDeptPageDao extends BaseDao<SysDeptPage> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<SysDeptPage> getEntitys(Integer deptId, String type, String[] pages) {
-        if (notEmpty(deptId) && notEmpty(type) && notEmpty(pages)) {
+    public List<SysDeptPage> getEntitys(Integer deptId, String[] pages) {
+        if (notEmpty(deptId) && notEmpty(pages)) {
             QueryHandler queryHandler = getQueryHandler("from SysDeptPage bean");
             queryHandler.condition("bean.deptId = :deptId").setParameter("deptId", deptId);
-            queryHandler.condition("bean.type = :type").setParameter("type", type);
             queryHandler.condition("bean.page in (:pages)").setParameter("pages", pages);
             return (List<SysDeptPage>) getList(queryHandler);
         }

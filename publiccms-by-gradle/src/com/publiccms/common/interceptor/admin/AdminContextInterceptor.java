@@ -1,10 +1,10 @@
 package com.publiccms.common.interceptor.admin;
 
 import static com.publiccms.common.base.AbstractController.getAdminFromSession;
+import static com.publiccms.common.base.AbstractController.setAdminToSession;
 import static com.publiccms.common.constants.CmsVersion.getVersion;
 import static com.publiccms.common.constants.CommonConstants.X_POWERED;
 import static com.sanluan.common.tools.RequestUtils.getEncodePath;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.split;
 
 import java.io.IOException;
@@ -60,8 +60,8 @@ public class AdminContextInterceptor extends BaseInterceptor {
                     return true;
                 }
             }
-            user = sysUserService.getEntity(user.getId());
-            if (!user.isDisabled() && !user.isSuperuserAccess()) {
+            SysUser entity = sysUserService.getEntity(user.getId());
+            if (!entity.isDisabled() && !entity.isSuperuserAccess()) {
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
@@ -69,10 +69,10 @@ public class AdminContextInterceptor extends BaseInterceptor {
                     return true;
                 }
             } else if (verifyNeedAuthorized(path)) {
-                if (isNotBlank(path) && !SEPARATOR.equals(path)) {
+                if (!SEPARATOR.equals(path)) {
                     int index = path.lastIndexOf(".");
                     path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
-                    if (0 == roleAuthorizedService.count(user.getRoles(), path) && !ownsAllRight(user.getRoles())) {
+                    if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
                         try {
                             response.sendRedirect(ctxPath + unauthorizedUrl);
                             return false;
@@ -80,6 +80,9 @@ public class AdminContextInterceptor extends BaseInterceptor {
                             return true;
                         }
                     }
+                    user.setRoles(entity.getRoles());
+                    user.setDeptId(entity.getDeptId());
+                    setAdminToSession(request.getSession(), user);
                 }
             }
         }

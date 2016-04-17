@@ -32,7 +32,7 @@ public class SysDeptController extends AbstractController {
     private SysDeptPageService sysDeptPageService;
 
     @RequestMapping("save")
-    public String save(SysDept entity, Integer[] categoryIds, String[] pages, String[] dynamicPages, HttpServletRequest request,
+    public String save(SysDept entity, Integer[] categoryIds, String[] pages, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
@@ -47,7 +47,7 @@ public class SysDeptController extends AbstractController {
                                 + ":" + entity.getName()));
             }
             sysDeptCategoryService.updateDeptCategorys(entity.getId(), categoryIds);
-            sysDeptPageService.updateDeptPages(entity.getId(), pages, dynamicPages);
+            sysDeptPageService.updateDeptPages(entity.getId(), pages);
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
@@ -55,7 +55,7 @@ public class SysDeptController extends AbstractController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.dept", getIpAddress(request), getDate(), entity.getId() + ":"
                             + entity.getName()));
             sysDeptCategoryService.saveDeptCategorys(entity.getId(), categoryIds);
-            sysDeptPageService.saveDeptPages(entity.getId(), pages, dynamicPages);
+            sysDeptPageService.saveDeptPages(entity.getId(), pages);
         }
         return TEMPLATE_DONE;
     }
@@ -67,7 +67,7 @@ public class SysDeptController extends AbstractController {
         if (0 < list.size()) {
             for (Integer childId : list) {
                 sysDeptCategoryService.delete(childId, null);
-                sysDeptPageService.delete(childId, null, null);
+                sysDeptPageService.delete(childId, null);
             }
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.dept", getIpAddress(request), getDate(), id.toString()));

@@ -1,6 +1,5 @@
 package com.publiccms.logic.component;
 
-import static com.publiccms.logic.service.cms.CmsPageDataService.PAGE_TYPE_DYNAMIC;
 import static java.util.Collections.synchronizedList;
 import static java.util.Collections.synchronizedMap;
 
@@ -23,14 +22,11 @@ import com.sanluan.common.base.Base;
 import com.sanluan.common.base.Cacheable;
 
 public class SiteComponent extends Base implements Cacheable {
-    public static final String TEMPLATE_PATH = "template/";
-    public static final String STATIC_FILE_PATH = "staticfile/";
+    public static final String TEMPLATE_PATH = "template";
+    public static final String TASK_FILE_PATH = "task";
 
     public static final String STATIC_FILE_PATH_RESOURCE = "resource";
     public static final String STATIC_FILE_PATH_WEB = "web";
-    public static final String TEMPLATE_PATH_STATIC = "static";
-    public static final String TEMPLATE_PATH_TASK = "task";
-    public static final String TEMPLATE_PATH_DYNAMIC = "dynamic";
 
     private static List<SysDomain> cachedSitelist = synchronizedList(new ArrayList<SysDomain>());
     private static List<String> cachedDomainlist = synchronizedList(new ArrayList<String>());
@@ -46,8 +42,7 @@ public class SiteComponent extends Base implements Cacheable {
     private String resourceFilePath;
     private String staticFilePath;
     private String taskTemplateFilePath;
-    private String staticTemplateFilePath;
-    private String dynamicTemplateFilePath;
+    private String webTemplateFilePath;
 
     private int defaultSiteId;
     private Set<Integer> idSet = new HashSet<Integer>();
@@ -146,20 +141,6 @@ public class SiteComponent extends Base implements Cacheable {
     }
 
     /**
-     * @param templatePath
-     * @return
-     */
-    public String getTemplateFilePath(SysSite site, String type, String path) {
-        if ("task".equals(type)) {
-            return getTaskTemplateFilePath(site, path);
-        } else if (PAGE_TYPE_DYNAMIC.equals(type)) {
-            return getDynamicTemplateFilePath(site, path);
-        } else {
-            return getStaticTemplateFilePath(site, path);
-        }
-    }
-
-    /**
      * @param filePath
      * @return
      */
@@ -187,16 +168,8 @@ public class SiteComponent extends Base implements Cacheable {
      * @param templatePath
      * @return
      */
-    public String getDynamicTemplateFilePath(SysSite site, String templatePath) {
-        return getDynamicTemplateFilePath() + getFullFileName(site, templatePath);
-    }
-
-    /**
-     * @param templatePath
-     * @return
-     */
-    public String getStaticTemplateFilePath(SysSite site, String templatePath) {
-        return getStaticTemplateFilePath() + getFullFileName(site, templatePath);
+    public String getWebTemplateFilePath(SysSite site, String templatePath) {
+        return getWebTemplateFilePath() + getFullFileName(site, templatePath);
     }
 
     public void setDefaultSiteId(int defaultSiteId) {
@@ -228,11 +201,10 @@ public class SiteComponent extends Base implements Cacheable {
             }
         }
         this.rootPath = rootPath;
-        this.staticFilePath = rootPath + STATIC_FILE_PATH + STATIC_FILE_PATH_WEB;
-        this.taskTemplateFilePath = rootPath + TEMPLATE_PATH + TEMPLATE_PATH_TASK;
-        this.staticTemplateFilePath = rootPath + TEMPLATE_PATH + TEMPLATE_PATH_STATIC;
-        this.dynamicTemplateFilePath = rootPath + TEMPLATE_PATH + TEMPLATE_PATH_DYNAMIC;
-        this.resourceFilePath = rootPath + STATIC_FILE_PATH + STATIC_FILE_PATH_RESOURCE;
+        this.staticFilePath = rootPath + STATIC_FILE_PATH_WEB;
+        this.taskTemplateFilePath = rootPath + TASK_FILE_PATH;
+        this.webTemplateFilePath = rootPath + TEMPLATE_PATH;
+        this.resourceFilePath = rootPath + STATIC_FILE_PATH_RESOURCE;
     }
 
     @Override
@@ -251,23 +223,15 @@ public class SiteComponent extends Base implements Cacheable {
         this.taskTemplateFilePath = taskTemplateFilePath;
     }
 
-    public void setStaticTemplateFilePath(String staticTemplateFilePath) {
-        this.staticTemplateFilePath = staticTemplateFilePath;
-    }
-
-    public void setDynamicTemplateFilePath(String dynamicTemplateFilePath) {
-        this.dynamicTemplateFilePath = dynamicTemplateFilePath;
+    public void setWebTemplateFilePath(String webTemplateFilePath) {
+        this.webTemplateFilePath = webTemplateFilePath;
     }
 
     public String getTaskTemplateFilePath() {
         return taskTemplateFilePath;
     }
 
-    public String getStaticTemplateFilePath() {
-        return staticTemplateFilePath;
-    }
-
-    public String getDynamicTemplateFilePath() {
-        return dynamicTemplateFilePath;
+    public String getWebTemplateFilePath() {
+        return webTemplateFilePath;
     }
 }

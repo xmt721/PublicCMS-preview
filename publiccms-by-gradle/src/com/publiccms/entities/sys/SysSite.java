@@ -27,8 +27,10 @@ public class SysSite implements java.io.Serializable {
     private Integer id;
     @MyColumn(title = "名称", condition = true, like = true)
     private String name;
+    private boolean useStatic;
     @MyColumn(title = "站点地址")
     private String sitePath;
+    private boolean useSsi;
     @MyColumn(title = "动态站点地址")
     private String dynamicPath;
     @MyColumn(title = "资源站点地址")
@@ -39,9 +41,12 @@ public class SysSite implements java.io.Serializable {
     public SysSite() {
     }
 
-    public SysSite(String name, String sitePath, String dynamicPath, String resourcePath, boolean disabled) {
+    public SysSite(String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath, String resourcePath,
+            boolean disabled) {
         this.name = name;
+        this.useStatic = useStatic;
         this.sitePath = sitePath;
+        this.useSsi = useSsi;
         this.dynamicPath = dynamicPath;
         this.resourcePath = resourcePath;
         this.disabled = disabled;
@@ -67,6 +72,15 @@ public class SysSite implements java.io.Serializable {
         this.name = name;
     }
 
+    @Column(name = "use_static", nullable = false)
+    public boolean isUseStatic() {
+        return this.useStatic;
+    }
+
+    public void setUseStatic(boolean useStatic) {
+        this.useStatic = useStatic;
+    }
+
     @Column(name = "site_path", nullable = false)
     public String getSitePath() {
         return this.sitePath;
@@ -74,6 +88,15 @@ public class SysSite implements java.io.Serializable {
 
     public void setSitePath(String sitePath) {
         this.sitePath = sitePath;
+    }
+
+    @Column(name = "use_ssi", nullable = false)
+    public boolean isUseSsi() {
+        return this.useSsi;
+    }
+
+    public void setUseSsi(boolean useSsi) {
+        this.useSsi = useSsi;
     }
 
     @Column(name = "dynamic_path", nullable = false)

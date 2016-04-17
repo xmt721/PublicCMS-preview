@@ -22,16 +22,18 @@
 						<label class="onlyUrl"><input name="hasFiles" type="checkbox"/>拥有附件列表</label>
 					</dd>
 				</dl>
+			<#if site.useStatic>
 				<dl class="onlyUrl nowrap">
 					<dt>默认模板路径：</dt>
 					<dd>
 						<input name="templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-						<a class="btnLook" href="staticTemplate/lookup.html?field=templatePath" lookupGroup="">选择默认静态化模板路径</a>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择默认静态化模板路径</a>
 						<span class="info">
 							静态化过程以分类与模型映射模板路径为准，此处选择仅为简化后面操作，
 						</span>
 					</dd>
 				</dl>
+			</#if>
 			<#if a?has_content>
 				<script>
 				<#if a.hasChild>

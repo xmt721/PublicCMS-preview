@@ -13,7 +13,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsPageDataDao extends BaseDao<CmsPageData> {
-    public PageHandler getPage(Integer siteId, Integer userId, String path, String type, String itemType, Integer itemId,
+    public PageHandler getPage(Integer siteId, Integer userId, String path, String itemType, Integer itemId,
             Date startPublishDate, Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPageData bean");
@@ -25,9 +25,6 @@ public class CmsPageDataDao extends BaseDao<CmsPageData> {
         }
         if (notEmpty(path)) {
             queryHandler.condition("bean.path = :path").setParameter("path", path);
-        }
-        if (notEmpty(type)) {
-            queryHandler.condition("bean.type = :type").setParameter("type", type);
         }
         if (notEmpty(itemType)) {
             queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
@@ -68,12 +65,11 @@ public class CmsPageDataDao extends BaseDao<CmsPageData> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    public int delete(int siteId, String path, String type) {
-        if (notEmpty(path) && notEmpty(type)) {
+    public int delete(int siteId, String path) {
+        if (notEmpty(path)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from CmsPageData bean");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.path = :path").setParameter("path", path);
-            queryHandler.condition("bean.type = :type").setParameter("type", type);
             return delete(queryHandler);
         }
         return 0;

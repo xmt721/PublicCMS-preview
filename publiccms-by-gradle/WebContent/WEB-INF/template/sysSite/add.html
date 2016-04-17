@@ -7,12 +7,14 @@
 				<dt>名称：</dt>
 				<dd>
 					<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
+					<label><input name="useStatic" type="checkbox" onclick="if($(this).is(':checked')){$('.useStatic').show();$('.useStatic input[type=text]',navTab.getCurrentPanel()).addClass('required')}else{$('.useStatic').hide();$('.useStatic input[type=text]',navTab.getCurrentPanel()).val('').removeClass('required');}"/>启用静态化</label>
+					<label><input name="useSsi" type="checkbox"/>启用SSI</label>
 				</dd>
 			</dl>
-			<dl class="nowrap">
+			<dl class="nowrap useStatic" style="display:none">
 				<dt>静态站点地址：</dt>
 				<dd>
-					<input class="required" name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
+					<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
 					<span class="info">该地址用于静态站点访问,在模板中使用：<#noparse>${site.sitePath}</#noparse> 获取</span>
 				</dd>
 			</dl>
@@ -40,6 +42,12 @@
 						</dd>
 					</dl>
 					<dl class="nowrap">
+						<dt>部门名：</dt>
+						<dd>
+							<input class="required" name="deptName" type="text" maxlength="50" size="20" value="技术部"/>
+						</dd>
+					</dl>
+					<dl class="nowrap">
 						<dt>管理员用户名：</dt>
 						<dd>
 							<input class="required" name="userName" type="text" maxlength="45" size="20" value="admin"/>
@@ -53,6 +61,14 @@
 					</dl>
 				</fieldset>
 			</#if>
+			<script>
+				<#if !a??||a.useStatic>
+					$('input[name=useStatic]',navTab.getCurrentPanel()).click();
+				</#if>
+				<#if !a??||a.useSsi>
+					$('input[name=useSsi]',navTab.getCurrentPanel()).click();
+					</#if>
+			</script>
 		</div>
 		<div class="formBar">
 			<ul>

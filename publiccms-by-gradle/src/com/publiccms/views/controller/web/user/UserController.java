@@ -104,8 +104,7 @@ public class UserController extends AbstractController {
      * @return
      */
     @RequestMapping(value = "saveEmail")
-    public String saveEmail(String email, String returnUrl, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String saveEmail(String email, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (!virifyNotEmpty("email", email, model) && !virifyNotEMail("email", email, model)
                 && virifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
@@ -124,13 +123,13 @@ public class UserController extends AbstractController {
                 mailComponent.sendHtml(
                         email,
                         getMessage(request, "email.register.title", user.getNickName()),
-                        makeStringByFile(getMessage(request, "email.register.template"),
-                                templateComponent.getStaticConfiguration(), emailModel));
+                        makeStringByFile(getMessage(request, "email.register.template"), templateComponent.getWebConfiguration(),
+                                emailModel));
             } catch (IOException | TemplateException e) {
                 model.addAttribute("error", "saveEmail.email.error");
             }
             model.addAttribute(MESSAGE, "saveEmail.success");
         }
-        return REDIRECT+ returnUrl;
+        return REDIRECT + returnUrl;
     }
 }

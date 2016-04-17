@@ -24,6 +24,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.MetadataComponent;
 import com.publiccms.logic.component.TemplateCacheComponent;
 import com.publiccms.views.pojo.CmsPageMetadata;
+import com.sanluan.common.servlet.PageNotFoundException;
 
 /**
  * 
@@ -52,28 +53,34 @@ public class IndexController extends AbstractController {
      * @param response
      * @param model
      * @return
+     * @throws Exception
      */
     @RequestMapping({ SEPARATOR, "/**" })
-    public String page(HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String page(HttpServletRequest request, HttpSession session, ModelMap model) throws PageNotFoundException {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (SEPARATOR.equals(requestPath) || requestPath.endsWith(SEPARATOR)) {
             requestPath += "index.html";
         }
         SysSite site = getSite(request);
-        String templatePath = siteComponent.getDynamicTemplateFilePath(site, requestPath);
+        String templatePath = siteComponent.getWebTemplateFilePath(site, requestPath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (notEmpty(metadata)) {
-            SysDomain domain = getDomain(request);
-            if (metadata.isNeedLogin() && empty(getUserFromSession(session))) {
-                return REDIRECT + domain.getLoginPath() + "?returnUrl=" + getEncodePath(requestPath, request.getQueryString());
-            }
-            model.put("metadata", metadata);
-            if (notEmpty(metadata.getAcceptParamters())) {
-                billingRequestParamtersToModel(request, metadata.getAcceptParamters(), model);
-            }
-            if (notEmpty(metadata.getCacheTime()) && 10 <= metadata.getCacheTime()) {
-                return templateCacheComponent.getCachedPath(requestPath, siteComponent.getViewNamePreffix(site, domain)
-                        + requestPath, metadata.getCacheTime() * 1000, metadata.getAcceptParamters(), site, request, model);
+            if (metadata.isUseDynamic()) {
+                SysDomain domain = getDomain(request);
+                if (metadata.isNeedLogin() && empty(getUserFromSession(session))) {
+                    return REDIRECT + domain.getLoginPath() + "?returnUrl="
+                            + getEncodePath(requestPath, request.getQueryString());
+                }
+                model.put("metadata", metadata);
+                if (notEmpty(metadata.getAcceptParamters())) {
+                    billingRequestParamtersToModel(request, metadata.getAcceptParamters(), model);
+                }
+                if (notEmpty(metadata.getCacheTime()) && 10 <= metadata.getCacheTime()) {
+                    return templateCacheComponent.getCachedPath(requestPath, siteComponent.getViewNamePreffix(site, domain)
+                            + requestPath, metadata.getCacheTime() * 1000, metadata.getAcceptParamters(), site, request, model);
+                }
+            } else {
+                throw new PageNotFoundException(requestPath);
             }
         }
         return requestPath;
