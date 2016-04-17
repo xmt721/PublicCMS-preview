@@ -17,7 +17,7 @@
 						<@pageTree path/>
 					</ul>
 				<#else>
-					<a href="cmsPage/placeList.html?path=${path?url}" target="navTab" title="页面:${a.fileName}" rel="cmsPage/placeList">
+					<a href="cmsPage/placeList.html?path=${path?url}" target="navTab" title="<i class='icon-globe icon-large'></i> 页面管理" rel="cmsPage/placeList">
 						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 					</a>
 				</#if>
@@ -37,7 +37,7 @@
 		<#list page.list as a>
 			<#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
 				<li>
-					<a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" title="内容:${a.name!}">${a.name!}</a>
+					<a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" title="<i class='icon-book icon-large'></i> 内容管理">${a.name!}</a>
 				<#if a.childIds?has_content>
 					<ul>
 						<@contentCategoryTree a.id/>
@@ -55,7 +55,7 @@
 		<#list page.list as a>
 			<#if a.childIds?has_content>
 			<li>
-				<a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" title="分类:${a.name!}">${a.name!}</a>
+				<a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" title="<i class='icon-folder-open icon-large'></i> 分类管理">${a.name!}</a>
 				<ul>
 					<@categoryTree a.id/>
 				</ul>
@@ -85,9 +85,9 @@
 						<#assign  dept=object/>
 					</@_sysDept>
 					<#if dept?has_content&&dept.ownsAllCategory>
-						<a href="cmsContent/list.html" target="navTab" rel="cmsContent/list">内容分类</a>
+						<a href="cmsContent/list.html" target="navTab" rel="cmsContent/list" title="<i class='icon-book icon-large'></i> 内容管理">分类</a>
 					<#else>
-						<a href="javascript:;" onclick="return false;">内容分类</a>
+						<a href="javascript:;" onclick="return false;">分类</a>
 					</#if>
 					<ul>
 						<@contentCategoryTree/>
@@ -98,7 +98,7 @@
 		<#case 'cmsCategory/list'>
 			<ul class="tree treeFolder">
 				<li>
-					<a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list">分类</a>
+					<a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list" title="<i class='icon-folder-open icon-large'></i> 分类管理">分类</a>
 					<ul>
 						<@categoryTree/>
 					</ul>
