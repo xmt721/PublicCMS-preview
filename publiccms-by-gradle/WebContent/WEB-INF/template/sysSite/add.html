@@ -15,21 +15,21 @@
 				<dt>静态站点地址：</dt>
 				<dd>
 					<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
-					<span class="info">该地址用于静态站点访问,在模板中使用：<#noparse>${site.sitePath}</#noparse> 获取</span>
+					<span class="info">该地址用于静态站点访问</span>
 				</dd>
 			</dl>
 			<dl class="nowrap">
 				<dt>动态站点地址：</dt>
 				<dd>
 					<input class="required" name="dynamicPath" type="text" maxlength="255" size="60" value="${(a.dynamicPath)!}"/>
-					<span class="info">该地址用于动态站点访问,在模板中使用：<#noparse>${site.dynamicPath}</#noparse> 获取</span>
+					<span class="info">该地址用于动态站点访问</span>
 				</dd>
 			</dl>
 			<dl class="nowrap">
 				<dt>资源站点地址：</dt>
 				<dd>
 					<input class="required" name="resourcePath" type="text" maxlength="255" size="60" value="${(a.resourcePath)!}"/>
-					<span class="info">该地址用于资源站点访问,在模板中使用：<#noparse>${site.resourcePath}</#noparse> 获取</span>
+					<span class="info">该地址用于资源站点访问</span>
 				</dd>
 			</dl>
 			<#if !a??>
