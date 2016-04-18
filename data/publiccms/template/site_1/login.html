@@ -15,7 +15,7 @@
    		<p class="message">您已经登录了${user!}</p>
    		<script>${(returnUrl?has_content)?then("window.location.href='${base}${(returnUrl?html)!}'","")}</script>
    	<#else>
-		<form action="login.do" method="post" class="center login-form">
+		<form action="doLogin.do" method="post" class="center login-form">
 			<p><input type="text" name="username" class="input-text" placeholder="用户名" title="用户名"/></p>
 			<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
 			<p class="text-center">

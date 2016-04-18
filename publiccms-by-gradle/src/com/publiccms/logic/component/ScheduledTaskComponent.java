@@ -28,6 +28,8 @@ public class ScheduledTaskComponent extends Base {
     private LogOperateService logOperateService;
     @Autowired
     private LogTaskService logTaskService;
+    @Autowired
+    private CacheComponent cacheComponent;
 
     /**
      * 每分钟清理半小时前的token
@@ -37,6 +39,14 @@ public class ScheduledTaskComponent extends Base {
         Date date = addMinutes(getDate(), -30);
         appTokenService.delete(date);
         sysEmailTokenService.delete(date);
+    }
+
+    /**
+     * 每天凌晨清理缓存
+     */
+    @Scheduled(cron = "0 0 0  * * ?")
+    public void clearCache() {
+        cacheComponent.clear();
     }
 
     /**

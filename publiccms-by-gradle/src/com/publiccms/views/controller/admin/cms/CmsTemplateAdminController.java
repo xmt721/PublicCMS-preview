@@ -69,8 +69,8 @@ public class CmsTemplateAdminController extends AbstractController {
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
                 if (notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
-                    if (metadata.getCacheTime() > 0) {
-                        templateCacheComponent.deleteCachedFile(filePath);
+                    if (notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
+                        templateCacheComponent.deleteCachedFile(getFullFileName(site, path));
                     }
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.web.template", getIpAddress(request), getDate(), path));

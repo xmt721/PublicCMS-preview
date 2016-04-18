@@ -9,6 +9,7 @@ UPDATE  `public_cms`.`sys_extend` SET  `item_type` =  'category',`item_id` =  19
 UPDATE  `public_cms`.`sys_extend` SET  `item_type` =  'category',`item_id` =  20 WHERE  `sys_extend`.`id` =3;
 -- 20160416 --
 ALTER TABLE  `sys_site` ADD  `use_static` TINYINT( 1 ) NOT NULL COMMENT  '启用静态化' AFTER  `name`;
+ALTER TABLE  `sys_site` ADD  `use_ssi` TINYINT( 1 ) NOT NULL COMMENT  '启用服务器端包含' AFTER  `site_path`;
 ALTER TABLE  `cms_page_data` CHANGE  `user_id`  `user_id` INT( 11 ) NOT NULL COMMENT  '提交用户';
 ALTER TABLE `cms_page_data` DROP `type`;
 ALTER TABLE `sys_dept_page` DROP `type`;
