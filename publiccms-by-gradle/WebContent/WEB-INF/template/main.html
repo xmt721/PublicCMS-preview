@@ -1,7 +1,7 @@
 <div class="pageFormContent" layoutH="20">
 	<div class="unit">
 		<p>
-			<label>我的待审核:</label>
+			<label>我的待审核：</label>
 			<a href="myself/contentList.html?status=2" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
 				<@_contentList admin=true status=2 userId=admin.id>
 					${page.totalCount}篇
@@ -9,7 +9,7 @@
 			</a>
 		</p>
 		<p>
-			<label>我的草稿:</label>
+			<label>我的草稿：</label>
 			<a href="myself/contentList.html?status=0" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
 				<@_contentList admin=true status=0 userId=admin.id>
 					${page.totalCount}篇
@@ -25,15 +25,15 @@
 	<div class="divider"></div>
 	<div class="unit">
 		<p>
-			<label>登录次数:</label>
+			<label>登录次数：</label>
 			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
 		</p>
 		<p>
-			<label>上次登录日期:</label>
+			<label>上次登录日期：</label>
 			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
 		</p>
 		<p>
-			<label>上次登录IP:</label>
+			<label>上次登录IP：</label>
 			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
 		</p>
 	</div>

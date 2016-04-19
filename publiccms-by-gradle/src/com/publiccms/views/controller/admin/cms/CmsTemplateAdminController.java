@@ -112,7 +112,7 @@ public class CmsTemplateAdminController extends AbstractController {
             sysDeptPageService.delete(null, path);
             templateComponent.clear();
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.template", getIpAddress(request), getDate(), path));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.template", getIpAddress(request), getDate(), path));
         }
         return TEMPLATE_DONE;
     }
