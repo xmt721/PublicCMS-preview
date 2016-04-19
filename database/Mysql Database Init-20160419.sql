@@ -1694,7 +1694,7 @@ INSERT INTO `sys_moudle` VALUES ('42', '修改推荐位', 'cmsTemplate/placeList
 INSERT INTO `sys_moudle` VALUES ('43', '删除模板', null, 'cmsTemplate/delete', '39', '0');
 INSERT INTO `sys_moudle` VALUES ('47', '生成页面', null, 'cmsTemplate/publish', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('48', '保存页面元数据', '', 'cmsPage/saveMetaData,file/doUpload,cmsPage/clearCache', '29', '0');
-INSERT INTO `sys_moudle` VALUES ('49', '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPage/save', '29', '0');
+INSERT INTO `sys_moudle` VALUES ('49', '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('50', '删除推荐位数据', null, 'cmsPlace/delete', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('51', '刷新推荐位数据', null, 'cmsPlace/refresh', '29', '0');
 INSERT INTO `sys_moudle` VALUES ('52', '审核推荐位数据', null, 'cmsPlace/check', '29', '0');

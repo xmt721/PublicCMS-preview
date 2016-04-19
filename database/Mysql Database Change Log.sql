@@ -17,4 +17,9 @@ ALTER TABLE `sys_dept_page` DROP `type`;
 RENAME TABLE  `public_cms`.`cms_page_data` TO  `public_cms`.`cms_place` ;
 RENAME TABLE  `public_cms`.`cms_page_data_attribute` TO  `public_cms`.`cms_place_attribute` ;
 ALTER TABLE  `cms_place_attribute` CHANGE  `page_data_id`  `place_id` INT( 11 ) NOT NULL COMMENT  '位置ID';
-
+update `sys_moudle` set `authorized_url`='cmsPlace/clear' where `id`=54;
+update `sys_moudle` set `authorized_url`='cmsPlace/check' where `id`=52;
+update `sys_moudle` set `authorized_url`='cmsPlace/refresh' where `id`=51;
+update `sys_moudle` set `authorized_url`='cmsPlace/delete' where `id`=50;
+update `sys_moudle` set `authorized_url`='cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save' where `id`=49;
+update `sys_moudle` set `authorized_url`='cmsPage/saveMetaData,file/doUpload,cmsPage/clearCache' where `id`=48;
