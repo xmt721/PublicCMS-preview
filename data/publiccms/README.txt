@@ -1,7 +1,5 @@
 indexes
 	全文搜索索引文件目录
-log
-	访问日志目录
 resource
 	站点资源文件目录
 task

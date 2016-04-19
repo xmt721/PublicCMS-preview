@@ -6,14 +6,19 @@
 </@_category>
 <@_category id=parentId!><#assign category=object/></@_category>
 <@_categoryType id=typeId!><#assign categoryType=object/></@_categoryType>
+<script>
+function clickAddTagType(){
+	$('.tagTypes .button').click();
+}
+</script>
 <div class="pageContent">
-	<form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<fieldset>
 				<legend>分类属性</legend>
 				<dl>
-					<dt>父分类：</dt>
+					<dt>父分类:</dt>
 					<dd>
 						<input name="parentId" type="hidden" value="${parentId!}" />
 						<input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
@@ -21,7 +26,7 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt>分类类型：</dt>
+					<dt>分类类型:</dt>
 					<dd>
 						<input name="typeId" type="hidden" value="${typeId!}" />
 						<input name="typeName" readonly="readonly" type="text" size="10" value="${(categoryType.name)!}"/>
@@ -29,7 +34,7 @@
 				</dl>
 				<div class="divider"></div>
 				<dl class="nowrap">
-					<dt>名称：</dt>
+					<dt>名称:</dt>
 					<dd>
 						<input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
 						<label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')}/>允许投稿</label>
@@ -37,7 +42,7 @@
 					</dd>
 				</dl>
 				<dl class="nowrap">
-					<dt>英文名：</dt>
+					<dt>英文名:</dt>
 					<dd><input class="required" name="englishName" type="text" maxlength="50" size="30" value="${(a.englishName)!}"/></dd>
 				</dl>
 				<#include "../include_page/tagTypes.html"/>
@@ -45,7 +50,7 @@
 				<@tagTypes typeIds/>
 			<#if site.useStatic>
 				<dl class="nowrap">
-					<dt>静态化模板路径：</dt>
+					<dt>静态化模板路径:</dt>
 					<dd>
 						<input name="templatePath" type="text" maxlength="255" size="40" value="${(a.templatePath)!}"/>
 						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择静态化模板</a>
@@ -54,7 +59,7 @@
 				</dl>
 			</#if>
 				<dl class="nowrap">
-					<dt>分类页面访问路径：</dt>
+					<dt>分类页面访问路径:</dt>
 					<dd>
 						<input class="required" name="path" type="text" maxlength="500" size="80" value="${(a.path)!(category.path)!}"/>
 						<a class="btnLook" href="cmsCategory/categoryPath.html" width="920" lookupGroup="">选择路径</a>
@@ -62,11 +67,11 @@
 				</dl>
 				<div class="divider"></div>
 				<dl>
-					<dt>每页数据：</dt>
+					<dt>每页数据:</dt>
 					<dd><input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(category.pageSize)!20}"/></dd>
 				</dl>
 				<dl>
-					<dt>排序：</dt>
+					<dt>排序:</dt>
 					<dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
 				</dl>
 <#if categoryType?has_content&&categoryType.extendId?has_content>
@@ -79,18 +84,18 @@
 			<fieldset>
 				<legend>SEO优化</legend>
 				<dl class="nowrap">
-					<dt>标题：</dt>
+					<dt>标题:</dt>
 					<dd><input name="title" type="text" maxlength="80" size="30" value="${(attribute.title)!}"/></dd>
 				</dl>
 				<dl class="nowrap">
-					<dt>关键词：</dt>
+					<dt>关键词:</dt>
 					<dd>
 						<textarea name="keywords" maxlength="100" style="width: 80%;" rows="2">${(attribute.keywords)!}</textarea>
 						<span class="info">请填写与分类内容相关的关键词，多个关键词应该使用逗号分开，最好保持在10个以下</span>
 					</dd>
 				</dl>
 				<dl class="nowrap">
-					<dt>描述：</dt>
+					<dt>描述:</dt>
 					<dd>
 						<textarea name="description" maxlength="300" style="width: 80%;" rows="2">${(attribute.description)!}</textarea>
 						<span class="info">请填写与分类内容相关的描述，字数控制应该70-100个汉字或者140-200个英文字符</span>
@@ -125,7 +130,7 @@
 					</dt>
 				<#if site.useStatic>
 					<dd<#if a.onlyUrl> style="display:none"</#if>>
-						<label>静态化模板路径：</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+						<label>静态化模板路径:</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
 						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
 						<@childModel a/>
 					</dd>
@@ -134,7 +139,7 @@
 	</#list>
 </@_modelList>
 				<dl class="nowrap categoryModelContentPath">
-					<dt>内容页面访问路径：</dt>
+					<dt>内容页面访问路径:</dt>
 					<dd>
 						<input name="contentPath" type="text" maxlength="500" size="80" value="${(a.contentPath)!(category.contentPath)!}"/>
 						<a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="">选择路径</a>

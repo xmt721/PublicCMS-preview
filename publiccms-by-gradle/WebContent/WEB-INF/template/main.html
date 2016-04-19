@@ -1,7 +1,7 @@
 <div class="pageFormContent" layoutH="20">
 	<div class="unit">
 		<p>
-			<label>我的待审核：</label>
+			<label>我的待审核:</label>
 			<a href="myself/contentList.html?status=2" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
 				<@_contentList admin=true status=2 userId=admin.id>
 					${page.totalCount}篇
@@ -9,7 +9,7 @@
 			</a>
 		</p>
 		<p>
-			<label>我的草稿：</label>
+			<label>我的草稿:</label>
 			<a href="myself/contentList.html?status=0" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
 				<@_contentList admin=true status=0 userId=admin.id>
 					${page.totalCount}篇
@@ -25,28 +25,28 @@
 	<div class="divider"></div>
 	<div class="unit">
 		<p>
-			<label>登录次数：</label>
+			<label>登录次数:</label>
 			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
 		</p>
 		<p>
-			<label>上次登录日期：</label>
+			<label>上次登录日期:</label>
 			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
 		</p>
 		<p>
-			<label>上次登录IP：</label>
+			<label>上次登录IP:</label>
 			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
 		</p>
 	</div>
 	<div class="divider"></div>
 	<div class="unit">
 		<p>
-			<label>静态站点地址：</label><a href="${site.sitePath}" target="_blank">${site.sitePath}</a>
+			<label>静态站点地址:</label><a href="${site.sitePath}" target="_blank">${site.sitePath}</a>
 		</p>
 		<p>
-			<label>动态站点地址：</label><a href="${site.dynamicPath}" target="_blank">${site.dynamicPath}</a>
+			<label>动态站点地址:</label><a href="${site.dynamicPath}" target="_blank">${site.dynamicPath}</a>
 		</p>
 		<p>
-			<label>资源文件地址：</label><a href="${site.resourcePath}" target="_blank">${site.resourcePath}</a>
+			<label>资源文件地址:</label><a href="${site.resourcePath}" target="_blank">${site.resourcePath}</a>
 		</p>
 	</div>
 	<div class="divider"></div>
@@ -121,8 +121,8 @@ memoryChart.chart.setOption({
 });
 memoryChart.countChart.setOption({
 	title : {
-        text: '内存使用(最大可用：${(maxMemory/1048576)?string("0.##")}MB)',
-        subtext: '占用内存：${(totalMemory/1048576)?string("0.##")}MB',
+        text: '内存使用(最大可用:${(maxMemory/1048576)?string("0.##")}MB)',
+        subtext: '占用内存:${(totalMemory/1048576)?string("0.##")}MB',
         x:'center'
     },
     tooltip : {
@@ -160,7 +160,7 @@ window.memoryInterval=setInterval(function () {
 		}
 		memoryChart.countChart.setOption({
 			title:{
-				subtext: '占用内存：'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB',
+				subtext: '占用内存:'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB',
 			},
 			series: [{
 	             name: '内存使用',
@@ -207,7 +207,7 @@ window.memoryInterval=setInterval(function () {
 <@_disk>
 echarts.init(document.getElementById('disk')).setOption({
 	title : {
-        text: '站点磁盘：${(totalSpace/1048576)?string("0.##")}MB',
+        text: '站点磁盘:${(totalSpace/1048576)?string("0.##")}MB',
         subtext: '${(rootPath?js_string)!}',
         x:'center'
     },
@@ -235,50 +235,50 @@ echarts.init(document.getElementById('disk')).setOption({
 <@_systemProperties>
 	<div class="unit">
 		<p>
-			<label>操作系统：</label>${.vars['os.name']!}(${.vars['os.arch']!})
+			<label>操作系统:</label>${.vars['os.name']!}(${.vars['os.arch']!})
 		</p>
 		<p>
-			<label>操作系统版本：</label>${.vars['os.version']!}
+			<label>操作系统版本:</label>${.vars['os.version']!}
 		</p>
 		<p>
-			<label>操作系统用户：</label>${.vars['user.name']!}
+			<label>操作系统用户:</label>${.vars['user.name']!}
 		</p>
 		<p>
-			<label>操作系统时区：</label>${.vars['user.timezone']!}
+			<label>操作系统时区:</label>${.vars['user.timezone']!}
 		</p>
 		<p>
-			<label>文件编码：</label>${.vars['file.encoding']!}
+			<label>文件编码:</label>${.vars['file.encoding']!}
 		</p>
 	</div>
 	<div class="divider"></div>
 	<div class="unit">
 		<p>
-			<label>JRE名称：</label>${.vars['java.runtime.name']!}
+			<label>JRE名称:</label>${.vars['java.runtime.name']!}
 		</p>
 		<p>
-			<label>JRE版本：</label>
+			<label>JRE版本:</label>
 			${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
 		</p>
 		<p>
-			<label>JVM名称：</label>${.vars['java.vm.name']!}
+			<label>JVM名称:</label>${.vars['java.vm.name']!}
 		</p>
 		<p>
-			<label>JVM版本：</label>${.vars['java.vm.version']!}
+			<label>JVM版本:</label>${.vars['java.vm.version']!}
 		</p>
 	</div>
 	<div class="divider"></div>
 	<div class="unit">
 		<p>
-			<label>用户目录：</label>${.vars['user.home']!}
+			<label>用户目录:</label>${.vars['user.home']!}
 		</p>
 		<p>
-			<label>工作目录：</label>${.vars['user.dir']!}
+			<label>工作目录:</label>${.vars['user.dir']!}
 		</p>
 		<p>
-			<label>临时文件目录：</label>${.vars['java.io.tmpdir']!}
+			<label>临时文件目录:</label>${.vars['java.io.tmpdir']!}
 		</p>
 		<p>
-			<label>文件分隔符：</label>${.vars['file.separator']!}
+			<label>文件分隔符:</label>${.vars['file.separator']!}
 		</p>
 	</div>
 	<div class="divider"></div>
@@ -286,52 +286,52 @@ echarts.init(document.getElementById('disk')).setOption({
 <@_version>
 	<div class="unit">
 		<p>
-			<label>FreeMarker：</label>
+			<label>FreeMarker:</label>
 			<a href="http://freemarker.org/" target="_blank">${.version}</a>
 			(<a href="http://freemarker.org/docs/app_license.html" target="_blank">Apache License2</a>)
 		</p>
 		<p>
-			<label>Spring Framework：</label>
+			<label>Spring Framework:</label>
 			<a href="http://projects.spring.io/spring-framework/" target="_blank">${spring}</a>
 			(<a href="https://github.com/spring-projects/spring-framework" target="_blank">Apache License2</a>)
 		</p>
 		<p>
-			<label>Hibernate：</label>
+			<label>Hibernate:</label>
 			<a href="http://hibernate.org/orm/" target="_blank">${hibernate}</a>
 			(<a href="http://hibernate.org/community/license/" target="_blank">LGPL 2.1 License</a>)
 		</p>
 		<p>
-			<label>Hibernate Search：</label>
+			<label>Hibernate Search:</label>
 			<a href="http://hibernate.org/search/" target="_blank">${hibernateSearch}</a>
 			(<a href="https://raw.githubusercontent.com/hibernate/hibernate-search/master/lgpl.txt" target="_blank">LGPL 2.1 License</a>)
 		</p>
 		<p>
-			<label>lucene：</label>
+			<label>lucene:</label>
 			<a href="http://lucene.apache.org/" target="_blank">${lucene}</a>
 			(<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License2</a>)
 		</p>
 		<p>
-			<label>Jquery：</label>
+			<label>Jquery:</label>
 			<a id="JQueryVersion" href="http://jquery.com/" target="_blank"></a>
 			(<a href="https://jquery.org/license/" target="_blank">The MIT License</a>)
 		</p>
 		<p>
-			<label>jUI：</label>
+			<label>jUI:</label>
 			<a id="jUIVersion" href="http://jui.org/" target="_blank"></a>
 			(<a href="https://code.csdn.net/dwzteam/dwz_jui" target="_blank">Apache License2</a>)
 		</p>
 		<p>
-			<label>Font Awesome：</label>
+			<label>Font Awesome:</label>
 			<a href="http://fontawesome.io/3.2.1/icons/" target="_blank">3.2.1 </a>
 			(<a href="http://fontawesome.io/3.2.1/license/" target="_blank">SIL OFL 1.1</a>)
 		</p>
 		<p>
-			<label>Echarts：</label>
+			<label>Echarts:</label>
 			<a id="EchartsVersion" href="http://echarts.baidu.com/" target="_blank"></a>
 			(<a href="https://github.com/ecomfe/echarts/blob/master/LICENSE" target="_blank">License(BSD)</a>)
 		</p>
 		<p>
-			<label>UEditor：</label>
+			<label>UEditor:</label>
 			<a id="UEditorVersion" href="http://ueditor.baidu.com/website/" target="_blank"></a>
 			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
 		</p>
@@ -349,7 +349,7 @@ echarts.init(document.getElementById('disk')).setOption({
 	<@_version>
 	<div class="unit">
 		<p>
-			<label>Public CMS：</label>
+			<label>Public CMS:</label>
 			<a href="http://www.publiccms.com/" target="_blank">${cms}</a>
 			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
 		</p>

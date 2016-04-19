@@ -2,29 +2,29 @@
 <div class="pageContent">
 	<div class="pageFormContent" layoutH="57">
 		<dl>
-			<dt>任务计划：</dt>
+			<dt>任务计划:</dt>
 			<dd>
 				<@_sysTask id=a.taskId>${(object.name)!}</@_sysTask>
 			</dd>
 		</dl>
 		<dl>
-			<dt>执行结果：</dt>
+			<dt>执行结果:</dt>
 			<dd>${a.success?string('成功','失败')}</dd>
 		</dl>
 		<dl>
-			<dt>开始时间：</dt>
+			<dt>开始时间:</dt>
 			<dd>
 				${a.begintime!}
 			</dd>
 		</dl>
 		<dl>
-			<dt>结束时间：</dt>
+			<dt>结束时间:</dt>
 			<dd>
 				${a.endtime!}
 			</dd>
 		</dl>
 		<dl class="nowrap">
-			<dt>执行结果：</dt>
+			<dt>执行结果:</dt>
 			<dd>
 				<textarea name="description" style="width: 100%;" rows="20">${(a.result)!}</textarea>
 			</dd>

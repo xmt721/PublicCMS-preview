@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.cms.CmsPageDataService;
+import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.views.pojo.CmsContentRelatedStatistics;
 import com.publiccms.views.pojo.CmsContentStatistics;
-import com.publiccms.views.pojo.CmsPageDataStatistics;
+import com.publiccms.views.pojo.CmsPlaceStatistics;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.base.Cacheable;
 
@@ -25,7 +25,7 @@ public class StatisticsComponent extends Base implements Cacheable {
     private static List<Integer> contentCachedlist = synchronizedList(new ArrayList<Integer>());
     private static Map<Integer, CmsContentStatistics> cachedMap = synchronizedMap(new HashMap<Integer, CmsContentStatistics>());
     private static List<Integer> placeCachedlist = synchronizedList(new ArrayList<Integer>());
-    private static Map<Integer, CmsPageDataStatistics> placeCachedMap = synchronizedMap(new HashMap<Integer, CmsPageDataStatistics>());
+    private static Map<Integer, CmsPlaceStatistics> placeCachedMap = synchronizedMap(new HashMap<Integer, CmsPlaceStatistics>());
     private static List<Integer> relatedCachedlist = synchronizedList(new ArrayList<Integer>());
     private static Map<Integer, CmsContentRelatedStatistics> relatedCachedMap = synchronizedMap(new HashMap<Integer, CmsContentRelatedStatistics>());
     @Autowired
@@ -33,7 +33,7 @@ public class StatisticsComponent extends Base implements Cacheable {
     @Autowired
     private CmsContentRelatedService contentRelatedService;
     @Autowired
-    private CmsPageDataService pageDataService;
+    private CmsPlaceService placeService;
 
     private void clearCache(int size) {
         if (size < contentCachedlist.size()) {
@@ -47,11 +47,11 @@ public class StatisticsComponent extends Base implements Cacheable {
 
     private void clearPlaceCache(int size) {
         if (size < placeCachedlist.size()) {
-            List<CmsPageDataStatistics> list = new ArrayList<CmsPageDataStatistics>();
+            List<CmsPlaceStatistics> list = new ArrayList<CmsPlaceStatistics>();
             for (int i = 0; i < size / 10; i++) {
                 list.add(placeCachedMap.remove(placeCachedlist.remove(0)));
             }
-            pageDataService.updateStatistics(list);
+            placeService.updateStatistics(list);
         }
     }
 
@@ -78,17 +78,17 @@ public class StatisticsComponent extends Base implements Cacheable {
         return contentRelatedStatistics;
     }
 
-    public CmsPageDataStatistics placeClicks(Integer id) {
-        CmsPageDataStatistics pageDataStatistics = placeCachedMap.get(id);
-        if (empty(pageDataStatistics)) {
+    public CmsPlaceStatistics placeClicks(Integer id) {
+        CmsPlaceStatistics placeStatistics = placeCachedMap.get(id);
+        if (empty(placeStatistics)) {
             clearPlaceCache(100);
-            pageDataStatistics = new CmsPageDataStatistics(id, 1, pageDataService.getEntity(id));
+            placeStatistics = new CmsPlaceStatistics(id, 1, placeService.getEntity(id));
             placeCachedlist.add(id);
         } else {
-            pageDataStatistics.setClicks(pageDataStatistics.getClicks() + 1);
+            placeStatistics.setClicks(placeStatistics.getClicks() + 1);
         }
-        placeCachedMap.put(id, pageDataStatistics);
-        return pageDataStatistics;
+        placeCachedMap.put(id, placeStatistics);
+        return placeStatistics;
     }
 
     public CmsContentStatistics clicks(Integer id) {
@@ -132,7 +132,7 @@ public class StatisticsComponent extends Base implements Cacheable {
 
     @Override
     public void clear() {
-        pageDataService.updateStatistics(placeCachedMap.values());
+        placeService.updateStatistics(placeCachedMap.values());
         placeCachedlist.clear();
         placeCachedMap.clear();
         contentRelatedService.updateStatistics(relatedCachedMap.values());

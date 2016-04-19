@@ -3,7 +3,7 @@
 #tagTypes{line-height:25px;}
 #tagTypes span{margin-right:8px;padding:3px;border:1px solid #aaa;}
 </style>
-<dl class="nowrap">
+<dl class="nowrap tagTypes">
 	<dt>标签分类:</dt>
 	<dd>
 		<div id="tagTypes"></div>
@@ -22,7 +22,7 @@ function addTagType($id,$name){
 		alertMsg.error('标签分类不能超过10个');
 	}else{
 		if($id&&$name){
-			$('#tagTypes',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();reIndexTagType();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/></span>");
+			$('#tagTypes',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();reIndexTagType();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/></span>");
 		}else if($name){
 			$('#tagTypes',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();reIndexTagType();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/></span>");
 		}
@@ -37,9 +37,9 @@ function reIndexTagType(){
 		$('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
 	});
 }
-	<@_tagType ids=tagIds>
+	<@_tagType ids=typeIds>
 		<#list map?keys as k>
-		addTagType('${k}','${map[k].name}'');
+		addTagType('${k}','${map[k].name}');
 		</#list>
 	</@_tagType>
 </script>

@@ -3,7 +3,7 @@
 		<input type="hidden" name="ids" value="${id!}"/>
 		<div class="pageFormContent" layoutH="57">
 			<dl>
-				<dt>生成页数：</dt>
+				<dt>生成页数:</dt>
 				<@_contentList categoryId=id containChild=true count=pageSize>
 				<dd><input class="required digits"  type="number" name="max" max="${page.totalPage}" min="1" value="${page.totalPage}"/></dd>
 				</@_contentList>

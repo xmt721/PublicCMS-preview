@@ -9,17 +9,17 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>父部门：</label>
+					<label>父部门:</label>
 					<input name="parentId" type="hidden" value="${parentId!}"/>
 					<input readonly="readonly" name="parentName" type="text" size="10" value="${(parent.name)!}"/>
 					<a class="btnLook" href="sysDept/lookup.html" width="920" warn="请选择部门" lookupGroup="">选择部门</a>
 				</li>
 				<li>
-					<label>负责人：</label>
+					<label>负责人:</label>
 					<#include "../include_page/userId.html"/>
 				</li>
 				<li>
-					<label>名称：</label>
+					<label>名称:</label>
 					<input type="text" name="name" value="${name!}" />
 				</li>
 			</ul>

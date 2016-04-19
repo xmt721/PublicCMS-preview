@@ -42,10 +42,10 @@
 <#macro extendData name extendList extendValues customform=false>
 	<#list extendList as e>
 	<#if customform>
-	<p><label>${e.name}：</label><@input name e e?index extendValues[e.code]!/></p>
+	<p><label>${e.name}:</label><@input name e e?index extendValues[e.code]!/></p>
 	<#else>
 	<dl class="nowrap">
-		<dt>${e.name}：</dt>
+		<dt>${e.name}:</dt>
 		<dd<#if 'editor'=e.inputType> style="width:80%;"</#if>>
 			<@input name e e?index extendValues[e.code]!/>
 			<span class="info">${e.description!}</span>

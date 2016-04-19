@@ -37,8 +37,8 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
         if (notEmpty(entitys)) {
             for (CmsTagType entity : entitys) {
                 if (notEmpty(entity.getId())) {
+                    entity = getEntity(entity.getId());
                     if (siteId == entity.getSiteId()) {
-                        update(entity.getId(), entity, new String[] { "id", "siteId", "count" });
                         idList.add(entity.getId());
                     }
                 } else {

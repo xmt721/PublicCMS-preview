@@ -11,14 +11,12 @@ import com.sanluan.common.base.Base;
 public class CmsPageMetadata extends Base {
     private String alias;
     private String publishPath;
-    private Integer size;
     private boolean useDynamic;
     private boolean needLogin;
     private String acceptParamters;
     private Integer cacheTime;
     private boolean allowContribute;
-    private List<SysExtendField> pageExtendList;
-    private List<SysExtendField> metadataExtendList;
+    private List<SysExtendField> extendList;
     private List<ExtendData> extendDataList;
     private Map<String, String> extendData;
 
@@ -38,14 +36,6 @@ public class CmsPageMetadata extends Base {
         this.publishPath = publishPath;
     }
 
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
     public boolean isNeedLogin() {
         return needLogin;
     }
@@ -54,12 +44,12 @@ public class CmsPageMetadata extends Base {
         this.needLogin = needLogin;
     }
 
-    public List<SysExtendField> getPageExtendList() {
-        return pageExtendList;
+    public List<SysExtendField> getExtendList() {
+        return extendList;
     }
 
-    public void setPageExtendList(List<SysExtendField> pageExtendList) {
-        this.pageExtendList = pageExtendList;
+    public void setExtendList(List<SysExtendField> extendList) {
+        this.extendList = extendList;
     }
 
     public boolean isAllowContribute() {
@@ -68,14 +58,6 @@ public class CmsPageMetadata extends Base {
 
     public void setAllowContribute(boolean allowContribute) {
         this.allowContribute = allowContribute;
-    }
-
-    public List<SysExtendField> getMetadataExtendList() {
-        return metadataExtendList;
-    }
-
-    public void setMetadataExtendList(List<SysExtendField> metadataExtendList) {
-        this.metadataExtendList = metadataExtendList;
     }
 
     @JsonIgnore

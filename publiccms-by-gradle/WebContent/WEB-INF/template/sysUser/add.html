@@ -8,14 +8,14 @@
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<dl class="nowrap">
-				<dt>用户名：</dt>
+				<dt>用户名:</dt>
 				<dd>
 					<input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
 					<label><input name="superuserAccess" type="checkbox" onclick="if($(this).is(':checked')){$('.superuserAccess').show();}else{$('.superuserAccess').hide();}"/>管理员</label>
 				</dd>
 			</dl>
 			<dl class="nowrap superuserAccess" style="display:none">
-				<dt>所属部门：</dt>
+				<dt>所属部门:</dt>
 				<dd>
 					<input name="deptId" type="hidden" value="${(dept.id)!}"/>
 					<input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
@@ -23,22 +23,22 @@
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>密码：</dt>
+				<dt>密码:</dt>
 				<dd>
 					<input<#if !a??> class="required"</#if> name="password" type="password" maxlength="30" size="20" value=""/>
 					<#if a??><span class="info">留空则不更新密码</span></#if>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>重复密码：</dt>
+				<dt>重复密码:</dt>
 				<dd><input<#if !a??> class="required"</#if> name="repassword" type="password" maxlength="30" size="20" value=""/></dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>用户昵称：</dt>
+				<dt>用户昵称:</dt>
 				<dd><input class="required" name="nickName" type="text" size="20" maxlength="30" value="${(a.nickName)!}"/></dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>邮箱：</dt>
+				<dt>邮箱:</dt>
 				<dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
 			</dl>
 			<fieldset class="superuserAccess" style="display:none">

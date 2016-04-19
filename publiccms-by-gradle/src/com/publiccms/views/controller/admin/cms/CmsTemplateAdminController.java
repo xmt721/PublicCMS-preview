@@ -25,9 +25,11 @@ import com.publiccms.logic.component.FileComponent.FileInfo;
 import com.publiccms.logic.component.MetadataComponent;
 import com.publiccms.logic.component.TemplateCacheComponent;
 import com.publiccms.logic.component.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.views.pojo.CmsPageMetadata;
+import com.publiccms.views.pojo.CmsPlaceMetadata;
 
 import freemarker.template.TemplateException;
 
@@ -47,6 +49,8 @@ public class CmsTemplateAdminController extends AbstractController {
     private MetadataComponent metadataComponent;
     @Autowired
     private FileComponent fileComponent;
+    @Autowired
+    private CmsPlaceService cmsPlaceService;
     @Autowired
     private SysDeptPageService sysDeptPageService;
 
@@ -108,8 +112,33 @@ public class CmsTemplateAdminController extends AbstractController {
             if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
-            metadataComponent.deleteMetadata(filePath);
+            metadataComponent.deleteTemplateMetadata(filePath);
             sysDeptPageService.delete(null, path);
+            templateComponent.clear();
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.template", getIpAddress(request), getDate(), path));
+        }
+        return TEMPLATE_DONE;
+    }
+
+    /**
+     * @param path
+     * @param type
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("deletePlace")
+    public String deletePlace(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (notEmpty(path)) {
+            SysSite site = getSite(request);
+            String filePath = siteComponent.getWebTemplateFilePath(site, path);
+            if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
+                return TEMPLATE_ERROR;
+            }
+            metadataComponent.deletePlaceMetadata(filePath);
+            cmsPlaceService.delete(site.getId(), path);
             templateComponent.clear();
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.template", getIpAddress(request), getDate(), path));
@@ -126,7 +155,39 @@ public class CmsTemplateAdminController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping("saveMetadata")
+    @RequestMapping("savePlaceMetaData")
+    public String savePlaceMetaData(String path, @ModelAttribute CmsPlaceMetadata metadata, String content,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (notEmpty(path)) {
+            SysSite site = getSite(request);
+            String filePath = siteComponent.getWebTemplateFilePath(site, path);
+            try {
+                File templateFile = new File(filePath);
+                if (empty(templateFile)) {
+                    fileComponent.createFile(templateFile, content);
+                }
+                metadataComponent.updatePlaceMetadata(filePath, metadata);
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.template.meta", getIpAddress(request), getDate(), path));
+            } catch (IOException e) {
+                virifyCustom("metadata.save", true, model);
+                log.error(e.getMessage());
+                return TEMPLATE_ERROR;
+            }
+        }
+        return TEMPLATE_DONE;
+    }
+
+    /**
+     * @param path
+     * @param metadata
+     * @param content
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("saveMetaData")
     public String saveMetadata(String path, @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
@@ -141,7 +202,7 @@ public class CmsTemplateAdminController extends AbstractController {
                 if (notEmpty(oldmetadata)) {
                     metadata.setExtendDataList(oldmetadata.getExtendDataList());
                 }
-                metadataComponent.updateMetadata(filePath, metadata);
+                metadataComponent.updateTemplateMetadata(filePath, metadata);
                 if (notEmpty(metadata.getPublishPath())) {
                     publish(site, path);
                 }
@@ -167,10 +228,9 @@ public class CmsTemplateAdminController extends AbstractController {
         try {
             SysSite site = getSite(request);
             if (notEmpty(path) && site.isUseSsi()) {
-                String placePath = INCLUDE_DIRECTORY + path;
-                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(site,
-                        placePath));
-                templateComponent.staticPlace(site, placePath, metadata);
+                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(siteComponent.getWebTemplateFilePath(site,
+                        INCLUDE_DIRECTORY + path));
+                templateComponent.staticPlace(site, path, metadata);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "static", getIpAddress(request), getDate(), path));
             }
@@ -201,14 +261,13 @@ public class CmsTemplateAdminController extends AbstractController {
     private void publish(SysSite site, String path) throws IOException, TemplateException {
         if (notEmpty(path)) {
             if (site.isUseSsi()) {
-                String placeListPath = INCLUDE_DIRECTORY + path + SEPARATOR;
-                String placeListFilePath = siteComponent.getWebTemplateFilePath(site, placeListPath);
-                Map<String, CmsPageMetadata> metadataMap = metadataComponent.getMetadataMap(placeListFilePath);
+                String placeListFilePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + path + SEPARATOR);
+                Map<String, CmsPlaceMetadata> metadataMap = metadataComponent.getPlaceMetadataMap(placeListFilePath);
                 for (FileInfo fileInfo : fileComponent.getFileList(placeListFilePath)) {
-                    String filePath = placeListPath + fileInfo.getFileName();
-                    CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
+                    String filePath = path + SEPARATOR + fileInfo.getFileName();
+                    CmsPlaceMetadata metadata = metadataMap.get(fileInfo.getFileName());
                     if (empty(metadata)) {
-                        metadata = new CmsPageMetadata();
+                        metadata = new CmsPlaceMetadata();
                     }
                     templateComponent.staticPlace(site, filePath, metadata);
                 }

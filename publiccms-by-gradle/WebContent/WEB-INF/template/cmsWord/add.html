@@ -4,14 +4,14 @@
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<dl>
-				<dt>名称：</dt>
+				<dt>名称:</dt>
 				<dd>
 					<input class="required" name="name" type="text" size="30" value="${(a.name)!}"/>
 					<label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')}/>隐藏</label>
 				</dd>
 			</dl>
 			<dl>
-				<dt>搜索次数：</dt>
+				<dt>搜索次数:</dt>
 				<dd><input class="required number" name="searchCount" type="number" size="5" value="${(a.searchCount)!0}"/></dd>
 			</dl>
 		</div>

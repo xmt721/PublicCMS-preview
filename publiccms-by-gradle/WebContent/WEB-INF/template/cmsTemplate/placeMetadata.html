@@ -1,5 +1,5 @@
 <#assign path='/include'+path/>
-<@_metadata path=path><#assign a=object/></@_metadata>
+<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
 <script>
 function checkPageSize(){
 	if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
@@ -12,12 +12,33 @@ function checkPageSize(){
 		$('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).attr('disabled','disabled');
 	}
 }
+function addUser($id,$name){
+	if($name){
+		$name=$name.trim();
+	}
+	if($id&&$name){
+		$('#adminIds',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();return false;\">"+$name+"</a><input type=\"hidden\" name=\"adminIds\" value=\""+$id+"\"/></span>");
+	}
+	$('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
+	$('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
+}
 $(function(){
 	checkPageSize();
+<#if (a.adminIds)?has_content>
+	<@_sysUser ids=a.adminIds>
+		<#list map?keys as k>
+		addUser('${k}','${map[k].nickName}');
+		</#list>
+	</@_sysUser>
+</#if>
 });
 </script>
+<style>
+#adminIds{line-height:25px;}
+#adminIds span{margin-right:8px;padding:3px;border:1px solid #aaa;}
+</style>
 <div class="pageContent">
-	<form method="post" action="cmsTemplate/saveMetadata.do?navTabId=cmsTemplate/placeList&callbackType=${callbackType!}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=cmsTemplate/placeList&callbackType=${callbackType!}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 		<input name="path" type="hidden" value="${path}"/>
 		<div class="pageFormContent" layoutH="57" style="background:#ffffff;">
 			<dl class="nowrap">
@@ -38,11 +59,22 @@ $(function(){
 					<input name="allowContribute" type="checkbox"${((a.allowContribute)?has_content&&a.allowContribute)?then(' checked="checked"','')}/>
 				</dd>
 			</dl>
+			<dl class="nowrap placeExtend">
+				<dt>数据管理人员:</dt>
+				<dd>
+					<div id="adminIds"></div>
+					<input name="userId" type="hidden"/>
+					<input name="nickName" type="text" size="30" readonly="readonly"/>
+					<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
+					<a class="button" href="javascript:;" onclick="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$('input[name=\'nickName\']',navTab.getCurrentPanel()).val());return false;"><span>增加</span></a>
+					<span class="info">点击某个用户昵称可以将其删除</span>
+				</dd>
+			</dl>
 			<fieldset class="placeExtend">
 				<legend>列表数据扩展字段</legend>
 				<#include '../include_page/extends.html'/>
-				<#assign pageExtendList=(a.pageExtendList)![]/>
-				<@extends 'pageExtendList' pageExtendList/>
+				<#assign extendList=(a.extendList)![]/>
+				<@extends 'extendList' extendList/>
 			</fieldset>
 			<textarea name="content" style="display:none"></textarea>
 			<textarea id="content" style="display:none"><#noparse>

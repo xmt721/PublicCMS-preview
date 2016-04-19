@@ -4,7 +4,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>登录结果：</label>
+					<label>登录结果:</label>
 					<select class="combox" name="result">
 						<option value=""${(!result?has_content)?then(' selected="true"','')}>不限</option>
 						<option value="1"${(result?has_content&&"1"==result)?then(' selected="true"','')}>成功</option>
@@ -12,17 +12,17 @@
 					</select>
 				</li>
 				<li>
-					<label>渠道：</label>
+					<label>渠道:</label>
 					<input type="text" name="channel" value="${channel!}" />
 				</li>
 				<li class="colspan">
-					<label>登录日期：</label>
+					<label>登录日期:</label>
 					<input type="text" name="startCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
 					<input type="text" name="endCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
 				</li>
 				<li>
-					<label>IP：</label>
+					<label>IP:</label>
 					<input type="text" name="ip" value="${ip!}" />
 				</li>
 			</ul>

@@ -1,6 +1,6 @@
 <#macro templateTree filepath>
 	<@_templateList path='/include'+filepath>
-		<@_metadata dir='/include'+filepath><#local metaDataMap=object/></@_metadata>
+		<@_placeMetadata dir='include'+filepath><#local metaDataMap=object/></@_placeMetadata>
 		<#list list as a>
 			<li>
 			<#local path=filepath+'/'+a.fileName>

@@ -13,3 +13,8 @@ ALTER TABLE  `sys_site` ADD  `use_ssi` TINYINT( 1 ) NOT NULL COMMENT  '启用服
 ALTER TABLE  `cms_page_data` CHANGE  `user_id`  `user_id` INT( 11 ) NOT NULL COMMENT  '提交用户';
 ALTER TABLE `cms_page_data` DROP `type`;
 ALTER TABLE `sys_dept_page` DROP `type`;
+-- 20160419 --
+RENAME TABLE  `public_cms`.`cms_page_data` TO  `public_cms`.`cms_place` ;
+RENAME TABLE  `public_cms`.`cms_page_data_attribute` TO  `public_cms`.`cms_place_attribute` ;
+ALTER TABLE  `cms_place_attribute` CHANGE  `page_data_id`  `place_id` INT( 11 ) NOT NULL COMMENT  '位置ID';
+

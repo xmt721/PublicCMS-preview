@@ -1,6 +1,6 @@
 <@_metadata path=path><#assign a=object/></@_metadata>
 <div class="pageContent">
-	<form method="post" action="cmsTemplate/saveMetadata.do?callbackType=closeCurrent&navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="cmsTemplate/saveMetaData.do?callbackType=closeCurrent&navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 		<div class="pageFormContent" layoutH="57" style="background:#ffffff;">
 			<dl class="nowrap">
 				<dt>路径:</dt></dt>
@@ -53,7 +53,7 @@
 				<dt>缓存时间(秒):</dt>
 				<dd>
 					<input name="cacheTime" class="required" type="text" value="${(a.cacheTime)!0}"/>
-					<span class="info">值大于10时，模板将被缓存,您可以使用noCache指令指定不使用缓存的模板片段：<#noparse>&lt;@noCache&gt;登陆用户：${user.nickName}&lt;/@noCache&gt;</#noparse></span>
+					<span class="info">值大于10时，模板将被缓存,您可以使用noCache指令指定不使用缓存的模板片段:<#noparse>&lt;@noCache&gt;登陆用户:${user.nickName}&lt;/@noCache&gt;</#noparse></span>
 				</dd>
 			</dl>
 <script>
@@ -70,8 +70,8 @@
 			<fieldset>
 				<legend>元数据扩展字段</legend>
 				<#include '../include_page/extends.html'/>
-				<#assign metadataExtendList=(a.metadataExtendList)![]/>
-				<@extends 'metadataExtendList' metadataExtendList/>
+				<#assign extendList=(a.extendList)![]/>
+				<@extends 'extendList' extendList/>
 			</fieldset>
 		</#if>
 			<textarea name="content" style="display:none">New PublicCMS Template</textarea>

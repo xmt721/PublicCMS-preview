@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.entities.cms.CmsPageDataAttribute;
-import com.publiccms.logic.service.cms.CmsPageDataAttributeService;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
+import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.sanluan.common.base.BaseMethod;
 
 import freemarker.template.TemplateModelException;
@@ -26,7 +26,7 @@ public class GetPageDataAttributeMethod extends BaseMethod {
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Integer id = getInteger(0, arguments);
         if (notEmpty(id)) {
-            CmsPageDataAttribute entity = service.getEntity(id);
+            CmsPlaceAttribute entity = service.getEntity(id);
             if (notEmpty(entity)) {
                 return getExtendMap(entity.getData());
             }
@@ -35,5 +35,5 @@ public class GetPageDataAttributeMethod extends BaseMethod {
     }
 
     @Autowired
-    private CmsPageDataAttributeService service;
+    private CmsPlaceAttributeService service;
 }

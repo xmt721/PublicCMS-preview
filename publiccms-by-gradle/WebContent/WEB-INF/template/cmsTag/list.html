@@ -4,11 +4,11 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>名称：</label>
+					<label>名称:</label>
 					<input type="text" name="name" value="${name!}" />
 				</li>
 				<li>
-					<label>类型：</label>
+					<label>类型:</label>
 					<#if typeId?has_content><@_tagType id=typeId><#assign typeName=(object.name)!/></@_tagType></#if>
 					<input type="hidden" name="typeId" value="${typeId!}" />
 					<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${typeName!}"/>

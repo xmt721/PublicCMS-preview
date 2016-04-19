@@ -1,10 +1,11 @@
 package com.publiccms.logic.component;
 
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.synchronizedMap;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import static java.util.Collections.synchronizedList;
-import static java.util.Collections.synchronizedMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.views.pojo.CmsPageMetadata;
+import com.publiccms.views.pojo.CmsPlaceMetadata;
 import com.publiccms.views.pojo.ExtendData;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.base.Cacheable;
@@ -26,19 +28,49 @@ import com.sanluan.common.base.Cacheable;
 public class MetadataComponent extends Base implements Cacheable {
     private ObjectMapper objectMapper = new ObjectMapper();
     public static String METADATA_FILE = "metadata.data";
-    private static List<String> cachedlist = synchronizedList(new ArrayList<String>());
-    private static Map<String, Map<String, CmsPageMetadata>> cachedMap = synchronizedMap(new HashMap<String, Map<String, CmsPageMetadata>>());
+    private static List<String> cachedPagelist = synchronizedList(new ArrayList<String>());
+    private static Map<String, Map<String, CmsPageMetadata>> cachedPageMap = synchronizedMap(new HashMap<String, Map<String, CmsPageMetadata>>());
+    private static List<String> cachedPlacelist = synchronizedList(new ArrayList<String>());
+    private static Map<String, Map<String, CmsPlaceMetadata>> cachedPlaceMap = synchronizedMap(new HashMap<String, Map<String, CmsPlaceMetadata>>());
 
-    private void clearCache(int size) {
-        if (size < cachedlist.size()) {
+    private void clearPageCache(int size) {
+        if (size < cachedPagelist.size()) {
             for (int i = 0; i < size / 10; i++) {
-                cachedMap.remove(cachedlist.remove(0));
+                cachedPageMap.remove(cachedPagelist.remove(0));
+            }
+        }
+    }
+
+    private void clearPlaceCache(int size) {
+        if (size < cachedPlacelist.size()) {
+            for (int i = 0; i < size / 10; i++) {
+                cachedPlaceMap.remove(cachedPlacelist.remove(0));
             }
         }
     }
 
     /**
-     * 获取元数据
+     * 获取推荐位元数据
+     * 
+     * @param filePath
+     * @return
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonParseException
+     */
+    public CmsPlaceMetadata getPlaceMetadata(String filePath) {
+        File file = new File(filePath);
+        if (notEmpty(file)) {
+            CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
+            if (notEmpty(pageMetadata)) {
+                return pageMetadata;
+            }
+        }
+        return new CmsPlaceMetadata();
+    }
+
+    /**
+     * 获取模板元数据
      * 
      * @param filePath
      * @return
@@ -49,7 +81,7 @@ public class MetadataComponent extends Base implements Cacheable {
     public CmsPageMetadata getTemplateMetadata(String filePath) {
         File file = new File(filePath);
         if (notEmpty(file)) {
-            CmsPageMetadata pageMetadata = getMetadataMap(file.getParent()).get(file.getName());
+            CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
             if (notEmpty(pageMetadata)) {
                 return pageMetadata;
             }
@@ -58,21 +90,21 @@ public class MetadataComponent extends Base implements Cacheable {
     }
 
     /**
-     * 获取扩展数据
+     * 获取推荐位扩展数据
      * 
      * @param filePath
      * @param extendDataList
      * @return
      */
-    public Map<String, String> getExtendDataMap(String filePath, List<ExtendData> extendDataList) {
+    public Map<String, String> getPlaceExtendDataMap(String filePath, List<ExtendData> extendDataList) {
         Map<String, String> extendFieldMap = new HashMap<String, String>();
         Map<String, String> map = new HashMap<String, String>();
-        List<SysExtendField> pageExtendList = getTemplateMetadata(filePath).getPageExtendList();
-        if (notEmpty(pageExtendList)) {
+        List<SysExtendField> extendList = getPlaceMetadata(filePath).getExtendList();
+        if (notEmpty(extendList)) {
             for (ExtendData extendData : extendDataList) {
                 extendFieldMap.put(extendData.getName(), extendData.getValue());
             }
-            for (SysExtendField extend : pageExtendList) {
+            for (SysExtendField extend : extendList) {
                 String value = extendFieldMap.get(extend.getCode());
                 if (notEmpty(value)) {
                     map.put(extend.getCode(), value);
@@ -85,7 +117,7 @@ public class MetadataComponent extends Base implements Cacheable {
     }
 
     /**
-     * 更新元数据
+     * 更新模板元数据
      * 
      * @param filePath
      * @param map
@@ -94,14 +126,14 @@ public class MetadataComponent extends Base implements Cacheable {
      * @throws JsonMappingException
      * @throws JsonGenerationException
      */
-    public boolean updateMetadata(String filePath, CmsPageMetadata metadata) {
+    public boolean updateTemplateMetadata(String filePath, CmsPageMetadata metadata) {
         File file = new File(filePath);
         if (notEmpty(file)) {
             String dirPath = file.getParent();
-            Map<String, CmsPageMetadata> metadataMap = getMetadataMap(dirPath);
+            Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
             metadataMap.put(file.getName(), metadata);
             try {
-                saveMetadata(dirPath, metadataMap);
+                saveTemplateMetadata(dirPath, metadataMap);
                 return true;
             } catch (IOException e) {
                 return false;
@@ -111,7 +143,33 @@ public class MetadataComponent extends Base implements Cacheable {
     }
 
     /**
-     * 删除元数据
+     * 更新推荐位元数据
+     * 
+     * @param filePath
+     * @param map
+     * @return
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonGenerationException
+     */
+    public boolean updatePlaceMetadata(String filePath, CmsPlaceMetadata metadata) {
+        File file = new File(filePath);
+        if (notEmpty(file)) {
+            String dirPath = file.getParent();
+            Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
+            metadataMap.put(file.getName(), metadata);
+            try {
+                savePlaceMetadata(dirPath, metadataMap);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 删除模板元数据
      * 
      * @param filePath
      * @return
@@ -119,14 +177,39 @@ public class MetadataComponent extends Base implements Cacheable {
      * @throws JsonMappingException
      * @throws IOException
      */
-    public boolean deleteMetadata(String filePath) {
+    public boolean deleteTemplateMetadata(String filePath) {
         File file = new File(filePath);
         if (notEmpty(file)) {
             String dirPath = file.getParent();
-            Map<String, CmsPageMetadata> metadataMap = getMetadataMap(dirPath);
+            Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
             metadataMap.remove(file.getName());
             try {
-                saveMetadata(dirPath, metadataMap);
+                saveTemplateMetadata(dirPath, metadataMap);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 删除推荐位元数据
+     * 
+     * @param filePath
+     * @return
+     * @throws JsonGenerationException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    public boolean deletePlaceMetadata(String filePath) {
+        File file = new File(filePath);
+        if (notEmpty(file)) {
+            String dirPath = file.getParent();
+            Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
+            metadataMap.remove(file.getName());
+            try {
+                savePlaceMetadata(dirPath, metadataMap);
                 return true;
             } catch (IOException e) {
                 return false;
@@ -141,8 +224,35 @@ public class MetadataComponent extends Base implements Cacheable {
      * @param dirPath
      * @return
      */
-    public Map<String, CmsPageMetadata> getMetadataMap(String dirPath) {
-        Map<String, CmsPageMetadata> medatadaMap = cachedMap.get(dirPath);
+    public Map<String, CmsPlaceMetadata> getPlaceMetadataMap(String dirPath) {
+        Map<String, CmsPlaceMetadata> medatadaMap = cachedPlaceMap.get(dirPath);
+        if (empty(medatadaMap)) {
+            File file = new File(dirPath + SEPARATOR + METADATA_FILE);
+            if (notEmpty(file)) {
+                try {
+                    medatadaMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsPlaceMetadata>>() {
+                    });
+                } catch (IOException | ClassCastException e) {
+                    medatadaMap = new HashMap<String, CmsPlaceMetadata>();
+                }
+            } else {
+                medatadaMap = new HashMap<String, CmsPlaceMetadata>();
+            }
+            clearPlaceCache(100);
+            cachedPlacelist.add(dirPath);
+            cachedPlaceMap.put(dirPath, medatadaMap);
+        }
+        return medatadaMap;
+    }
+
+    /**
+     * 获取目录元数据
+     * 
+     * @param dirPath
+     * @return
+     */
+    public Map<String, CmsPageMetadata> getTemplateMetadataMap(String dirPath) {
+        Map<String, CmsPageMetadata> medatadaMap = cachedPageMap.get(dirPath);
         if (empty(medatadaMap)) {
             File file = new File(dirPath + SEPARATOR + METADATA_FILE);
             if (notEmpty(file)) {
@@ -155,15 +265,15 @@ public class MetadataComponent extends Base implements Cacheable {
             } else {
                 medatadaMap = new HashMap<String, CmsPageMetadata>();
             }
-            clearCache(100);
-            cachedlist.add(dirPath);
-            cachedMap.put(dirPath, medatadaMap);
+            clearPageCache(100);
+            cachedPagelist.add(dirPath);
+            cachedPageMap.put(dirPath, medatadaMap);
         }
         return medatadaMap;
     }
 
     /**
-     * 保存元数据
+     * 保存模板元数据
      * 
      * @param dirPath
      * @param metadataMap
@@ -171,19 +281,42 @@ public class MetadataComponent extends Base implements Cacheable {
      * @throws JsonMappingException
      * @throws IOException
      */
-    private void saveMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap) throws JsonGenerationException,
+    private void saveTemplateMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap) throws JsonGenerationException,
             JsonMappingException, IOException {
         File file = new File(dirPath + SEPARATOR + METADATA_FILE);
         if (empty(file)) {
             file.getParentFile().mkdirs();
         }
         objectMapper.writeValue(file, metadataMap);
-        clear();
+        cachedPagelist.clear();
+        cachedPageMap.clear();
+    }
+
+    /**
+     * 保存推荐位元数据
+     * 
+     * @param dirPath
+     * @param metadataMap
+     * @throws JsonGenerationException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    private void savePlaceMetadata(String dirPath, Map<String, CmsPlaceMetadata> metadataMap) throws JsonGenerationException,
+            JsonMappingException, IOException {
+        File file = new File(dirPath + SEPARATOR + METADATA_FILE);
+        if (empty(file)) {
+            file.getParentFile().mkdirs();
+        }
+        objectMapper.writeValue(file, metadataMap);
+        cachedPlacelist.clear();
+        cachedPlaceMap.clear();
     }
 
     @Override
     public void clear() {
-        cachedlist.clear();
-        cachedMap.clear();
+        cachedPagelist.clear();
+        cachedPageMap.clear();
+        cachedPlacelist.clear();
+        cachedPlaceMap.clear();
     }
 }

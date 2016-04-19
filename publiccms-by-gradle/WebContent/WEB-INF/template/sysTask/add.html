@@ -4,20 +4,20 @@
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<dl class="nowrap">
-				<dt>任务名称：</dt>
+				<dt>任务名称:</dt>
 				<dd>
 					<input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>表达式：</dt>
+				<dt>表达式:</dt>
 				<dd>
 					<input class="required" name="cronExpression" type="text" maxlength="50" size="30" value="${(a.cronExpression)!}"/>
 					<a class="btnLook" href="sysTask/example.html" width="920" warn="请选择表达式" lookupGroup="">选择表达式</a>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>表达式说明：</dt>
+				<dt>表达式说明:</dt>
 				<dd>
 					<table bordercolor="#cccccc" cellspacing="1" cellpadding="1" border="1">
 						<tbody>
@@ -34,13 +34,13 @@
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>描述：</dt>
+				<dt>描述:</dt>
 				<dd>
 					<textarea name="description" maxlength="300" style="width: 100%;" rows="3">${(a.description)!}</textarea>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>任务计划脚本：</dt>
+				<dt>任务计划脚本:</dt>
 				<dd>
 					<input name="filePath" type="text" class="required" maxlength="255" size="40" value="${(a.filePath)!}"/>
 					<a class="btnLook" href="taskTemplate/lookup.html?field=filePath" lookupGroup="">选择</a>

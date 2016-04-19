@@ -1,4 +1,4 @@
-<@_metadata path='/include'+path><#assign a=object/></@_metadata>
+<@_placeMetadata path='include'+path><#assign a=object/></@_placeMetadata>
 <style>
 .CodeMirror{height:100%;font-size:14px;}
 </style>
@@ -15,7 +15,7 @@ function refreshcmsTemplatePlace(){
 	<#if (a.allowContribute)?has_content&&a.allowContribute>
 		<a href="cmsTemplate/placeForm.html?path=${path?html?url}" target="navTab" rel="cmsTemplate/placeForm">前台表单模板</a>
 	</#if>
-	<a href="cmsTemplate/delete.do?path=${'/include'+path?html?url}" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
+	<a href="cmsTemplate/deletePlace.do?path=${'/include'+path?html?url}" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
  </h2>
 <div class="pageContent">
 	<form method="post" action="cmsTemplate/save.do?navTabId=cmsTemplate/placeList" class="pageForm required-validate" onsubmit="refreshcmsTemplatePlace();return validateCallback(this, navTabAjaxDone);">

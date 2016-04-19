@@ -28,28 +28,28 @@ function refreshTemplatePath() {
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<dl class="nowrap">
-				<dt>站点：</dt>
+				<dt>站点:</dt>
 				<dd>
 					<input name="siteId" type="hidden" value="${(a.siteId)!siteId!site.id}" />
 					<@_sysSite id=(a.siteId)!siteId!site.id>${(object.name)!}</@_sysSite>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>动态站点域名：</dt>
+				<dt>动态站点域名:</dt>
 				<dd>
 					<input class="required" name="name" type="text" size="20"  maxlength="255"value="${(a.name)!}"/>
 					<span class="info">不包含协议头，当端口不是80时，需要指定端口</span>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>模板跟目录：</dt>
+				<dt>模板跟目录:</dt>
 				<dd>
 					<input name="path" type="text" size="50" maxlength="255" value="${(a.path)!}"/>
 					<a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup="">选择</a>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>登陆模板路径：</dt>
+				<dt>登陆模板路径:</dt>
 				<dd>
 					<input name="loginPath" type="text" size="50" maxlength="255" value="${(a.path)!}${(a.loginPath)!}"/>
 					<a class="btnLook" href="cmsTemplate/lookup.html?field=loginPath" lookupGroup="">选择</a>
@@ -57,7 +57,7 @@ function refreshTemplatePath() {
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>注册模板路径：</dt>
+				<dt>注册模板路径:</dt>
 				<dd>
 					<input name="registerPath" type="text" size="50" maxlength="255" value="${(a.path)!}${(a.registerPath)!}"/>
 					<a class="btnLook" href="cmsTemplate/lookup.html?field=registerPath" lookupGroup="">选择</a>

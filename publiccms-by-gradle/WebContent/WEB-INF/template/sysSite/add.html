@@ -4,7 +4,7 @@
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<dl class="nowrap">
-				<dt>名称：</dt>
+				<dt>名称:</dt>
 				<dd>
 					<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
 					<label><input name="useStatic" type="checkbox" onclick="if($(this).is(':checked')){$('.useStatic').show();$('.useStatic input[type=text]',navTab.getCurrentPanel()).addClass('required')}else{$('.useStatic').hide();$('.useStatic input[type=text]',navTab.getCurrentPanel()).val('').removeClass('required');}"/>启用静态化</label>
@@ -12,21 +12,21 @@
 				</dd>
 			</dl>
 			<dl class="nowrap useStatic" style="display:none">
-				<dt>静态站点地址：</dt>
+				<dt>静态站点地址:</dt>
 				<dd>
 					<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
 					<span class="info">该地址用于静态站点访问</span>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>动态站点地址：</dt>
+				<dt>动态站点地址:</dt>
 				<dd>
 					<input class="required" name="dynamicPath" type="text" maxlength="255" size="60" value="${(a.dynamicPath)!}"/>
 					<span class="info">该地址用于动态站点访问</span>
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>资源站点地址：</dt>
+				<dt>资源站点地址:</dt>
 				<dd>
 					<input class="required" name="resourcePath" type="text" maxlength="255" size="60" value="${(a.resourcePath)!}"/>
 					<span class="info">该地址用于资源站点访问</span>
@@ -36,25 +36,25 @@
 				<fieldset>
 					<legend>初始化信息</legend>
 					<dl class="nowrap">
-						<dt>角色名：</dt>
+						<dt>角色名:</dt>
 						<dd>
 							<input class="required" name="roleName" type="text" maxlength="50" size="20" value="站长"/>
 						</dd>
 					</dl>
 					<dl class="nowrap">
-						<dt>部门名：</dt>
+						<dt>部门名:</dt>
 						<dd>
 							<input class="required" name="deptName" type="text" maxlength="50" size="20" value="技术部"/>
 						</dd>
 					</dl>
 					<dl class="nowrap">
-						<dt>管理员用户名：</dt>
+						<dt>管理员用户名:</dt>
 						<dd>
 							<input class="required" name="userName" type="text" maxlength="45" size="20" value="admin"/>
 						</dd>
 					</dl>
 					<dl class="nowrap">
-						<dt>管理员密码：</dt>
+						<dt>管理员密码:</dt>
 						<dd>
 							<input class="required" name="password" type="password" maxlength="255" size="20" value=""/>
 						</dd>

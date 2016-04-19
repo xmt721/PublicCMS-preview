@@ -4,11 +4,11 @@
 		<input name="id" type="hidden" value="${id!}" />
 		<div class="pageFormContent" layoutH="57">
 			<dl>
-				<dt>名称：</dt>
+				<dt>名称:</dt>
 				<dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>排序：</dt>
+				<dt>排序:</dt>
 				<dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!(category.sort)!0}"/></dd>
 			</dl>
 			<#include "../include_page/extends.html"/>

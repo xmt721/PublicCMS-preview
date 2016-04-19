@@ -4,23 +4,23 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>渠道：</label>
+					<label>渠道:</label>
 					<input type="text" name="channel" value="${channel!}" />
 				</li>
 				<li>
-					<label>操作：</label>
+					<label>操作:</label>
 					<input type="text" name="operate" value="${operate!}" />
 				</li>
 				<li>
-					<label>用户：</label>
+					<label>用户:</label>
 					<#include "../include_page/userId.html"/>
 				</li>
 				<li>
-					<label>内容：</label>
+					<label>内容:</label>
 					<input type="text" name="content" value="${content!}" />
 				</li>
 				<li class="colspan">
-					<label>操作日期：</label>
+					<label>操作日期:</label>
 					<input type="text" name="startCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
 					<input type="text" name="endCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />

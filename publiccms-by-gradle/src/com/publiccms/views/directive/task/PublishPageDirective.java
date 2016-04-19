@@ -18,6 +18,7 @@ import com.publiccms.logic.component.FileComponent.FileInfo;
 import com.publiccms.logic.component.MetadataComponent;
 import com.publiccms.logic.component.TemplateComponent;
 import com.publiccms.views.pojo.CmsPageMetadata;
+import com.publiccms.views.pojo.CmsPlaceMetadata;
 import com.sanluan.common.handler.RenderHandler;
 
 import freemarker.template.TemplateException;
@@ -31,15 +32,15 @@ public class PublishPageDirective extends AbstractTaskDirective {
         handler.put("map", deal(getSite(handler), path, list)).render();
     }
 
-    private Map<String, Boolean> dealPlace(SysSite site, String path, Map<String, CmsPageMetadata> metadataMap,
+    private Map<String, Boolean> dealPlace(SysSite site, String path, Map<String, CmsPlaceMetadata> metadataMap,
             List<FileInfo> fileList) {
         Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
         for (FileInfo fileInfo : fileList) {
             String filePath = path + fileInfo.getFileName();
             try {
-                CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
+                CmsPlaceMetadata metadata = metadataMap.get(fileInfo.getFileName());
                 if (empty(metadata)) {
-                    metadata = new CmsPageMetadata();
+                    metadata = new CmsPlaceMetadata();
                 }
                 templateComponent.staticPlace(site, filePath, metadata);
                 map.put(filePath, true);
@@ -52,8 +53,8 @@ public class PublishPageDirective extends AbstractTaskDirective {
 
     private Map<String, Boolean> deal(SysSite site, String path, List<FileInfo> list) {
         path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
-        Map<String, CmsPageMetadata> metadataMap = metadataComponent.getMetadataMap(siteComponent.getWebTemplateFilePath(site,
-                path));
+        Map<String, CmsPageMetadata> metadataMap = metadataComponent.getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(
+                site, path));
         Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
@@ -64,7 +65,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
                 String placesPath = INCLUDE_DIRECTORY + filePath + SEPARATOR;
                 map.putAll(dealPlace(site, placesPath,
-                        metadataComponent.getMetadataMap(siteComponent.getWebTemplateFilePath(site, placesPath)),
+                        metadataComponent.getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(site, placesPath)),
                         fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, placesPath))));
                 if (notEmpty(metadata) && notEmpty(metadata.getPublishPath())) {
                     try {

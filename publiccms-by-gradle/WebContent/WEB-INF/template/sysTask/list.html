@@ -4,7 +4,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>状态：</label>
+					<label>状态:</label>
 					<select class="combox" name="status">
 						<option value=""${(!status?has_content)?then(' selected="true"','')}>请选择</option>
 						<option value="0"${(status??&&"0"==status)?then(' selected="true"','')}><@t.m 'status.task.'+0/></option>

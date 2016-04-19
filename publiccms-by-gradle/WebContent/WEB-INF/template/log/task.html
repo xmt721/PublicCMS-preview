@@ -5,12 +5,12 @@
 			<ul class="searchContent">
 			<#if taskId?has_content>
 				<li>
-					<label>任务：</label>
+					<label>任务:</label>
 					<@_sysTask id=taskId>${object.name}</@_sysTask>
 				</li>
 			</#if>
 				<li>
-					<label>执行结果：</label>
+					<label>执行结果:</label>
 					<select class="combox" name="success">
 						<option value=""${(!success?has_content)?then(' selected="true"','')}>不限</option>
 						<option value="true"${(success?has_content&&"true"==success)?then(' selected="true"','')}>成功</option>
@@ -18,7 +18,7 @@
 					</select>
 				</li>
 				<li class="colspan">
-					<label>执行日期：</label>
+					<label>执行日期:</label>
 					<input type="text" name="startCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
 					<input type="text" name="endCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />

@@ -22,7 +22,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
                             metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
                     .render();
         } else if (null != dir) {
-            handler.put("object", metadataComponent.getMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler), dir)))
+            handler.put("object", metadataComponent.getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler), dir)))
                     .render();
         }
     }
