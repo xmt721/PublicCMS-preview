@@ -82,11 +82,9 @@ function editorSyn(ename){
 		</#if>
 	</#list>
 </@_sysMoudleList>
-	<@_checkMasterSite>
-		<#if result>
-			<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
-		</#if>
-	</@_checkMasterSite>
+	<@_masterSite>
+		<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
+	</@_masterSite>
 	</ul>
 	<script>$('#navMenu li:eq(0)').addClass("selected");</script>
 </header>

@@ -8,11 +8,13 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class CheckMasterSiteDirective extends AbstractTemplateDirective {
+public class MasterSiteDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        handler.put("result", siteComponent.isMaster(getSite(handler).getId())).render();
+        if (siteComponent.isMaster(getSite(handler).getId())) {
+            handler.render();
+        }
     }
 
 }

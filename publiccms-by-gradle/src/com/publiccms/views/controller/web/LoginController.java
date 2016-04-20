@@ -74,7 +74,7 @@ public class LoginController extends AbstractController {
                 || virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
-            return domain.getLoginPath();
+            return REDIRECT + domain.getLoginPath();
         }
         SysUser user;
         if (virifyNotEMail(username)) {
@@ -92,7 +92,7 @@ public class LoginController extends AbstractController {
                 userId = user.getId();
             }
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, CHANNEL_WEB, false, getDate(), password));
-            return domain.getLoginPath();
+            return REDIRECT + domain.getLoginPath();
         }
         user.setPassword(null);
         setUserToSession(session, user);
