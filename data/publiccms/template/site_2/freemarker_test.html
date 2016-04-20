@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>FreeMarker在线测试 - 散乱</title>
+	<@include path="/ftl/header.ftl"/> <#-- 页头 -->
+    <link rel="stylesheet" type="text/css" href="${site.resourcePath}codemirror/lib/codemirror.css" />
+    <script src="${site.resourcePath}codemirror/lib/codemirror.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/xml/xml.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/javascript/javascript.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/css/css.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/freemarker/freemarker.js"></script>
+    <script src="${site.resourcePath}codemirror/mode/freemarkermixed/freemarkermixed.js"></script>
+</head>
+<body>
+	<header><@noCache><@include path="/ftl/top.ftl"/> <#-- 用户登录 --></@noCache></header>
+	<main>
+		<div>
+			<h2>
+				freemarker版本:${.version}
+				<a href="http://www.kerneler.com/freemarker2.3.23/" target="_blank">Freemarker最新中文手册</a>
+				<a href="http://www.publiccms.com/" target="_blank">PublicCMS开源JAVACMS(全部最新技术框架)</a>
+			</h2>
+			<#if error??>
+				<p class="message"><@t.m error/></p>
+			</#if>
+			<#if message??>
+				<p class="message"><@t.m "message."+message/></p>
+			</#if>
+			<form action="freemarker_test.html" method="post">
+				<fieldset>
+			    	<legend>源码</legend>
+					<textarea id="code" name="template">${(template?html)!}</textarea>
+					<p class="text-center">
+						<input type="submit" class="button" value="预览"/>
+					</p>
+				</fieldset>
+			</form>
+			<script>
+				if(__.width()>1210){
+					var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+				        mode: "freemarkermixed",
+				        lineNumbers: true
+					});
+				} else {
+					$('#code').addClass('area-editor');
+				}
+			</script>
+			<fieldset>
+	    		<legend>预览</legend>
+				<p><#if template?has_content>${(getTemplateResult(template)?html)!}</#if></p>
+			</fieldset>
+			<div id="SOHUCS" style="padding:10px;" sid="freemarker_test"></div>
+			<script>
+				var _config = {showScore: true};
+				(function(){
+					var appid = 'cyrGnkxr3',
+					conf = 'pro_64e213c0c1210c839584707e2d5e7cd7';
+					var doc = document,
+					s = doc.createElement('script'),
+					h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+					s.type = 'text/javascript';
+					s.charset = 'utf-8';
+					s.src =  'http://assets.changyan.sohu.com/upload/changyan.js?conf='+ conf +'&appid=' + appid;
+					h.insertBefore(s,h.firstChild);
+				})();
+			</script>
+		</div>
+	</main>
+  	<@include path="/ftl/footer.ftl"/> <#-- 页尾 -->
+</body>
+</html>
