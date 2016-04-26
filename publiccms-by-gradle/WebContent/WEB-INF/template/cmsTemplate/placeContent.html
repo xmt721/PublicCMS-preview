@@ -14,6 +14,9 @@ function refreshcmsTemplatePlace(){
 	<#if (a.allowContribute)?has_content&&a.allowContribute>
 		<a href="cmsTemplate/placeForm.html?path=${path?html?url}" target="navTab" rel="cmsTemplate/placeForm">前台表单模板</a>
 	</#if>
+	<#if site.useSsi>
+		<a href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo">发布</a>
+	</#if>
 	<a href="cmsTemplate/deletePlace.do?path=${path?html?url}&navTabId=cmsTemplate/placeList" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
  </h2>
 <div class="pageContent">
