@@ -1,14 +1,13 @@
 package com.publiccms.entities.sys;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+
 // Generated 2016-1-19 11:28:06 by Hibernate Tools 4.3.1
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sanluan.common.source.entity.MyColumn;
@@ -24,47 +23,24 @@ public class SysRoleAuthorized implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
-    @MyColumn(title = "角色", condition = true)
-    private int roleId;
-    @MyColumn(title = "地址", condition = true)
-    private String url;
+    private SysRoleAuthorizedId id;
 
     public SysRoleAuthorized() {
     }
 
-    public SysRoleAuthorized(int roleId, String url) {
-        this.roleId = roleId;
-        this.url = url;
-    }
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
+    public SysRoleAuthorized(SysRoleAuthorizedId id) {
         this.id = id;
     }
 
-    @Column(name = "role_id", nullable = false)
-    public int getRoleId() {
-        return this.roleId;
+    @EmbeddedId
+    @AttributeOverrides({ @AttributeOverride(name = "roleId", column = @Column(name = "role_id", nullable = false)),
+            @AttributeOverride(name = "url", column = @Column(name = "url", nullable = false)) })
+    public SysRoleAuthorizedId getId() {
+        return this.id;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    @Column(name = "url", nullable = false)
-    public String getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setId(SysRoleAuthorizedId id) {
+        this.id = id;
     }
 
 }

@@ -13,8 +13,8 @@
 					<label>执行结果:</label>
 					<select class="combox" name="success">
 						<option value=""${(!success?has_content)?then(' selected="true"','')}>不限</option>
-						<option value="true"${(success?has_content&&"true"==success)?then(' selected="true"','')}>成功</option>
-						<option value="false"${(success?has_content&&"false"==success)?then(' selected="true"','')}>失败</option>
+						<option value="true"${(success?has_content&&"true"=success)?then(' selected="true"','')}>成功</option>
+						<option value="false"${(success?has_content&&"false"=success)?then(' selected="true"','')}>失败</option>
 					</select>
 				</li>
 				<li class="colspan">

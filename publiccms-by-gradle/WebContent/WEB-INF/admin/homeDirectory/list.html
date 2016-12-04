@@ -63,10 +63,10 @@
 				<td>${a.disabled?then('<font color="red">禁用</font>','正常')?no_esc}</td>
 				<td>
 					<#if authorizedMap['homeFile/list']>
-						<a href="homeFile/list?directoryId=${a.directoryId}" target="navTab" rel="homeFile/list">文件列表</a>
+						<a href="homeFile/list.html?directoryId=${a.directoryId}" target="navTab" rel="homeFile/list">文件列表</a>
 					</#if>
 					<#if authorizedMap['homeArticle/list']>
-						<a href="homeArticle/list?directoryId=${a.directoryId}" target="navTab" rel="homeArticle/list">文章列表</a>
+						<a href="homeArticle/list.html?directoryId=${a.directoryId}" target="navTab" rel="homeArticle/list">文章列表</a>
 					</#if>
 				</td>
 			</tr>

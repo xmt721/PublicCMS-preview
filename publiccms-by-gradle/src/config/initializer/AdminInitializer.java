@@ -61,7 +61,7 @@ public class AdminInitializer extends AbstractAnnotationConfigDispatcherServletI
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(Base.DEFAULT_CHARSET);
+        characterEncodingFilter.setEncoding(Base.DEFAULT_CHARSET_NAME);
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter };
     }

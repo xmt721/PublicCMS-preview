@@ -71,7 +71,7 @@ $(function(){
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
 			<#if !parentId?has_content><#assign parentId=a.id/></#if>
-			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${a.attached?no_esc!} ${a.name}</a></li>
+			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${(a.attached?no_esc)!} ${a.name}</a></li>
 		</#if>
 	</#list>
 </@_sysMoudleList>

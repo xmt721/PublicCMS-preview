@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.spi.Static;
 import com.sanluan.common.source.entity.MyColumn;
 
@@ -41,6 +42,7 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "编码")
     private String code;
     @MyColumn(title = "模板路径")
+    @JsonIgnore
     private String templatePath;
     @MyColumn(title = "路径")
     private String path;
@@ -51,6 +53,7 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "地址")
     private String url;
     @MyColumn(title = "内容路径")
+    @JsonIgnore
     private String contentPath;
     @MyColumn(title = "每页数据")
     private Integer pageSize;
@@ -61,6 +64,7 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "是否隐藏", condition = true)
     private boolean hidden;
     @MyColumn(title = "是否删除", condition = true)
+    @JsonIgnore
     private boolean disabled;
     @MyColumn(title = "内容数")
     private int contents;

@@ -17,6 +17,10 @@ import com.sanluan.common.base.Base;
 public class StreamUtils extends Base {
     public static final int BUFFER_SIZE = 1024 * 1024;
 
+    public static BufferedOutputStream getBufferedOutputStream(OutputStream outputStream) {
+        return new BufferedOutputStream(outputStream, BUFFER_SIZE);
+    }
+
     /**
      * @param inputStream
      * @param outputStream
@@ -64,6 +68,7 @@ public class StreamUtils extends Base {
             while ((i = bufferedInputStream.read()) != -1) {
                 bufferedOutputStream.write(i);
             }
+            bufferedOutputStream.flush();
         } finally {
             if (notEmpty(bufferedInputStream) && closeInput) {
                 try {

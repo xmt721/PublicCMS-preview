@@ -97,4 +97,15 @@ public abstract class BaseService<E> extends Base {
     public Serializable save(E entity) {
         return dao.save(entity);
     }
+    
+    /**
+     * @param entityList
+     */
+    public void save(List<E> entityList) {
+        if (notEmpty(entityList)) {
+            for (E entity : entityList) {
+                save(entity);
+            }
+        }
+    }
 }

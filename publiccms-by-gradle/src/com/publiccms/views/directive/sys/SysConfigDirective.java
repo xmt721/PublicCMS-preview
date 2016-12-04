@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.sys.SysConfig;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.service.sys.SysConfigService;
+import com.publiccms.logic.service.sys.SysConfigService;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -29,11 +29,6 @@ public class SysConfigDirective extends AbstractTemplateDirective {
                 handler.put("object", getExtendMap(entity.getData())).render();
             }
         }
-    }
-    
-    @Override
-    public boolean needAppToken() {
-        return true;
     }
 
     @Autowired

@@ -1,9 +1,10 @@
 <h2 class="contentTitle">配置中心</h2>
 <div class="pageContent">
+<@_configList>
 	<div class="tabs" currentIndex="0" eventType="click">
 		<div class="tabsHeader">
 			<div class="tabsHeaderContent">
-			<#list getConfigCodeList()>
+			<#list list>
 				<ul>
 				<#items as a>
 					<li><a href="sysConfig/subcode.html?code=${a}" class="j-ajax"><@t.m 'config.'+a/></a></li>
@@ -17,7 +18,7 @@
 			</div>
 		</div>
 		<div class="tabsContent">
-			<#list getConfigCodeList() as a>
+			<#list list as a>
 				<div>
 					<#if a?is_first>
 						<#assign code=a/>
@@ -29,4 +30,5 @@
 			</#list>
 		</div>
 	</div>
+</@_configList>
 </div>

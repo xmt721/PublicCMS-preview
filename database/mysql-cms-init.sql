@@ -1,4 +1,3 @@
-
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -96,61 +95,58 @@ INSERT INTO `cms_category_attribute` VALUES ('19', '案例', 'PublicCMS案例', 
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_category_model`;
 CREATE TABLE `cms_category_model` (
-  `id` int(11) NOT NULL auto_increment,
   `category_id` int(11) NOT NULL COMMENT '分类ID',
   `model_id` int(11) NOT NULL COMMENT '模型ID',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
-  PRIMARY KEY  (`id`),
-  KEY `category_id` (`category_id`),
-  KEY `model_id` (`model_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COMMENT='分类模型';
+  PRIMARY KEY  (`category_id`,`model_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类模型';
 
 -- ----------------------------
 -- Records of cms_category_model
 -- ----------------------------
-INSERT INTO `cms_category_model` VALUES ('1', '9', '1', '/system/article.html');
-INSERT INTO `cms_category_model` VALUES ('2', '8', '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES ('3', '7', '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES ('4', '7', '1', '/system/article.html');
-INSERT INTO `cms_category_model` VALUES ('46', '6', '2', '');
-INSERT INTO `cms_category_model` VALUES ('6', '12', '2', '');
-INSERT INTO `cms_category_model` VALUES ('7', '12', '1', '/system/article.html');
-INSERT INTO `cms_category_model` VALUES ('8', '15', '4', '/system/book.html');
-INSERT INTO `cms_category_model` VALUES ('9', '15', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('10', '15', '5', '');
-INSERT INTO `cms_category_model` VALUES ('11', '9', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('12', '9', '5', '');
-INSERT INTO `cms_category_model` VALUES ('13', '9', '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES ('14', '9', '2', '');
-INSERT INTO `cms_category_model` VALUES ('15', '16', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('16', '16', '5', '');
-INSERT INTO `cms_category_model` VALUES ('17', '6', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('18', '6', '5', '');
-INSERT INTO `cms_category_model` VALUES ('47', '6', '1', '/system/article.html');
-INSERT INTO `cms_category_model` VALUES ('45', '6', '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES ('21', '8', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('22', '8', '5', '');
-INSERT INTO `cms_category_model` VALUES ('23', '7', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('24', '7', '5', '');
-INSERT INTO `cms_category_model` VALUES ('25', '17', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('26', '17', '5', '');
-INSERT INTO `cms_category_model` VALUES ('27', '17', '3', '/system/picture.html');
-INSERT INTO `cms_category_model` VALUES ('28', '17', '2', '');
-INSERT INTO `cms_category_model` VALUES ('29', '17', '1', '/system/article.html');
-INSERT INTO `cms_category_model` VALUES ('30', '7', '2', '');
-INSERT INTO `cms_category_model` VALUES ('31', '14', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('32', '14', '5', '');
-INSERT INTO `cms_category_model` VALUES ('33', '12', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('34', '12', '5', '');
-INSERT INTO `cms_category_model` VALUES ('35', '1', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('36', '1', '5', '');
-INSERT INTO `cms_category_model` VALUES ('37', '18', '8', '');
-INSERT INTO `cms_category_model` VALUES ('38', '18', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('39', '18', '5', '');
-INSERT INTO `cms_category_model` VALUES ('41', '19', '6', '/system/chapter.html');
-INSERT INTO `cms_category_model` VALUES ('42', '19', '5', '');
-INSERT INTO `cms_category_model` VALUES ('43', '19', '2', '');
-INSERT INTO `cms_category_model` VALUES ('44', '18', '7', '');
+INSERT INTO `cms_category_model` VALUES ('9', '1', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES ('8', '3', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES ('7', '3', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES ('7', '1', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES ('6', '2', '');
+INSERT INTO `cms_category_model` VALUES ('12', '2', '');
+INSERT INTO `cms_category_model` VALUES ('12', '1', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES ('15', '4', '/system/book.html');
+INSERT INTO `cms_category_model` VALUES ('15', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('15', '5', '');
+INSERT INTO `cms_category_model` VALUES ('9', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('9', '5', '');
+INSERT INTO `cms_category_model` VALUES ('9', '3', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES ('9', '2', '');
+INSERT INTO `cms_category_model` VALUES ('16', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('16', '5', '');
+INSERT INTO `cms_category_model` VALUES ('6', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('6', '5', '');
+INSERT INTO `cms_category_model` VALUES ('6', '1', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES ('6', '3', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES ('8', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('8', '5', '');
+INSERT INTO `cms_category_model` VALUES ('7', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('7', '5', '');
+INSERT INTO `cms_category_model` VALUES ('17', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('17', '5', '');
+INSERT INTO `cms_category_model` VALUES ('17', '3', '/system/picture.html');
+INSERT INTO `cms_category_model` VALUES ('17', '2', '');
+INSERT INTO `cms_category_model` VALUES ('17', '1', '/system/article.html');
+INSERT INTO `cms_category_model` VALUES ('7', '2', '');
+INSERT INTO `cms_category_model` VALUES ('14', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('14', '5', '');
+INSERT INTO `cms_category_model` VALUES ('12', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('12', '5', '');
+INSERT INTO `cms_category_model` VALUES ('1', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('1', '5', '');
+INSERT INTO `cms_category_model` VALUES ('18', '8', '');
+INSERT INTO `cms_category_model` VALUES ('18', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('18', '5', '');
+INSERT INTO `cms_category_model` VALUES ('19', '6', '/system/chapter.html');
+INSERT INTO `cms_category_model` VALUES ('19', '5', '');
+INSERT INTO `cms_category_model` VALUES ('19', '2', '');
+INSERT INTO `cms_category_model` VALUES ('18', '7', '');
 
 -- ----------------------------
 -- Table structure for cms_category_type
@@ -287,11 +283,7 @@ CREATE TABLE `cms_content_related` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `content_id` (`content_id`),
-  KEY `related_content_id` (`related_content_id`),
-  KEY `sort` (`sort`),
-  KEY `user_id` (`user_id`),
-  KEY `clicks` (`clicks`)
+  KEY `user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='推荐推荐';
 
 -- ----------------------------
@@ -299,20 +291,48 @@ CREATE TABLE `cms_content_related` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_content_tag`;
 CREATE TABLE `cms_content_tag` (
-  `id` bigint(20) NOT NULL auto_increment,
   `tag_id` bigint(20) NOT NULL COMMENT '标签ID',
   `content_id` bigint(20) NOT NULL COMMENT '内容ID',
-  PRIMARY KEY  (`id`),
-  KEY `tag_id` (`tag_id`),
-  KEY `content_id` (`content_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='内容标签';
+  PRIMARY KEY  (`tag_id`,`content_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内容标签';
 
 -- ----------------------------
 -- Records of cms_content_tag
 -- ----------------------------
-INSERT INTO `cms_content_tag` VALUES ('1', '1', '1');
-INSERT INTO `cms_content_tag` VALUES ('2', '1', '2');
-INSERT INTO `cms_content_tag` VALUES ('3', '2', '3');
+INSERT INTO `cms_content_tag` VALUES ('1', '1');
+INSERT INTO `cms_content_tag` VALUES ('1', '2');
+INSERT INTO `cms_content_tag` VALUES ('2', '3');
+
+-- ----------------------------
+-- Table structure for cms_dictionary
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary`;
+CREATE TABLE `cms_dictionary` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
+  PRIMARY KEY  (`id`),
+  KEY `multiple` (`multiple`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典';
+
+-- ----------------------------
+-- Records of cms_dictionary
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for cms_dictionary_data
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary_data`;
+CREATE TABLE `cms_dictionary_data` (
+  `dictionary_id` bigint(20) NOT NULL COMMENT '字典',
+  `value` varchar(50) NOT NULL COMMENT '值',
+  `text` varchar(100) NOT NULL COMMENT '文字',
+  PRIMARY KEY  (`dictionary_id`,`value`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典数据';
+
+-- ----------------------------
+-- Records of cms_dictionary_data
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for cms_lottery
@@ -336,9 +356,7 @@ CREATE TABLE `cms_lottery` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  KEY `start_date` (`start_date`,`end_date`),
-  KEY `disabled` (`disabled`),
-  KEY `site_id` (`site_id`)
+  KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -350,17 +368,16 @@ CREATE TABLE `cms_lottery` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_lottery_user`;
 CREATE TABLE `cms_lottery_user` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `lottery_id` int(11) NOT NULL COMMENT '抽奖ID',
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `lottery_id` bigint(20) NOT NULL COMMENT '抽奖ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `winning` tinyint(1) NOT NULL COMMENT '是否中奖',
+  `confirmed` tinyint(1) NOT NULL COMMENT '已确认',
+  `confirm_date` datetime default NULL COMMENT '确认日期',
   `ip` varchar(64) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`lottery_id`),
-  KEY `user_id` (`user_id`),
-  KEY `winning` (`winning`),
-  KEY `create_date` (`create_date`)
+  KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -597,7 +614,7 @@ CREATE TABLE `cms_vote` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   `item_extend_id` int(11) NOT NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  KEY `disabled` (`disabled`)
+  KEY `disabled` (`site_id`,`start_date`,`end_date`,`disabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -616,10 +633,7 @@ CREATE TABLE `cms_vote_item` (
   `scores` int(11) NOT NULL COMMENT '票数',
   `sort` int(11) NOT NULL COMMENT '顺序',
   PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`vote_id`),
-  KEY `user_id` (`title`),
-  KEY `create_date` (`sort`),
-  KEY `scores` (`scores`)
+  KEY `vote_id` (`vote_id`,`scores`,`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -645,16 +659,14 @@ CREATE TABLE `cms_vote_item_attribute` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_vote_user`;
 CREATE TABLE `cms_vote_user` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `lottery_id` int(11) NOT NULL COMMENT '抽奖ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `vote_id` int(11) NOT NULL COMMENT '投票ID',
+  `user_id` bigint(20) NOT NULL default '0' COMMENT '用户ID',
   `item_ids` text NOT NULL COMMENT '投票选项',
   `ip` varchar(64) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`lottery_id`),
-  KEY `user_id` (`user_id`),
-  KEY `create_date` (`create_date`)
+  KEY `vote_id` (`vote_id`,`user_id`,`ip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------

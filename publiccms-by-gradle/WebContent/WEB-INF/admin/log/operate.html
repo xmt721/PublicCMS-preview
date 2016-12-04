@@ -89,7 +89,7 @@
 					</a>
 				</td>
 				<td>${a.createDate!}</td>
-				<td>${(a.content)!}</td>
+				<td><@t.cut a.content 80 '...<a href="log/operateView.html?id=${a.id}" target="dialog" rel="operateTask">查看更多</a>'?no_esc/></td>
 			</tr>
 			</#list>
 		</tbody>

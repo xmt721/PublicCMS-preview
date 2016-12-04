@@ -57,7 +57,7 @@
 				<td>${a.disabled?then('<font color="red">禁用</font>','正常')?no_esc}</td>
 				<td>
 					<#if authorizedMap['homeUser/view']>
-						<a href="homeUser/view.html?id=${a.id}" target="dialog" rel="homeUser/view">查看</a>
+						<a href="homeUser/view.html?id=${a.id}" target="dialog" rel="homeUser_view">查看</a>
 					</#if>
 				</td>
 			</tr>

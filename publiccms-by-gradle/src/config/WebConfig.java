@@ -17,8 +17,8 @@ import com.publiccms.common.interceptor.web.WebContextInterceptor;
 import com.publiccms.common.view.WebFreeMarkerViewResolver;
 import com.publiccms.common.view.web.DefaultWebFreeMarkerView;
 import com.publiccms.common.view.web.WebFreeMarkerView;
-import com.publiccms.component.cache.CacheComponent;
-import com.publiccms.component.template.TemplateComponent;
+import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  * 
@@ -27,7 +27,7 @@ import com.publiccms.component.template.TemplateComponent;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.views.controller.web", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "com.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired

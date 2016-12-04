@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
+import com.sanluan.common.base.Base;
 import com.sanluan.common.handler.HttpParameterHandler;
 
 /**
@@ -15,7 +16,7 @@ import com.sanluan.common.handler.HttpParameterHandler;
  * BaseDirective 自定义模板指令，接口指令基类
  *
  */
-public abstract class BaseHttpDirective extends BaseDirective implements HttpDirective {
+public abstract class BaseHttpDirective extends Base implements HttpDirective, Directive{
 
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,

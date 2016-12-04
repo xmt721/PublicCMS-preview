@@ -3,7 +3,7 @@
 		<#local value=extend.defaultValue!/>
 	</#if>
 	<#local inputName=name+'['+index+'].value'/>
-	<input name="${name}[${index}].name" type="hidden" value="${extend.code}"/>
+	<input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
 	<#switch extend.inputType>
 		<#case 'number'>
 		<input name="${inputName}" <#if !customform>class="number<#if extend.required> required</#if>" </#if>type="text" size="5" value="${(value)!}"/>
@@ -19,7 +19,7 @@
 			<#if !preview?has_content>
 				<#include "../include_page/preview.html"/>
 			</#if>
-			<@preview extend.code 'input[name="${inputName}"]' ''/>
+			<@preview extend.id.code 'input[name="${inputName}"]' ''/>
 		</#if>
 			<#break>
 		<#case 'password'>
@@ -68,12 +68,12 @@
 <#macro extendData name extendList extendValues customform=false>
 	<#list extendList as e>
 	<#if customform>
-	<p><label>${(e.name)}:</label><@input name e e?index extendValues[e.code]!/></p>
+	<p><label>${(e.name)}:</label><@input name e e?index extendValues[e.id.code]!/></p>
 	<#else>
 	<dl class="nowrap">
 		<dt>${(e.name)}:</dt>
 		<dd<#if 'editor'=e.inputType> style="width:80%;"</#if>>
-			<@input name e e?index extendValues[e.code]!/>
+			<@input name e e?index extendValues[e.id.code]!/>
 			<span class="info">${(e.description)!}</span>
 		</dd>
 	</dl>

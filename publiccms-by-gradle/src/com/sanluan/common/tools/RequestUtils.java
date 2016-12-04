@@ -26,8 +26,9 @@ public class RequestUtils extends Base {
      */
     public static String getValue(Map<String, String[]> parameterMap, String key) {
         String[] values = parameterMap.get(key);
-        if (isNotEmpty(values))
+        if (isNotEmpty(values)){
             return values[0];
+        }
         return null;
     }
 
@@ -43,20 +44,11 @@ public class RequestUtils extends Base {
             if (notEmpty(queryString)) {
                 url += "?" + queryString;
             }
-            url = URLEncoder.encode(url, DEFAULT_CHARSET);
+            url = URLEncoder.encode(url, DEFAULT_CHARSET_NAME);
         } catch (UnsupportedEncodingException e) {
             url = "";
         }
         return url;
-    }
-
-    /**
-     * @param serverName
-     * @param serverPort
-     * @return
-     */
-    public static String getDomain(String serverName, int serverPort) {
-        return 80 == serverPort ? serverName : serverName + ":" + serverPort;
     }
 
     /**

@@ -107,6 +107,7 @@ public class CmsLottery implements java.io.Serializable , Static {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

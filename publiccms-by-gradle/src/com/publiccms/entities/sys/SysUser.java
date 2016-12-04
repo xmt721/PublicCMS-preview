@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -34,6 +35,7 @@ public class SysUser implements java.io.Serializable {
     @MyColumn(title = "用户名", condition = true, like = true, or = true, name = "name")
     private String name;
     @MyColumn(title = "密码")
+    @JsonIgnore
     private String password;
     @MyColumn(title = "用户昵称", condition = true, like = true, or = true, name = "name")
     private String nickName;

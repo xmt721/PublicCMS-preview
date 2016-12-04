@@ -3,7 +3,6 @@ package com.sanluan.common.tools;
 import static org.apache.commons.logging.LogFactory.getLog;
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
- * FreeMarker工具类
+ * FreeMarkerUtils FreeMarker工具类
  * 
  * @author kerneler
  *
@@ -80,20 +79,9 @@ public class FreeMarkerUtils extends Base {
             if (null != parent) {
                 parent.mkdirs();
             }
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream(destFile, append);
-                Writer out = new BufferedWriter(new OutputStreamWriter(outputStream, DEFAULT_CHARSET));
+            try (FileOutputStream outputStream = new FileOutputStream(destFile, append);
+                    Writer out = new OutputStreamWriter(outputStream, DEFAULT_CHARSET);) {
                 t.process(model, out);
-                out.close();
-            } finally {
-                try {
-                    if (notEmpty(outputStream)) {
-                        outputStream.close();
-                    }
-                } catch (IOException e) {
-                    throw e;
-                }
             }
             log.info(destFilePath + "    saved!");
         } else {

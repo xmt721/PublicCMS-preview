@@ -22,8 +22,8 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.component.SiteComponent;
-import com.publiccms.service.log.LogOperateService;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.sanluan.common.base.BaseController;
 
 import eu.bitwalker.useragentutils.DeviceType;
@@ -35,6 +35,8 @@ public abstract class AbstractController extends BaseController {
     protected static final String TEMPLATE_ERROR = "common/ajaxError";
     protected static final String MESSAGE = "message";
     protected static final String SUCCESS = "success";
+    protected static final String ERROR = "error";
+    protected static final String ERROR_PAGE = "error.html";
 
     public static final Pattern MOBILE_PATTERN = Pattern.compile("^(13|14|15|17|18|)\\d{9}$");
     public static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]*$");

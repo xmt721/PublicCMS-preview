@@ -1,4 +1,3 @@
-
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -42,7 +41,7 @@ CREATE TABLE `log_operate` (
   `operate` varchar(40) NOT NULL COMMENT '操作',
   `ip` varchar(64) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `content` varchar(500) NOT NULL COMMENT '内容',
+  `content` text NOT NULL COMMENT '内容',
   PRIMARY KEY  (`id`),
   KEY `user_id` (`user_id`),
   KEY `operate` (`operate`),
@@ -88,7 +87,7 @@ CREATE TABLE `log_upload` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '操作取到',
   `image` tinyint(1) NOT NULL COMMENT '图片',
-  `file_size` BIGINT(20) NOT NULL COMMENT '文件大小',
+  `file_size` bigint(20) NOT NULL COMMENT '文件大小',
   `ip` varchar(64) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `file_path` varchar(500) NOT NULL COMMENT '文件路径',
@@ -233,12 +232,9 @@ INSERT INTO `sys_dept` VALUES ('2', '2', '技术部', null, '', '3', '1', '1');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_category`;
 CREATE TABLE `sys_dept_category` (
-  `id` int(11) NOT NULL auto_increment,
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `category_id` int(11) NOT NULL COMMENT '分类ID',
-  PRIMARY KEY  (`id`),
-  KEY `dept_id` (`dept_id`),
-  KEY `category_id` (`category_id`)
+  PRIMARY KEY  (`dept_id`,`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='部门分类';
 
 -- ----------------------------
@@ -250,12 +246,9 @@ CREATE TABLE `sys_dept_category` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_page`;
 CREATE TABLE `sys_dept_page` (
-  `id` int(11) NOT NULL auto_increment,
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `page` varchar(255) NOT NULL COMMENT '页面',
-  PRIMARY KEY  (`id`),
-  KEY `dept_id` (`dept_id`),
-  KEY `page` (`page`)
+  PRIMARY KEY  (`dept_id`,`page`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='部门页面';
 
 -- ----------------------------
@@ -328,22 +321,25 @@ INSERT INTO `sys_extend` VALUES ('2', 'category', '19');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_extend_field`;
 CREATE TABLE `sys_extend_field` (
-  `id` int(11) NOT NULL auto_increment,
   `extend_id` int(11) NOT NULL COMMENT '扩展ID',
+  `code` varchar(20) NOT NULL COMMENT '编码',
   `required` tinyint(1) NOT NULL COMMENT '是否必填',
+  `maxlength` int(11) default NULL,
   `name` varchar(20) NOT NULL COMMENT '名称',
   `description` varchar(100) default NULL COMMENT '解释',
-  `code` varchar(20) NOT NULL COMMENT '编码',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',
   `default_value` varchar(50) default NULL COMMENT '默认值',
-  PRIMARY KEY  (`id`),
-  KEY `item_id` (`extend_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='扩展';
+  `dictionary_type` varchar(20) default NULL,
+  `dictionary_id` varchar(20) default NULL,
+  `sort` int(11) NOT NULL default '0' COMMENT '顺序',
+  PRIMARY KEY  (`extend_id`,`code`),
+  KEY `sort` (`sort`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='扩展';
 
 -- ----------------------------
 -- Records of sys_extend_field
 -- ----------------------------
-INSERT INTO `sys_extend_field` VALUES ('2', '1', '1', '价格', '', 'price', 'number', '');
+INSERT INTO `sys_extend_field` VALUES ('1', 'price', '1', null, '价格', '', 'number', '', null, null, '0');
 
 -- ----------------------------
 -- Table structure for sys_ftp_user
@@ -386,124 +382,139 @@ CREATE TABLE `sys_moudle` (
 -- ----------------------------
 -- Records of sys_moudle
 -- ----------------------------
-INSERT INTO `sys_moudle` VALUES (1, '个人', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', NULL, 0);
-INSERT INTO `sys_moudle` VALUES (2, '内容', NULL, NULL, '<i class=\"icon-book icon-large\"></i>', NULL, 0);
-INSERT INTO `sys_moudle` VALUES (3, '分类', NULL, NULL, '<i class=\"icon-folder-open icon-large\"></i>', NULL, 0);
-INSERT INTO `sys_moudle` VALUES (4, '页面', NULL, NULL, '<i class=\"icon-globe icon-large\"></i>', NULL, 0);
-INSERT INTO `sys_moudle` VALUES (5, '维护', NULL, NULL, '<i class=\"icon-cog icon-large\"></i>', NULL, 0);
-INSERT INTO `sys_moudle` VALUES (6, '与我相关', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', 1, 0);
-INSERT INTO `sys_moudle` VALUES (7, '修改密码', 'myself/password', 'changePassword', '<i class=\"icon-key icon-large\"></i>', 6, 0);
-INSERT INTO `sys_moudle` VALUES (8, '我的内容', 'myself/contentList', NULL, '<i class=\"icon-book icon-large\"></i>', 6, 0);
-INSERT INTO `sys_moudle` VALUES (9, '我的操作日志', 'myself/logOperate', NULL, '<i class=\"icon-list-alt icon-large\"></i>', 6, 0);
-INSERT INTO `sys_moudle` VALUES (10, '我的登陆日志', 'myself/logLogin', NULL, '<i class=\"icon-signin icon-large\"></i>', 6, 0);
-INSERT INTO `sys_moudle` VALUES (11, ' 我的登陆授权', 'myself/userTokenList', NULL, '<i class=\"icon-unlock-alt icon-large\"></i>', 6, 0);
-INSERT INTO `sys_moudle` VALUES (12, '内容管理', 'cmsContent/list', 'sysUser/lookup', '<i class=\"icon-book icon-large\"></i>', 2, 0);
-INSERT INTO `sys_moudle` VALUES (13, '内容扩展', NULL, NULL, '<i class=\"icon-road icon-large\"></i>', 2, 0);
-INSERT INTO `sys_moudle` VALUES (14, '标签管理', 'cmsTag/list', 'cmsTagType/lookup', '<i class=\"icon-tag icon-large\"></i>', 13, 0);
-INSERT INTO `sys_moudle` VALUES (15, '增加/修改', 'cmsTag/add', 'cmsTagType/lookup,cmsTag/save', NULL, 14, 0);
-INSERT INTO `sys_moudle` VALUES (16, '删除', NULL, 'cmsTag/delete', NULL, 14, 0);
-INSERT INTO `sys_moudle` VALUES (17, '增加/修改', 'cmsContent/add', 'cmsContent/addMore,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (18, '删除', NULL, 'cmsContent/delete', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (19, '审核', NULL, 'cmsContent/check', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (20, '刷新', NULL, 'cmsContent/refresh', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (21, '生成', NULL, 'cmsContent/publish', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (22, '移动', 'cmsContent/moveParameters', 'cmsContent/move', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (23, '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPage/placeDataAdd,cmsPlace/save,cmsContent/related', NULL, 12, 0);
-INSERT INTO `sys_moudle` VALUES (24, '分类管理', 'cmsCategory/list', NULL, '<i class=\"icon-folder-open icon-large\"></i>', 3, 0);
-INSERT INTO `sys_moudle` VALUES (25, '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', NULL, 24, 0);
-INSERT INTO `sys_moudle` VALUES (26, '删除', NULL, 'cmsCategory/delete', NULL, 24, 0);
-INSERT INTO `sys_moudle` VALUES (27, '生成', 'cmsCategory/publishParameters', 'cmsCategory/publish', NULL, 24, 0);
-INSERT INTO `sys_moudle` VALUES (28, '移动', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', NULL, 24, 0);
-INSERT INTO `sys_moudle` VALUES (29, '推荐', 'cmsCategory/push_page', 'cmsCategory/push_page_list,cmsPage/placeDataAdd,cmsPlace/save', NULL, 24, 0);
-INSERT INTO `sys_moudle` VALUES (30, '页面管理', 'cmsPage/placeList', 'sysUser/lookup,sysUser/lookup_content_list,cmsPage/placeDataList,cmsPage/placeDataAdd,cmsPlace/save,cmsTemplate/publishPlace,cmsPage/publishPlace,cmsPage/push_page,cmsPage/push_page_list', '<i class=\"icon-globe icon-large\"></i>', 4, 0);
-INSERT INTO `sys_moudle` VALUES (31, '分类扩展', NULL, NULL, '<i class=\"icon-road icon-large\"></i>', 3, 0);
-INSERT INTO `sys_moudle` VALUES (32, '分类类型', 'cmsCategoryType/list', NULL, '<i class=\"icon-road icon-large\"></i>', 31, 0);
-INSERT INTO `sys_moudle` VALUES (33, '标签分类', 'cmsTagType/list', NULL, '<i class=\"icon-tags icon-large\"></i>', 31, 0);
-INSERT INTO `sys_moudle` VALUES (34, '增加/修改', 'cmsTagType/add', 'cmsTagType/save', NULL, 33, 0);
-INSERT INTO `sys_moudle` VALUES (35, '删除', NULL, 'cmsTagType/delete', NULL, 33, 0);
-INSERT INTO `sys_moudle` VALUES (36, '增加/修改', 'cmsCategoryType/add', 'cmsCategoryType/save', NULL, 32, 0);
-INSERT INTO `sys_moudle` VALUES (37, '删除', NULL, 'cmsCategoryType/delete', NULL, 32, 0);
-INSERT INTO `sys_moudle` VALUES (38, '模板管理', NULL, NULL, '<i class=\"icon-code icon-large\"></i>', 5, 0);
-INSERT INTO `sys_moudle` VALUES (39, '页面模板', 'cmsTemplate/list', 'cmsTemplate/directory', '<i class=\"icon-globe icon-large\"></i>', 38, 0);
-INSERT INTO `sys_moudle` VALUES (40, '修改模板元数据', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata', NULL, 39, 0);
-INSERT INTO `sys_moudle` VALUES (41, '修改模板', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/chipLookup', NULL, 39, 0);
-INSERT INTO `sys_moudle` VALUES (42, '修改推荐位', 'cmsTemplate/placeList', 'cmsTemplate/placeMetadata,cmsTemplate/placeContent,cmsTemplate/placeForm,cmsTemplate/saveMetadata,cmsTemplate/createPlace', NULL, 39, 0);
-INSERT INTO `sys_moudle` VALUES (43, '删除模板', NULL, 'cmsTemplate/delete', NULL, 39, 0);
-INSERT INTO `sys_moudle` VALUES (44, '搜索词管理', 'cmsWord/list', NULL, '<i class=\"icon-search icon-large\"></i>', 13, 0);
-INSERT INTO `sys_moudle` VALUES (45, '用户', null, null, '<i class=\"icon-user icon-large\"></i>', null, 0);
-INSERT INTO `sys_moudle` VALUES (47, '生成页面', NULL, 'cmsTemplate/publish', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (48, '保存页面元数据', '', 'cmsPage/saveMetaData,file/doUpload,cmsPage/clearCache', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (49, '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (50, '删除推荐位数据', NULL, 'cmsPlace/delete', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (51, '刷新推荐位数据', NULL, 'cmsPlace/refresh', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (52, '审核推荐位数据', NULL, 'cmsPlace/check', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (53, '发布推荐位', NULL, 'cmsTemplate/publishPlace', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (54, '清空推荐位数据', NULL, 'cmsPlace/clear', NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (60, '文件上传日志', 'log/upload', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', 63, 0);
-INSERT INTO `sys_moudle` VALUES (61, '用户管理', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', 45, 0);
-INSERT INTO `sys_moudle` VALUES (62, '系统维护', NULL, NULL, '<i class=\"icon-cogs icon-large\"></i>', 5, 0);
-INSERT INTO `sys_moudle` VALUES (63, '日志管理', NULL, NULL, '<i class=\"icon-list-alt icon-large\"></i>', 5, 0);
-INSERT INTO `sys_moudle` VALUES (64, '操作日志', 'log/operate', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', 63, 0);
-INSERT INTO `sys_moudle` VALUES (65, '登录日志', 'log/login', 'sysUser/lookup', '<i class=\"icon-signin icon-large\"></i>', 63, 0);
-INSERT INTO `sys_moudle` VALUES (66, '任务计划日志', 'log/task', 'sysUser/lookup', '<i class=\"icon-time icon-large\"></i>', 63, 0);
-INSERT INTO `sys_moudle` VALUES (67, '删除', NULL, 'logOperate/delete', NULL, 64, 0);
-INSERT INTO `sys_moudle` VALUES (68, '删除', NULL, 'logLogin/delete', NULL, 65, 0);
-INSERT INTO `sys_moudle` VALUES (69, '删除', NULL, 'logTask/delete', NULL, 66, 0);
-INSERT INTO `sys_moudle` VALUES (70, '查看', 'log/taskView', NULL, NULL, 66, 0);
-INSERT INTO `sys_moudle` VALUES (71, '用户管理', 'sysUser/list', NULL, '<i class=\"icon-user icon-large\"></i>', 61, 0);
-INSERT INTO `sys_moudle` VALUES (72, '部门管理', 'sysDept/list', 'sysDept/lookup,sysUser/lookup', '<i class=\"icon-group icon-large\"></i>', 61, 0);
-INSERT INTO `sys_moudle` VALUES (73, '角色管理', 'sysRole/list', NULL, '<i class=\"icon-user-md icon-large\"></i>', 61, 0);
-INSERT INTO `sys_moudle` VALUES (74, '增加/修改', 'sysUser/add', 'sysDept/lookup,sysUser/save', NULL, 71, 0);
-INSERT INTO `sys_moudle` VALUES (75, '启用', NULL, 'sysUser/enable', NULL, 71, 0);
-INSERT INTO `sys_moudle` VALUES (76, '禁用', NULL, 'sysUser/disable', NULL, 71, 0);
-INSERT INTO `sys_moudle` VALUES (77, '增加/修改', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysDept/save', NULL, 72, 0);
-INSERT INTO `sys_moudle` VALUES (78, '删除', NULL, 'sysDept/delete', NULL, 72, 0);
-INSERT INTO `sys_moudle` VALUES (79, '增加/修改', 'sysRole/add', 'sysRole/save', NULL, 73, 0);
-INSERT INTO `sys_moudle` VALUES (80, '删除', NULL, 'sysRole/delete', NULL, 73, 0);
-INSERT INTO `sys_moudle` VALUES (81, '内容模型管理', 'cmsModel/list', NULL, '<i class=\"icon-th-large icon-large\"></i>', 62, 0);
-INSERT INTO `sys_moudle` VALUES (82, '任务计划', 'sysTask/list', NULL, '<i class=\"icon-time icon-large\"></i>', 62, 0);
-INSERT INTO `sys_moudle` VALUES (83, 'FTP用户', 'cmsFtpUser/list', NULL, '<i class=\"icon-folder-open-alt icon-large\"></i>', 62, 0);
-INSERT INTO `sys_moudle` VALUES (84, '动态域名', 'cmsDomain/list', NULL, '<i class=\"icon-qrcode icon-large\"></i>', 62, 0);
-INSERT INTO `sys_moudle` VALUES (85, '任务计划脚本', 'taskTemplate/list', NULL, '<i class=\"icon-time icon-large\"></i>', 38, 0);
-INSERT INTO `sys_moudle` VALUES (86, '修改脚本', 'taskTemplate/metadata', 'cmsTemplate/saveMetadata,taskTemplate/content,cmsTemplate/save,taskTemplate/chipLookup', NULL, 85, 0);
-INSERT INTO `sys_moudle` VALUES (87, '删除脚本', NULL, 'cmsTemplate/delete', NULL, 85, 0);
-INSERT INTO `sys_moudle` VALUES (89, '删除', NULL, 'sysUserToken/delete', NULL, 88, 0);
-INSERT INTO `sys_moudle` VALUES (90, '增加/修改', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', NULL, 81, 0);
-INSERT INTO `sys_moudle` VALUES (91, '删除', NULL, 'cmsModel/delete', NULL, 81, 0);
-INSERT INTO `sys_moudle` VALUES (92, '增加/修改', 'sysTask/add', 'sysTask/save,sysTask/example,taskTemplate/lookup', NULL, 82, 0);
-INSERT INTO `sys_moudle` VALUES (93, '删除', NULL, 'sysTask/delete', NULL, 82, 0);
-INSERT INTO `sys_moudle` VALUES (94, '立刻执行', NULL, 'sysTask/runOnce', NULL, 82, 0);
-INSERT INTO `sys_moudle` VALUES (95, '暂停', NULL, 'sysTask/pause', NULL, 82, 0);
-INSERT INTO `sys_moudle` VALUES (96, '恢复', NULL, 'sysTask/resume', NULL, 82, 0);
-INSERT INTO `sys_moudle` VALUES (97, '重新初始化', NULL, 'sysTask/recreate', NULL, 82, 0);
-INSERT INTO `sys_moudle` VALUES (98, '增加/修改', 'cmsFtpUser/add', 'cmsFtpUser/save', NULL, 83, 0);
-INSERT INTO `sys_moudle` VALUES (99, '删除', NULL, 'cmsFtpUser/delete', NULL, 83, 0);
-INSERT INTO `sys_moudle` VALUES (100, '修改', 'cmsDomain/add', 'cmsDomain/save,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 84, 0);
-INSERT INTO `sys_moudle` VALUES (101, '配置中心', 'sysConfig/list', 'sysConfig/subcode', '<i class=\"icon-cogs icon-large\"></i>', 62, 0);
-INSERT INTO `sys_moudle` VALUES (102, '修改', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', NULL, 8, 0);
-INSERT INTO `sys_moudle` VALUES (103, '删除', NULL, 'cmsContent/delete', NULL, 8, 0);
-INSERT INTO `sys_moudle` VALUES (104, '刷新', NULL, 'cmsContent/refresh', NULL, 8, 0);
-INSERT INTO `sys_moudle` VALUES (105, '生成', NULL, 'cmsContent/publish', NULL, 8, 0);
-INSERT INTO `sys_moudle` VALUES (106, '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', NULL, 8, 0);
-INSERT INTO `sys_moudle` VALUES (107, '推荐位数据列表', 'cmsPage/placeDataList', NULL, NULL, 30, 0);
-INSERT INTO `sys_moudle` VALUES (109, '空间管理', null, null, '<i class=\"icon-home icon-large\"></i>', 45, 0);
-INSERT INTO `sys_moudle` VALUES (110, '用户主页', 'homeUser/list', null, '<i class=\"icon-globe icon-large\"></i>', 109, 0);
-INSERT INTO `sys_moudle` VALUES (111, '查看', 'homeUser/view', null, '', 110, 0);
-INSERT INTO `sys_moudle` VALUES (112, '启用', null, 'homeUser/enable', '', 110, 0);
-INSERT INTO `sys_moudle` VALUES (113, '禁用', null, 'homeUser/disable', null, 110, 0);
-INSERT INTO `sys_moudle` VALUES (114, '目录管理', 'homeDirectory/list', 'sysUser/lookup', '<i class=\"icon-folder-close icon-large\"></i>', 109, 0);
-INSERT INTO `sys_moudle` VALUES (115, '启用', null, 'homeDirectory/enable', null, 114, 0);
-INSERT INTO `sys_moudle` VALUES (116, '禁用', null, 'homeDirectory/disable', null, 114, 0);
-INSERT INTO `sys_moudle` VALUES (117, '文章管理', 'homeArticle/list', 'sysUser/lookup', '<i class=\"icon-file-text icon-large\"></i>', 109, 0);
-INSERT INTO `sys_moudle` VALUES (118, '查看', 'homeFile/view', null, null, 117, 0);
-INSERT INTO `sys_moudle` VALUES (119, '启用', null, 'homeFile/enable', null, 117, 0);
-INSERT INTO `sys_moudle` VALUES (120, '禁用', null, 'homeFile/disable', null, 117, 0);
-INSERT INTO `sys_moudle` VALUES (121, '文件管理', 'homeFile/list', 'sysUser/lookup', '<i class=\"icon-file icon-large\"></i>', 109, 0);
-INSERT INTO `sys_moudle` VALUES (122, '启用', null, 'homeFile/enable', null, 121, 0);
-INSERT INTO `sys_moudle` VALUES (123, '禁用', null, 'homeFile/disable', null, 121, 0);
-INSERT INTO `sys_moudle` VALUES (124, '广播管理', 'homeBroadcast/list', 'sysUser/lookup', '<i class=\"icon-bullhorn icon-large\"></i>', 109, 0);
-INSERT INTO `sys_moudle` VALUES (125, '启用', null, 'homeBroadcast/enable', null, 124, 0);
-INSERT INTO `sys_moudle` VALUES (126, '禁用', null, 'homeBroadcast/disable', null, 124, 0);
+INSERT INTO `sys_moudle` VALUES ('1', '个人', null, null, '<i class=\"icon-user icon-large\"></i>', null, '0');
+INSERT INTO `sys_moudle` VALUES ('2', '内容', null, null, '<i class=\"icon-book icon-large\"></i>', null, '0');
+INSERT INTO `sys_moudle` VALUES ('3', '分类', null, null, '<i class=\"icon-folder-open icon-large\"></i>', null, '0');
+INSERT INTO `sys_moudle` VALUES ('4', '页面', null, null, '<i class=\"icon-globe icon-large\"></i>', null, '0');
+INSERT INTO `sys_moudle` VALUES ('5', '维护', null, null, '<i class=\"icon-cog icon-large\"></i>', null, '1');
+INSERT INTO `sys_moudle` VALUES ('6', '与我相关', null, null, '<i class=\"icon-user icon-large\"></i>', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('7', '修改密码', 'myself/password', 'changePassword', '<i class=\"icon-key icon-large\"></i>', '6', '0');
+INSERT INTO `sys_moudle` VALUES ('8', '我的内容', 'myself/contentList', null, '<i class=\"icon-book icon-large\"></i>', '6', '0');
+INSERT INTO `sys_moudle` VALUES ('9', '我的操作日志', 'myself/logOperate', null, '<i class=\"icon-list-alt icon-large\"></i>', '6', '0');
+INSERT INTO `sys_moudle` VALUES ('10', '我的登陆日志', 'myself/logLogin', null, '<i class=\"icon-signin icon-large\"></i>', '6', '0');
+INSERT INTO `sys_moudle` VALUES ('11', ' 我的登陆授权', 'myself/userTokenList', null, '<i class=\"icon-unlock-alt icon-large\"></i>', '6', '0');
+INSERT INTO `sys_moudle` VALUES ('12', '内容管理', 'cmsContent/list', 'sysUser/lookup', '<i class=\"icon-book icon-large\"></i>', '2', '0');
+INSERT INTO `sys_moudle` VALUES ('13', '内容扩展', null, null, '<i class=\"icon-road icon-large\"></i>', '2', '0');
+INSERT INTO `sys_moudle` VALUES ('14', '标签管理', 'cmsTag/list', 'cmsTagType/lookup', '<i class=\"icon-tag icon-large\"></i>', '13', '0');
+INSERT INTO `sys_moudle` VALUES ('15', '增加/修改', 'cmsTag/add', 'cmsTagType/lookup,cmsTag/save', null, '14', '0');
+INSERT INTO `sys_moudle` VALUES ('16', '删除', null, 'cmsTag/delete', null, '14', '0');
+INSERT INTO `sys_moudle` VALUES ('17', '增加/修改', 'cmsContent/add', 'cmsContent/addMore,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('18', '删除', null, 'cmsContent/delete', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('19', '审核', null, 'cmsContent/check', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('20', '刷新', null, 'cmsContent/refresh', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('21', '生成', null, 'cmsContent/publish', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('22', '移动', 'cmsContent/moveParameters', 'cmsContent/move', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPage/placeDataAdd,cmsPlace/save,cmsContent/related', null, '12', '0');
+INSERT INTO `sys_moudle` VALUES ('24', '分类管理', 'cmsCategory/list', null, '<i class=\"icon-folder-open icon-large\"></i>', '3', '0');
+INSERT INTO `sys_moudle` VALUES ('25', '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', null, '24', '0');
+INSERT INTO `sys_moudle` VALUES ('26', '删除', null, 'cmsCategory/delete', null, '24', '0');
+INSERT INTO `sys_moudle` VALUES ('27', '生成', 'cmsCategory/publishParameters', 'cmsCategory/publish', null, '24', '0');
+INSERT INTO `sys_moudle` VALUES ('28', '移动', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', null, '24', '0');
+INSERT INTO `sys_moudle` VALUES ('29', '推荐', 'cmsCategory/push_page', 'cmsCategory/push_page_list,cmsPage/placeDataAdd,cmsPlace/save', null, '24', '0');
+INSERT INTO `sys_moudle` VALUES ('30', '页面管理', 'cmsPage/placeList', 'sysUser/lookup,sysUser/lookup_content_list,cmsPage/placeDataList,cmsPage/placeDataAdd,cmsPlace/save,cmsTemplate/publishPlace,cmsPage/publishPlace,cmsPage/push_page,cmsPage/push_page_list', '<i class=\"icon-globe icon-large\"></i>', '4', '0');
+INSERT INTO `sys_moudle` VALUES ('31', '分类扩展', null, null, '<i class=\"icon-road icon-large\"></i>', '3', '0');
+INSERT INTO `sys_moudle` VALUES ('32', '分类类型', 'cmsCategoryType/list', null, '<i class=\"icon-road icon-large\"></i>', '31', '0');
+INSERT INTO `sys_moudle` VALUES ('33', '标签分类', 'cmsTagType/list', null, '<i class=\"icon-tags icon-large\"></i>', '31', '0');
+INSERT INTO `sys_moudle` VALUES ('34', '增加/修改', 'cmsTagType/add', 'cmsTagType/save', null, '33', '0');
+INSERT INTO `sys_moudle` VALUES ('35', '删除', null, 'cmsTagType/delete', null, '33', '0');
+INSERT INTO `sys_moudle` VALUES ('36', '增加/修改', 'cmsCategoryType/add', 'cmsCategoryType/save', null, '32', '0');
+INSERT INTO `sys_moudle` VALUES ('37', '删除', null, 'cmsCategoryType/delete', null, '32', '0');
+INSERT INTO `sys_moudle` VALUES ('38', '文件管理', null, null, '<i class=\"icon-folder-close-alt icon-large\"></i>', '5', '0');
+INSERT INTO `sys_moudle` VALUES ('39', '模板文件管理', 'cmsTemplate/list', 'cmsTemplate/directory', '<i class=\"icon-code icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('40', '修改模板元数据', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata', null, '39', '0');
+INSERT INTO `sys_moudle` VALUES ('41', '修改模板', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/chipLookup,cmsResource/lookup,cmsWebFile/lookup,cmsTemplate/upload,cmsTemplate/doUpload', null, '39', '0');
+INSERT INTO `sys_moudle` VALUES ('42', '修改推荐位', 'cmsTemplate/placeList', 'cmsTemplate/placeMetadata,cmsTemplate/placeContent,cmsTemplate/placeForm,cmsTemplate/saveMetadata,cmsTemplate/createPlace', null, '39', '0');
+INSERT INTO `sys_moudle` VALUES ('43', '删除模板', null, 'cmsTemplate/delete', null, '39', '0');
+INSERT INTO `sys_moudle` VALUES ('44', '搜索词管理', 'cmsWord/list', null, '<i class=\"icon-search icon-large\"></i>', '13', '0');
+INSERT INTO `sys_moudle` VALUES ('45', '用户', null, null, '<i class=\"icon-user icon-large\"></i>', null, '0');
+INSERT INTO `sys_moudle` VALUES ('47', '生成页面', null, 'cmsTemplate/publish', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('48', '保存页面元数据', '', 'cmsPage/saveMetaData,file/doUpload,cmsPage/clearCache', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('49', '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('50', '删除推荐位数据', null, 'cmsPlace/delete', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('51', '刷新推荐位数据', null, 'cmsPlace/refresh', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('52', '审核推荐位数据', null, 'cmsPlace/check', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('53', '发布推荐位', null, 'cmsTemplate/publishPlace', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('54', '清空推荐位数据', null, 'cmsPlace/clear', null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('55', '查看推荐位源码', 'cmsTemplate/placeContent', null, null, '39', '0');
+INSERT INTO `sys_moudle` VALUES ('60', '文件上传日志', 'log/upload', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', '63', '0');
+INSERT INTO `sys_moudle` VALUES ('61', '用户管理', null, null, '<i class=\"icon-user icon-large\"></i>', '45', '0');
+INSERT INTO `sys_moudle` VALUES ('62', '系统维护', null, null, '<i class=\"icon-cogs icon-large\"></i>', '5', '0');
+INSERT INTO `sys_moudle` VALUES ('63', '日志管理', null, null, '<i class=\"icon-list-alt icon-large\"></i>', '5', '0');
+INSERT INTO `sys_moudle` VALUES ('64', '操作日志', 'log/operate', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', '63', '0');
+INSERT INTO `sys_moudle` VALUES ('65', '登录日志', 'log/login', 'sysUser/lookup', '<i class=\"icon-signin icon-large\"></i>', '63', '0');
+INSERT INTO `sys_moudle` VALUES ('66', '任务计划日志', 'log/task', 'sysUser/lookup', '<i class=\"icon-time icon-large\"></i>', '63', '0');
+INSERT INTO `sys_moudle` VALUES ('67', '删除', null, 'logOperate/delete', null, '64', '0');
+INSERT INTO `sys_moudle` VALUES ('68', '删除', null, 'logLogin/delete', null, '65', '0');
+INSERT INTO `sys_moudle` VALUES ('69', '删除', null, 'logTask/delete', null, '66', '0');
+INSERT INTO `sys_moudle` VALUES ('70', '查看', 'log/taskView', null, null, '66', '0');
+INSERT INTO `sys_moudle` VALUES ('71', '用户管理', 'sysUser/list', null, '<i class=\"icon-user icon-large\"></i>', '61', '0');
+INSERT INTO `sys_moudle` VALUES ('72', '部门管理', 'sysDept/list', 'sysDept/lookup,sysUser/lookup', '<i class=\"icon-group icon-large\"></i>', '61', '0');
+INSERT INTO `sys_moudle` VALUES ('73', '角色管理', 'sysRole/list', null, '<i class=\"icon-user-md icon-large\"></i>', '61', '0');
+INSERT INTO `sys_moudle` VALUES ('74', '增加/修改', 'sysUser/add', 'sysDept/lookup,sysUser/save', null, '71', '0');
+INSERT INTO `sys_moudle` VALUES ('75', '启用', null, 'sysUser/enable', null, '71', '0');
+INSERT INTO `sys_moudle` VALUES ('76', '禁用', null, 'sysUser/disable', null, '71', '0');
+INSERT INTO `sys_moudle` VALUES ('77', '增加/修改', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysDept/save', null, '72', '0');
+INSERT INTO `sys_moudle` VALUES ('78', '删除', null, 'sysDept/delete', null, '72', '0');
+INSERT INTO `sys_moudle` VALUES ('79', '增加/修改', 'sysRole/add', 'sysRole/save', null, '73', '0');
+INSERT INTO `sys_moudle` VALUES ('80', '删除', null, 'sysRole/delete', null, '73', '0');
+INSERT INTO `sys_moudle` VALUES ('81', '内容模型管理', 'cmsModel/list', null, '<i class=\"icon-th-large icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('82', '任务计划', 'sysTask/list', null, '<i class=\"icon-time icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('83', 'FTP用户', 'cmsFtpUser/list', null, '<i class=\"icon-folder-open-alt icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('84', '动态域名', 'cmsDomain/list', null, '<i class=\"icon-qrcode icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('85', '任务计划脚本', 'taskTemplate/list', null, '<i class=\"icon-time icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('86', '修改脚本', 'taskTemplate/metadata', 'cmsTemplate/saveMetadata,taskTemplate/content,cmsTemplate/save,taskTemplate/chipLookup', null, '85', '0');
+INSERT INTO `sys_moudle` VALUES ('87', '删除脚本', null, 'cmsTemplate/delete', null, '85', '0');
+INSERT INTO `sys_moudle` VALUES ('89', '删除', null, 'sysUserToken/delete', null, '88', '0');
+INSERT INTO `sys_moudle` VALUES ('90', '增加/修改', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', null, '81', '0');
+INSERT INTO `sys_moudle` VALUES ('91', '删除', null, 'cmsModel/delete', null, '81', '0');
+INSERT INTO `sys_moudle` VALUES ('92', '增加/修改', 'sysTask/add', 'sysTask/save,sysTask/example,taskTemplate/lookup', null, '82', '0');
+INSERT INTO `sys_moudle` VALUES ('93', '删除', null, 'sysTask/delete', null, '82', '0');
+INSERT INTO `sys_moudle` VALUES ('94', '立刻执行', null, 'sysTask/runOnce', null, '82', '0');
+INSERT INTO `sys_moudle` VALUES ('95', '暂停', null, 'sysTask/pause', null, '82', '0');
+INSERT INTO `sys_moudle` VALUES ('96', '恢复', null, 'sysTask/resume', null, '82', '0');
+INSERT INTO `sys_moudle` VALUES ('97', '重新初始化', null, 'sysTask/recreate', null, '82', '0');
+INSERT INTO `sys_moudle` VALUES ('98', '增加/修改', 'cmsFtpUser/add', 'cmsFtpUser/save', null, '83', '0');
+INSERT INTO `sys_moudle` VALUES ('99', '删除', null, 'cmsFtpUser/delete', null, '83', '0');
+INSERT INTO `sys_moudle` VALUES ('100', '修改', 'cmsDomain/add', 'cmsDomain/save,cmsTemplate/directoryLookup,cmsTemplate/lookup', null, '84', '0');
+INSERT INTO `sys_moudle` VALUES ('101', '配置中心', 'sysConfig/list', 'sysConfig/subcode', '<i class=\"icon-cogs icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('102', '修改', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', null, '8', '0');
+INSERT INTO `sys_moudle` VALUES ('103', '删除', null, 'cmsContent/delete', null, '8', '0');
+INSERT INTO `sys_moudle` VALUES ('104', '刷新', null, 'cmsContent/refresh', null, '8', '0');
+INSERT INTO `sys_moudle` VALUES ('105', '生成', null, 'cmsContent/publish', null, '8', '0');
+INSERT INTO `sys_moudle` VALUES ('106', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', null, '8', '0');
+INSERT INTO `sys_moudle` VALUES ('107', '推荐位数据列表', 'cmsPage/placeDataList', null, null, '30', '0');
+INSERT INTO `sys_moudle` VALUES ('109', '空间管理', null, null, '<i class=\"icon-home icon-large\"></i>', '45', '0');
+INSERT INTO `sys_moudle` VALUES ('110', '用户主页', 'homeUser/list', null, '<i class=\"icon-globe icon-large\"></i>', '109', '0');
+INSERT INTO `sys_moudle` VALUES ('111', '查看', 'homeUser/view', null, '', '110', '0');
+INSERT INTO `sys_moudle` VALUES ('112', '启用', null, 'homeUser/enable', '', '110', '0');
+INSERT INTO `sys_moudle` VALUES ('113', '禁用', null, 'homeUser/disable', null, '110', '0');
+INSERT INTO `sys_moudle` VALUES ('114', '目录管理', 'homeDirectory/list', 'sysUser/lookup', '<i class=\"icon-folder-close icon-large\"></i>', '109', '0');
+INSERT INTO `sys_moudle` VALUES ('115', '启用', null, 'homeDirectory/enable', null, '114', '0');
+INSERT INTO `sys_moudle` VALUES ('116', '禁用', null, 'homeDirectory/disable', null, '114', '0');
+INSERT INTO `sys_moudle` VALUES ('117', '文章管理', 'homeArticle/list', 'sysUser/lookup', '<i class=\"icon-file-text icon-large\"></i>', '109', '0');
+INSERT INTO `sys_moudle` VALUES ('118', '查看', 'homeFile/view', null, null, '117', '0');
+INSERT INTO `sys_moudle` VALUES ('119', '启用', null, 'homeFile/enable', null, '117', '0');
+INSERT INTO `sys_moudle` VALUES ('120', '禁用', null, 'homeFile/disable', null, '117', '0');
+INSERT INTO `sys_moudle` VALUES ('121', '文件管理', 'homeFile/list', 'sysUser/lookup', '<i class=\"icon-file icon-large\"></i>', '109', '0');
+INSERT INTO `sys_moudle` VALUES ('122', '启用', null, 'homeFile/enable', null, '121', '0');
+INSERT INTO `sys_moudle` VALUES ('123', '禁用', null, 'homeFile/disable', null, '121', '0');
+INSERT INTO `sys_moudle` VALUES ('124', '广播管理', 'homeBroadcast/list', 'sysUser/lookup', '<i class=\"icon-bullhorn icon-large\"></i>', '109', '0');
+INSERT INTO `sys_moudle` VALUES ('125', '启用', null, 'homeBroadcast/enable', null, '124', '0');
+INSERT INTO `sys_moudle` VALUES ('126', '禁用', null, 'homeBroadcast/disable', null, '124', '0');
+INSERT INTO `sys_moudle` VALUES ('127', '群组管理', null, null, '<i class=\"icon-group icon-large\"></i>', '45', '0');
+INSERT INTO `sys_moudle` VALUES ('128', '群组管理', 'homeGroup/list', null, '<i class=\"icon-group icon-large\"></i>', '127', '0');
+INSERT INTO `sys_moudle` VALUES ('129', '帖子管理', 'homeGroupPost/list', null, '<i class=\"icon-list-alt icon-large\"></i>', '127', '0');
+INSERT INTO `sys_moudle` VALUES ('130', '评论管理', 'homeComment/list', null, '<i class=\"icon-comment-alt icon-large\"></i>', '109', '0');
+INSERT INTO `sys_moudle` VALUES ('131', '资源文件管理', 'cmsResource/list', null, '<i class=\"icon-picture icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('132', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('133', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('134', '上传文件', 'cmsWebFile/upload', 'cmsWebFile/doUpload', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('135', '压缩', null, 'cmsWebFile/zip', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('136', '解压缩', null, 'cmsWebFile/unzip,cmsWebFile/unzipHere', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('137', '新建目录', 'cmsResource/directory', 'cmsResource/createDirectory', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('138', '上传文件', 'cmsResource/upload', 'cmsResource/doUpload', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('139', '压缩', null, 'cmsResource/zip', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('140', '解压缩', null, 'cmsResource/unzip,cmsResource/unzipHere', null, '131', '0');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -531,75 +542,69 @@ INSERT INTO `sys_role` VALUES ('3', '2', '站长', '1', '0');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_authorized`;
 CREATE TABLE `sys_role_authorized` (
-  `id` int(11) NOT NULL auto_increment,
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `url` varchar(255) NOT NULL COMMENT '授权地址',
-  PRIMARY KEY  (`id`),
-  KEY `role_id` (`role_id`),
-  KEY `url` (`url`)
-) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
+  PRIMARY KEY  (`role_id`,`url`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
 
 -- ----------------------------
 -- Records of sys_role_authorized
 -- ----------------------------
-INSERT INTO `sys_role_authorized` VALUES ('1', '2', 'taskTemplate/metadata');
-INSERT INTO `sys_role_authorized` VALUES ('2', '2', 'sysRole/add');
-INSERT INTO `sys_role_authorized` VALUES ('3', '2', 'myself/contentList');
-INSERT INTO `sys_role_authorized` VALUES ('5', '2', 'cmsTag/list');
-INSERT INTO `sys_role_authorized` VALUES ('6', '2', 'myself/userTokenList');
-INSERT INTO `sys_role_authorized` VALUES ('7', '2', 'sysTask/list');
-INSERT INTO `sys_role_authorized` VALUES ('8', '2', 'cmsTagType/list');
-INSERT INTO `sys_role_authorized` VALUES ('9', '2', 'log/login');
-INSERT INTO `sys_role_authorized` VALUES ('10', '2', 'cmsCategoryType/add');
-INSERT INTO `sys_role_authorized` VALUES ('11', '2', 'sysDept/list');
-INSERT INTO `sys_role_authorized` VALUES ('12', '2', 'sysUserToken/list');
-INSERT INTO `sys_role_authorized` VALUES ('13', '2', 'cmsTag/add');
-INSERT INTO `sys_role_authorized` VALUES ('15', '2', 'sysUser/list');
-INSERT INTO `sys_role_authorized` VALUES ('16', '2', 'cmsPage/placeDataAdd');
-INSERT INTO `sys_role_authorized` VALUES ('18', '2', 'cmsContent/moveParameters');
-INSERT INTO `sys_role_authorized` VALUES ('19', '2', 'cmsCategory/moveParameters');
-INSERT INTO `sys_role_authorized` VALUES ('20', '2', 'sysUser/add');
-INSERT INTO `sys_role_authorized` VALUES ('21', '2', 'myself/logLogin');
-INSERT INTO `sys_role_authorized` VALUES ('22', '2', 'myself/logOperate');
-INSERT INTO `sys_role_authorized` VALUES ('25', '2', 'myself/password');
-INSERT INTO `sys_role_authorized` VALUES ('26', '2', 'cmsCategory/list');
-INSERT INTO `sys_role_authorized` VALUES ('28', '2', 'log/operate');
-INSERT INTO `sys_role_authorized` VALUES ('29', '2', 'cmsCategory/publishParameters');
-INSERT INTO `sys_role_authorized` VALUES ('30', '2', 'cmsCategory/add');
-INSERT INTO `sys_role_authorized` VALUES ('31', '2', 'cmsDomain/list');
-INSERT INTO `sys_role_authorized` VALUES ('34', '2', 'sysRole/list');
-INSERT INTO `sys_role_authorized` VALUES ('35', '2', 'cmsModel/list');
-INSERT INTO `sys_role_authorized` VALUES ('36', '2', 'cmsFtpUser/add');
-INSERT INTO `sys_role_authorized` VALUES ('37', '2', 'sysTask/add');
-INSERT INTO `sys_role_authorized` VALUES ('38', '2', 'cmsDomain/add');
-INSERT INTO `sys_role_authorized` VALUES ('39', '2', 'cmsTagType/add');
-INSERT INTO `sys_role_authorized` VALUES ('40', '2', 'sysDept/add');
-INSERT INTO `sys_role_authorized` VALUES ('41', '2', 'cmsFtpUser/list');
-INSERT INTO `sys_role_authorized` VALUES ('42', '2', 'cmsContent/list');
-INSERT INTO `sys_role_authorized` VALUES ('44', '2', 'log/taskView');
-INSERT INTO `sys_role_authorized` VALUES ('45', '2', 'cmsCategoryType/list');
-INSERT INTO `sys_role_authorized` VALUES ('46', '2', 'cmsModel/add');
-INSERT INTO `sys_role_authorized` VALUES ('47', '2', 'cmsContent/add');
-INSERT INTO `sys_role_authorized` VALUES ('48', '2', 'taskTemplate/list');
-INSERT INTO `sys_role_authorized` VALUES ('49', '2', 'cmsContent/push');
-INSERT INTO `sys_role_authorized` VALUES ('50', '2', 'log/task');
-INSERT INTO `sys_role_authorized` VALUES ('51', '2', 'cmsPage/placeDataList');
-INSERT INTO `sys_role_authorized` VALUES ('52', '2', 'cmsTemplate/metadata');
-INSERT INTO `sys_role_authorized` VALUES ('53', '2', 'cmsPage/placeList');
-INSERT INTO `sys_role_authorized` VALUES ('54', '2', 'cmsTemplate/list');
-INSERT INTO `sys_role_authorized` VALUES ('55', '2', 'cmsTemplate/placeList');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsCategory/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsCategory/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsCategory/moveParameters');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsCategory/publishParameters');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsCategoryType/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsCategoryType/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsContent/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsContent/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsContent/moveParameters');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsContent/push');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsDomain/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsDomain/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsFtpUser/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsFtpUser/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsModel/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsModel/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsPage/placeDataAdd');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsPage/placeDataList');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsPage/placeList');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTag/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTag/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTagType/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTagType/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTemplate/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTemplate/metadata');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'cmsTemplate/placeList');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'log/login');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'log/operate');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'log/task');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'log/taskView');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'myself/contentList');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'myself/logLogin');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'myself/logOperate');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'myself/password');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'myself/userTokenList');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysDept/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysDept/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysRole/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysRole/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysTask/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysTask/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysUser/add');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysUser/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'sysUserToken/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'taskTemplate/list');
+INSERT INTO `sys_role_authorized` VALUES ('2', 'taskTemplate/metadata');
 
 -- ----------------------------
 -- Table structure for sys_role_moudle
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_moudle`;
 CREATE TABLE `sys_role_moudle` (
-  `id` int(11) NOT NULL auto_increment,
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `moudle_id` int(11) NOT NULL COMMENT '模块ID',
-  PRIMARY KEY  (`id`),
-  KEY `role_id` (`role_id`),
-  KEY `moudle_id` (`moudle_id`)
+  PRIMARY KEY  (`role_id`,`moudle_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色授权模块';
 
 -- ----------------------------
@@ -611,20 +616,17 @@ CREATE TABLE `sys_role_moudle` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_user`;
 CREATE TABLE `sys_role_user` (
-  `id` int(11) NOT NULL auto_increment,
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  PRIMARY KEY  (`id`),
-  KEY `role_id` (`role_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户角色';
+  PRIMARY KEY  (`role_id`,`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sys_role_user
 -- ----------------------------
-INSERT INTO `sys_role_user` VALUES ('1', '1', '1');
-INSERT INTO `sys_role_user` VALUES ('2', '2', '2');
-INSERT INTO `sys_role_user` VALUES ('3', '3', '3');
+INSERT INTO `sys_role_user` VALUES ('1', '1');
+INSERT INTO `sys_role_user` VALUES ('2', '2');
+INSERT INTO `sys_role_user` VALUES ('3', '3');
 
 -- ----------------------------
 -- Table structure for sys_site
@@ -646,7 +648,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//www.dev.publiccms.com/', '0', '//dev.publiccms.com/', '//image.publiccms.com/', '0');
+INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//dev.publiccms.com/', '0', '//dev.publiccms.com/cms/', '//dev.publiccms.com/image/', '0');
 INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms.com/', '0', 'site2.dev.publiccms.com', '//resource.site2.dev.publiccms.com/', '0');
 
 -- ----------------------------

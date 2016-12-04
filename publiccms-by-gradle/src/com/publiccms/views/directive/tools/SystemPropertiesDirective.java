@@ -59,4 +59,8 @@ public class SystemPropertiesDirective extends AbstractTemplateDirective {
         handler.render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 }

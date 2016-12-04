@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.publiccms.common.interceptor.admin.AdminContextInterceptor;
 import com.publiccms.common.view.admin.AdminFreeMarkerView;
-import com.publiccms.component.cache.CacheComponent;
+import com.publiccms.logic.component.cache.CacheComponent;
 
 /**
  * 
@@ -23,7 +23,7 @@ import com.publiccms.component.cache.CacheComponent;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.views.controller.admin", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
     @Autowired

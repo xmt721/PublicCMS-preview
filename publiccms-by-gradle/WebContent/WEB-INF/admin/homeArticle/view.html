@@ -1,4 +1,4 @@
-<@_homeArticle id=id><#assign a=object/></@_homeArticle>
+<@_homeGroupPost id=id><#assign a=object/></@_homeGroupPost>
 	<div class="formBar">
 		<ul>
 			<li><button type="button" class="button close">关闭</button></li>
@@ -17,6 +17,10 @@
 				</dd>
 			</dl>
 			<dl>
+				<dt>群组：</dt>
+				<dd><@_sysUser id=a.userId>${object.nickName}</@_sysUser></dd>
+			</dl>
+			<dl>
 				<dt>用户昵称：</dt>
 				<dd><@_sysUser id=a.userId>${object.nickName}</@_sysUser></dd>
 			</dl>
@@ -30,7 +34,7 @@
 			</dl>
 			<dl class="nowrap">
 				<dt>内容：</dt>
-				<dd>${(getHomeArticleContent(a.id).content)!}</dd>
+				<dd>${(getHomeArticleContent(a.id).content?no_esc)!}</dd>
 			</dl>
 			<dl>
 				<dt>分数：</dt>

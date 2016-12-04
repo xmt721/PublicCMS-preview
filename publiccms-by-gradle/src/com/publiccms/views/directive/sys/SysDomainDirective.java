@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.entities.sys.SysDomain;
-import com.publiccms.service.sys.SysDomainService;
+import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -37,6 +37,11 @@ public class SysDomainDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

@@ -21,7 +21,7 @@ public class CmsCategoryAttribute implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "分类")
-    private long categoryId;
+    private int categoryId;
     @MyColumn(title = "标题")
     private String title;
     @MyColumn(title = "关键词")
@@ -34,11 +34,11 @@ public class CmsCategoryAttribute implements java.io.Serializable {
     public CmsCategoryAttribute() {
     }
 
-    public CmsCategoryAttribute(long categoryId) {
+    public CmsCategoryAttribute(int categoryId) {
         this.categoryId = categoryId;
     }
 
-    public CmsCategoryAttribute(long categoryId, String title, String keywords, String description, String data) {
+    public CmsCategoryAttribute(int categoryId, String title, String keywords, String description, String data) {
         this.categoryId = categoryId;
         this.title = title;
         this.keywords = keywords;
@@ -48,11 +48,11 @@ public class CmsCategoryAttribute implements java.io.Serializable {
 
     @Id
     @Column(name = "category_id", unique = true, nullable = false)
-    public long getCategoryId() {
+    public int getCategoryId() {
         return this.categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

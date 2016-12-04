@@ -28,7 +28,7 @@
 			<ul>
 				<#list page.list as a>
 					<li>
-						<a tname="moudleIds" tvalue="${a.id}">${a.attached?no_esc!} ${a.name}</a>
+						<a tname="moudleIds" tvalue="${a.id}">${(a.attached?no_esc)!} ${a.name}</a>
 						<@moudleTree a.id/>
 					</li>
 				</#list>

@@ -7,8 +7,8 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.service.sys.SysDomainService;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.logic.service.sys.SysDomainService;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -25,6 +25,11 @@ public class SysDomainListDirective extends AbstractTemplateDirective {
         }
         PageHandler page = service.getPage(siteId, handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

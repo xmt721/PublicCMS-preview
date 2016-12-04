@@ -9,23 +9,43 @@ public class ExtendField implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
+    private ExtendFieldId id;
+    private String inputType;
     private boolean required;
     private String name;
     private String description;
-    private String code;
-    private String inputType;
     private String defaultValue;
 
     public ExtendField() {
     }
 
-    public ExtendField(boolean required, String name, String description, String code, String inputType, String defaultValue) {
+    public ExtendField(String code, String inputType, boolean required, String name, String description, String defaultValue) {
+        this.id = new ExtendFieldId(code);
+        this.inputType = inputType;
         this.required = required;
         this.name = name;
         this.description = description;
-        this.code = code;
-        this.inputType = inputType;
         this.defaultValue = defaultValue;
+    }
+    
+    public ExtendFieldId getId() {
+        return this.id;
+    }
+
+    public void setId(ExtendFieldId id) {
+        this.id = id;
+    }
+    
+    public void setCode(String code) {
+        this.id = new ExtendFieldId(code);
+    }
+    
+    public String getInputType() {
+        return this.inputType;
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
     }
 
     public boolean isRequired() {
@@ -50,22 +70,6 @@ public class ExtendField implements java.io.Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getCode() {
-        return this.code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getInputType() {
-        return this.inputType;
-    }
-
-    public void setInputType(String inputType) {
-        this.inputType = inputType;
     }
 
     public String getDefaultValue() {

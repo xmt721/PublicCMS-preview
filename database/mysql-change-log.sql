@@ -23,6 +23,8 @@ update `sys_moudle` set `authorized_url`='cmsPlace/refresh' where `id`=51;
 update `sys_moudle` set `authorized_url`='cmsPlace/delete' where `id`=50;
 update `sys_moudle` set `authorized_url`='cmsContent/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save' where `id`=49;
 update `sys_moudle` set `authorized_url`='cmsPage/saveMetaData,file/doUpload,cmsPage/clearCache' where `id`=48;
+
+
 -- 20160504 --
 ALTER TABLE  `cms_content_attribute` CHANGE  `text`  `text` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT  '内容';
 -- 20160506 --
@@ -158,115 +160,15 @@ ALTER TABLE `sys_app_client` MODIFY COLUMN `id`  bigint NOT NULL AUTO_INCREMENT 
 -- 20160806 --
 ALTER TABLE  `log_upload` ADD  `file_size` BIGINT NOT NULL COMMENT  '文件大小' AFTER  `image` ,ADD INDEX (  `file_size` );
 INSERT INTO `sys_moudle` VALUES (60, '文件上传日志', 'log/upload', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', 63, 0);
+
+-- 20160829 --
+INSERT INTO `sys_moudle` VALUES (55, '查看推荐位源码', 'cmsTemplate/placeContent', NULL, NULL, '39', '0');
+
 -- 20161011 --
 ALTER TABLE `log_operate` MODIFY COLUMN `user_id`  bigint(20) NULL COMMENT '用户ID' AFTER `site_id`;
 -- 20161109 --
 DROP TABLE IF EXISTS `plugin_site`;
 -- 20161112 --
-ALTER TABLE  `cms_category_attribute` CHANGE  `category_id`  `category_id` BIGINT( 11 ) NOT NULL COMMENT  '分类ID'
-DROP TABLE IF EXISTS `plugin_lottery`;
-DROP TABLE IF EXISTS `plugin_lottery_user`;
-DROP TABLE IF EXISTS `plugin_lottery_user_attribute`;
-DROP TABLE IF EXISTS `plugin_vote`;
-DROP TABLE IF EXISTS `plugin_vote_item`;
-DROP TABLE IF EXISTS `plugin_vote_item_attribute`;
-DROP TABLE IF EXISTS `plugin_vote_user`;
-ALTER TABLE `sns_user` engine=MyISAM;
-
-CREATE TABLE `cms_lottery` (
-  `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
-  `start_date` datetime NOT NULL COMMENT '开始日期',
-  `end_date` datetime NOT NULL COMMENT '结束日期',
-  `interval_hour` int(11) NOT NULL COMMENT '抽奖间隔小时',
-  `gift` int(11) NOT NULL COMMENT '每次可抽奖数量',
-  `total_gift` int(11) NOT NULL COMMENT '奖品总数',
-  `last_gift` int(11) NOT NULL COMMENT '剩余数量',
-  `lottery_count` int(11) NOT NULL COMMENT '可抽奖次数',
-  `fractions` int(11) NOT NULL COMMENT '概率分子',
-  `numerator` int(11) NOT NULL COMMENT '概率分母',
-  `url` varchar(2048) default NULL COMMENT '地址',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `description` varchar(300) default NULL COMMENT '描述',
-  `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
-  `extend_id` int(11) default NULL COMMENT '扩展ID',
-  PRIMARY KEY  (`id`),
-  KEY `start_date` (`start_date`,`end_date`),
-  KEY `disabled` (`disabled`),
-  KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖';
-
-CREATE TABLE `cms_lottery_user` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `lottery_id` int(11) NOT NULL COMMENT '抽奖ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `winning` tinyint(1) NOT NULL COMMENT '是否中奖',
-  `ip` varchar(64) NOT NULL COMMENT 'IP',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`lottery_id`),
-  KEY `user_id` (`user_id`),
-  KEY `winning` (`winning`),
-  KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户';
-
-CREATE TABLE `cms_lottery_user_attribute` (
-  `lottery_user_id` bigint(20) NOT NULL COMMENT '抽奖用户ID',
-  `data` longtext COMMENT '数据JSON',
-  PRIMARY KEY  (`lottery_user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展';
-
-CREATE TABLE `cms_vote` (
-  `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
-  `start_date` datetime NOT NULL COMMENT '开始日期',
-  `end_date` datetime NOT NULL COMMENT '结束日期',
-  `interval_hour` int(11) NOT NULL COMMENT '投票间隔小时',
-  `max_vote` int(11) NOT NULL COMMENT '最大投票数',
-  `anonymous` tinyint(1) NOT NULL COMMENT '匿名投票',
-  `user_counts` int(11) NOT NULL COMMENT '参与用户数',
-  `url` varchar(2048) NOT NULL COMMENT '地址',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `description` varchar(300) default NULL COMMENT '描述',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `item_extend_id` int(11) NOT NULL COMMENT '扩展ID',
-  PRIMARY KEY  (`id`),
-  KEY `disabled` (`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `cms_vote_item` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `vote_id` int(11) NOT NULL COMMENT '投票',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `description` varchar(300) default NULL COMMENT '描述',
-  `scores` int(11) NOT NULL COMMENT '票数',
-  `sort` int(11) NOT NULL COMMENT '顺序',
-  PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`vote_id`),
-  KEY `user_id` (`title`),
-  KEY `create_date` (`sort`),
-  KEY `scores` (`scores`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `cms_vote_item_attribute` (
-  `vote_item_id` bigint(20) NOT NULL COMMENT '选项ID',
-  `data` longtext COMMENT '数据JSON',
-  PRIMARY KEY  (`vote_item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项扩展';
-
-CREATE TABLE `cms_vote_user` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `lottery_id` int(11) NOT NULL COMMENT '抽奖ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `item_ids` text NOT NULL COMMENT '投票选项',
-  `ip` varchar(64) NOT NULL COMMENT 'IP',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`lottery_id`),
-  KEY `user_id` (`user_id`),
-  KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 INSERT INTO `sys_moudle` VALUES (45, '用户', null, null, '<i class=\"icon-user icon-large\"></i>', null, 0);
 INSERT INTO `sys_moudle` VALUES (109, '空间管理', null, null, '<i class=\"icon-home icon-large\"></i>', 45, 0);
 INSERT INTO `sys_moudle` VALUES (110, '用户主页', 'homeUser/list', null, '<i class=\"icon-globe icon-large\"></i>', 109, 0);
@@ -289,4 +191,466 @@ INSERT INTO `sys_moudle` VALUES (126, '禁用', null, 'homeBroadcast/disable', n
 DELETE FROM `sys_moudle` WHERE id = 88;
 UPDATE `sys_moudle` SET parent_id = 45 WHERE id = 61;
 UPDATE `sys_moudle` SET parent_id = 30 WHERE id = 107;
-ALTER TABLE  `sys_moudle` ORDER BY  `id`;
+ALTER TABLE `sys_moudle` ORDER BY  `id`;
+-- 20161119 --
+ALTER TABLE `log_operate` CHANGE  `content` `content` text NOT NULL COMMENT '内容';
+ALTER TABLE `cms_category_model` DROP `id`;
+ALTER TABLE `cms_category_model` ADD PRIMARY KEY (  `category_id` ,  `model_id` ) ,DROP INDEX `category_id`, DROP INDEX `model_id`;
+ALTER TABLE `cms_content_related` DROP INDEX  `user_id` , DROP INDEX  `clicks` , DROP INDEX  `sort` , ADD INDEX  `user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`);
+ALTER TABLE `cms_content_tag` DROP `id`;
+ALTER TABLE `cms_content_tag` ADD PRIMARY KEY (  `tag_id` ,  `content_id` ) ;
+ALTER TABLE `cms_content_tag` DROP INDEX `content_id`,DROP INDEX  `tag_id`;
+ALTER TABLE `cms_content_related` DROP INDEX `content_id`, DROP INDEX `related_content_id`;
+
+ALTER TABLE `sys_dept_category` DROP `id`,DROP INDEX  `dept_id` ,DROP INDEX  `category_id` ,ADD PRIMARY KEY (  `dept_id` ,  `category_id` ) ;
+ALTER TABLE `sys_dept_page` DROP `id`,DROP INDEX  `dept_id` ,DROP INDEX  `page` ,ADD PRIMARY KEY (  `dept_id` ,  `page` ) ;
+ALTER TABLE `sys_role_authorized` DROP `id`,DROP INDEX  `role_id` ,DROP INDEX  `url` ,ADD PRIMARY KEY (  `role_id` ,  `url` ) ;
+ALTER TABLE `sys_role_moudle` DROP `id`,DROP INDEX  `role_id` ,DROP INDEX  `moudle_id` ,ADD PRIMARY KEY (  `role_id` ,  `moudle_id` ) ;
+ALTER TABLE `sys_role_user` DROP `id`,DROP INDEX  `role_id` ,DROP INDEX  `user_id` ,ADD PRIMARY KEY (  `role_id` ,  `user_id` ) ;
+
+DROP TABLE IF EXISTS `plugin_lottery`;
+DROP TABLE IF EXISTS `plugin_lottery_user`;
+DROP TABLE IF EXISTS `plugin_lottery_user_attribute`;
+DROP TABLE IF EXISTS `plugin_vote`;
+DROP TABLE IF EXISTS `plugin_vote_item`;
+DROP TABLE IF EXISTS `plugin_vote_item_attribute`;
+DROP TABLE IF EXISTS `plugin_vote_user`;
+
+CREATE TABLE `cms_lottery` (
+  `id` int(11) NOT NULL auto_increment,
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `start_date` datetime NOT NULL COMMENT '开始日期',
+  `end_date` datetime NOT NULL COMMENT '结束日期',
+  `interval_hour` int(11) NOT NULL COMMENT '抽奖间隔小时',
+  `gift` int(11) NOT NULL COMMENT '每次可抽奖数量',
+  `total_gift` int(11) NOT NULL COMMENT '奖品总数',
+  `last_gift` int(11) NOT NULL COMMENT '剩余数量',
+  `lottery_count` int(11) NOT NULL COMMENT '可抽奖次数',
+  `fractions` int(11) NOT NULL COMMENT '概率分子',
+  `numerator` int(11) NOT NULL COMMENT '概率分母',
+  `url` varchar(2048) default NULL COMMENT '地址',
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `description` varchar(300) default NULL COMMENT '描述',
+  `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
+  `extend_id` int(11) default NULL COMMENT '扩展ID',
+  PRIMARY KEY  (`id`),
+  KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cms_lottery_user` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `lottery_id` bigint(20) NOT NULL COMMENT '抽奖ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `winning` tinyint(1) NOT NULL COMMENT '是否中奖',
+  `confirmed` tinyint(1) NOT NULL COMMENT '已确认',
+  `confirm_date` datetime default NULL COMMENT '确认日期',
+  `ip` varchar(64) NOT NULL COMMENT 'IP',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`id`),
+  KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cms_lottery_user_attribute` (
+  `lottery_user_id` bigint(20) NOT NULL COMMENT '抽奖用户ID',
+  `data` longtext COMMENT '数据JSON',
+  PRIMARY KEY  (`lottery_user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展';
+
+CREATE TABLE `cms_vote` (
+  `id` int(11) NOT NULL auto_increment,
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `start_date` datetime NOT NULL COMMENT '开始日期',
+  `end_date` datetime NOT NULL COMMENT '结束日期',
+  `interval_hour` int(11) NOT NULL COMMENT '投票间隔小时',
+  `max_vote` int(11) NOT NULL COMMENT '最大投票数',
+  `anonymous` tinyint(1) NOT NULL COMMENT '匿名投票',
+  `user_counts` int(11) NOT NULL COMMENT '参与用户数',
+  `url` varchar(2048) NOT NULL COMMENT '地址',
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `description` varchar(300) default NULL COMMENT '描述',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `item_extend_id` int(11) NOT NULL COMMENT '扩展ID',
+  PRIMARY KEY  (`id`),
+  KEY `disabled` (`site_id`,`start_date`,`end_date`,`disabled`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cms_vote_item` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `vote_id` int(11) NOT NULL COMMENT '投票',
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `description` varchar(300) default NULL COMMENT '描述',
+  `scores` int(11) NOT NULL COMMENT '票数',
+  `sort` int(11) NOT NULL COMMENT '顺序',
+  PRIMARY KEY  (`id`),
+  KEY `vote_id` (`vote_id`,`scores`,`sort`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cms_vote_item_attribute` (
+  `vote_item_id` bigint(20) NOT NULL COMMENT '选项ID',
+  `data` longtext COMMENT '数据JSON',
+  PRIMARY KEY  (`vote_item_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项扩展';
+
+DROP TABLE IF EXISTS `cms_vote_user`;
+CREATE TABLE `cms_vote_user` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `vote_id` int(11) NOT NULL COMMENT '投票ID',
+  `user_id` bigint(20) NOT NULL default '0' COMMENT '用户ID',
+  `item_ids` text NOT NULL COMMENT '投票选项',
+  `ip` varchar(64) NOT NULL COMMENT 'IP',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`id`),
+  KEY `vote_id` (`vote_id`,`user_id`,`ip`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `sys_extend_field` DROP COLUMN `id`,
+MODIFY COLUMN `code`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码' AFTER `extend_id`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`extend_id`, `code`),
+ADD COLUMN `maxlength`  int NULL AFTER `required`,
+ADD COLUMN `dictionary_type`  varchar(20) NULL AFTER `default_value`,ADD COLUMN `dictionary_id`  varchar(20) NULL AFTER `dictionary_type`,
+ADD COLUMN `sort`  int(11) NOT NULL DEFAULT 0 COMMENT '顺序' AFTER `dictionary_id`,
+DROP INDEX `item_id`,
+ADD INDEX (`sort`);
+
+INSERT INTO `sys_moudle` VALUES (127, '群组管理', null, null, '<i class=\"icon-group icon-large\"></i>', '45', '0');
+INSERT INTO `sys_moudle` VALUES (128, '群组管理', 'homeGroup/list', null, '<i class=\"icon-group icon-large\"></i>', '127', '0');
+INSERT INTO `sys_moudle` VALUES (129, '帖子管理', 'homeGroupPost/list', null, '<i class=\"icon-list-alt icon-large\"></i>', '127', '0');
+INSERT INTO `sys_moudle` VALUES (130, '评论管理', 'homeComment/list', null, '<i class=\"icon-comment-alt icon-large\"></i>', '109', '0');
+
+DROP TABLE IF EXISTS `home_active`;
+CREATE TABLE `home_active` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `item_type` (`user_id`,`item_type`,`item_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间动态';
+
+
+DROP TABLE IF EXISTS `home_article`;
+CREATE TABLE `home_article` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `directory_id` bigint(20) default NULL COMMENT '目录ID',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
+  `cover` varchar(255) default NULL COMMENT '封面图',
+  `scores` int(11) NOT NULL COMMENT '分数',
+  `comments` int(11) NOT NULL COMMENT '评论数',
+  `clicks` int(11) NOT NULL COMMENT '点击数',
+  `last_comment_id` bigint(20) NOT NULL COMMENT '最新回复',
+  `best_comment_id` bigint(20) NOT NULL COMMENT '最佳回复',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `create_date` datetime NOT NULL COMMENT '发布日期',
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`directory_id`,`user_id`,`create_date`),
+  KEY `best_comment_id` (`best_comment_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间文章';
+
+
+DROP TABLE IF EXISTS `home_article_content`;
+CREATE TABLE `home_article_content` (
+  `article_id` bigint(20) NOT NULL COMMENT '文章ID',
+  `content` longtext COMMENT '内容',
+  PRIMARY KEY  (`article_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文章内容';
+
+
+DROP TABLE IF EXISTS `home_attention`;
+CREATE TABLE `home_attention` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `attention_id` bigint(20) NOT NULL COMMENT '关注ID',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`user_id`,`attention_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间关注';
+
+
+DROP TABLE IF EXISTS `home_broadcast`;
+CREATE TABLE `home_broadcast` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `scores` int(11) NOT NULL COMMENT '分数',
+  `reposts` int(11) NOT NULL COMMENT '转发数',
+  `comments` int(11) NOT NULL COMMENT '评论数',
+  `message` varchar(300) NOT NULL COMMENT '消息',
+  `reposted` tinyint(1) NOT NULL COMMENT '转发',
+  `repost_id` bigint(20) NOT NULL COMMENT '转发广播ID',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY  (`id`),
+  KEY `reposted` (`reposted`,`repost_id`),
+  KEY `site_id` (`site_id`,`user_id`,`create_date`,`disabled`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间广播';
+
+
+DROP TABLE IF EXISTS `home_comment`;
+CREATE TABLE `home_comment` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `scores` int(11) NOT NULL COMMENT '分数',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`user_id`,`item_type`,`item_id`,`disabled`,`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论';
+
+
+DROP TABLE IF EXISTS `home_comment_content`;
+CREATE TABLE `home_comment_content` (
+  `comment_id` bigint(20) NOT NULL,
+  `content` longtext,
+  PRIMARY KEY  (`comment_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论内容';
+
+
+DROP TABLE IF EXISTS `home_dialog`;
+CREATE TABLE `home_dialog` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `messages` int(11) NOT NULL COMMENT '消息数',
+  `last_message_date` datetime NOT NULL COMMENT '最新消息日期',
+  `readed_message_date` datetime NOT NULL COMMENT '阅读日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`user_id`,`item_type`,`item_id`),
+  KEY `last_message_date` (`disabled`,`last_message_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='对话';
+
+
+DROP TABLE IF EXISTS `home_directory`;
+CREATE TABLE `home_directory` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `cover` varchar(255) default NULL COMMENT '封面图',
+  `files` int(11) NOT NULL COMMENT '文件数',
+  `secret` tinyint(1) NOT NULL COMMENT '私密目录',
+  `create_date` datetime NOT NULL COMMENT '发布日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`user_id`,`create_date`,`disabled`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间目录';
+
+
+DROP TABLE IF EXISTS `home_file`;
+CREATE TABLE `home_file` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
+  `directory_id` bigint(20) default NULL COMMENT '目录',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `file_path` varchar(255) NOT NULL COMMENT '封面图',
+  `image` tinyint(1) NOT NULL COMMENT '是否图片',
+  `file_size` int(11) NOT NULL COMMENT '文件大小',
+  `scores` int(11) NOT NULL COMMENT '分数',
+  `comments` int(11) NOT NULL COMMENT '评论数',
+  `create_date` datetime NOT NULL COMMENT '发布日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`user_id`,`directory_id`,`image`,`create_date`,`disabled`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间文件';
+
+
+DROP TABLE IF EXISTS `home_friend`;
+CREATE TABLE `home_friend` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `friend_id` bigint(20) NOT NULL COMMENT '好友ID',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `remark_name` varchar(100) NOT NULL COMMENT '备注名',
+  PRIMARY KEY  (`id`),
+  KEY `user_id` (`user_id`,`friend_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友';
+
+
+DROP TABLE IF EXISTS `home_friend_apply`;
+CREATE TABLE `home_friend_apply` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `friend_id` bigint(20) NOT NULL COMMENT '好友ID',
+  `message` varchar(300) NOT NULL COMMENT '消息',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`user_id`,`friend_id`),
+  KEY `create_date` (`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友申请';
+
+
+DROP TABLE IF EXISTS `home_group`;
+CREATE TABLE `home_group` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `name` varchar(255) NOT NULL,
+  `description` varchar(300) default NULL,
+  `users` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`user_id`,`users`,`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组';
+
+
+DROP TABLE IF EXISTS `home_group_active`;
+CREATE TABLE `home_group_active` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `group_id` bigint(11) NOT NULL COMMENT '站点ID',
+  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `item_type` (`group_id`,`user_id`,`item_type`,`item_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间动态';
+
+
+DROP TABLE IF EXISTS `home_group_apply`;
+CREATE TABLE `home_group_apply` (
+  `group_id` bigint(20) NOT NULL COMMENT '群组ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `message` text NOT NULL COMMENT '消息',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`group_id`,`user_id`),
+  KEY `create_date` (`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组申请';
+
+
+DROP TABLE IF EXISTS `home_group_post`;
+CREATE TABLE `home_group_post` (
+  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `group_id` bigint(20) default NULL COMMENT '群组ID',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
+  `scores` int(11) NOT NULL COMMENT '分数',
+  `comments` int(11) NOT NULL COMMENT '评论数',
+  `clicks` int(11) NOT NULL COMMENT '点击数',
+  `create_date` datetime NOT NULL COMMENT '发布日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`group_id`,`user_id`,`disabled`,`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组帖子';
+
+
+DROP TABLE IF EXISTS `home_group_post_content`;
+CREATE TABLE `home_group_post_content` (
+  `post_id` bigint(20) NOT NULL,
+  `content` longtext,
+  PRIMARY KEY  (`post_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='帖子内容';
+
+
+DROP TABLE IF EXISTS `home_group_user`;
+CREATE TABLE `home_group_user` (
+  `group_id` bigint(20) NOT NULL COMMENT '群组ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `superuser_access` tinyint(1) NOT NULL COMMENT '管理员',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`group_id`,`user_id`),
+  KEY `create_date` (`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组用户';
+
+
+DROP TABLE IF EXISTS `home_message`;
+CREATE TABLE `home_message` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `user_id` bigint(20) NOT NULL COMMENT '所属用户',
+  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `content` longtext NOT NULL COMMENT '内容',
+  PRIMARY KEY  (`id`),
+  KEY `create_date` (`create_date`),
+  KEY `user_id` (`user_id`,`item_type`,`item_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户消息';
+
+
+DROP TABLE IF EXISTS `home_score`;
+CREATE TABLE `home_score` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `score` int(11) NOT NULL COMMENT '分数',
+  `ip` varchar(64) NOT NULL COMMENT 'IP地址',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY  (`id`),
+  KEY `site_id` (`site_id`,`user_id`,`item_type`,`item_id`,`create_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评分';
+
+
+DROP TABLE IF EXISTS `home_user`;
+CREATE TABLE `home_user` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `title` varchar(255) default NULL COMMENT '标题',
+  `signature` varchar(300) default NULL,
+  `friends` int(11) NOT NULL COMMENT '好友数',
+  `messages` int(11) NOT NULL COMMENT '消息数',
+  `questions` int(11) NOT NULL COMMENT '问题数',
+  `answers` int(11) NOT NULL COMMENT '回答数',
+  `articles` int(11) NOT NULL COMMENT '文章数',
+  `clicks` int(11) NOT NULL COMMENT '点击数数',
+  `broadcasts` int(11) NOT NULL COMMENT '广播数',
+  `comments` int(11) NOT NULL COMMENT '评论数',
+  `attention_ids` text COMMENT '关注用户',
+  `attentions` int(11) NOT NULL COMMENT '关注数',
+  `fans` int(11) NOT NULL COMMENT '粉丝数',
+  `last_login_date` datetime default NULL COMMENT '上次登陆日期',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY  (`user_id`),
+  KEY `site_id` (`site_id`,`last_login_date`,`create_date`,`disabled`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户空间';
+
+DROP TABLE IF EXISTS `cms_dictionary`;
+CREATE TABLE `cms_dictionary` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
+  PRIMARY KEY  (`id`),
+  KEY `multiple` (`multiple`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典';
+
+-- ----------------------------
+-- Records of cms_dictionary
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for cms_dictionary_data
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_dictionary_data`;
+CREATE TABLE `cms_dictionary_data` (
+  `dictionary_id` bigint(20) NOT NULL COMMENT '字典',
+  `value` varchar(50) NOT NULL COMMENT '值',
+  `text` varchar(100) NOT NULL COMMENT '文字',
+  PRIMARY KEY  (`dictionary_id`,`value`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典数据';
+
+-- 20161203--
+
+UPDATE `sys_moudle` SET name = '模板文件管理',attached = '<i class="icon-code icon-large"></i>' WHERE id = 39;
+UPDATE `sys_moudle` SET authorized_url = 'cmsTemplate/placeMetadata,cmsTemplate/placeContent,cmsTemplate/placeForm,cmsTemplate/saveMetadata,cmsTemplate/createPlace' WHERE id = 42;
+UPDATE `sys_moudle` SET url = null WHERE id = 53;
+UPDATE `sys_moudle` SET name = '文件管理',attached='<i class="icon-folder-close-alt icon-large"></i>' WHERE id = 38;
+UPDATE `sys_moudle` SET authorized_url='cmsTemplate/save,cmsTemplate/chipLookup,cmsResource/lookup,cmsWebFile/lookup,cmsTemplate/upload,cmsTemplate/doUpload' WHERE id = 41;
+INSERT INTO `sys_moudle` VALUES ('131', '资源文件管理', 'cmsResource/list', null, '<i class=\"icon-picture icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('132', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('133', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('134', '上传文件', 'cmsWebFile/upload', 'cmsWebFile/doUpload', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('135', '压缩', null, 'cmsWebFile/zip', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('136', '解压缩', null, 'cmsWebFile/unzip,cmsWebFile/unzipHere', null, '132', '0');
+INSERT INTO `sys_moudle` VALUES ('137', '新建目录', 'cmsResource/directory', 'cmsResource/createDirectory', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('138', '上传文件', 'cmsResource/upload', 'cmsResource/doUpload', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('139', '压缩', null, 'cmsResource/zip', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('140', '解压缩', null, 'cmsResource/unzip,cmsResource/unzipHere', null, '131', '0');
+

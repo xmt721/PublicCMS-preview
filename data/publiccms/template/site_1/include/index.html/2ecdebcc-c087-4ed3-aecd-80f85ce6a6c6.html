@@ -26,12 +26,12 @@
 <@_categoryList>
 	<#list page.list as a>
 				<li>
-					<a href="${a.url!}">${a.name}</a>
+					<a href="${a.url!}" target="_blank">${a.name}</a>
 		<#if a.childIds?has_content>
 					<ul>
 			<@_categoryList parentId=a.id>
 				<#list page.list as a>
-						<li><a href="${a.url!}">${a.name}</a></li>
+						<li><a href="${a.url!}" target="_blank">${a.name}</a></li>
 				</#list>
 			</@_categoryList>
 					</ul>
@@ -39,8 +39,6 @@
 				</li>
 	</#list>
 </@_categoryList>
-				<@_includePlace path="/index.html/750c5b01-3e58-43ab-b1c1-f9cfc8b4f5f8.html"/> <#-- 导航-下载链接 -->
-				<@_includePlace path="/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html"/> <#-- 导航-动态站点 -->
 			</ul>
 		</nav>
 		<div class="clearfix-before"></div>

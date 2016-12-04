@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.service.log.LogTaskService;
+import com.publiccms.logic.service.log.LogTaskService;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -41,6 +41,11 @@ public class LogTaskDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

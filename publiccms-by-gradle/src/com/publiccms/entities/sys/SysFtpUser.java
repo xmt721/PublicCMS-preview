@@ -1,13 +1,12 @@
 package com.publiccms.entities.sys;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 // Generated 2016-2-15 20:56:10 by Hibernate Tools 4.3.1
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;

@@ -30,7 +30,7 @@ public class CmsLotteryUser implements java.io.Serializable {
     @MyColumn(title = "ID")
     private Long id;
     @MyColumn(title = "抽奖", condition = true)
-    private int lotteryId;
+    private long lotteryId;
     @MyColumn(title = "用户", condition = true)
     private long userId;
     @MyColumn(title = "是否中奖", condition = true)
@@ -47,10 +47,22 @@ public class CmsLotteryUser implements java.io.Serializable {
     public CmsLotteryUser() {
     }
 
-    public CmsLotteryUser(int lotteryId, long userId, boolean winning, String ip, Date createDate) {
+    public CmsLotteryUser(long lotteryId, long userId, boolean winning, boolean confirmed, String ip, Date createDate) {
         this.lotteryId = lotteryId;
         this.userId = userId;
         this.winning = winning;
+        this.confirmed = confirmed;
+        this.ip = ip;
+        this.createDate = createDate;
+    }
+
+    public CmsLotteryUser(long lotteryId, long userId, boolean winning, boolean confirmed, Date confirmDate, String ip,
+            Date createDate) {
+        this.lotteryId = lotteryId;
+        this.userId = userId;
+        this.winning = winning;
+        this.confirmed = confirmed;
+        this.confirmDate = confirmDate;
         this.ip = ip;
         this.createDate = createDate;
     }
@@ -67,11 +79,11 @@ public class CmsLotteryUser implements java.io.Serializable {
     }
 
     @Column(name = "lottery_id", nullable = false)
-    public int getLotteryId() {
+    public long getLotteryId() {
         return this.lotteryId;
     }
 
-    public void setLotteryId(int lotteryId) {
+    public void setLotteryId(long lotteryId) {
         this.lotteryId = lotteryId;
     }
 

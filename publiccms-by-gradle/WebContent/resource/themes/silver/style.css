@@ -8,7 +8,8 @@ a{ color:#3C7FB1;}
 .tabs .tabsContent{ border-color:#C1C1C1;background-color:#eef4f5;}
 
 /* Header */
-header{ border-color:#C1C1C1;}
+header{border-color:#C1C1C1;background:url(images/header_background.jpg) no-repeat;background-size: cover;}
+footer{border-color:#C1C1C1;background-color:#F1F1F1;}
 
 /* NavMenu */
 #navMenu{ background-color:#F1F1F1;border-color:#C1C1C1;}
@@ -26,8 +27,7 @@ header{ border-color:#C1C1C1;}
 .tabsPage .tabsPageHeader li.selected{ background:#ffffff;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ background-image:url(./images/tabscontrol.png) ;background-repeat:no-repeat;}
 .tabsPage .tabsMoreList{ border-color:#C1C1C1;background-color:#FFF;}
-.tabsPage .tabsPageContent,footer{ border-color:#C1C1C1;background-color:#FFF;}
-
+.tabsPage .tabsPageContent{ border-color:#C1C1C1;background-color:#FFF;}
 /* Alert */
 .alert .alertFooter, .alert .alertFooter_r, .alert .alertFooter_c{ background-image:url(./images/alert_panel.png);}
 .alert .alertContent{ border-color:#C1C1C1;background-color:#eef4f5;}

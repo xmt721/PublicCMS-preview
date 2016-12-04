@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.entities.home.HomeArticle;
-import com.publiccms.service.home.HomeArticleService;
+import com.publiccms.logic.service.home.HomeArticleService;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 

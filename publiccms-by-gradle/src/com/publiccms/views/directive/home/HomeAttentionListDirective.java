@@ -7,8 +7,8 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.service.home.HomeAttentionService;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.logic.service.home.HomeAttentionService;
 import com.sanluan.common.handler.RenderHandler;
 import com.sanluan.common.handler.PageHandler;
 
@@ -20,6 +20,11 @@ public class HomeAttentionListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("attentionId"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
+    }
+    
+    @Override
+    public boolean needUserToken() {
+        return true;
     }
 
     @Autowired

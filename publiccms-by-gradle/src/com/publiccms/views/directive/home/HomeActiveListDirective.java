@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.service.home.HomeActiveService;
+import com.publiccms.logic.service.home.HomeActiveService;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -27,6 +27,11 @@ public class HomeActiveListDirective extends AbstractTemplateDirective {
             page = new PageHandler(0, 0, 0, 0);
         }
         handler.put("page", page).render();
+    }
+    
+    @Override
+    public boolean needUserToken() {
+        return true;
     }
 
     @Autowired

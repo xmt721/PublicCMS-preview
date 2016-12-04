@@ -27,13 +27,13 @@ import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.FullTextFilterDefs;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.publiccms.common.index.CmsContentBridge;
 import com.publiccms.common.index.CmsContentInterceptor;
 import com.publiccms.common.index.PublishDateFilterFactory;
 import com.publiccms.common.index.SiteIdFilterFactory;
-import com.publiccms.common.index.StringBridge;
 import com.publiccms.common.spi.Static;
 import com.sanluan.common.source.entity.MyColumn;
 
@@ -67,12 +67,12 @@ public class CmsContent implements java.io.Serializable, Static {
     private Long checkUserId;
     @MyColumn(title = "分类", condition = true)
     @Field(analyze = Analyze.NO)
-    @FieldBridge(impl = StringBridge.class)
+    @FieldBridge(impl = IntegerBridge.class)
     @Facet(encoding = FacetEncodingType.STRING)
     private int categoryId;
     @MyColumn(title = "模型", condition = true)
     @Field(analyze = Analyze.NO)
-    @FieldBridge(impl = StringBridge.class)
+    @FieldBridge(impl = IntegerBridge.class)
     @Facet(encoding = FacetEncodingType.STRING)
     private int modelId;
     @MyColumn(title = "父内容", condition = true)

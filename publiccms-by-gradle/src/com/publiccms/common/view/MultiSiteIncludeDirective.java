@@ -1,6 +1,6 @@
 package com.publiccms.common.view;
 
-import static com.publiccms.component.SiteComponent.getFullFileName;
+import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
 import static com.sanluan.common.tools.TemplateModelUtils.converString;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class MultiSiteIncludeDirective extends Base implements TemplateDirective
         @SuppressWarnings("unchecked")
         String path = converString(((Map<String, TemplateModel>) parameters).get("path"));
         if (notEmpty(path) && notEmpty(environment)) {
-            environment.include(getFullFileName(site, path), DEFAULT_CHARSET, true);
+            environment.include(getFullFileName(site, path), DEFAULT_CHARSET_NAME, true);
         }
     }
 }

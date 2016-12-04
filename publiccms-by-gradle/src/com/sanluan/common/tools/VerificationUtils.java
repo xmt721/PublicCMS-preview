@@ -11,6 +11,18 @@ import com.sanluan.common.base.Base;
  *
  */
 public class VerificationUtils extends Base {
+    /**
+     * @param length
+     * @return
+     */
+    public static String getRandomString(String text, int length) {
+        StringBuffer sb = new StringBuffer();
+        while (0 < length) {
+            length -= 1;
+            sb.append(text.charAt(r.nextInt(text.length())));
+        }
+        return sb.toString();
+    }
 
     /**
      * @param length

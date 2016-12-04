@@ -1,14 +1,13 @@
 package com.publiccms.entities.sys;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+
 // Generated 2016-3-2 13:36:22 by Hibernate Tools 4.3.1
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sanluan.common.source.entity.MyColumn;
@@ -24,63 +23,59 @@ public class SysExtendField implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    @MyColumn(title = "ID")
-    private Integer id;
-    @MyColumn(title = "扩展ID", condition = true)
-    private int extendId;
+    private SysExtendFieldId id;
     @MyColumn(title = "必填")
     private boolean required;
+    @MyColumn(title = "最大长度")
+    private Integer maxlength;
+    @MyColumn(title = "顺序", order = true)
+    private int sort;
     @MyColumn(title = "名称")
     private String name;
     @MyColumn(title = "描述")
     private String description;
-    @MyColumn(title = "字段")
-    private String code;
     @MyColumn(title = "表单类型")
     private String inputType;
     @MyColumn(title = "默认值")
     private String defaultValue;
+    @MyColumn(title = "数据字典类型")
+    private String dictionaryType;
+    @MyColumn(title = "数据字典ID")
+    private String dictionaryId;
 
     public SysExtendField() {
     }
 
-    public SysExtendField(int extendId, boolean required, String name, String code, String inputType) {
-        this.extendId = extendId;
+    public SysExtendField(SysExtendFieldId id, boolean required, int sort, String name, String inputType) {
+        this.id = id;
         this.required = required;
+        this.sort = sort;
         this.name = name;
-        this.code = code;
         this.inputType = inputType;
     }
 
-    public SysExtendField(int extendId, boolean required, String name, String description, String code, String inputType,
-            String defaultValue) {
-        this.extendId = extendId;
+    public SysExtendField(SysExtendFieldId id, boolean required, Integer maxlength, String name, String description,
+            String inputType, String defaultValue, String dictionaryType, String dictionaryId) {
+        this.id = id;
         this.required = required;
+        this.maxlength = maxlength;
         this.name = name;
         this.description = description;
-        this.code = code;
         this.inputType = inputType;
         this.defaultValue = defaultValue;
+        this.dictionaryType = dictionaryType;
+        this.dictionaryId = dictionaryId;
     }
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    @EmbeddedId
+    @AttributeOverrides({ @AttributeOverride(name = "extendId", column = @Column(name = "extend_id", nullable = false)),
+            @AttributeOverride(name = "code", column = @Column(name = "code", nullable = false, length = 20)) })
+    public SysExtendFieldId getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(SysExtendFieldId id) {
         this.id = id;
-    }
-
-    @Column(name = "extend_id", nullable = false)
-    public int getExtendId() {
-        return this.extendId;
-    }
-
-    public void setExtendId(int extendId) {
-        this.extendId = extendId;
     }
 
     @Column(name = "required", nullable = false)
@@ -90,6 +85,24 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    @Column(name = "maxlength")
+    public Integer getMaxlength() {
+        return this.maxlength;
+    }
+
+    public void setMaxlength(Integer maxlength) {
+        this.maxlength = maxlength;
+    }
+
+    @Column(name = "sort", nullable = false)
+    public int getSort() {
+        return this.sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 
     @Column(name = "name", nullable = false, length = 20)
@@ -110,15 +123,6 @@ public class SysExtendField implements java.io.Serializable {
         this.description = description;
     }
 
-    @Column(name = "code", nullable = false, length = 20)
-    public String getCode() {
-        return this.code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     @Column(name = "input_type", nullable = false, length = 20)
     public String getInputType() {
         return this.inputType;
@@ -135,6 +139,24 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    @Column(name = "dictionary_type", length = 20)
+    public String getDictionaryType() {
+        return this.dictionaryType;
+    }
+
+    public void setDictionaryType(String dictionaryType) {
+        this.dictionaryType = dictionaryType;
+    }
+
+    @Column(name = "dictionary_id", length = 20)
+    public String getDictionaryId() {
+        return this.dictionaryId;
+    }
+
+    public void setDictionaryId(String dictionaryId) {
+        this.dictionaryId = dictionaryId;
     }
 
 }

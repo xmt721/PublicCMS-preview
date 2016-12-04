@@ -1,6 +1,6 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.component.SiteComponent.CONTEXT_SITE;
+import static com.publiccms.logic.component.site.SiteComponent.CONTEXT_SITE;
 
 import java.io.IOException;
 
@@ -12,13 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import com.publiccms.entities.sys.SysApp;
-import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.component.SiteComponent;
-import com.publiccms.service.sys.SysAppService;
-import com.publiccms.service.sys.SysAppTokenService;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.sanluan.common.directive.BaseTemplateDirective;
-import com.sanluan.common.directive.HttpDirective;
 import com.sanluan.common.handler.HttpParameterHandler;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -27,7 +27,7 @@ import com.sanluan.common.handler.RenderHandler;
  * AbstractTemplateDirective 自定义模板指令基类
  *
  */
-public abstract class AbstractTemplateDirective extends BaseTemplateDirective implements HttpDirective {
+public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     public SysSite getSite(RenderHandler handler) throws Exception {
         return (SysSite) handler.getAttribute(CONTEXT_SITE);
     }
@@ -36,18 +36,32 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective im
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
             String callback, HttpServletResponse response) throws IOException, Exception {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, callback, response);
-        if (needAppToken() && empty(getApp(handler))) {
+        SysApp app = null;
+        SysUser user = null;
+        if (needAppToken() && empty(app = getApp(handler))) {
             handler.put("error", "needAppToken").render();
+        } else if (needUserToken() && empty(user = getUser(handler))) {
+            handler.put("error", "needLogin").render();
         } else {
+            if (needAppToken()) {
+                request.getParameterMap().put("appId", new String[] { String.valueOf(app.getId()) });
+            }
+            if (needUserToken()) {
+                request.getParameterMap().put("userId", new String[] { String.valueOf(user.getId()) });
+            }
             execute(handler);
             handler.render();
         }
     }
 
-    private SysApp getApp(RenderHandler handler) throws Exception {
-        SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (notEmpty(appToken)) {
-            return appService.getEntity(appToken.getAppId());
+    protected SysUser getUser(RenderHandler handler) throws Exception {
+        String authToken = handler.getString("authToken");
+        Long authUserId = handler.getLong("authUserId");
+        if (notEmpty(authToken) && notEmpty(authUserId)) {
+            SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
+            if (notEmpty(sysUserToken) && sysUserToken.getUserId() == authUserId) {
+                return sysUserService.getEntity(sysUserToken.getUserId());
+            }
         }
         return null;
     }
@@ -55,15 +69,15 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective im
     public boolean needAppToken() {
         return false;
     }
-    
+
     public boolean needUserToken() {
         return false;
     }
 
     @Autowired
-    private SysAppTokenService appTokenService;
+    private SysUserTokenService sysUserTokenService;
     @Autowired
-    private SysAppService appService;
+    private SysUserService sysUserService;
     @Autowired
     protected SiteComponent siteComponent;
 }

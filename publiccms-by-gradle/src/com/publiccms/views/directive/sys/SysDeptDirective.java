@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.service.sys.SysDeptService;
+import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -43,6 +43,11 @@ public class SysDeptDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+    
     @Autowired
     private SysDeptService service;
 

@@ -24,11 +24,11 @@ public class ExtendUtils extends Base {
                 extendFieldMap.put(extend.getName(), extend.getValue());
             }
             for (SysExtendField extend : sysExtendFieldList) {
-                String value = extendFieldMap.get(extend.getCode());
+                String value = extendFieldMap.get(extend.getId().getCode());
                 if (null == value) {
-                    map.put(extend.getCode(), extend.getDefaultValue());
+                    map.put(extend.getId().getCode(), extend.getDefaultValue());
                 } else {
-                    map.put(extend.getCode(), value);
+                    map.put(extend.getId().getCode(), value);
                 }
             }
         }
@@ -43,11 +43,11 @@ public class ExtendUtils extends Base {
                 extendFieldMap.put(extend.getName(), extend.getValue());
             }
             for (ExtendField extend : extendFieldList) {
-                String value = extendFieldMap.get(extend.getCode());
+                String value = extendFieldMap.get(extend.getId().getCode());
                 if (null == value) {
-                    map.put(extend.getCode(), extend.getDefaultValue());
+                    map.put(extend.getId().getCode(), extend.getDefaultValue());
                 } else {
-                    map.put(extend.getCode(), value);
+                    map.put(extend.getId().getCode(), value);
                 }
             }
         }

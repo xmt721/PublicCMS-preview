@@ -6,11 +6,12 @@ function refreshCmsTemplate(){
 	$('textarea[name=content]',navTab.getCurrentPanel()).val(cmsTemplateEditor.getValue());
 }
 </script>
-<form method="post" action="cmsTemplate/save.do?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="refreshCmsTemplate();return validateCallback(this, navTabAjaxDone);">
+<form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="refreshCmsTemplate();return validateCallback(this, navTabAjaxDone);">
 	<div class="formBar">
 		<ul>
-			<li><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a></li>
-			<li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/metadata">模板元数据</a></li>
+			<li><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
+			<li><a class="button" href="cmsPage/placeList.html?path=${path?url}&navTabId=cmsTemplate/list" title="<i class='icon-globe icon-large'></i> 页面管理" rel="cmsPage/placeList">页面管理</a></li>
+			<li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/metadata">元数据管理</a></li>
 			<#if !path?starts_with('/ftl/')>
 				<li><a class="button" href="cmsTemplate/placeList.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/placeList">推荐位管理</a></li>
 			</#if>
@@ -18,11 +19,10 @@ function refreshCmsTemplate(){
 		</ul>
 	</div>
 	<h2 class="contentTitle">
-		<a class="button" href="cmsTemplate/placeLookup.html" target="dialog" mask="true">使用推荐位</a>
-	 	<a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">使用模板片段</a>
- 	<#if !path?starts_with('/ftl/')>
-		<a class="button" href="cmsTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="cmsTemplate/metadata">创建模板片段</a>
-	</#if>
+		<a class="button" href="cmsTemplate/placeLookup.html" target="dialog" mask="true">推荐位</a>
+	 	<a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">模板片段</a>
+	 	<a class="button" href="cmsResource/lookup.html" target="dialog"  mask="true" rel="cmsResourceLookup">资源文件</a>
+	 	<a class="button" href="cmsWebFile/lookup.html" target="dialog"  mask="true" rel="cmsWebFileLookup">网站文件</a>
 	 </h2>
 	<div class="pageFormContent" layoutH="100">
    		<div>

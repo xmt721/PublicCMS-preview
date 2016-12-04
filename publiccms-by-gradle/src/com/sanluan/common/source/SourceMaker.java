@@ -31,13 +31,13 @@ import freemarker.template.TemplateException;
  */
 public class SourceMaker extends Base {
     public static final String ENTITY_BASE_PACKAGE = "entities";
-    public static final String DAO_BASE_PACKAGE = "dao";
+    public static final String DAO_BASE_PACKAGE = "logic.dao";
     public static final String DAO_SUFFIX = "Dao";
-    public static final String SERVICE_BASE_PACKAGE = "service";
+    public static final String SERVICE_BASE_PACKAGE = "logic.service";
     public static final String SERVICE_SUFFIX = "Service";
     public static final String DIRECTIVE_BASE_PACKAGE = "views.directive";
     public static final String DIRECTIVE_SUFFIX = "Directive";
-    public static final String CONTROLLER_BASE_PACKAGE = "views.controller.admin";
+    public static final String CONTROLLER_BASE_PACKAGE = "controller.admin";
     public static final String CONTROLLER_SUFFIX = "AdminController";
     public static final String JAVA_BASE_PATH = "src/new/";
     public static final String WEB_BASE_PATH = "WebContent/WEB-INF/admin/new/";
@@ -49,10 +49,9 @@ public class SourceMaker extends Base {
         // 生成所有实体类的代码
         // sourceMaker.make(basePackage, overwrite);
         // 生成某个包所有实体类的代码
-        sourceMaker.make(basePackage, "home", overwrite);
+        // sourceMaker.make(basePackage, "trade", overwrite);
         // 生成某个实体类的代码
-        // sourceMaker.make(Class.forName("com.publiccms.entities.sys.SysCluster"),
-        // basePackage, overwrite);
+        sourceMaker.make(Class.forName("com.publiccms.entities.cms.CmsDictionaryData"), basePackage, overwrite);
     }
 
     /**

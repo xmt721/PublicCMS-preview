@@ -23,7 +23,7 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<#if parent?has_content>
-				<li><a href="sysMoudle/list?parentId=${(parent.parentId)!}&deep=${deep-1}" target="navTab" rel="sysMoudle/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+				<li><a href="sysMoudle/list.html?parentId=${(parent.parentId)!}&deep=${deep-1}" target="navTab" rel="sysMoudle/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
 				<li class="line">line</li>
 			</#if>
 			<#if deep lte 3>

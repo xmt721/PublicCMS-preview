@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 
 body{font-family:Tahoma,Arial,Roboto,"宋体";}
@@ -50,7 +50,7 @@ main .data-list dl{overflow:hidden;margin-bottom:10px;border:1px solid #eee;padd
 main .data-list dl dt h3{font-size:1.17em;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:10px 0;}
 main .data-list dl dt a{text-decoration:none;color:#333;}
 main .data-list dl dt h3 span{float:right;color:#666;font-size:14px;font-weight:normal;}
-main .data-list dl dd img{height:100px;border:1px solid #eee;margin-right:10px;}
+main .data-list dl dd img{max-height:100px;border:1px solid #eee;margin-right:10px;}
 main .data-list dl dd{font-size:14px; color:#666; line-height:22px;}
 main .data-list dl dd a{color:#58a; text-decoration:none; }
 main .data-list dl dd p{text-indent:2em;margin:5px 0;}

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.home.HomeAttention;
 import com.publiccms.entities.home.HomeAttentionId;
-import com.publiccms.service.home.HomeAttentionService;
+import com.publiccms.logic.service.home.HomeAttentionService;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -52,6 +52,11 @@ public class HomeAttentionDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+    
+    @Override
+    public boolean needUserToken() {
+        return true;
     }
 
     @Autowired

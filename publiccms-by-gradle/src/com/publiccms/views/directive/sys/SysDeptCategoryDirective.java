@@ -9,11 +9,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategory;
-import com.publiccms.service.sys.SysDeptCategoryService;
-import com.publiccms.service.sys.SysDeptService;
-import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.entities.sys.SysDeptCategoryId;
+import com.publiccms.logic.service.sys.SysDeptCategoryService;
+import com.publiccms.logic.service.sys.SysDeptService;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -25,7 +26,14 @@ public class SysDeptCategoryDirective extends AbstractTemplateDirective {
         Integer categoryId = handler.getInteger("categoryId");
         if (notEmpty(deptId)) {
             if (notEmpty(categoryId)) {
-                handler.put("object", service.getEntity(deptId, categoryId)).render();
+                SysDept entity = sysDeptService.getEntity(deptId);
+                if (notEmpty(entity)) {
+                    if (entity.isOwnsAllCategory()) {
+                        handler.put("object", true).render();
+                    } else {
+                        handler.put("object", notEmpty(service.getEntity(new SysDeptCategoryId(deptId, categoryId)))).render();
+                    }
+                }
             } else {
                 Integer[] categoryIds = handler.getIntegerArray("categoryIds");
                 if (notEmpty(categoryIds)) {
@@ -37,11 +45,13 @@ public class SysDeptCategoryDirective extends AbstractTemplateDirective {
                                 map.put(String.valueOf(id), true);
                             }
                         } else {
-                            for (Integer id : categoryIds) {
-                                map.put(String.valueOf(id), false);
+                            SysDeptCategoryId[] ids = new SysDeptCategoryId[categoryIds.length];
+                            for (int i = 0; i < categoryIds.length; i++) {
+                                map.put(String.valueOf(categoryIds[i]), false);
+                                ids[i] = new SysDeptCategoryId(deptId, categoryIds[i]);
                             }
-                            for (SysDeptCategory e : service.getEntitys(deptId, categoryIds)) {
-                                map.put(String.valueOf(e.getCategoryId()), true);
+                            for (SysDeptCategory e : service.getEntitys(ids)) {
+                                map.put(String.valueOf(e.getId().getCategoryId()), true);
                             }
                         }
                     }
@@ -49,6 +59,11 @@ public class SysDeptCategoryDirective extends AbstractTemplateDirective {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

@@ -1,14 +1,13 @@
 package com.publiccms.entities.cms;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+
 // Generated 2016-1-19 11:28:06 by Hibernate Tools 4.3.1
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sanluan.common.source.entity.MyColumn;
@@ -24,56 +23,32 @@ public class CmsCategoryModel implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    @MyColumn(title = "ID")
-    private Integer id;
-    @MyColumn(title = "分类", condition = true)
-    private int categoryId;
-    @MyColumn(title = "模型", condition = true)
-    private int modelId;
+    private CmsCategoryModelId id;
     @MyColumn(title = "模板路径")
     private String templatePath;
 
     public CmsCategoryModel() {
     }
 
-    public CmsCategoryModel(int categoryId, int modelId) {
-        this.categoryId = categoryId;
-        this.modelId = modelId;
-    }
-
-    public CmsCategoryModel(int categoryId, int modelId, String templatePath) {
-        this.categoryId = categoryId;
-        this.modelId = modelId;
-        this.templatePath = templatePath;
-    }
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
+    public CmsCategoryModel(CmsCategoryModelId id) {
         this.id = id;
     }
 
-    @Column(name = "category_id", nullable = false)
-    public int getCategoryId() {
-        return this.categoryId;
+    public CmsCategoryModel(CmsCategoryModelId id, String templatePath) {
+        this.id = id;
+        this.templatePath = templatePath;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    @EmbeddedId
+
+    @AttributeOverrides({ @AttributeOverride(name = "categoryId", column = @Column(name = "category_id", nullable = false)),
+            @AttributeOverride(name = "modelId", column = @Column(name = "model_id", nullable = false)) })
+    public CmsCategoryModelId getId() {
+        return this.id;
     }
 
-    @Column(name = "model_id", nullable = false)
-    public int getModelId() {
-        return this.modelId;
-    }
-
-    public void setModelId(int modelId) {
-        this.modelId = modelId;
+    public void setId(CmsCategoryModelId id) {
+        this.id = id;
     }
 
     @Column(name = "template_path", length = 200)

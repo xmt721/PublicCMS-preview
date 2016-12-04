@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptPage;
-import com.publiccms.service.sys.SysDeptPageService;
-import com.publiccms.service.sys.SysDeptService;
+import com.publiccms.entities.sys.SysDeptPageId;
+import com.publiccms.logic.service.sys.SysDeptPageService;
+import com.publiccms.logic.service.sys.SysDeptService;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -37,17 +38,24 @@ public class SysDeptPageDirective extends AbstractTemplateDirective {
                             map.put(p, true);
                         }
                     } else {
-                        for (String p : pages) {
-                            map.put(p, false);
+                        SysDeptPageId[] ids = new SysDeptPageId[pages.length];
+                        for (int i = 0; i < pages.length; i++) {
+                            map.put(pages[i], false);
+                            ids[i] = new SysDeptPageId(deptId, pages[i]);
                         }
-                        for (SysDeptPage e : service.getEntitys(deptId, pages)) {
-                            map.put(e.getPage(), true);
+                        for (SysDeptPage e : service.getEntitys(ids)) {
+                            map.put(e.getId().getPage(), true);
                         }
                     }
                     handler.put("map", map).render();
                 }
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

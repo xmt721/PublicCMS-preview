@@ -94,7 +94,7 @@ function clickAddTagType(){
 <#if categoryType?has_content&&categoryType.extendId?has_content>
 	<#include "../include_page/extendData.html"/>
 	<@_sysExtendFieldList extendId=categoryType.extendId>
-		<@extendData 'extendDataList' page.list attribute!{}/>
+		<@extendData 'extendDataList' list attribute!{}/>
 	</@_sysExtendFieldList>
 </#if>
 			</div>
@@ -178,8 +178,8 @@ checkCategoryModel();
 <#if id?has_content||parentId?has_content>
 	<@_categoryModelList categoryId=id!parentId>
 		<#list page.list as a>
-			$('input[name=model_${a.modelId}]',navTab.getCurrentPanel()).click();
-			$('input[name=templatePath_${a.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
+			$('input[name=model_${a.id.modelId}]',navTab.getCurrentPanel()).click();
+			$('input[name=templatePath_${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
 		</#list>
 	</@_categoryModelList>
 </#if>
@@ -191,7 +191,7 @@ $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
 			<div class="pageFormContent categoryModelContent" layoutH="86">
 <#if a?has_content&&a.extendId?has_content>
 	<@_sysExtendFieldList extendId=a.extendId>
-		<#assign contentExtendList=page.list>
+		<#assign contentExtendList=list>
 	</@_sysExtendFieldList>
 </#if>
 <#include "../include_page/extends.html"/>

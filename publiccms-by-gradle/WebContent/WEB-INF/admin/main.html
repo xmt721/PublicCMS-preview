@@ -118,8 +118,8 @@ memoryChart.chart.setOption({
 });
 memoryChart.countChart.setOption({
 	title : {
-        text: '内存使用(最大可用:${(maxMemory/1048576)?string("0.##")}MB)',
-        subtext: '占用内存:${(totalMemory/1048576)?string("0.##")}MB',
+        text: '内存使用(最大可用:<@t.fileSize maxMemory/>)',
+        subtext: '占用内存:<@t.fileSize totalMemory/>',
         x:'center'
     },
     tooltip : {
@@ -204,7 +204,7 @@ window.memoryInterval=setInterval(function () {
 <@_disk>
 echarts.init(document.getElementById('disk')).setOption({
 	title : {
-        text: '站点磁盘:${(totalSpace/1048576)?string("0.##")}MB',
+        text: '站点磁盘:<@t.fileSize totalSpace/>',
         subtext: '${(rootPath?js_string)!}',
         x:'center'
     },

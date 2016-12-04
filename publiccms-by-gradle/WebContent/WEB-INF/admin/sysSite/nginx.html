@@ -16,42 +16,26 @@
 		<dd>
 			<textarea id="nginx" name="description" style="width: 100%;" rows="20"><@_disk>
 <#assign rootPath=rootPath?replace('\\','/')/>
+<#assign dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')/>
+<#assign dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')/>
+<#assign dynamicPort=a.dynamicPath?keep_after('//')?keep_before('/')?keep_after(':')/>
+<#assign sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')/>
+<#assign siteLocation=a.sitePath?keep_after('//')?keep_after('/')/>
+<#assign sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')/>
+<#assign resourcePath=a.resourcePath?keep_after('//')?keep_before('/')?keep_before(':')/>
+<#assign resourceLocation=a.resourcePath?keep_after('//')?keep_after('/')/>
+<#assign resourcePort=a.resourcePath?keep_after('//')?keep_before('/')?keep_after(':')/>
 <@_sysDomainList advanced=true siteId=siteId>
 	<#if page.totalCount gt 0>
-		<#assign dynamicPath=a.dynamicPath/>
-		<#if 0 = dynamicPath?index_of('http') || 0 = dynamicPath?index_of('//')>
-			<#assign dynamicPath=dynamicPath[dynamicPath?index_of('//')+2..]/>
-		</#if>
-		<#if dynamicPath?index_of('/') gt 0>
-			<#assign dynamicLocation=dynamicPath[dynamicPath?index_of('/')..]/>
-			<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')-1]/>
-		</#if>
-		<#if dynamicPath?index_of(':') gt 0>
-			<#assign dynamicPort=dynamicPath[dynamicPath?index_of(':')+1..]/>
-		</#if>
-		<#assign ports =[dynamicPort!80]/>
-		<#assign domains=[]/>
-		<#list page.list as d>
-			<#assign domainArray=d.name?split(':')/>
-			<#if domainArray?size gt 1>
-				<#if !ports?seq_contains(domainArray[1])>
-					<#assign ports+=[domainArray[1]]/>
-				</#if>
-			</#if>
-			<#if !domains?seq_contains(domainArray[0])>
-				<#assign domains+=[domainArray[0]]/>
-			</#if>
-		</#list>
-		<#if a.resourcePath?starts_with(a.dynamicPath)||a.useSsi>
+		<#if a.resourcePath?starts_with(a.dynamicPath)||(a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))||a.useSsi>
+#${a.name} 站点配置
 server {
-			<#list ports as port>
-	listen       ${port};
-			</#list>
-	server_name  <#list domains as domain>${domain}<#sep> </#list>;
-			<#if a.useSsi>
+	listen       ${dynamicPort?has_content?then(dynamicPort,80)};
+	server_name  <#list page.list as d>${d.name}<#sep> </#list>;
+			<#if a.useSsi||dynamicLocation?has_content>
 	ssi on;
 	ssi_silent_errors on;
-	location ${dynamicLocation!'/'} {
+	location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} {
 		proxy_redirect off;
 		proxy_set_header Host $host;
 		proxy_set_header X-Real-IP $remote_addr;
@@ -65,8 +49,16 @@ server {
 		alias ${rootPath}/web/site_${siteId}/include/;
 	}
 			</#if>
-			<#if a.resourcePath?starts_with(a.dynamicPath)>
-	location /${a.resourcePath[a.dynamicPath?length..]} {
+			<#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))>
+	#${a.name} 静态化站点配置
+	location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
+		alias   ${rootPath}/web/site_${siteId}/;
+		index  index.html;
+	}
+			</#if>
+			<#if a.resourcePath?starts_with(a.dynamicPath)||a.resourcePath?starts_with(a.sitePath)>
+	#${a.name} 资源站点配置
+	location ${resourceLocation?has_content?then('/'+resourceLocation,'/')} {
 		alias ${rootPath}/resource/site_${siteId}/;
 	}
 			</#if>
@@ -74,65 +66,35 @@ server {
 		</#if>
 	</#if>
 </@_sysDomainList>
-<#if a.useStatic>
-	<#assign sitePath=a.sitePath!''/>
-	<#if 0 = sitePath?index_of('http') || 0 = sitePath?index_of('//')>
-		<#assign sitePath=sitePath[sitePath?index_of('//')+2..]/>
-	</#if>
-	<#if sitePath?index_of('/') gt 0>
-		<#assign siteLocation=sitePath[sitePath?index_of('/')..]/>
-		<#assign sitePath=sitePath[0..sitePath?index_of('/')-1]/>
-	</#if>
-	<#if sitePath?index_of(':') gt 0>
-		<#assign sitePort=sitePath[sitePath?index_of(':')+1..]/>
-		<#assign sitePath=sitePath[0..sitePath?index_of(':')-1]/>
-		<#if sitePort?index_of('/') gt 0>
-			<#assign sitePort=sitePath[0..sitePort?index_of('/')-1]/>
-		</#if>
-	</#if>
-
+<#if a.useStatic&&!((a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath)))>
+#${a.name} 静态化站点配置
 server {
-	listen       ${sitePort!80};
+	listen       ${sitePort?has_content?then(sitePort,80)};
 	server_name  ${sitePath};
 	<#if a.useSsi>
 	ssi on;
 	ssi_silent_errors on;
 	</#if>
 
-	location ${siteLocation!'/'} {
+	location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
 		alias   ${rootPath}/web/site_${siteId}/;
 		index  index.html;
 	}
 	<#if a.resourcePath?starts_with(a.sitePath)>
-
-	location /${a.resourcePath[a.sitePath?length..]} {
+	#${a.name} 资源站点配置
+	location ${resourceLocation?has_content?then('/'+resourceLocation,'/')} {
 		alias ${rootPath}/resource/site_${siteId}/;
 	}
 	</#if>
 }
 </#if>
 <#if (!a.sitePath?has_content||!a.resourcePath?starts_with(a.sitePath))&&!a.resourcePath?starts_with(a.dynamicPath)>
-	<#assign resourcePath=a.resourcePath/>
-	<#if 0 = resourcePath?index_of('http') || 0 = resourcePath?index_of('//')>
-		<#assign resourcePath=resourcePath[resourcePath?index_of('//')+2..]/>
-	</#if>
-	<#if resourcePath?index_of('/') gt 0>
-		<#assign resourceLocation=resourcePath[resourcePath?index_of('/')..]/>
-		<#assign resourcePath=resourcePath[0..resourcePath?index_of('/')-1]/>
-	</#if>
-	<#if resourcePath?index_of(':') gt 0>
-		<#assign resourcePort=resourcePath[resourcePath?index_of(':')+1..]/>
-		<#assign resourcePath=resourcePath[0..resourcePath?index_of(':')-1]/>
-		<#if resourcePort?index_of('/') gt 0>
-			<#assign resourcePort=resourcePath[0..resourcePort?index_of('/')]/>
-		</#if>
-	</#if>
-
+#${a.name} 资源站点配置
 server {
-	listen       ${resourcePort!80};
+	listen       ${resourcePort?has_content?then(resourcePort,80)};
 	server_name  ${resourcePath};
 
-	location ${resourceLocation!'/'} {
+	location ${resourceLocation?has_content?then('/'+resourceLocation,'/')} {
 		alias   ${rootPath}/resource/site_${siteId}/;
 		index  index.html;
 		add_header Access-Control-Allow-Origin *;

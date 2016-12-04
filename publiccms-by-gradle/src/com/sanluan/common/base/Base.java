@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,8 @@ import org.apache.commons.logging.Log;
 
 public abstract class Base {
     public static final Random r = new Random();
-    public static final String DEFAULT_CHARSET = "UTF-8";
+    public static final String DEFAULT_CHARSET_NAME = "UTF-8";
+    public static final Charset DEFAULT_CHARSET = Charset.forName(DEFAULT_CHARSET_NAME);
     public static final String SEPARATOR = "/";
     public static final String BLANK = "";
     public static final String BLANK_SPACE = " ";
@@ -31,6 +33,14 @@ public abstract class Base {
 
     public static boolean empty(String var) {
         return isBlank(var);
+    }
+
+    public static boolean notEmpty(long var) {
+        return 0 != var;
+    }
+
+    public static boolean notEmpty(int var) {
+        return 0 != var;
     }
 
     public static boolean notEmpty(Object var) {
@@ -51,6 +61,14 @@ public abstract class Base {
 
     public static boolean empty(Map<?, ?> var) {
         return null == var || var.isEmpty();
+    }
+    
+    public static boolean empty(long var) {
+        return 0 == var;
+    }
+
+    public static boolean empty(int var) {
+        return 0 == var;
     }
 
     public static boolean empty(Object var) {

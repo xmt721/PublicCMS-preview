@@ -1,13 +1,34 @@
 package config;
 
+import static freemarker.core.Configurable.AUTO_IMPORT_KEY;
+import static freemarker.core.Configurable.AUTO_INCLUDE_KEY;
+import static freemarker.core.Configurable.BOOLEAN_FORMAT_KEY;
+import static freemarker.core.Configurable.DATETIME_FORMAT_KEY;
+import static freemarker.core.Configurable.DATE_FORMAT_KEY;
+import static freemarker.core.Configurable.LAZY_AUTO_IMPORTS_KEY;
+import static freemarker.core.Configurable.LOCALE_KEY;
+import static freemarker.core.Configurable.NEW_BUILTIN_CLASS_RESOLVER_KEY;
+import static freemarker.core.Configurable.NUMBER_FORMAT_KEY;
+import static freemarker.core.Configurable.TEMPLATE_EXCEPTION_HANDLER_KEY;
+import static freemarker.core.Configurable.TIME_FORMAT_KEY;
+import static freemarker.core.Configurable.URL_ESCAPING_CHARSET_KEY;
+import static freemarker.template.Configuration.DEFAULT_ENCODING_KEY;
+import static freemarker.template.Configuration.OUTPUT_FORMAT_KEY;
+import static freemarker.template.Configuration.TEMPLATE_UPDATE_DELAY_KEY;
+import static java.lang.Integer.parseInt;
+import static org.springframework.scheduling.quartz.SchedulerFactoryBean.PROP_THREAD_COUNT;
+
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -30,20 +52,27 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.publiccms.common.view.InitializeFreeMarkerView;
-import com.publiccms.component.SiteComponent;
-import com.publiccms.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.sanluan.common.base.Base;
+import com.sanluan.common.cache.CacheEntityFactory;
 import com.sanluan.common.datasource.MultiDataSource;
 
 /**
- *
- * ApplicationConfig Spring配置类
+ * <h1>ApplicationConfig</h1>
+ * <p>
+ * Spring配置类
+ * </p>
+ * <p>
+ * Spring Config Class
+ * </p>
  *
  */
 @Configuration
 @ComponentScan(basePackages = "com.publiccms", excludeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
+@MapperScan(basePackages = "com.publiccms.logic.mapper")
 @PropertySource({ "classpath:config/properties/dbconfig.properties", "classpath:config/properties/freemarker.properties",
-        "classpath:config/properties/other.properties" })
+        "classpath:config/properties/other.properties", "classpath:config/properties/cache.properties" })
 @EnableTransactionManagement
 @EnableScheduling
 public class ApplicationConfig extends Base {
@@ -53,7 +82,12 @@ public class ApplicationConfig extends Base {
     public static WebApplicationContext webApplicationContext;
 
     /**
+     * <p>
      * 数据源
+     * </P>
+     * <p>
+     * data source
+     * </p>
      *
      * @return
      * @throws PropertyVetoException
@@ -68,20 +102,25 @@ public class ApplicationConfig extends Base {
         database.setUser(env.getProperty("jdbc.username"));
         database.setPassword(env.getProperty("jdbc.password"));
         database.setAutoCommitOnClose(Boolean.parseBoolean(env.getProperty("cpool.autoCommitOnClose")));
-        database.setCheckoutTimeout(Integer.parseInt(env.getProperty("cpool.checkoutTimeout")));
-        database.setInitialPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
-        database.setMinPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
-        database.setMaxPoolSize(Integer.parseInt(env.getProperty("cpool.maxPoolSize")));
-        database.setMaxIdleTime(Integer.parseInt(env.getProperty("cpool.maxIdleTime")));
-        database.setAcquireIncrement(Integer.parseInt(env.getProperty("cpool.acquireIncrement")));
-        database.setMaxIdleTimeExcessConnections(Integer.parseInt(env.getProperty("cpool.maxIdleTimeExcessConnections")));
+        database.setCheckoutTimeout(parseInt(env.getProperty("cpool.checkoutTimeout")));
+        database.setInitialPoolSize(parseInt(env.getProperty("cpool.minPoolSize")));
+        database.setMinPoolSize(parseInt(env.getProperty("cpool.minPoolSize")));
+        database.setMaxPoolSize(parseInt(env.getProperty("cpool.maxPoolSize")));
+        database.setMaxIdleTime(parseInt(env.getProperty("cpool.maxIdleTime")));
+        database.setAcquireIncrement(parseInt(env.getProperty("cpool.acquireIncrement")));
+        database.setMaxIdleTimeExcessConnections(parseInt(env.getProperty("cpool.maxIdleTimeExcessConnections")));
         targetDataSources.put("default", database);
         bean.setTargetDataSources(targetDataSources, database);
         return bean;
     }
 
     /**
-     * Hibernate事务管理
+     * <p>
+     * Hibernate 事务管理
+     * </p>
+     * <p>
+     * Hibernate Transaction Manager
+     * </p>
      *
      * @return
      */
@@ -93,15 +132,45 @@ public class ApplicationConfig extends Base {
     }
 
     /**
-     * 持久层会话工厂类
+     * <p>
+     * Mybatis 会话工厂
+     * </p>
+     * <p>
+     * Mybatis Session Factory
+     * </p>
+     * 
+     * @return
+     * @throws IOException 
+     */
+    @Bean
+    public SqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource) throws IOException {
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setCacheEnabled(true);
+        configuration.setLazyLoadingEnabled(false);
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        bean.setMapperLocations(resolver
+                .getResources("classpath*:com/publiccms/logic/mapper/**/*Mapper.xml"));
+        bean.setConfiguration(configuration);
+        return bean;
+    }
+
+    /**
+     * <p>
+     * Hibernate 会话工厂类
+     * </p>
+     * <p>
+     * Hibernate Session Factory
+     * </p>
      *
      * @return
      * @throws PropertyVetoException
      */
     @Bean
-    public FactoryBean<SessionFactory> sessionFactory() throws PropertyVetoException {
+    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws PropertyVetoException {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
-        bean.setDataSource(dataSource());
+        bean.setDataSource(dataSource);
         bean.setPackagesToScan(new String[] { "com.publiccms.entities" });
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
@@ -115,8 +184,10 @@ public class ApplicationConfig extends Base {
         properties.setProperty("hibernate.cache.use_query_cache", env.getProperty("hibernate.cache.use_query_cache"));
         properties.setProperty("hibernate.transaction.coordinator_class",
                 env.getProperty("hibernate.transaction.coordinator_class"));
-        properties.setProperty("hibernate.cache.provider_configuration_file_resource_path",
-                env.getProperty("hibernate.cache.provider_configuration_file_resource_path"));
+        properties.setProperty("net.sf.ehcache.configurationResourceName",
+                env.getProperty("net.sf.ehcache.configurationResourceName"));
+        properties.setProperty("com.sanluan.common.hibernate.redis.configurationResourceName",
+                env.getProperty("com.sanluan.common.hibernate.redis.configurationResourceName"));
         properties.setProperty("hibernate.search.default.directory_provider",
                 env.getProperty("hibernate.search.default.directory_provider"));
         properties.setProperty("hibernate.search.default.indexBase", getDirPath("/indexes/"));
@@ -125,7 +196,27 @@ public class ApplicationConfig extends Base {
     }
 
     /**
+     * <p>
+     * 缓存工厂
+     * </p>
+     * <p>
+     * Cache Factory
+     * </p>
+     * 
+     * @return
+     */
+    @Bean
+    public CacheEntityFactory cacheEntityFactory() {
+        return new CacheEntityFactory(env.getProperty("cache.configurationResourceName"));
+    }
+
+    /**
+     * <p>
      * 国际化处理
+     * </p>
+     * <p>
+     * Internationalization
+     * </p>
      *
      * @return
      */
@@ -139,7 +230,12 @@ public class ApplicationConfig extends Base {
     }
 
     /**
-     * 模板操作组件
+     * <p>
+     * 模板组件
+     * </p>
+     * <p>
+     * Template Component
+     * </p>
      *
      * @return
      */
@@ -153,7 +249,12 @@ public class ApplicationConfig extends Base {
     }
 
     /**
-     * 文件操作组件
+     * <p>
+     * 站点组件
+     * </p>
+     * <p>
+     * Site Component
+     * </p>
      *
      * @return
      */
@@ -162,13 +263,18 @@ public class ApplicationConfig extends Base {
         SiteComponent bean = new SiteComponent();
         bean.setRootPath(getDirPath(""));
         bean.setSiteMasters(env.getProperty("site.masterSiteIds"));
-        bean.setDefaultSiteId(Integer.parseInt(env.getProperty("site.defaultSiteId")));
+        bean.setDefaultSiteId(parseInt(env.getProperty("site.defaultSiteId")));
         return InitializeFreeMarkerView.siteComponent = bean;
     }
 
     /**
+     * <p>
      * FreeMarker配置工厂
-     *
+     * </p>
+     * <p>
+     * FreeMarker Configuration Factory
+     * </p>
+     * 
      * @return
      */
     @Bean
@@ -176,55 +282,70 @@ public class ApplicationConfig extends Base {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("/WEB-INF/");
         Properties properties = new Properties();
-        properties.setProperty("newBuiltinClassResolver", env.getProperty("freemarkerSettings.newBuiltinClassResolver"));
-        properties.setProperty("templateUpdateDelay", env.getProperty("freemarkerSettings.templateUpdateDelay"));
-        properties.setProperty("defaultEncoding", env.getProperty("freemarkerSettings.defaultEncoding"));
-        properties.setProperty("urlEscapingCharset", env.getProperty("freemarkerSettings.urlEscapingCharset"));
-        properties.setProperty("locale", env.getProperty("freemarkerSettings.locale"));
-        properties.setProperty("booleanFormat", env.getProperty("freemarkerSettings.booleanFormat"));
-        properties.setProperty("datetimeFormat", env.getProperty("freemarkerSettings.datetimeFormat"));
-        properties.setProperty("dateFormat", env.getProperty("freemarkerSettings.dateFormat"));
-        properties.setProperty("timeFormat", env.getProperty("freemarkerSettings.timeFormat"));
-        properties.setProperty("numberFormat", env.getProperty("freemarkerSettings.numberFormat"));
-		properties.setProperty("outputFormat", env.getProperty("freemarkerSettings.outputFormat"));
-        properties.setProperty("autoImport", env.getProperty("freemarkerSettings.autoImport"));
-		properties.setProperty("lazyAutoImports", env.getProperty("freemarkerSettings.lazyAutoImports"));
-        properties.setProperty("autoInclude", env.getProperty("freemarkerSettings.autoInclude"));
-        properties.setProperty("templateExceptionHandler", env.getProperty("freemarkerSettings.templateExceptionHandler"));
+        properties.setProperty(NEW_BUILTIN_CLASS_RESOLVER_KEY, env.getProperty("freemarkerSettings.newBuiltinClassResolver"));
+        properties.setProperty(TEMPLATE_UPDATE_DELAY_KEY, env.getProperty("freemarkerSettings.templateUpdateDelay"));
+        properties.setProperty(DEFAULT_ENCODING_KEY, env.getProperty("freemarkerSettings.defaultEncoding"));
+        properties.setProperty(URL_ESCAPING_CHARSET_KEY, env.getProperty("freemarkerSettings.urlEscapingCharset"));
+        properties.setProperty(LOCALE_KEY, env.getProperty("freemarkerSettings.locale"));
+        properties.setProperty(BOOLEAN_FORMAT_KEY, env.getProperty("freemarkerSettings.booleanFormat"));
+        properties.setProperty(DATETIME_FORMAT_KEY, env.getProperty("freemarkerSettings.datetimeFormat"));
+        properties.setProperty(DATE_FORMAT_KEY, env.getProperty("freemarkerSettings.dateFormat"));
+        properties.setProperty(TIME_FORMAT_KEY, env.getProperty("freemarkerSettings.timeFormat"));
+        properties.setProperty(NUMBER_FORMAT_KEY, env.getProperty("freemarkerSettings.numberFormat"));
+        properties.setProperty(OUTPUT_FORMAT_KEY, env.getProperty("freemarkerSettings.outputFormat"));
+        properties.setProperty(AUTO_IMPORT_KEY, env.getProperty("freemarkerSettings.autoImport"));
+        properties.setProperty(LAZY_AUTO_IMPORTS_KEY, env.getProperty("freemarkerSettings.lazyAutoImports"));
+        properties.setProperty(AUTO_INCLUDE_KEY, env.getProperty("freemarkerSettings.autoInclude"));
+        properties.setProperty(TEMPLATE_EXCEPTION_HANDLER_KEY, env.getProperty("freemarkerSettings.templateExceptionHandler"));
         bean.setFreemarkerSettings(properties);
         return bean;
     }
 
     /**
-     * 附件Multipart解决方案
-     *
+     * <p>
+     * 文件上传解决方案
+     * </p>
+     * <p>
+     * File Upload Resolver
+     * </p>
+     * 
      * @return
      */
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver bean = new CommonsMultipartResolver();
-        bean.setDefaultEncoding(DEFAULT_CHARSET);
-        bean.setMaxUploadSize(102400000);
+        bean.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        bean.setMaxUploadSize(Long.parseLong(env.getProperty("multipart.maxUploadSize")));
         return bean;
     }
 
     /**
-     * 任务计划工厂类配置
-     *
+     * <p>
+     * 任务计划工厂
+     * </p>
+     * <p>
+     * Task Scheduler Factory
+     * </p>
+     * 
      * @return
      */
     @Bean
     public SchedulerFactoryBean scheduler() {
         SchedulerFactoryBean bean = new SchedulerFactoryBean();
         Properties properties = new Properties();
-        properties.setProperty("org.quartz.threadPool.threadCount", env.getProperty("task.threadCount"));
+        properties.setProperty(PROP_THREAD_COUNT, env.getProperty("task.threadCount"));
         bean.setQuartzProperties(properties);
         return bean;
     }
 
     /**
-     * json消息转换适配器，用于支持RequestBody、ResponseBody
-     *
+     * <p>
+     * json、Jsonp消息转换适配器，用于支持RequestBody、ResponseBody
+     * </p>
+     * <p>
+     * Json、Jsonp Message Converter , Support For RequestBody、ResponseBody
+     * </p>
+     * 
      * @return
      */
     @Bean
