@@ -26,4 +26,9 @@ public class GetMd5Method extends BaseMethod {
         }
         return null;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 }

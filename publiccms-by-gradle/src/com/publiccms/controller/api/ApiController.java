@@ -33,7 +33,7 @@ import com.sanluan.common.handler.HttpParameterHandler;
  *
  */
 @Controller
-public class AppController extends AbstractController {
+public class ApiController extends AbstractController {
     private Map<String, AbstractAppDirective> appMap = new LinkedHashMap<String, AbstractAppDirective>();
     private List<Map<String, String>> appList = new ArrayList<Map<String, String>>();
     private MediaType mediaType = new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
@@ -44,6 +44,18 @@ public class AppController extends AbstractController {
             put("error", INTERFACE_NOT_FOUND);
         }
     };
+    
+    /**
+     * 接口请求统一分发
+     * 
+     * @param callback
+     * @return
+     */
+    @RequestMapping({ SEPARATOR, "/**" })
+    @ResponseBody
+    public MappingJacksonValue api(String callback) {
+        return getMappingJacksonValue(NOT_FOUND_MAP, callback);
+    }
 
     /**
      * 接口指令统一分发
@@ -81,9 +93,7 @@ public class AppController extends AbstractController {
     @RequestMapping("apis")
     @ResponseBody
     public MappingJacksonValue apis(String callback) {
-        MappingJacksonValue mappingJacksonValue  = new MappingJacksonValue(appList);
-        mappingJacksonValue.setJsonpFunction(callback);
-        return mappingJacksonValue;
+        return getMappingJacksonValue(appList, callback);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.publiccms.logic.component.file;
 
-import static com.publiccms.logic.component.template.MetadataComponent.METADATA_FILE;
 import static com.publiccms.logic.component.template.TemplateComponent.INCLUDE_DIRECTORY;
 import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.FileUtils.readFileToString;
@@ -46,7 +45,7 @@ public class FileComponent extends Base {
                 Path fileNamePath = entry.getFileName();
                 if (notEmpty(fileNamePath)) {
                     String fileName = fileNamePath.toString();
-                    if (!METADATA_FILE.equalsIgnoreCase(fileName) && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                    if (!fileName.endsWith(".data") && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                         if (attrs.isDirectory()) {
                             fileList.add(new FileInfo(fileName, true, attrs));

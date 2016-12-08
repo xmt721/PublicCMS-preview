@@ -21,8 +21,6 @@ import com.sanluan.common.base.Base;
 
 /**
  * ZipUtils 压缩/解压缩zip包处理类
- * 
- * @author kerneler
  *
  */
 public class ZipUtils extends Base {

@@ -61,7 +61,7 @@ public class CmsWordAdminController extends AbstractController {
             service.delete(id);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.word", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+                            "delete.word", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -77,7 +77,7 @@ public class CmsWordAdminController extends AbstractController {
             service.updateStatus(id, true);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "hidden.word", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+                            "hidden.word", getIpAddress(request), getDate(),getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -93,7 +93,7 @@ public class CmsWordAdminController extends AbstractController {
             service.updateStatus(id, false);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "show.word", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+                            "show.word", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -25,6 +26,7 @@ public class SysDept implements java.io.Serializable {
     @MyColumn(title = "ID")
     private Integer id;
     @MyColumn(title = "站点", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "名称", condition = true, like = true)
     private String name;

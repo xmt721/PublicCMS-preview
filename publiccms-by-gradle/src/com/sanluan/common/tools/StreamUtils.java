@@ -9,10 +9,8 @@ import java.io.OutputStream;
 import com.sanluan.common.base.Base;
 
 /**
- * 流输出工具类
+ * StreamUtils 流输出工具类
  * 
- * @author kerneler
- *
  */
 public class StreamUtils extends Base {
     public static final int BUFFER_SIZE = 1024 * 1024;

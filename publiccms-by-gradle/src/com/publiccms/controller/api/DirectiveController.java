@@ -1,6 +1,6 @@
 package com.publiccms.controller.api;
 
-import static com.publiccms.controller.api.AppController.INTERFACE_NOT_FOUND;
+import static com.publiccms.controller.api.ApiController.INTERFACE_NOT_FOUND;
 import static com.publiccms.logic.component.site.SiteComponent.CONTEXT_SITE;
 import static org.springframework.util.StringUtils.uncapitalize;
 
@@ -82,9 +82,7 @@ public class DirectiveController extends AbstractController {
     @RequestMapping("directives")
     @ResponseBody
     public MappingJacksonValue directives(String callback) {
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(actionList);
-        mappingJacksonValue.setJsonpFunction(callback);
-        return mappingJacksonValue;
+        return getMappingJacksonValue(actionList, callback);
     }
 
     /**

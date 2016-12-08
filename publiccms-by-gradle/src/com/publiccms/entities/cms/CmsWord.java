@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -32,6 +33,7 @@ public class CmsWord implements java.io.Serializable {
     @MyColumn(title = "名称", condition = true, like = true)
     private String name;
     @MyColumn(title = "站点", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "搜索次数", order = true)
     private int searchCount;

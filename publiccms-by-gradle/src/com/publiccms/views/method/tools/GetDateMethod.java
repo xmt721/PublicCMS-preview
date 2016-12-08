@@ -53,6 +53,11 @@ public class GetDateMethod extends BaseMethod {
         }
         return date;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 
     Date getThisMonday(Date date) {
         Calendar calendar = Calendar.getInstance();

@@ -445,4 +445,8 @@ public class TemplateComponent extends Base implements Cache {
     public Configuration getTaskConfiguration() {
         return taskConfiguration;
     }
+
+    public String getMethodRemoveRegex() {
+        return methodRemoveRegex;
+    }
 }

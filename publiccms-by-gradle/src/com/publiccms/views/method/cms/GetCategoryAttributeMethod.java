@@ -38,7 +38,13 @@ public class GetCategoryAttributeMethod extends BaseMethod {
         }
         return null;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 
     @Autowired
     private CmsCategoryAttributeService service;
+
 }

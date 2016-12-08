@@ -73,9 +73,8 @@ public class CmsFtpUserAdminController extends AbstractController {
             entity.setSiteId(site.getId());
             entity.setPassword(encode(entity.getPassword()));
             service.save(entity);
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.ftpuser", getIpAddress(request), getDate(), getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.ftpuser", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -96,9 +95,8 @@ public class CmsFtpUserAdminController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.ftpuser", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.ftpuser", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

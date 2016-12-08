@@ -25,8 +25,6 @@ import com.sanluan.common.handler.RenderHandler;
  *
  */
 public abstract class AbstractAppDirective extends BaseHttpDirective {
-    public final static String REQUIRED_PARAMTER = "required_paramter:";
-
     public SysSite getSite(RenderHandler handler) throws IOException, Exception {
         HttpServletRequest request = handler.getRequest();
         return siteComponent.getSite(request.getServerName());

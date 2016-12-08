@@ -47,4 +47,9 @@ public class GetTemplateResultMethod extends BaseMethod {
         }
         return null;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 }

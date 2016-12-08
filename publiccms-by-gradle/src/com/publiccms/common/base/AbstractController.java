@@ -4,6 +4,7 @@ import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
 import static com.publiccms.common.constants.CommonConstants.getSessionAdmin;
 import static com.publiccms.common.constants.CommonConstants.getSessionUser;
 import static com.publiccms.common.constants.CommonConstants.getSessionUserTime;
+import static com.sanluan.common.handler.HttpParameterHandler.FUNCTIONNAME_PATTERN;
 import static com.sanluan.common.tools.RequestUtils.cancleCookie;
 import static com.sanluan.common.tools.RequestUtils.getUserAgent;
 
@@ -45,7 +46,7 @@ public abstract class AbstractController extends BaseController {
     private static final String VALID_CHARS = "[^\\s\\(\\)<>@,;:\\\\\\\"\\.\\[\\]+]+";
     public static final Pattern EMAIL_PATTERN = Pattern
             .compile("(" + VALID_CHARS + "(\\." + VALID_CHARS + ")*@" + VALID_CHARS + "(\\." + VALID_CHARS + ")*)");
-
+    
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
@@ -61,7 +62,12 @@ public abstract class AbstractController extends BaseController {
 
     protected static MappingJacksonValue getMappingJacksonValue(Object object, String callback) {
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(object);
-        mappingJacksonValue.setJsonpFunction(callback);
+        if(notEmpty(callback)){
+            Matcher m = FUNCTIONNAME_PATTERN.matcher(callback);
+            if (m.matches()) {
+                mappingJacksonValue.setJsonpFunction(callback);
+            }
+        }
         return mappingJacksonValue;
     }
 

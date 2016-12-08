@@ -94,4 +94,6 @@ public abstract class BaseMethod extends Base implements TemplateMethodModelEx {
     public static Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException, ParseException {
         return converDate(getModel(index, arguments));
     }
+    
+    public abstract boolean needAppToken();
 }

@@ -29,4 +29,9 @@ public class GetSleepMethod extends BaseMethod {
         }
         return true;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 }

@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -27,6 +28,7 @@ public class HomeScore implements java.io.Serializable {
     @MyColumn(title = "ID")
     private Long id;
     @MyColumn(title = "站点ID", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "用户ID", condition = true)
     private long userId;

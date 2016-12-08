@@ -40,9 +40,9 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </head>
 <body>
 	<div align=center>
-		<div style="background-color:#f0f0f0;width:320px;" onclick="dokeydown()">服务器错误</div>
-		<div style="width:320px;">系统发出错误,请返回重试或查看其他内容!<br /><br /><a href="<%=basePath%>">返回首页</a></div>
-		<div style="display: none;width:320px;" id=divexception>
+		<div style="background-color:#f0f0f0;width:500px;" onclick="dokeydown()">服务器错误</div>
+		<div style="width:500px;">系统发出错误,请返回重试或查看其他内容!<br /><br /><a href="<%=basePath%>">返回首页</a></div>
+		<div style="display: none;width:500px;" id=divexception>
 			<textarea rows="40" style="width:100%">
 <%
 	Exception exception;

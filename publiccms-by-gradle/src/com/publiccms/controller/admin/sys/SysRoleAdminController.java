@@ -102,7 +102,7 @@ public class SysRoleAdminController extends AbstractController {
             roleAuthorizedService.deleteByRoleId(id);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.role", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+                            "delete.role", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

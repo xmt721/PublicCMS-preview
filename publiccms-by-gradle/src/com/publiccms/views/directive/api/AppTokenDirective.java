@@ -18,8 +18,8 @@ import com.sanluan.common.handler.RenderHandler;
 
 @Component
 public class AppTokenDirective extends AbstractAppDirective {
-    private final static String KEY_NOT_EXISTS = "key_not_exists";
-    private final static String SECRET_ERROR = "secret_error";
+    private final static String KEY_NOT_EXISTS = "keyNotExists";
+    private final static String SECRET_ERROR = "secretError";
 
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {

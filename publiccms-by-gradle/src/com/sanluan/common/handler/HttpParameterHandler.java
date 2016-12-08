@@ -12,6 +12,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.sanluan.common.base.BaseHandler;
 
 public class HttpParameterHandler extends BaseHandler {
+    public static final Pattern FUNCTIONNAME_PATTERN = Pattern.compile("^[A-Za-z_]{1}[0-9A-Za-z_]{0,100}$");
     private MediaType mediaType;
     private HttpMessageConverter<Object> httpMessageConverter;
     private HttpServletRequest request;
@@ -46,7 +49,12 @@ public class HttpParameterHandler extends BaseHandler {
     public void render() throws HttpMessageNotWritableException, IOException {
         if (!renderd) {
             MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
-            mappingJacksonValue.setJsonpFunction(callback);
+            if(notEmpty(callback)){
+                Matcher m = FUNCTIONNAME_PATTERN.matcher(callback);
+                if (m.matches()) {
+                    mappingJacksonValue.setJsonpFunction(callback);
+                }
+            }
             httpMessageConverter.write(mappingJacksonValue, mediaType, new ServletServerHttpResponse(response));
             renderd = true;
         }

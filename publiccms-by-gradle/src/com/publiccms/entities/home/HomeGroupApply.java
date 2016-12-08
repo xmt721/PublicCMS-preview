@@ -2,6 +2,7 @@ package com.publiccms.entities.home;
 // Generated 2016-11-13 14:04:11 by Hibernate Tools 4.3.1
 
 import java.util.Date;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;

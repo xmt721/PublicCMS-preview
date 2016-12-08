@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -30,6 +31,7 @@ public class SysTask implements java.io.Serializable {
 	@MyColumn(title = "ID")
 	private Integer id;
 	@MyColumn(title = "站点", condition = true)
+	@JsonIgnore
 	private int siteId;
 	@MyColumn(title = "任务名称")
 	private String name;

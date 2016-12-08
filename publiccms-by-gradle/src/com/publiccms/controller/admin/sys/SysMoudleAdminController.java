@@ -74,8 +74,7 @@ public class SysMoudleAdminController extends AbstractController {
             roleMoudleService.deleteByMoudleId(id);
             dealRoleAuthorized(roleMoudleList);
             logOperateService.save(new LogOperate(getSite(request).getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.moudle", getIpAddress(request), getDate(),
-                    id + ":" + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.moudle", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

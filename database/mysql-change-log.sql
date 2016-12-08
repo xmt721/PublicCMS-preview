@@ -654,3 +654,11 @@ INSERT INTO `sys_moudle` VALUES ('138', '上传文件', 'cmsResource/upload', 'c
 INSERT INTO `sys_moudle` VALUES ('139', '压缩', null, 'cmsResource/zip', null, '131', '0');
 INSERT INTO `sys_moudle` VALUES ('140', '解压缩', null, 'cmsResource/unzip,cmsResource/unzipHere', null, '131', '0');
 
+-- 20161206 --
+UPDATE `sys_moudle` SET parent_id = 38 WHERE id = 81;
+ALTER TABLE `sys_config` DROP COLUMN `id`,DROP PRIMARY KEY,DROP INDEX `site_id`,ADD PRIMARY KEY (`site_id`, `code`, `subcode`);
+ALTER TABLE `sys_config` RENAME `sys_config_data`;
+
+-- 20161208 --
+DELETE FTOM `sys_moudle` WHERE id = 88;
+DELETE FTOM `sys_moudle` WHERE id = 89;

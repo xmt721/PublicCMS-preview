@@ -13,10 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.sanluan.common.base.Base;
 
 /**
- * Request工具类
  * 
- * @author kerneler
- *
+ * RequestUtils Request工具类
+ * 
  */
 public class RequestUtils extends Base {
     /**

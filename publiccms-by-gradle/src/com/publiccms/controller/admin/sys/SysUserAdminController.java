@@ -119,7 +119,7 @@ public class SysUserAdminController extends AbstractController {
             service.updateStatus(id, false);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "enable.user", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+                            "enable.user", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -138,7 +138,7 @@ public class SysUserAdminController extends AbstractController {
             service.updateStatus(id, true);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "disable.user", getIpAddress(request), getDate(), id + ":" + entity.getName()));
+                            "disable.user", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

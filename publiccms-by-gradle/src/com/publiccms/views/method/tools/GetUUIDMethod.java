@@ -21,4 +21,9 @@ public class GetUUIDMethod extends BaseMethod {
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         return UUID.randomUUID();
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 }

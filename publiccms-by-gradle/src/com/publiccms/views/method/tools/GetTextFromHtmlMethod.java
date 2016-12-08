@@ -27,4 +27,9 @@ public class GetTextFromHtmlMethod extends BaseMethod {
         }
         return null;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 }

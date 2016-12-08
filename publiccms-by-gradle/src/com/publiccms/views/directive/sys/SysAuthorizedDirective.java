@@ -43,10 +43,11 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
                     }
                 } else {
                     SysRoleAuthorizedId[] ids = new SysRoleAuthorizedId[urls.length * roleIds.length];
+                    int n=0;
                     for (int i = 0; i < urls.length; i++) {
                         map.put(urls[i], false);
-                        for (int j = 0; j < roleIds.length; i++) {
-                            ids[i] = new SysRoleAuthorizedId(roleIds[j], urls[i]);
+                        for (int j = 0; j < roleIds.length; j++) {
+                            ids[n++] = new SysRoleAuthorizedId(roleIds[j], urls[i]);
                         }
                     }
                     for (SysRoleAuthorized entity : service.getEntitys(ids)) {

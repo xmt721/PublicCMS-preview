@@ -41,6 +41,11 @@ public class GetContentAttributesMethod extends BaseMethod {
         }
         return null;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
     @Autowired
     private CmsContentAttributeService service;

@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.spi.Static;
 import com.sanluan.common.source.entity.MyColumn;
 
@@ -33,6 +34,7 @@ public class CmsVote implements java.io.Serializable , Static {
     @MyColumn(title = "ID")
     private Integer id;
     @MyColumn(title = "站点", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

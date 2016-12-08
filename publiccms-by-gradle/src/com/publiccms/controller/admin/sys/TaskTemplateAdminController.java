@@ -79,7 +79,7 @@ public class TaskTemplateAdminController extends AbstractController {
     public String delete(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
-            String filePath = siteComponent.getWebTemplateFilePath(site, path);
+            String filePath = siteComponent.getTaskTemplateFilePath(site, path);
             if (verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }

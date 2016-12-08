@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.home;
 
+import static com.sanluan.common.tools.JsonUtils.getString;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
 // Generated 2016-11-13 11:38:13 by com.sanluan.common.source.SourceMaker
@@ -38,7 +39,7 @@ public class HomeDirectoryAdminController extends AbstractController {
             service.updateStatus(id, false);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "enable.home.directory", getIpAddress(request), getDate(), id + ":" + entity.getTitle()));
+                            "enable.home.directory", getIpAddress(request), getDate(),getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -57,7 +58,7 @@ public class HomeDirectoryAdminController extends AbstractController {
             service.updateStatus(id, true);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "disable.home.directory", getIpAddress(request), getDate(), id + ":" + entity.getTitle()));
+                            "disable.home.directory", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

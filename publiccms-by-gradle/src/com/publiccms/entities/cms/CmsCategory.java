@@ -28,6 +28,7 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "ID")
     private Integer id;
     @MyColumn(title = "站点", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "名称")
     private String name;
@@ -42,7 +43,6 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "编码")
     private String code;
     @MyColumn(title = "模板路径")
-    @JsonIgnore
     private String templatePath;
     @MyColumn(title = "路径")
     private String path;
@@ -53,7 +53,6 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "地址")
     private String url;
     @MyColumn(title = "内容路径")
-    @JsonIgnore
     private String contentPath;
     @MyColumn(title = "每页数据")
     private Integer pageSize;
@@ -64,7 +63,6 @@ public class CmsCategory implements java.io.Serializable, Static {
     @MyColumn(title = "是否隐藏", condition = true)
     private boolean hidden;
     @MyColumn(title = "是否删除", condition = true)
-    @JsonIgnore
     private boolean disabled;
     @MyColumn(title = "内容数")
     private int contents;

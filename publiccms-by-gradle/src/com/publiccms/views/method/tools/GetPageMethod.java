@@ -33,4 +33,9 @@ public class GetPageMethod extends BaseMethod {
         }
         return url;
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 }

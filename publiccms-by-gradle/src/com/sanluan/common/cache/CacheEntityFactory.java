@@ -63,4 +63,8 @@ public class CacheEntityFactory extends Base {
         }
         return defaultCacheEntity;
     }
+
+    public void setDefaultSize(int defaultSize) {
+        this.defaultSize = defaultSize;
+    }
 }

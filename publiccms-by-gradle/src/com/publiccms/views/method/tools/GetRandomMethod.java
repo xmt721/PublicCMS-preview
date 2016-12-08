@@ -25,4 +25,9 @@ public class GetRandomMethod extends BaseMethod {
         }
         return r.nextInt();
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return false;
+    }
 }

@@ -24,8 +24,6 @@ import freemarker.template.TemplateException;
 /**
  * FreeMarkerUtils FreeMarker工具类
  * 
- * @author kerneler
- *
  */
 public class FreeMarkerUtils extends Base {
     private final static Log log = getLog(FreeMarkerUtils.class);

@@ -30,6 +30,7 @@ import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.index.CmsContentBridge;
 import com.publiccms.common.index.CmsContentInterceptor;
 import com.publiccms.common.index.PublishDateFilterFactory;
@@ -57,6 +58,7 @@ public class CmsContent implements java.io.Serializable, Static {
     private Long id;
     @MyColumn(title = "站点", condition = true)
     @Field(analyze = Analyze.NO)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "标题", condition = true, like = true, or = true)
     @Field
@@ -72,7 +74,6 @@ public class CmsContent implements java.io.Serializable, Static {
     private int categoryId;
     @MyColumn(title = "模型", condition = true)
     @Field(analyze = Analyze.NO)
-    @FieldBridge(impl = IntegerBridge.class)
     @Facet(encoding = FacetEncodingType.STRING)
     private int modelId;
     @MyColumn(title = "父内容", condition = true)

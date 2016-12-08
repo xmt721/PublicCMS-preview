@@ -16,7 +16,7 @@
 		<#list extendList as extend>
 			<tr>
 				<td>
-					<input type="hidden" name="${name}[${extend?index}].id.extendId" value="${extend.id.extendId}"/>
+					<input type="hidden" name="${name}[${extend?index}].id.extendId" value="${(extend.id.extendId)!}"/>
 					<input type="text" name="${name}[${extend?index}].id.code" value="${extend.id.code}" size="20" class="required alphanumeric"/>
 				</td>
 				<td>

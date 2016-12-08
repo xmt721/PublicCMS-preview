@@ -31,6 +31,7 @@ public class SysUser implements java.io.Serializable {
     @MyColumn(title = "ID")
     private Long id;
     @MyColumn(title = "站点", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "用户名", condition = true, like = true, or = true, name = "name")
     private String name;

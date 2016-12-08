@@ -32,6 +32,8 @@ public class SiteComponent extends Base implements Cache {
     public static final String CONTEXT_INCLUDE = "include";
     public static final String CONTEXT_IMPORT = "import";
     protected static final String CONTEXT_BASE = "base";
+    public static final String MODEL_FILE = "model.data";
+    public static final String CONFIG_FILE = "config.data";
 
     private String rootPath;
     private String resourceFilePath;
@@ -144,6 +146,22 @@ public class SiteComponent extends Base implements Cache {
      */
     public String getWebTemplateFilePath(SysSite site, String templatePath) {
         return getWebTemplateFilePath() + getFullFileName(site, templatePath);
+    }
+
+    /**
+     * @param templatePath
+     * @return
+     */
+    public String getModelFilePath(SysSite site) {
+        return getWebTemplateFilePath() + getFullFileName(site, MODEL_FILE);
+    }
+
+    /**
+     * @param templatePath
+     * @return
+     */
+    public String getConfigFilePath(SysSite site) {
+        return getWebTemplateFilePath() + getFullFileName(site, CONFIG_FILE);
     }
 
     public void setDefaultSiteId(int defaultSiteId) {

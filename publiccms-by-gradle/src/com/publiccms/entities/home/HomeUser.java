@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -25,6 +26,7 @@ public class HomeUser implements java.io.Serializable {
     @MyColumn(title = "用户")
     private long userId;
     @MyColumn(title = "站点", condition = true)
+    @JsonIgnore
     private int siteId;
     @MyColumn(title = "标题")
     private String title;

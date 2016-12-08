@@ -140,7 +140,7 @@ public class ApplicationConfig extends Base {
      * </p>
      * 
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     @Bean
     public SqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource) throws IOException {
@@ -150,8 +150,7 @@ public class ApplicationConfig extends Base {
         configuration.setCacheEnabled(true);
         configuration.setLazyLoadingEnabled(false);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        bean.setMapperLocations(resolver
-                .getResources("classpath*:com/publiccms/logic/mapper/**/*Mapper.xml"));
+        bean.setMapperLocations(resolver.getResources("classpath*:com/publiccms/logic/mapper/**/*Mapper.xml"));
         bean.setConfiguration(configuration);
         return bean;
     }
@@ -207,7 +206,12 @@ public class ApplicationConfig extends Base {
      */
     @Bean
     public CacheEntityFactory cacheEntityFactory() {
-        return new CacheEntityFactory(env.getProperty("cache.configurationResourceName"));
+        CacheEntityFactory bean = new CacheEntityFactory(env.getProperty("cache.configurationResourceName"));
+        try {
+            bean.setDefaultSize(Integer.parseInt(env.getProperty("cache.defaultSize")));
+        } catch (NumberFormatException e) {
+        }
+        return bean;
     }
 
     /**
