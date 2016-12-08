@@ -19,12 +19,12 @@ public class CmsCategoryModelId implements java.io.Serializable {
     @MyColumn(title = "分类", condition = true)
     private int categoryId;
     @MyColumn(title = "模型", condition = true)
-    private int modelId;
+    private String modelId;
 
     public CmsCategoryModelId() {
     }
 
-    public CmsCategoryModelId(int categoryId, int modelId) {
+    public CmsCategoryModelId(int categoryId, String modelId) {
         this.categoryId = categoryId;
         this.modelId = modelId;
     }
@@ -38,12 +38,12 @@ public class CmsCategoryModelId implements java.io.Serializable {
         this.categoryId = categoryId;
     }
 
-    @Column(name = "model_id", nullable = false)
-    public int getModelId() {
+    @Column(name = "model_id", nullable = false, length = 20)
+    public String getModelId() {
         return this.modelId;
     }
 
-    public void setModelId(int modelId) {
+    public void setModelId(String modelId) {
         this.modelId = modelId;
     }
 
@@ -56,14 +56,16 @@ public class CmsCategoryModelId implements java.io.Serializable {
             return false;
         CmsCategoryModelId castOther = (CmsCategoryModelId) other;
 
-        return (this.getCategoryId() == castOther.getCategoryId()) && (this.getModelId() == castOther.getModelId());
+        return (this.getCategoryId() == castOther.getCategoryId())
+                && ((this.getModelId() == castOther.getModelId()) || (this.getModelId() != null
+                        && castOther.getModelId() != null && this.getModelId().equals(castOther.getModelId())));
     }
 
     public int hashCode() {
         int result = 17;
 
         result = 37 * result + this.getCategoryId();
-        result = 37 * result + this.getModelId();
+        result = 37 * result + (getModelId() == null ? 0 : this.getModelId().hashCode());
         return result;
     }
 

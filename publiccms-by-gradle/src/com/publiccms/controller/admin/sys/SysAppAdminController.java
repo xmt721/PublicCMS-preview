@@ -39,12 +39,14 @@ public class SysAppAdminController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (notEmpty(entity)) {
+                entity.setAppSecret(null);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.app", getIpAddress(request), getDate(), getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
+            entity.setAppSecret(null);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.app", getIpAddress(request), getDate(), getString(entity)));
         }
@@ -60,9 +62,9 @@ public class SysAppAdminController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);
+            entity.setAppSecret(null);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.app", getIpAddress(request), getDate(), id + ":"
-                            + entity.getAppKey()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.app", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

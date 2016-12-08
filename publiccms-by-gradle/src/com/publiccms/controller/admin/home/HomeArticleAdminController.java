@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.home;
 
+import static com.sanluan.common.tools.JsonUtils.getString;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 
 // Generated 2016-11-13 11:38:14 by com.sanluan.common.source.SourceMaker
@@ -36,8 +37,7 @@ public class HomeArticleAdminController extends AbstractController {
             }
             service.updateStatus(id, false);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.home.article", getIpAddress(request), getDate(), id + ":"
-                            + entity.getTitle()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.home.article", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -55,8 +55,7 @@ public class HomeArticleAdminController extends AbstractController {
             }
             service.updateStatus(id, true);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "disable.home.article", getIpAddress(request), getDate(), id + ":"
-                            + entity.getTitle()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "disable.home.article", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

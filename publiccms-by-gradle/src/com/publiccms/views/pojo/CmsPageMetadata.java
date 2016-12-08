@@ -19,9 +19,10 @@ public class CmsPageMetadata extends Base implements java.io.Serializable {
 	private String publishPath;
 	private boolean useDynamic;
 	private boolean needLogin;
+	private boolean needBody;
+	private String bodyCharset;
 	private String acceptParamters;
 	private Integer cacheTime;
-	private boolean allowContribute;
 	private List<ExtendField> extendList;
 	private List<ExtendData> extendDataList;
 	private Map<String, String> extendData;
@@ -59,14 +60,6 @@ public class CmsPageMetadata extends Base implements java.io.Serializable {
 
 	public void setExtendList(List<ExtendField> extendList) {
 		this.extendList = extendList;
-	}
-
-	public boolean isAllowContribute() {
-		return allowContribute;
-	}
-
-	public void setAllowContribute(boolean allowContribute) {
-		this.allowContribute = allowContribute;
 	}
 
 	@JsonIgnore
@@ -113,4 +106,20 @@ public class CmsPageMetadata extends Base implements java.io.Serializable {
 	public void setUseDynamic(boolean useDynamic) {
 		this.useDynamic = useDynamic;
 	}
+
+    public boolean isNeedBody() {
+        return needBody;
+    }
+
+    public void setNeedBody(boolean needBody) {
+        this.needBody = needBody;
+    }
+
+    public String getBodyCharset() {
+        return bodyCharset;
+    }
+
+    public void setBodyCharset(String bodyCharset) {
+        this.bodyCharset = bodyCharset;
+    }
 }

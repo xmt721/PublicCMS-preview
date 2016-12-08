@@ -1,6 +1,7 @@
 package com.publiccms.test;
 
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.entities.log.LogOperate;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.mapper.tools.ToolsMapper;
 
 import config.ApplicationConfig;
 
@@ -20,11 +19,13 @@ import config.ApplicationConfig;
 @Transactional
 public class MyTest {
     @Autowired
-    private LogOperateService logOperateService;
+    private ToolsMapper toolsMapper;
 
     @Test
-    public void log() {
-        LogOperate entity = new LogOperate(1, 0L, LogLoginService.CHANNEL_WEB_MANAGER, "test", "127.0.0.1", new Date(), "测试数据1");
-        logOperateService.save(entity);
+    public void UpdateTo2017() {
+        List<Map<String, Object>> modelList = toolsMapper.select("select * from cms_model");
+        for (Map<String, Object> model : modelList) {
+            System.out.println(model.get("id"));
+        }
     }
 }

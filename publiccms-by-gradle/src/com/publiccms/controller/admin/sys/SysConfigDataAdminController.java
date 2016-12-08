@@ -32,7 +32,7 @@ import com.publiccms.views.pojo.SysConfigParamters;
 @RequestMapping("sysConfigData")
 public class SysConfigDataAdminController extends AbstractController {
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "code", "subcode" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "code", "itemCode" };
 
     @RequestMapping("save")
     public String save(SysConfigData entity, @ModelAttribute SysConfigParamters sysConfigParamters, HttpServletRequest request,
@@ -45,36 +45,36 @@ public class SysConfigDataAdminController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             Map<String, String> map = getExtentDataMap(sysConfigParamters.getExtendDataList(), configComponent
-                    .getExtendFieldList(site, entity.getId().getCode(), entity.getId().getSubcode(), getLocale(request)));
+                    .getExtendFieldList(site, entity.getId().getCode(), entity.getId().getItemCode(), getLocale(request)));
             entity.setData(getExtendString(map));
             if (notEmpty(oldEntity)) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (notEmpty(entity)) {
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.config", getIpAddress(request), getDate(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", getIpAddress(request), getDate(),
                             getString(entity)));
-                    configComponent.removeCache(site.getId(), entity.getId().getCode(), entity.getId().getSubcode());
+                    configComponent.removeCache(site.getId(), entity.getId().getCode(), entity.getId().getItemCode());
                 }
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "save.config", getIpAddress(request), getDate(), getString(entity)));
-                configComponent.removeCache(site.getId(), entity.getId().getCode(), entity.getId().getSubcode());
+                        LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", getIpAddress(request), getDate(), getString(entity)));
+                configComponent.removeCache(site.getId(), entity.getId().getCode(), entity.getId().getItemCode());
             }
         }
         return TEMPLATE_DONE;
     }
 
     @RequestMapping("delete")
-    public String delete(String code, String subcode, HttpServletRequest request, HttpSession session) {
+    public String delete(String code, String itemCode, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
-        SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code, subcode));
+        SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code, itemCode));
         if (notEmpty(entity)) {
             service.delete(entity.getId());
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.config", getIpAddress(request), getDate(), getString(entity)));
-            configComponent.removeCache(site.getId(), entity.getId().getCode(), entity.getId().getSubcode());
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", getIpAddress(request), getDate(), getString(entity)));
+            configComponent.removeCache(site.getId(), entity.getId().getCode(), entity.getId().getItemCode());
         }
         return TEMPLATE_DONE;
     }

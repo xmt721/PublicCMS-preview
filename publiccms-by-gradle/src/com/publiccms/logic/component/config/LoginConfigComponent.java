@@ -9,40 +9,49 @@ import java.util.Locale;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.spi.Config;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.views.pojo.ExtendField;
 import com.sanluan.common.base.Base;
 
+/**
+ *
+ * LoginConfigComponent 登陆配置组件
+ *
+ */
 @Component
 public class LoginConfigComponent extends Base implements Config {
     public static final String CONFIG_SUBCODE = "login";
     public static final String CONFIG_LOGIN_PATH = "login_path";
-    public static final String CONFIG_REGISTER_PATH = "register_path";
-    public static final String CONFIG_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITE + "." + CONFIG_SUBCODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITE;
+    public static final String CONFIG_SUBCODE_DESCRIPTION = CONFIG_CODE_DESCRIPTION + "." + CONFIG_SUBCODE;
 
     @Override
-    public String getCode() {
+    public String getCode(SysSite site) {
         return CONFIG_CODE_SITE;
     }
 
     @Override
-    public List<ExtendField> getExtendFieldList(String subcode, Locale locale) {
+    public String getCodeDescription(SysSite site, String code, Locale locale) {
+        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
+    }
+
+    @Override
+    public List<String> getItemCode(SysSite site) {
+        List<String> itemCodeList = new ArrayList<String>();
+        itemCodeList.add(CONFIG_SUBCODE);
+        return itemCodeList;
+    }
+
+    @Override
+    public String getItemDescription(SysSite site, String itemCode, Locale locale) {
+        return getMessage(locale, CONFIG_SUBCODE_DESCRIPTION);
+    }
+
+    @Override
+    public List<ExtendField> getExtendFieldList(SysSite site, String itemCode, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<ExtendField>();
         extendFieldList.add(new ExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEMPLATE, false,
-                getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_LOGIN_PATH), null, null));
-        extendFieldList.add(new ExtendField(CONFIG_REGISTER_PATH, INPUTTYPE_TEMPLATE, false,
-                getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_REGISTER_PATH), null, null));
+                getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_LOGIN_PATH), null, null));
         return extendFieldList;
-    }
-
-    @Override
-    public List<String> getSubcode(int siteId) {
-        List<String> subcodeList = new ArrayList<String>();
-        subcodeList.add(CONFIG_SUBCODE);
-        return subcodeList;
-    }
-
-    @Override
-    public String getSubcodeDescription(String subcode, Locale locale) {
-        return getMessage(locale, CONFIG_DESCRIPTION);
     }
 }

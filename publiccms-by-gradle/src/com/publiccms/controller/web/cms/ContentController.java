@@ -1,6 +1,7 @@
 package com.publiccms.controller.web.cms;
 
 import static com.publiccms.common.tools.ExtendUtils.getExtendString;
+import static com.publiccms.common.tools.ExtendUtils.getExtentDataMap;
 import static com.publiccms.common.tools.ExtendUtils.getSysExtentDataMap;
 import static com.sanluan.common.tools.HtmlUtils.removeHtmlTag;
 import static com.sanluan.common.tools.JsonUtils.getString;
@@ -29,28 +30,29 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
-import com.publiccms.entities.cms.CmsModel;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.cms.CmsModelService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.CmsContentParamters;
 import com.publiccms.views.pojo.CmsContentRelatedStatistics;
 import com.publiccms.views.pojo.CmsContentStatistics;
+import com.publiccms.views.pojo.CmsModel;
+import com.publiccms.views.pojo.ExtendField;
 
 /**
  * 
- * StatisticsController 统计
+ * ContentController 内容
  *
  */
 @Controller
@@ -65,7 +67,7 @@ public class ContentController extends AbstractController {
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired
-    private CmsModelService modelService;
+    private ModelComponent modelComponent;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired
@@ -89,32 +91,32 @@ public class ContentController extends AbstractController {
      * @param txt
      * @param timing
      * @param draft
+     * @param callback
      * @param request
      * @param session
      * @param model
      * @return
      */
     @RequestMapping("save")
-    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
-            Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @ResponseBody
+    public MappingJacksonValue save(CmsContent entity, CmsContentAttribute attribute,
+            @ModelAttribute CmsContentParamters contentParamters, Boolean timing, Boolean draft, String callback,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysUser user = getAdminFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (verifyNotEmpty("categoryModel", categoryModel, model)) {
-            return REDIRECT + returnUrl;
+            return getMappingJacksonValue(model, callback);
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (notEmpty(category) && site.getId() != category.getSiteId()) {
             category = null;
         }
-        CmsModel cmsModel = modelService.getEntity(entity.getModelId());
-        if (notEmpty(cmsModel) && site.getId() != cmsModel.getSiteId()) {
-            cmsModel = null;
-        }
+        CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
 
         if (verifyNotEmpty("category", category, model) || verifyNotEmpty("model", cmsModel, model)) {
-            return REDIRECT + returnUrl;
+            return getMappingJacksonValue(model, callback);
         }
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
@@ -132,7 +134,7 @@ public class ContentController extends AbstractController {
         if (notEmpty(entity)) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return REDIRECT + returnUrl;
+                return getMappingJacksonValue(model, callback);
             }
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (notEmpty(entity.getId())) {
@@ -159,17 +161,11 @@ public class ContentController extends AbstractController {
         if (null != attribute.getText()) {
             attribute.setWordCount(removeHtmlTag(attribute.getText()).length());
         }
-        Map<String, String> map = null;
-        if (notEmpty(extendService.getEntity(cmsModel.getExtendId()))) {
-            @SuppressWarnings("unchecked")
-            List<SysExtendField> modelExtendList = (List<SysExtendField>) extendFieldService
-                    .getList(cmsModel.getExtendId());
-            map = getSysExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
-        }
+        List<ExtendField> modelExtendList = cmsModel.getExtendList();
+        Map<String, String> map = getExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
         if (notEmpty(extendService.getEntity(category.getExtendId()))) {
             @SuppressWarnings("unchecked")
-            List<SysExtendField> categoryExtendList = (List<SysExtendField>) extendFieldService
-                    .getList(category.getExtendId());
+            List<SysExtendField> categoryExtendList = (List<SysExtendField>) extendFieldService.getList(category.getExtendId());
             Map<String, String> categoryMap = getSysExtentDataMap(contentParamters.getCategoryExtendDataList(),
                     categoryExtendList);
             if (notEmpty(map)) {
@@ -185,7 +181,7 @@ public class ContentController extends AbstractController {
             attribute.setData(null);
         }
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
-        return REDIRECT + returnUrl;
+        return getMappingJacksonValue(model, callback);
     }
 
     /**
@@ -220,23 +216,6 @@ public class ContentController extends AbstractController {
         } else {
             redirectPermanently(response, site.getSitePath());
         }
-    }
-
-    /**
-     * 内容评论统计
-     * 
-     * @param id
-     * @param callback
-     * @return
-     */
-    @RequestMapping("comments")
-    @ResponseBody
-    public MappingJacksonValue comments(Long id, String callback, ModelMap model) {
-        CmsContentStatistics contentStatistics = statisticsComponent.comments(id);
-        if (notEmpty(contentStatistics.getEntity())) {
-            model.addAttribute("comments", contentStatistics.getEntity().getComments() + contentStatistics.getComments());
-        }
-        return getMappingJacksonValue(model, callback);
     }
 
 }

@@ -68,8 +68,7 @@ public class SysTaskAdminController extends AbstractController {
             }
             scheduledTask.runOnce(site, id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "runOnce.task", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "runOnce.task", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -85,8 +84,7 @@ public class SysTaskAdminController extends AbstractController {
             service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
             scheduledTask.pause(site, id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "pause.task", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "pause.task", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -102,8 +100,7 @@ public class SysTaskAdminController extends AbstractController {
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
             scheduledTask.resume(site, id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "resume.task", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "resume.task", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -119,8 +116,7 @@ public class SysTaskAdminController extends AbstractController {
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
             scheduledTask.create(site, entity.getId(), entity.getCronExpression());
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.task", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.task", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -149,8 +145,7 @@ public class SysTaskAdminController extends AbstractController {
             service.delete(id);
             scheduledTask.delete(id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.task", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.task", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

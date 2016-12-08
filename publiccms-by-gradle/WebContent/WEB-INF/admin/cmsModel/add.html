@@ -3,7 +3,7 @@
 	<#if (object.parentId)??><#assign parentId=object.parentId/></#if>
 </@_model>
 <form method="post" action="cmsModel/save.do?callbackType=closeCurrent&navTabId=cmsModel/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<input name="id" type="hidden" value="${id!}" />
+	<input name="modelId" type="hidden" value="${id!}" />
 	<input name="parentId" type="hidden" value="${parentId!}" />
 	<div class="formBar">
 		<ul>
@@ -14,6 +14,12 @@
 	<div class="pageFormContent" layoutH="56">
 		<fieldset>
 			<legend>模型属性</legend>
+			<dl class="nowrap">
+				<dt>模型编码:</dt>
+				<dd>
+					<input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
+				</dd>
+			</dl>
 			<dl class="nowrap">
 				<dt>模型名称:</dt>
 				<dd>
@@ -57,14 +63,12 @@
 		</#if>
 		</fieldset>
 <#if a?has_content>
-	<@_sysExtendFieldList extendId=a.extendId>
-		<#assign contentExtendList=list>
-	</@_sysExtendFieldList>
+	<#assign contentExtendList=a.extendList![]>
 </#if>
 		<fieldset>
 			<legend>内容扩展字段</legend>
 			<#include "../include_page/extends.html"/>
-			<@extends 'contentExtends' contentExtendList![]/>
+			<@extends 'extendList' contentExtendList![]/>
 		</fieldset>
 	</div>
 </form>

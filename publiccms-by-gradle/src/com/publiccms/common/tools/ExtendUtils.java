@@ -6,15 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.views.pojo.ExtendData;
 import com.publiccms.views.pojo.ExtendField;
+import com.sanluan.common.api.Json;
 import com.sanluan.common.base.Base;
 
-public class ExtendUtils extends Base {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
+public class ExtendUtils extends Base implements Json{
     public static Map<String, String> getSysExtentDataMap(List<ExtendData> extendDataList,
             List<SysExtendField> sysExtendFieldList) {
         Map<String, String> map = new HashMap<String, String>();

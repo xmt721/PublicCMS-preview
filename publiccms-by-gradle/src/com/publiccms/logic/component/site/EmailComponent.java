@@ -21,8 +21,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.spi.Cache;
 import com.publiccms.common.spi.Config;
+import com.publiccms.common.spi.SiteCache;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.views.pojo.ExtendField;
 import com.sanluan.common.base.Base;
@@ -35,7 +36,7 @@ import com.sanluan.common.cache.CacheEntityFactory;
  *
  */
 @Component
-public class EmailComponent extends Base implements Cache, Config {
+public class EmailComponent extends Base implements SiteCache, Config {
     public static final String CONFIG_CODE = "email";
     public static final String CONFIG_SUBCODE = "emailserver";
     public static final String CONFIG_EMAIL_SMTP_DEFAULTENCODING = "defaultEncoding";
@@ -46,7 +47,9 @@ public class EmailComponent extends Base implements Cache, Config {
     public static final String CONFIG_EMAIL_SMTP_TIMEOUT = "timeout";
     public static final String CONFIG_EMAIL_SMTP_AUTH = "auth";
     public static final String CONFIG_EMAIL_SMTP_FROMADDRESS = "fromAddress";
-    public static final String CONFIG_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE + "." + CONFIG_SUBCODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    public static final String CONFIG_SUBCODE_DESCRIPTION = CONFIG_CODE_DESCRIPTION + "." + CONFIG_SUBCODE;
+
     @Autowired
     private ConfigComponent configComponent;
 
@@ -120,44 +123,56 @@ public class EmailComponent extends Base implements Cache, Config {
     }
 
     @Override
-    public String getCode() {
+    public String getCode(SysSite site) {
         return CONFIG_CODE;
     }
 
     @Override
-    public List<ExtendField> getExtendFieldList(String subcode, Locale locale) {
+    public String getCodeDescription(SysSite site, String code, Locale locale) {
+        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
+    }
+
+    @Override
+    public List<String> getItemCode(SysSite site) {
+        List<String> itemCodeList = new ArrayList<String>();
+        itemCodeList.add(CONFIG_SUBCODE);
+        return itemCodeList;
+    }
+
+    @Override
+    public String getItemDescription(SysSite site, String itemCode, Locale locale) {
+        return getMessage(locale, CONFIG_SUBCODE_DESCRIPTION);
+    }
+
+    @Override
+    public List<ExtendField> getExtendFieldList(SysSite site, String itemCode, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<ExtendField>();
-        if (CONFIG_SUBCODE.equals(subcode)) {
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_DEFAULTENCODING, INPUTTYPE_TEXT, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_DEFAULTENCODING),
-                   null, DEFAULT_CHARSET_NAME));
-            extendFieldList.add(new ExtendField( CONFIG_EMAIL_SMTP_HOST, INPUTTYPE_TEXT, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_HOST), null,
-                   null));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_PORT, INPUTTYPE_NUMBER, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_PORT), null,
-                   String.valueOf(25)));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_USERNAME, INPUTTYPE_TEXT, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_USERNAME),
-                   null, null));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_PASSWORD, INPUTTYPE_PASSWORD, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_PASSWORD),
-                   null, null));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_TIMEOUT, INPUTTYPE_NUMBER, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_TIMEOUT),
-                   null, String.valueOf(3000)));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_AUTH, INPUTTYPE_BOOLEAN, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_AUTH), null,
-                   null));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_FROMADDRESS, INPUTTYPE_EMAIL, true, getMessage(locale, CONFIG_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_FROMADDRESS),
-                   null, null));
+        if (CONFIG_SUBCODE.equals(itemCode)) {
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_DEFAULTENCODING, INPUTTYPE_TEXT, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_DEFAULTENCODING), null,
+                    DEFAULT_CHARSET_NAME));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_HOST, INPUTTYPE_TEXT, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_HOST), null, null));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_PORT, INPUTTYPE_NUMBER, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_PORT), null, String.valueOf(25)));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_USERNAME, INPUTTYPE_TEXT, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_USERNAME), null, null));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_PASSWORD, INPUTTYPE_PASSWORD, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_PASSWORD), null, null));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_TIMEOUT, INPUTTYPE_NUMBER, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_TIMEOUT), null,
+                    String.valueOf(3000)));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_AUTH, INPUTTYPE_BOOLEAN, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_AUTH), null, null));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_SMTP_FROMADDRESS, INPUTTYPE_EMAIL, true,
+                    getMessage(locale, CONFIG_SUBCODE_DESCRIPTION + "." + CONFIG_EMAIL_SMTP_FROMADDRESS), null, null));
         }
         return extendFieldList;
     }
 
     @Override
-    public List<String> getSubcode(int siteId) {
-        List<String> subcodeList = new ArrayList<String>();
-        subcodeList.add(CONFIG_SUBCODE);
-        return subcodeList;
-    }
-
-    @Override
-    public String getSubcodeDescription(String subcode, Locale locale) {
-        return getMessage(locale, CONFIG_DESCRIPTION);
+    public void clear(int siteId) {
+        cache.remove(siteId);
     }
 
     @Override

@@ -24,26 +24,26 @@ public class SysConfigDataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String code = handler.getString("code");
-        String subcode = handler.getString("subcode");
-        String[] subcodes = handler.getStringArray("subcodes");
+        String itemCode = handler.getString("itemCode");
+        String[] itemCodes = handler.getStringArray("itemCodes");
         SysSite site = getSite(handler);
         if (notEmpty(code)) {
-            if (notEmpty(subcode)) {
-                SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code, subcode));
+            if (notEmpty(itemCode)) {
+                SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code, itemCode));
                 if (notEmpty(entity)) {
                     handler.put("object", getExtendMap(entity.getData())).render();
                 }
-            } else if (notEmpty(subcodes)) {
-                SysConfigDataId[] ids = new SysConfigDataId[subcodes.length];
+            } else if (notEmpty(itemCodes)) {
+                SysConfigDataId[] ids = new SysConfigDataId[itemCodes.length];
                 int i = 0;
-                for (String s : subcodes) {
+                for (String s : itemCodes) {
                     if (notEmpty(s)) {
                         ids[i++] = new SysConfigDataId(site.getId(), code, s);
                     }
                 }
                 Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
                 for (SysConfigData entity : service.getEntitys(ids)) {
-                    map.put(entity.getId().getSubcode(), getExtendMap(entity.getData()));
+                    map.put(entity.getId().getItemCode(), getExtendMap(entity.getData()));
                 }
                 handler.put("map", map).render();
             }

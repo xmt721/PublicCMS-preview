@@ -55,6 +55,13 @@
 			</dd>
 		</dl>
 		<dl class="nowrap useDynamic" style="display:none;">
+			<dt>需要请求报文体:</dt>
+			<dd>
+				<label><input name="needBody" type="checkbox"/></label>
+				<span class="info">勾选后，可以从模板中取得请求的请求报文体：body</span>
+			</dd>
+		</dl>
+		<dl class="nowrap useDynamic" style="display:none;">
 			<dt>缓存时间(秒):</dt>
 			<dd>
 				<input name="cacheTime" class="required" type="text" value="${(a.cacheTime)!0}"/>
@@ -65,11 +72,14 @@
 <#if site.useStatic&&(a.publishPath)?has_content>
 	$('input[name=useStatic]',navTab.getCurrentPanel()).click();
 </#if>
-<#if (a.useDynamic)?has_content&&a.useDynamic>
+<#if (a.useDynamic)?has_content&&a.useDynamic||!(a.useDynamic)?has_content&&!site.useStatic>
 	$('input[name=useDynamic]',navTab.getCurrentPanel()).click();
 </#if>
 <#if (a.needLogin)?has_content&&a.needLogin>
 	$('input[name=needLogin]',navTab.getCurrentPanel()).click();
+</#if>
+<#if (a.needBody)?has_content&&a.needBody>
+	$('input[name=needBody]',navTab.getCurrentPanel()).click();
 </#if>
 </script>
 		<fieldset>

@@ -16,8 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.controller.web.changyan.pojo.LoginResult;
@@ -32,7 +32,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
-@Controller
+@RestController
 @RequestMapping("changyan")
 public class ChangyanController extends AbstractController {
     private static final LogoutResult LOGOUTRESULT = new LogoutResult(1, 0);

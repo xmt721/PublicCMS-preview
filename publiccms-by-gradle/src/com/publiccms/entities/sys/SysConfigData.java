@@ -39,7 +39,7 @@ public class SysConfigData implements java.io.Serializable {
     @EmbeddedId
     @AttributeOverrides({ @AttributeOverride(name = "siteId", column = @Column(name = "site_id", nullable = false)),
             @AttributeOverride(name = "code", column = @Column(name = "code", nullable = false, length = 50)),
-            @AttributeOverride(name = "subcode", column = @Column(name = "subcode", nullable = false, length = 50)) })
+            @AttributeOverride(name = "itemCode", column = @Column(name = "item_code", nullable = false, length = 50)) })
     public SysConfigDataId getId() {
         return this.id;
     }

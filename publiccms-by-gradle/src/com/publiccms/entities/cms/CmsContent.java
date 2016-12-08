@@ -75,7 +75,7 @@ public class CmsContent implements java.io.Serializable, Static {
     @MyColumn(title = "模型", condition = true)
     @Field(analyze = Analyze.NO)
     @Facet(encoding = FacetEncodingType.STRING)
-    private int modelId;
+    private String modelId;
     @MyColumn(title = "父内容", condition = true)
     private Long parentId;
     @MyColumn(title = "是否转载")
@@ -128,7 +128,7 @@ public class CmsContent implements java.io.Serializable, Static {
     public CmsContent() {
     }
 
-    public CmsContent(int siteId, String title, long userId, int categoryId, int modelId, boolean copied, boolean onlyUrl,
+    public CmsContent(int siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasStatic, int childs, int scores, int comments, int clicks,
             Date publishDate, Date createDate, int status, boolean disabled) {
         this.siteId = siteId;
@@ -151,7 +151,7 @@ public class CmsContent implements java.io.Serializable, Static {
         this.disabled = disabled;
     }
 
-    public CmsContent(int siteId, String title, long userId, Long checkUserId, int categoryId, int modelId, Long parentId,
+    public CmsContent(int siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
             boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles,
             boolean hasStatic, String url, String description, String tagIds, String cover, int childs, int scores, int comments,
             int clicks, Date publishDate, Date createDate, int status, boolean disabled) {
@@ -239,12 +239,12 @@ public class CmsContent implements java.io.Serializable, Static {
         this.categoryId = categoryId;
     }
 
-    @Column(name = "model_id", nullable = false)
-    public int getModelId() {
+    @Column(name = "model_id", nullable = false, length = 20)
+    public String getModelId() {
         return this.modelId;
     }
 
-    public void setModelId(int modelId) {
+    public void setModelId(String modelId) {
         this.modelId = modelId;
     }
 

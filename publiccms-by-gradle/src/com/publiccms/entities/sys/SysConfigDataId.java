@@ -23,15 +23,15 @@ public class SysConfigDataId implements java.io.Serializable {
     @MyColumn(title = "编码", condition = true)
     private String code;
     @MyColumn(title = "子编码", condition = true)
-    private String subcode;
+    private String itemCode;
 
     public SysConfigDataId() {
     }
 
-    public SysConfigDataId(int siteId, String code, String subcode) {
+    public SysConfigDataId(int siteId, String code, String itemCode) {
         this.siteId = siteId;
         this.code = code;
-        this.subcode = subcode;
+        this.itemCode = itemCode;
     }
 
     @Column(name = "site_id", nullable = false)
@@ -52,13 +52,13 @@ public class SysConfigDataId implements java.io.Serializable {
         this.code = code;
     }
 
-    @Column(name = "subcode", nullable = false, length = 50)
-    public String getSubcode() {
-        return this.subcode;
+    @Column(name = "item_code", nullable = false, length = 50)
+    public String getItemCode() {
+        return this.itemCode;
     }
 
-    public void setSubcode(String subcode) {
-        this.subcode = subcode;
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
     }
 
     public boolean equals(Object other) {
@@ -73,8 +73,8 @@ public class SysConfigDataId implements java.io.Serializable {
         return (this.getSiteId() == castOther.getSiteId())
                 && ((this.getCode() == castOther.getCode())
                         || (this.getCode() != null && castOther.getCode() != null && this.getCode().equals(castOther.getCode())))
-                && ((this.getSubcode() == castOther.getSubcode()) || (this.getSubcode() != null && castOther.getSubcode() != null
-                        && this.getSubcode().equals(castOther.getSubcode())));
+                && ((this.getItemCode() == castOther.getItemCode()) || (this.getItemCode() != null && castOther.getItemCode() != null
+                        && this.getItemCode().equals(castOther.getItemCode())));
     }
 
     public int hashCode() {
@@ -82,7 +82,7 @@ public class SysConfigDataId implements java.io.Serializable {
 
         result = 37 * result + this.getSiteId();
         result = 37 * result + (getCode() == null ? 0 : this.getCode().hashCode());
-        result = 37 * result + (getSubcode() == null ? 0 : this.getSubcode().hashCode());
+        result = 37 * result + (getItemCode() == null ? 0 : this.getItemCode().hashCode());
         return result;
     }
 

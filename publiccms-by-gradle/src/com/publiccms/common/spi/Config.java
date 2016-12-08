@@ -3,6 +3,7 @@ package com.publiccms.common.spi;
 import java.util.List;
 import java.util.Locale;
 
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.views.pojo.ExtendField;
 
 public interface Config {
@@ -17,7 +18,7 @@ public interface Config {
     public static final String INPUTTYPE_FILE = "file";
 
     public static final String INPUTTYPE_IMAGE = "image";
-    
+
     public static final String INPUTTYPE_EDITOR = "editor";
 
     public static final String INPUTTYPE_TEXTAREA = "textarea";
@@ -38,11 +39,13 @@ public interface Config {
 
     public static final String INPUTTYPE_EMAIL = "email";
 
-    public String getCode();
+    public String getCode(SysSite site);
 
-    public String getSubcodeDescription(String subcode, Locale locale);
+    public String getCodeDescription(SysSite site, String code, Locale locale);
 
-    public List<String> getSubcode(int siteId);
+    public List<String> getItemCode(SysSite site);
 
-    public List<ExtendField> getExtendFieldList(String subcode, Locale locale);
+    public String getItemDescription(SysSite site, String itemCode, Locale locale);
+
+    public List<ExtendField> getExtendFieldList(SysSite site, String itemCode, Locale locale);
 }

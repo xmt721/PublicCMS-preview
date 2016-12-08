@@ -38,7 +38,7 @@ war{ baseName ="cms" }
 
 dependencies {
     compile (
-		// http://mvnrepository.com/artifact/commons-logging/commons-logging
+        // http://mvnrepository.com/artifact/commons-logging/commons-logging
         "commons-logging:commons-logging:1.2",
         // http://mvnrepository.com/artifact/commons-io/commons-io
         "commons-io:commons-io:2.5",
@@ -98,13 +98,13 @@ dependencies {
         "dom4j:dom4j:1.6.1",
         // http://mvnrepository.com/artifact/net.coobird/thumbnailator
         "net.coobird:thumbnailator:0.4.8",
-		// http://mvnrepository.com/artifact/cglib/cglib-nodep
+        // http://mvnrepository.com/artifact/cglib/cglib-nodep
         "cglib:cglib-nodep:3.2.4",
         
-		// http://mvnrepository.com/artifact/org.apache.ant/ant
+        // http://mvnrepository.com/artifact/org.apache.ant/ant
         "org.apache.ant:ant:1.9.7",
 		
-		// http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+        // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         "org.quartz-scheduler:quartz:2.2.3"		
     )
     providedCompile(

@@ -14,6 +14,7 @@ public class CmsCategoryParamters implements java.io.Serializable {
     private List<CmsTagType> tagTypes;
     private List<SysExtendField> contentExtends;
     private List<ExtendData> extendDataList;
+    private List<CmsCategoryModelParamters> categoryModelList;
 
     public List<SysExtendField> getContentExtends() {
         return contentExtends;
@@ -37,5 +38,13 @@ public class CmsCategoryParamters implements java.io.Serializable {
 
     public void setExtendDataList(List<ExtendData> extendDataList) {
         this.extendDataList = extendDataList;
+    }
+
+    public List<CmsCategoryModelParamters> getCategoryModelList() {
+        return categoryModelList;
+    }
+
+    public void setCategoryModelList(List<CmsCategoryModelParamters> categoryModelList) {
+        this.categoryModelList = categoryModelList;
     }
 }

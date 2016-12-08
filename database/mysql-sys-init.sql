@@ -457,14 +457,13 @@ INSERT INTO `sys_moudle` VALUES ('77', '增加/修改', 'sysDept/add', 'sysDept/
 INSERT INTO `sys_moudle` VALUES ('78', '删除', null, 'sysDept/delete', null, '72', '0');
 INSERT INTO `sys_moudle` VALUES ('79', '增加/修改', 'sysRole/add', 'sysRole/save', null, '73', '0');
 INSERT INTO `sys_moudle` VALUES ('80', '删除', null, 'sysRole/delete', null, '73', '0');
-INSERT INTO `sys_moudle` VALUES ('81', '内容模型管理', 'cmsModel/list', null, '<i class=\"icon-th-large icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('81', '内容模型管理', 'cmsModel/list', null, '<i class=\"icon-th-large icon-large\"></i>', '38', '0');
 INSERT INTO `sys_moudle` VALUES ('82', '任务计划', 'sysTask/list', null, '<i class=\"icon-time icon-large\"></i>', '62', '0');
 INSERT INTO `sys_moudle` VALUES ('83', 'FTP用户', 'cmsFtpUser/list', null, '<i class=\"icon-folder-open-alt icon-large\"></i>', '62', '0');
 INSERT INTO `sys_moudle` VALUES ('84', '动态域名', 'cmsDomain/list', null, '<i class=\"icon-qrcode icon-large\"></i>', '62', '0');
 INSERT INTO `sys_moudle` VALUES ('85', '任务计划脚本', 'taskTemplate/list', null, '<i class=\"icon-time icon-large\"></i>', '38', '0');
 INSERT INTO `sys_moudle` VALUES ('86', '修改脚本', 'taskTemplate/metadata', 'cmsTemplate/saveMetadata,taskTemplate/content,cmsTemplate/save,taskTemplate/chipLookup', null, '85', '0');
 INSERT INTO `sys_moudle` VALUES ('87', '删除脚本', null, 'cmsTemplate/delete', null, '85', '0');
-INSERT INTO `sys_moudle` VALUES ('89', '删除', null, 'sysUserToken/delete', null, '88', '0');
 INSERT INTO `sys_moudle` VALUES ('90', '增加/修改', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', null, '81', '0');
 INSERT INTO `sys_moudle` VALUES ('91', '删除', null, 'cmsModel/delete', null, '81', '0');
 INSERT INTO `sys_moudle` VALUES ('92', '增加/修改', 'sysTask/add', 'sysTask/save,sysTask/example,taskTemplate/lookup', null, '82', '0');
@@ -476,7 +475,7 @@ INSERT INTO `sys_moudle` VALUES ('97', '重新初始化', null, 'sysTask/recreat
 INSERT INTO `sys_moudle` VALUES ('98', '增加/修改', 'cmsFtpUser/add', 'cmsFtpUser/save', null, '83', '0');
 INSERT INTO `sys_moudle` VALUES ('99', '删除', null, 'cmsFtpUser/delete', null, '83', '0');
 INSERT INTO `sys_moudle` VALUES ('100', '修改', 'cmsDomain/add', 'cmsDomain/save,cmsTemplate/directoryLookup,cmsTemplate/lookup', null, '84', '0');
-INSERT INTO `sys_moudle` VALUES ('101', '配置中心', 'sysConfig/list', 'sysConfig/subcode', '<i class=\"icon-cogs icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('101', '站点配置', 'sysConfigData/list', null, '<i class=\"icon-cog icon-large\"></i>', '62', '0');
 INSERT INTO `sys_moudle` VALUES ('102', '修改', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', null, '8', '0');
 INSERT INTO `sys_moudle` VALUES ('103', '删除', null, 'cmsContent/delete', null, '8', '0');
 INSERT INTO `sys_moudle` VALUES ('104', '刷新', null, 'cmsContent/refresh', null, '8', '0');
@@ -515,6 +514,14 @@ INSERT INTO `sys_moudle` VALUES ('137', '新建目录', 'cmsResource/directory',
 INSERT INTO `sys_moudle` VALUES ('138', '上传文件', 'cmsResource/upload', 'cmsResource/doUpload', null, '131', '0');
 INSERT INTO `sys_moudle` VALUES ('139', '压缩', null, 'cmsResource/zip', null, '131', '0');
 INSERT INTO `sys_moudle` VALUES ('140', '解压缩', null, 'cmsResource/unzip,cmsResource/unzipHere', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('141', '配置项列表', 'sysConfigData/itemList', null, null, '101', '0');
+INSERT INTO `sys_moudle` VALUES ('143', '修改配置', 'sysConfigData/addItem', 'sysConfigData/save', null, '101', '0');
+INSERT INTO `sys_moudle` VALUES ('142', '清空配置', null, 'sysConfigData/delete', null, '101', '0');
+INSERT INTO `sys_moudle` VALUES ('144', '站点配置管理', 'sysConfig/list', null, '<i class=\"icon-cogs icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('145', '配置项列表', 'sysConfig/itemList', null, null, '144', '0');
+INSERT INTO `sys_moudle` VALUES ('146', '保存配置', null, 'sysConfig/save,sysConfig/saveItem', null, '144', '0');
+INSERT INTO `sys_moudle` VALUES ('147', '修改配置', 'sysConfig/add', null, null, '144', '0');
+INSERT INTO `sys_moudle` VALUES ('148', '删除配置', null, 'sysConfig/delete,sysConfig/deleteItem', null, '144', '0');
 
 -- ----------------------------
 -- Table structure for sys_role

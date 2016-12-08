@@ -13,8 +13,8 @@
 </style>
 <script>
 var i=0;
-var apiArray=['${site.dynamicPath}api/directive/','${site.dynamicPath}api/']
-var apisArray=['${site.dynamicPath}api/directives','${site.dynamicPath}api/apis'];
+var apiArray=['${site.dynamicPath}api/directive/','${site.dynamicPath}api/method/','${site.dynamicPath}api/']
+var apisArray=['${site.dynamicPath}api/directives','${site.dynamicPath}api/methods','${site.dynamicPath}api/apis'];
 
 function invoke(){
 	$('#rawJson').val('loading...');
@@ -97,8 +97,9 @@ $(function(){
 		</p>
 		<p id="buttons" style="display:none"><input type="button" value="发送请求" onclick="invoke()"/></p>
 		<p>
-			<label><input type="radio" name="api" value="0"/>公共接口</label>
-			<label><input type="radio" name="api" value="1"/>定制接口V1</label>
+			<label><input type="radio" name="api" value="0"/>指令接口</label>
+			<label><input type="radio" name="api" value="1"/>方法接口</label>
+			<label><input type="radio" name="api" value="2"/>定制接口</label>
 			<em>(红色字体接口需要使用AppToken才能访问，绿色框体接口需要登陆信息authToken，authUserId才能访问)</em>
 		</p>
 		<p id="interfaes"></p>

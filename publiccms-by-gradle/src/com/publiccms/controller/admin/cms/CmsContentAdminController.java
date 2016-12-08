@@ -1,6 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
 import static com.publiccms.common.tools.ExtendUtils.getExtendString;
+import static com.publiccms.common.tools.ExtendUtils.getExtentDataMap;
 import static com.publiccms.common.tools.ExtendUtils.getSysExtentDataMap;
 import static com.sanluan.common.tools.HtmlUtils.removeHtmlTag;
 import static com.sanluan.common.tools.JsonUtils.getString;
@@ -34,13 +35,13 @@ import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentRelated;
-import com.publiccms.entities.cms.CmsModel;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategoryId;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -49,7 +50,6 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsContentTagService;
-import com.publiccms.logic.service.cms.CmsModelService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
@@ -57,6 +57,8 @@ import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.CmsContentParamters;
+import com.publiccms.views.pojo.CmsModel;
+import com.publiccms.views.pojo.ExtendField;
 
 /**
  * 
@@ -83,9 +85,9 @@ public class CmsContentAdminController extends AbstractController {
     @Autowired
     private CmsCategoryModelService categoryModelService;
     @Autowired
-    private CmsCategoryService categoryService;
+    private ModelComponent modelComponent;
     @Autowired
-    private CmsModelService modelService;
+    private CmsCategoryService categoryService;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired
@@ -135,10 +137,7 @@ public class CmsContentAdminController extends AbstractController {
         if (notEmpty(category) && site.getId() != category.getSiteId()) {
             category = null;
         }
-        CmsModel cmsModel = modelService.getEntity(entity.getModelId());
-        if (notEmpty(cmsModel) && site.getId() != cmsModel.getSiteId()) {
-            cmsModel = null;
-        }
+        CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
 
         if (verifyNotEmpty("category", category, model) || verifyNotEmpty("model", cmsModel, model)) {
             return TEMPLATE_ERROR;
@@ -190,17 +189,11 @@ public class CmsContentAdminController extends AbstractController {
             attribute.setWordCount(removeHtmlTag(attribute.getText()).length());
         }
 
-        Map<String, String> map = null;
-        if (notEmpty(extendService.getEntity(cmsModel.getExtendId()))) {
-            @SuppressWarnings("unchecked")
-            List<SysExtendField> modelExtendList = (List<SysExtendField>) extendFieldService
-                    .getList(cmsModel.getExtendId());
-            map = getSysExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
-        }
+        List<ExtendField> modelExtendList = cmsModel.getExtendList();
+        Map<String, String> map = getExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
         if (notEmpty(extendService.getEntity(category.getExtendId()))) {
             @SuppressWarnings("unchecked")
-            List<SysExtendField> categoryExtendList = (List<SysExtendField>) extendFieldService
-                    .getList(category.getExtendId());
+            List<SysExtendField> categoryExtendList = (List<SysExtendField>) extendFieldService.getList(category.getExtendId());
             Map<String, String> categoryMap = getSysExtentDataMap(contentParamters.getCategoryExtendDataList(),
                     categoryExtendList);
             if (notEmpty(map)) {
@@ -297,8 +290,7 @@ public class CmsContentAdminController extends AbstractController {
             cmsContentRelatedService.save(entity);
             publish(new Long[] { entity.getContentId() }, request, session, model);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "related.content", getIpAddress(request), getDate(),
-                    related.getId() + ":" + related.getTitle() + " to " + content.getId() + ":" + content.getTitle()));
+                    "related.content", getIpAddress(request), getDate(), getString(related)));
         }
         return TEMPLATE_DONE;
     }
@@ -322,8 +314,8 @@ public class CmsContentAdminController extends AbstractController {
                     if (sb.length() > 0) {
                         sb.append(COMMA_DELIMITED);
                     }
-                    sb.append(getMessage(getLocale(request), "message.content.categoryModel.empty", getString(entity),
-                            categoryId + ":" + category.getName()));
+                    sb.append(getMessage(getLocale(request), "message.content.categoryModel.empty",
+                            entity.getId() + ":" + entity.getTitle(), categoryId + ":" + category.getName()));
                 }
             }
             model.put("message", sb.toString());

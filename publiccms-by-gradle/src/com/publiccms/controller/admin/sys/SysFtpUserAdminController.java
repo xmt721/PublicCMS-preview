@@ -72,8 +72,7 @@ public class SysFtpUserAdminController extends AbstractController {
             service.delete(id);
             SysSite site = getSite(request);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.ftpuser", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.ftpuser", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }

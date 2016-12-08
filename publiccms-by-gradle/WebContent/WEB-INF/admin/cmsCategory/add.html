@@ -120,15 +120,19 @@ function clickAddTagType(){
 			</div>
 			<div class="pageFormContent categoryModel" layoutH="86">
 				<div class="divider"></div>
+<#assign modelIndex=0/>
 <#macro childModel parent index=1>
 	<#if parent.hasChild>
 		<@_modelList parentId=parent.id>
 	<ul>
 			<#list page.list as a>
+				<#assign modelIndex++/>
 		<li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
 			<label>${a.id}:${a.name!}</label>
-			<input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-			<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
+			<input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
+			<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
+			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+			<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
 			<@childModel a index+1/>
 		</li>
 			</#list>
@@ -138,15 +142,17 @@ function clickAddTagType(){
 </#macro>
 <@_modelList>
 	<#list page.list as a>
+		<#assign modelIndex++/>
 				<dl class="nowrap">
 					<dt>
-						<input name="model_${a.id}" type="checkbox" onclick="checkCategoryModel();"/>
+						<input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
 						${a.id}:${a.name!}
+						<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
 					</dt>
 		<#if site.useStatic>
 					<dd <#if a.onlyUrl> style="display:none"</#if>>
-						<label>静态化模板路径:</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}" lookupGroup="">选择</a>
+						<label>静态化模板路径:</label><input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
 						<@childModel a/>
 					</dd>
 		</#if>
@@ -166,6 +172,7 @@ function checkCategoryModel(){
 	$('.categoryModelContentPath',navTab.getCurrentPanel()).hide().find('input[name=contentPath]').removeClass("required");
 	$('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
 		if($(this).find('input[type=checkbox]').is(':checked')){
+			$(this).find('dd ul li input[name$=\\.use]').val('true');
 			$('.categoryModelContent',navTab.getCurrentPanel()).show();
 			if(0 == $(this).find('dd').length || $(this).find('dd').is(":visible")){
 				$('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
@@ -178,8 +185,7 @@ checkCategoryModel();
 <#if id?has_content||parentId?has_content>
 	<@_categoryModelList categoryId=id!parentId>
 		<#list page.list as a>
-			$('input[name=model_${a.id.modelId}]',navTab.getCurrentPanel()).click();
-			$('input[name=templatePath_${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
+			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click().parent().find('input[name$=\\.categoryModel\\.templatePath]').val('${(a.templatePath)!}');
 		</#list>
 	</@_categoryModelList>
 </#if>

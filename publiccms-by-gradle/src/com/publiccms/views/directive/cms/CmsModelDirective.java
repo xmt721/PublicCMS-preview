@@ -4,16 +4,15 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.cms.CmsModel;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.service.cms.CmsModelService;
+import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.views.pojo.CmsModel;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -21,22 +20,20 @@ public class CmsModelDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        String id = handler.getString("id");
         SysSite site = getSite(handler);
         if (notEmpty(id)) {
-            CmsModel entity = service.getEntity(id);
-            if (notEmpty(entity) && site.getId() == entity.getSiteId()) {
+            CmsModel entity = modelComponent.getMap(site).get(id);
+            if (notEmpty(entity)) {
                 handler.put("object", entity).render();
             }
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            String[] ids = handler.getStringArray("ids");
             if (notEmpty(ids)) {
-                List<CmsModel> entityList = service.getEntitys(ids);
+                Map<String, CmsModel> modelMap = modelComponent.getMap(site);
                 Map<String, CmsModel> map = new LinkedHashMap<String, CmsModel>();
-                for (CmsModel entity : entityList) {
-                    if (site.getId() == entity.getSiteId()) {
-                        map.put(String.valueOf(entity.getId()), entity);
-                    }
+                for (String modelId : ids) {
+                    map.put(modelId, modelMap.get(modelId));
                 }
                 handler.put("map", map).render();
             }
@@ -44,6 +41,6 @@ public class CmsModelDirective extends AbstractTemplateDirective {
     }
 
     @Autowired
-    private CmsModelService service;
+    private ModelComponent modelComponent;
 
 }

@@ -138,42 +138,6 @@ public class StatisticsComponent extends Base implements Cache {
         }
     }
 
-    public CmsContentStatistics comments(Long id) {
-        if (notEmpty(id)) {
-            CmsContentStatistics contentStatistics = contentCache.get(id);
-            if (empty(contentStatistics)) {
-                contentStatistics = new CmsContentStatistics(id, 0, 1, 0, contentService.getEntity(id));
-            } else {
-                contentStatistics.setComments(contentStatistics.getComments() + 1);
-            }
-            List<CmsContentStatistics> list = contentCache.put(id, contentStatistics);
-            if (notEmpty(list)) {
-                contentService.updateStatistics(list);
-            }
-            return contentStatistics;
-        } else {
-            return null;
-        }
-    }
-
-    public CmsContentStatistics scores(Long id) {
-        if (notEmpty(id)) {
-            CmsContentStatistics contentStatistics = contentCache.get(id);
-            if (empty(contentStatistics)) {
-                contentStatistics = new CmsContentStatistics(id, 0, 0, 1, contentService.getEntity(id));
-            } else {
-                contentStatistics.setComments(contentStatistics.getComments() + 1);
-            }
-            List<CmsContentStatistics> list = contentCache.put(id, contentStatistics);
-            if (notEmpty(list)) {
-                contentService.updateStatistics(list);
-            }
-            return contentStatistics;
-        } else {
-            return null;
-        }
-    }
-
     @Override
     public void clear() {
         placeService.updateStatistics(placeCache.clear());

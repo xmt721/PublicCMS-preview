@@ -12,18 +12,17 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.publiccms.common.spi.Cache;
 import com.publiccms.views.pojo.CmsPageMetadata;
 import com.publiccms.views.pojo.CmsPlaceMetadata;
+import com.sanluan.common.api.Json;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.cache.CacheEntity;
 import com.sanluan.common.cache.CacheEntityFactory;
 
 @Component
-public class MetadataComponent extends Base implements Cache {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    public static String METADATA_FILE = "metadata.data";
+public class MetadataComponent extends Base implements Cache,Json {
+    public static final String METADATA_FILE = "metadata.data";
 
     private CacheEntity<String, Map<String, CmsPageMetadata>> pageCache;
     private CacheEntity<String, Map<String, CmsPlaceMetadata>> placeCache;

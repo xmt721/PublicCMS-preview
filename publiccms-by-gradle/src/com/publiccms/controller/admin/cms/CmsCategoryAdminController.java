@@ -4,7 +4,6 @@ import static com.publiccms.common.tools.ExtendUtils.getExtendString;
 import static com.publiccms.common.tools.ExtendUtils.getSysExtentDataMap;
 import static com.sanluan.common.tools.JsonUtils.getString;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
-import static com.sanluan.common.tools.RequestUtils.getValue;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
@@ -25,7 +24,6 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryType;
-import com.publiccms.entities.cms.CmsModel;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysExtend;
 import com.publiccms.entities.sys.SysExtendField;
@@ -36,11 +34,11 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.cms.CmsModelService;
 import com.publiccms.logic.service.cms.CmsTagTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
+import com.publiccms.views.pojo.CmsCategoryModelParamters;
 import com.publiccms.views.pojo.CmsCategoryParamters;
 
 import freemarker.template.TemplateException;
@@ -61,8 +59,6 @@ public class CmsCategoryAdminController extends AbstractController {
     private CmsContentService contentService;
     @Autowired
     private CmsCategoryAttributeService attributeService;
-    @Autowired
-    private CmsModelService modelService;
     @Autowired
     private CmsCategoryModelService categoryModelService;
     @Autowired
@@ -114,9 +110,8 @@ public class CmsCategoryAdminController extends AbstractController {
             entity.setSiteId(site.getId());
             service.save(entity);
             service.addChildIds(entity.getParentId(), entity.getId());
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.category", getIpAddress(request), getDate(), getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.category", getIpAddress(request), getDate(), getString(entity)));
         }
         if (empty(extendService.getEntity(entity.getExtendId()))) {
             entity = service.updateExtendId(entity.getId(),
@@ -126,14 +121,16 @@ public class CmsCategoryAdminController extends AbstractController {
         Integer[] tagTypeIds = tagTypeService.update(site.getId(), categoryParamters.getTagTypes());
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
 
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        @SuppressWarnings("unchecked")
-        // 修改或增加分类与模型的映射
-        List<CmsModel> modelList = (List<CmsModel>) modelService
-                .getPage(site.getId(), null, null, null, null, null, false, null, null).getList();
-        for (CmsModel cmsmodel : modelList) {
-            categoryModelService.updateCategoryModel(notEmpty(getValue(parameterMap, "model_" + cmsmodel.getId())),
-                    entity.getId(), cmsmodel, parameterMap);
+        List<CmsCategoryModelParamters> categoryModelList = categoryParamters.getCategoryModelList();
+        for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
+            if(notEmpty(cmsCategoryModelParamters.getCategoryModel())){
+                cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
+                if (cmsCategoryModelParamters.isUse()) {
+                    categoryModelService.updateCategoryModel(cmsCategoryModelParamters.getCategoryModel());
+                } else {
+                    categoryModelService.delete(cmsCategoryModelParamters.getCategoryModel().getId());
+                }
+            }
         }
         extendFieldService.update(entity.getExtendId(), categoryParamters.getContentExtends());// 修改或增加内容扩展字段
 

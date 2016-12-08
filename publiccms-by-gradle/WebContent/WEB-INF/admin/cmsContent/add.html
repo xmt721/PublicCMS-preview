@@ -144,12 +144,10 @@ function clickAddTag(){
 				<@extendData 'categoryExtendDataList' extendList extendValue/>
 			</@_sysExtendFieldList>
 		</#if>
-		<#if model?has_content&&model.extendId?has_content>
-			<@_sysExtendFieldList extendId=model.extendId>
-				<#assign extendList=list![]/>
-				<#assign extendValue=attribute!{}/>
-				<@extendData 'modelExtendDataList' extendList extendValue/>
-			</@_sysExtendFieldList>
+		<#if model?has_content>
+			<#assign extendList=model.extendList![]/>
+			<#assign extendValue=attribute!{}/>
+			<@extendData 'modelExtendDataList' extendList extendValue/>
 		</#if>
 		<#if model?has_content&&(model.hasImages||model.hasFiles)>
 			<#include "../include_page/contentFiles.html"/>

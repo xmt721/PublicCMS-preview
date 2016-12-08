@@ -9,7 +9,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
-    public PageHandler getPage(Integer modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(String modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
         if (notEmpty(modelId)) {
             queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);

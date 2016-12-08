@@ -1,5 +1,7 @@
 package com.publiccms.controller.admin.home;
 
+import static com.sanluan.common.tools.JsonUtils.getString;
+
 // Generated 2016-11-19 11:25:19 by com.sanluan.common.source.SourceMaker
 
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
@@ -32,12 +34,12 @@ public class HomeCommentAdminController extends AbstractController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.homeComment", getIpAddress(request), getDate(),
-                    entity.getId() + ":" + entity.getItemType() + ":" + entity.getItemId()));
+                    getString(entity)));
         } else {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.homeComment", getIpAddress(request), getDate(),
-                    entity.getId() + ":" + entity.getItemType() + ":" + entity.getItemId()));
+                    getString(entity)));
         }
         return TEMPLATE_DONE;
     }

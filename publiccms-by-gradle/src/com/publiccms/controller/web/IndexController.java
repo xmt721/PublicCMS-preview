@@ -8,6 +8,9 @@ import static com.sanluan.common.tools.RequestUtils.getEncodePath;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.split;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,7 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.views.pojo.CmsPageMetadata;
 import com.sanluan.common.servlet.PageNotFoundException;
+import com.sanluan.common.tools.StreamUtils;
 
 /**
  * 
@@ -75,6 +79,18 @@ public class IndexController extends AbstractController {
                     }
                 }
                 model.put("metadata", metadata);
+                if (metadata.isNeedBody()) {
+                    try {
+                        InputStream inputStream = request.getInputStream();
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        StreamUtils.write(inputStream, false, byteArrayOutputStream);
+                        model.put("body", empty(metadata.getBodyCharset()) ? byteArrayOutputStream.toString()
+                                : byteArrayOutputStream.toString(metadata.getBodyCharset()));
+                    } catch (IOException e) {
+                        log.error(e);
+                        model.put("body", null);
+                    }
+                }
                 if (notEmpty(metadata.getAcceptParamters())) {
                     billingRequestParamtersToModel(request, metadata.getAcceptParamters(), model);
                 }

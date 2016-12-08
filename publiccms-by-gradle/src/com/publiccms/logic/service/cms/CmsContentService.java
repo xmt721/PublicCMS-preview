@@ -51,7 +51,7 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer[] status, Integer categoryId, Boolean containChild, Boolean disabled,
-            Integer[] modelId, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
+            String[] modelId, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
             String title, Long userId, Long checkUserId, Date startPublishDate, Date endPublishDate, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, status, categoryId, getCategoryIds(containChild, categoryId), disabled, modelId, parentId,

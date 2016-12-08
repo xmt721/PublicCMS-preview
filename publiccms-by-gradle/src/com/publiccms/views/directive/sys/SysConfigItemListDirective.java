@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -18,12 +17,11 @@ public class SysConfigItemListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String code = handler.getString("code");
-        SysSite site = getSite(handler);
         if (notEmpty(code)) {
-            handler.put("list", configComponent.getConfigItemList(site.getId(), code, handler.getLocale())).render();
+            handler.put("list", configComponent.getConfigItemList(getSite(handler), code, handler.getLocale())).render();
         }
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;

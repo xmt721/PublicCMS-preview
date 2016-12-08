@@ -61,8 +61,7 @@ public class CmsVoteAdminController extends AbstractController {
             }
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.vote", getIpAddress(request), getDate(), id + ":"
-                            + entity.getTitle()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.vote", getIpAddress(request), getDate(), getString(entity)));
         }
         return TEMPLATE_DONE;
     }
