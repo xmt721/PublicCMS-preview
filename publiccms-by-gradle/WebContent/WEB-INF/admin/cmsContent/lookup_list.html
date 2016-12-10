@@ -86,7 +86,7 @@
 				</td>
 				<td>
 					<a href="cmsContent/lookup_list.html?modelId=${a.modelId}" target="ajax" rel="content_list">
-						${(modelMap[a.modelId?string].name)!}
+						${(modelMap[a.modelId].name)!}
 					</a>
 				</td>
 				<td>${a.scores!}</td>
@@ -99,7 +99,7 @@
 					<#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
 				</td>
 				<td>
-					<#if modelMap[a.modelId?string].hasChild>
+					<#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
 						<a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="content_list">子内容列表</a>
 					</#if>
 				</td>

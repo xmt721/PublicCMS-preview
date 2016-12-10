@@ -14,6 +14,11 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.sanluan.common.base.Base;
 
+/**
+ *
+ * ImageUtils
+ * 
+ */
 public class ImageUtils extends Base {
 
     public static String getImageData(int width, int height, String text) throws IOException {

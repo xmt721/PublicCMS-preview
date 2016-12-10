@@ -147,7 +147,7 @@
 				</td>
 				<td>
 					<a href="cmsContent/list.html?modelId=${a.modelId}&categoryId=${categoryId!}&parentId=${(parent.parentId)!}" target="navTab" rel="cmsContent/list">
-						${(modelMap[a.modelId?string].name)!}
+						${(modelMap[a.modelId].name)!}
 					</a>
 				</td>
 				<td>${a.scores!}</td>
@@ -160,7 +160,7 @@
 					<#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
 				</td>
 				<td>
-					<#if modelMap[a.modelId?string].hasChild>
+					<#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
 						<a href="cmsContent/list.html?parentId=${a.id}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list">子内容管理</a>
 					</#if>
 					<#if 1=a.status>
