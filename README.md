@@ -74,3 +74,7 @@ BUG修复:
 数据库升级所需修改：
 
 1. 根据database/mysql-change-log.sql时间轴执行最新修改脚本
+
+数据库升级所需修改：
+
+1. 执行MyTest类中UpdateTo2017方法
