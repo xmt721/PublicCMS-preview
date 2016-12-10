@@ -136,8 +136,7 @@ public class CmsCategoryAdminController extends AbstractController {
 
         CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
         if (notEmpty(categoryType) && notEmpty(categoryType.getExtendId())) {
-            @SuppressWarnings("unchecked")
-            List<SysExtendField> categoryTypeExtendList = (List<SysExtendField>) extendFieldService
+            List<SysExtendField> categoryTypeExtendList = extendFieldService
                     .getList(categoryType.getExtendId());
             Map<String, String> map = getSysExtentDataMap(categoryParamters.getExtendDataList(), categoryTypeExtendList);
             attribute.setData(getExtendString(map));

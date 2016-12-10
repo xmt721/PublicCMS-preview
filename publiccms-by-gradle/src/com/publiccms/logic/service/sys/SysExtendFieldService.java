@@ -20,11 +20,10 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
     private String[] ignoreProperties = new String[] { "id" };
 
     @Transactional(readOnly = true)
-    public List<?> getList(Integer extendId) {
+    public List<SysExtendField> getList(Integer extendId) {
         return dao.getList(extendId);
     }
 
-    @SuppressWarnings("unchecked")
     public void update(Integer extendId, List<SysExtendField> entitys) {
         if (notEmpty(extendId)) {
             Set<String> codeList = new HashSet<String>();
@@ -39,7 +38,7 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
                     codeList.add(entity.getId().getCode());
                 }
             }
-            for (SysExtendField extend : (List<SysExtendField>) getList(extendId)) {
+            for (SysExtendField extend : getList(extendId)) {
                 if (!codeList.contains(extend.getId().getCode())) {
                     delete(extend.getId());
                 }

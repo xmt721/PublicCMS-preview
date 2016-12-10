@@ -660,8 +660,8 @@ ALTER TABLE `sys_config` DROP COLUMN `id`,DROP PRIMARY KEY,DROP INDEX `site_id`,
 ALTER TABLE `sys_config` RENAME `sys_config_data`;
 
 -- 20161208 --
-DELETE FTOM `sys_moudle` WHERE id = 88;
-DELETE FTOM `sys_moudle` WHERE id = 89;
+DELETE FROM `sys_moudle` WHERE id = 88;
+DELETE FROM `sys_moudle` WHERE id = 89;
 
 -- 20161209 --
 ALTER TABLE `cms_category_model` CHANGE COLUMN `model_id` `model_id`  varchar(20) NOT NULL COMMENT '模型编码' AFTER `category_id`;
@@ -678,4 +678,8 @@ INSERT INTO `sys_moudle` VALUES ('147', '修改配置', 'sysConfig/add', null, n
 INSERT INTO `sys_moudle` VALUES ('148', '删除配置', null, 'sysConfig/delete,sysConfig/deleteItem', null, '144', '0');
 
 ALTER TABLE `sys_config_data` CHANGE COLUMN `subcode` `item_code`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置项编码' AFTER `code`;
+
+-- 20161210 --
+ALTER TABLE `sys_cluster` ADD COLUMN `version`  varchar(20) NULL AFTER `master`;
+INSERT INTO `sys_moudle` VALUES ('149', '节点管理', 'sysCluster/list', NULL, '<i class=\"icon-code-fork icon-large\"></i>', '62', '0');
 

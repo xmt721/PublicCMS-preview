@@ -13,14 +13,15 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysExtendFieldDao extends BaseDao<SysExtendField> {
-    public List<?> getList(Integer extendId) {
+    @SuppressWarnings("unchecked")
+    public List<SysExtendField> getList(Integer extendId) {
         if (notEmpty(extendId)) {
             QueryHandler queryHandler = getQueryHandler("from SysExtendField bean");
             if (notEmpty(extendId)) {
                 queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
             }
             queryHandler.order("bean.sort asc");
-            return getList(queryHandler);
+            return (List<SysExtendField>) getList(queryHandler);
         }
         return new ArrayList<SysExtendField>();
     }
