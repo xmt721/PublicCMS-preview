@@ -46,11 +46,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.publiccms.common.servlet.MultiSiteWebHttpRequestHandler;
 import com.publiccms.common.view.InitializeFreeMarkerView;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -80,6 +83,38 @@ public class ApplicationConfig extends Base {
     private Environment env;
     public static String basePath;
     public static WebApplicationContext webApplicationContext;
+
+    /**
+     * <p>
+     * 资源处理器
+     * </p>
+     * <p>
+     * DefaultServletHttpRequestHandler
+     * </p>
+     * 
+     * @return
+     */
+    @Bean
+    public HttpRequestHandler defaultServlet() {
+        DefaultServletHttpRequestHandler bean = new DefaultServletHttpRequestHandler();
+        return bean;
+    }
+
+    /**
+     * <p>
+     * 站点静态页面处理器
+     * </p>
+     * <p>
+     * DefaultServletHttpRequestHandler
+     * </p>
+     * 
+     * @return
+     */
+    @Bean
+    public HttpRequestHandler webServlet(SiteComponent siteComponent) {
+        MultiSiteWebHttpRequestHandler bean = new MultiSiteWebHttpRequestHandler(siteComponent);
+        return bean;
+    }
 
     /**
      * <p>

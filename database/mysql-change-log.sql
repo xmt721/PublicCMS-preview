@@ -1,4 +1,4 @@
-﻿-- 20160414 --
+-- 20160414 --
 update `cms_category` set extend_id = NULL where extend_id = 0;
 update `cms_category_type` set extend_id = NULL where extend_id = 0;
 update `cms_model` set extend_id = NULL where extend_id = 0;
@@ -643,16 +643,6 @@ UPDATE `sys_moudle` SET authorized_url = 'cmsTemplate/placeMetadata,cmsTemplate/
 UPDATE `sys_moudle` SET url = null WHERE id = 53;
 UPDATE `sys_moudle` SET name = '文件管理',attached='<i class="icon-folder-close-alt icon-large"></i>' WHERE id = 38;
 UPDATE `sys_moudle` SET authorized_url='cmsTemplate/save,cmsTemplate/chipLookup,cmsResource/lookup,cmsWebFile/lookup,cmsTemplate/upload,cmsTemplate/doUpload' WHERE id = 41;
-INSERT INTO `sys_moudle` VALUES ('131', '资源文件管理', 'cmsResource/list', null, '<i class=\"icon-picture icon-large\"></i>', '38', '0');
-INSERT INTO `sys_moudle` VALUES ('132', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '0');
-INSERT INTO `sys_moudle` VALUES ('133', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '132', '0');
-INSERT INTO `sys_moudle` VALUES ('134', '上传文件', 'cmsWebFile/upload', 'cmsWebFile/doUpload', null, '132', '0');
-INSERT INTO `sys_moudle` VALUES ('135', '压缩', null, 'cmsWebFile/zip', null, '132', '0');
-INSERT INTO `sys_moudle` VALUES ('136', '解压缩', null, 'cmsWebFile/unzip,cmsWebFile/unzipHere', null, '132', '0');
-INSERT INTO `sys_moudle` VALUES ('137', '新建目录', 'cmsResource/directory', 'cmsResource/createDirectory', null, '131', '0');
-INSERT INTO `sys_moudle` VALUES ('138', '上传文件', 'cmsResource/upload', 'cmsResource/doUpload', null, '131', '0');
-INSERT INTO `sys_moudle` VALUES ('139', '压缩', null, 'cmsResource/zip', null, '131', '0');
-INSERT INTO `sys_moudle` VALUES ('140', '解压缩', null, 'cmsResource/unzip,cmsResource/unzipHere', null, '131', '0');
 
 -- 20161206 --
 UPDATE `sys_moudle` SET parent_id = 38 WHERE id = 81;
@@ -668,18 +658,27 @@ ALTER TABLE `cms_category_model` CHANGE COLUMN `model_id` `model_id`  varchar(20
 ALTER TABLE `cms_content` MODIFY COLUMN `model_id`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '模型' AFTER `category_id`;
 
 UPDATE `sys_moudle` SET url = 'sysConfigData/list', authorized_url=null,name = '站点配置',attached='<i class=\"icon-cog icon-large\"></i>' WHERE id = 101;
-INSERT INTO `sys_moudle` VALUES ('141', '配置项列表', 'sysConfigData/itemList', null, null, '101', '0');
-INSERT INTO `sys_moudle` VALUES ('143', '修改配置', 'sysConfigData/addItem', 'sysConfigData/save', null, '101', '0');
-INSERT INTO `sys_moudle` VALUES ('142', '清空配置', null, 'sysConfigData/delete', null, '101', '0');
-INSERT INTO `sys_moudle` VALUES ('144', '站点配置管理', 'sysConfig/list', null, '<i class=\"icon-cogs icon-large\"></i>', '38', '0');
-INSERT INTO `sys_moudle` VALUES ('145', '配置项列表', 'sysConfig/itemList', null, null, '144', '0');
-INSERT INTO `sys_moudle` VALUES ('146', '保存配置', null, 'sysConfig/save,sysConfig/saveItem', null, '144', '0');
-INSERT INTO `sys_moudle` VALUES ('147', '修改配置', 'sysConfig/add', null, null, '144', '0');
-INSERT INTO `sys_moudle` VALUES ('148', '删除配置', null, 'sysConfig/delete,sysConfig/deleteItem', null, '144', '0');
 
 ALTER TABLE `sys_config_data` CHANGE COLUMN `subcode` `item_code`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置项编码' AFTER `code`;
 
 -- 20161210 --
 ALTER TABLE `sys_cluster` ADD COLUMN `version`  varchar(20) NULL AFTER `master`;
-INSERT INTO `sys_moudle` VALUES ('149', '节点管理', 'sysCluster/list', NULL, '<i class=\"icon-code-fork icon-large\"></i>', '62', '0');
+-- 20161215 --
+
+ALTER TABLE `sys_domain` DROP INDEX `name` ,ADD UNIQUE INDEX `name` (`name`);
+ALTER TABLE `sys_site` DROP COLUMN `resource_path`;
+INSERT INTO `sys_moudle` VALUES ('131', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('132', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('133', '上传文件', 'cmsWebFile/upload', 'cmsWebFile/doUpload', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('134', '压缩', null, 'cmsWebFile/zip', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('135', '解压缩', null, 'cmsWebFile/unzip,cmsWebFile/unzipHere', null, '131', '0');
+INSERT INTO `sys_moudle` VALUES ('136', '节点管理', 'sysCluster/list', NULL, '<i class=\"icon-code-fork icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('137', '配置项列表', 'sysConfigData/itemList', null, null, '101', '0');
+INSERT INTO `sys_moudle` VALUES ('138', '修改配置', 'sysConfigData/addItem', 'sysConfigData/save', null, '101', '0');
+INSERT INTO `sys_moudle` VALUES ('139', '清空配置', null, 'sysConfigData/delete', null, '101', '0');
+INSERT INTO `sys_moudle` VALUES ('140', '站点配置管理', 'sysConfig/list', null, '<i class=\"icon-cogs icon-large\"></i>', '38', '0');
+INSERT INTO `sys_moudle` VALUES ('141', '配置项列表', 'sysConfig/itemList', null, null, '140', '0');
+INSERT INTO `sys_moudle` VALUES ('142', '保存配置', null, 'sysConfig/save,sysConfig/saveItem', null, '140', '0');
+INSERT INTO `sys_moudle` VALUES ('143', '修改配置', 'sysConfig/add', null, null, '140', '0');
+INSERT INTO `sys_moudle` VALUES ('144', '删除配置', null, 'sysConfig/delete,sysConfig/deleteItem', null, '140', '0');
 

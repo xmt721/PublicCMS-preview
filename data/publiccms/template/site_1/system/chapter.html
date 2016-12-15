@@ -20,10 +20,10 @@
 				${text?no_esc!}
 			</div>
 			<script>
-				uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){});
+				uParse('#content',{rootPath: '${site.sitePath!}ueditor'});
+				$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){});
 <@_content id=content.parentId>
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${object.parentId}&callback=?', function(data){});
+				$.getJSON('${site.dynamicPath!}api/contentClick?id=${object.parentId}&callback=?', function(data){});
 </@_content>
 			</script>
 			<div class="page">

@@ -99,7 +99,7 @@ dependencies {
         "org.apache.ant:ant:1.9.7",
 		
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
-        "org.quartz-scheduler:quartz:2.2.3"		
+        "org.quartz-scheduler:quartz:2.2.3"
     )
     providedCompile(
 	    // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api

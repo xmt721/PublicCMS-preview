@@ -1,6 +1,5 @@
 <script>
 var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
-var resourcePath = '${site.resourcePath}';
 function checkFileType(){
 <#if onlyImage?has_content>
 	<#assign image=true/>
@@ -59,7 +58,7 @@ function selectFile(path){
 					if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
 						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).text());
 					}else{
-						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',resourcePath+$(this).text());
+						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).text());
 					}
 				}
 			},function(){

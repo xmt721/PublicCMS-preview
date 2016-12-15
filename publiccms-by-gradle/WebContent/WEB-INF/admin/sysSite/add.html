@@ -1,4 +1,19 @@
 <@_sysSite id=id><#assign a=object/></@_sysSite>
+<script>
+function siteDefaultConfig${id!}(){
+	if(!$('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
+		$('input[name=useStatic]',navTab.getCurrentPanel()).click();
+	}
+	if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
+		$('input[name=useSsi]',navTab.getCurrentPanel()).click();
+	}
+	$('input[name=sitePath]',navTab.getCurrentPanel()).val("${base}/web/");
+	$('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base}/");
+	<#if !a??>
+		$('input[name=domainName]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
+	</#if>
+}
+</script>
 <form method="post" action="sysSite/save.do?callbackType=closeCurrent&navTabId=sysSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 	<input name="id" type="hidden" value="${id!}" />
 	<div class="formBar">
@@ -12,15 +27,17 @@
 			<dt>名称:</dt>
 			<dd>
 				<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
-				<label><input name="useStatic" type="checkbox" onclick="if($(this).is(':checked')){$('.useStatic').show();$('.useStatic input[type=text]',navTab.getCurrentPanel()).addClass('required')}else{$('.useStatic').hide();$('.useStatic input[type=text]',navTab.getCurrentPanel()).val('').removeClass('required');}"/>启用静态化</label>
+				<label><input name="useStatic" type="checkbox"/>启用静态化</label>
+				<button  class="button" onclick="siteDefaultConfig${id!}()">使用默认配置</button>
+				<span class="info">默认配置并不是最佳的运行方式,建议仅在开发阶段使用</span>
 			</dd>
 		</dl>
-		<dl class="nowrap useStatic" style="display:none">
+		<dl class="nowrap">
 			<dt>静态站点地址:</dt>
 			<dd>
 				<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
 				<label><input name="useSsi" type="checkbox"/>启用SSI</label>
-				<span class="info">该地址用于静态站点访问</span>
+				<span class="info">该地址用于静态站点访问,启用SSI后应该使用支持SSI的容器发布静态页面、反响代理动态页面</span>
 			</dd>
 		</dl>
 		<dl class="nowrap">
@@ -30,20 +47,14 @@
 				<span class="info">该地址用于动态站点访问</span>
 			</dd>
 		</dl>
-		<dl class="nowrap">
-			<dt>资源站点地址:</dt>
-			<dd>
-				<input class="required" name="resourcePath" type="text" maxlength="255" size="60" value="${(a.resourcePath)!}"/>
-				<span class="info">该地址用于资源站点访问</span>
-			</dd>
-		</dl>
 		<#if !a??>
 			<fieldset>
 				<legend>初始化信息</legend>
 				<dl class="nowrap">
-					<dt>域名:</dt>
+					<dt>动态站点域名:</dt>
 					<dd>
-						<input class="required" name="domain" type="text" maxlength="50" size="20" value=""/>
+						<input class="required domain" remote="sysDomain/virify.do" name="domainName" type="text" maxlength="50" size="20" value=""/>
+						<span class="info">不包含协议头，不包含端口，不包含路径，不能和已有域名重复</span>
 					</dd>
 				</dl>
 				<dl class="nowrap">
@@ -73,10 +84,10 @@
 			</fieldset>
 		</#if>
 		<script>
-			<#if !a??||a.useStatic>
+			<#if a?has_content&&a.useStatic>
 				$('input[name=useStatic]',navTab.getCurrentPanel()).click();
 			</#if>
-			<#if !a??||a.useSsi>
+			<#if a?has_content&&a.useSsi>
 				$('input[name=useSsi]',navTab.getCurrentPanel()).click();
 			</#if>
 		</script>

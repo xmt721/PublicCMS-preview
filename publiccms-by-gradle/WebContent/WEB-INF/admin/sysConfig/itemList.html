@@ -2,8 +2,8 @@
 	<div class="unit">
 		<p>${code}</p>
 		<p>
-			<a class="button" href="sysConfig/addItem.html?code=${code}&navTabId=sysConfig/addItem" target="navTab" rel="sysConfig/addItem">增加配置项</a>
 			<@_sysConfig code=code>
+				<a class="button" href="sysConfig/addItem.html?code=${code}&navTabId=sysConfig/addItem" target="navTab" rel="sysConfig/addItem">增加配置项</a>
 				<a class="button" href="sysConfig/delete.do?code=${code}&navTabId=sysConfig/list" title="确定要删除该配置吗?" target="ajaxTodo">删除配置</a>
 			</@_sysConfig>
 		</p>

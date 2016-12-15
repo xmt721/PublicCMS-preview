@@ -30,7 +30,7 @@
 					</@_tag>
 				</div>
 			</#if>
-			<script>uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});</script>
+			<script>uParse('#content',{rootPath: '${site.sitePath!}ueditor'});</script>
 <@include path="/ftl/content_page.ftl"/>
 			<script>
 				var link=$('article .page a:last').attr('href');
@@ -39,7 +39,7 @@
 						$(this).wrapAll("<a href=\"" + link + "\" title=\"点击查看下一页\"></a>");
 					});
 				}
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){
+				$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
 					$('article .author em').text(data.clicks);
 				});
 			</script>
