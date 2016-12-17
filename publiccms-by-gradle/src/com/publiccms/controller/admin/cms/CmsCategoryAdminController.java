@@ -83,7 +83,6 @@ public class CmsCategoryAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("save")
-    /*Bug：category的保存涉及多张表的操作，应该放入事务中，以便报错时能一起回滚*/
     public String save(CmsCategory entity, CmsCategoryAttribute attribute, @ModelAttribute CmsCategoryParamters categoryParamters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
@@ -123,8 +122,6 @@ public class CmsCategoryAdminController extends AbstractController {
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
 
         List<CmsCategoryModelParamters> categoryModelList = categoryParamters.getCategoryModelList();
-        /* BUG:categoryModelList为空时报java.lang.NullPointerException，需要加验证
-         */
         if(notEmpty(categoryModelList)){
         	for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
                 if(notEmpty(cmsCategoryModelParamters.getCategoryModel())){
