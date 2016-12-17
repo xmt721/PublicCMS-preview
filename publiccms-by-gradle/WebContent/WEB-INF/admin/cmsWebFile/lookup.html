@@ -21,7 +21,8 @@
 		<#case 'avi'>
 		<#case 'wmv'>
 		<#case 'mp4'>
-			<#return r'<video controls="controls"><source src="${site.sitePath}'+filePath+'" type="video/${filePath?keep_after('.')}" />'/><#break>
+			<#assign fileSuffix=fileName?keep_after_last('.')/>
+			<#return r'<video controls="controls"><source src="${site.resourcePath}'+filePath+'" type="video/${fileSuffix}" />'/><#break>
 		<#case 'wav'>
 		<#case 'acc'>
 		<#case 'mid'>
@@ -29,7 +30,8 @@
 		<#case 'wma'>
 		<#case 'mpga'>
 		<#case 'mp3'>
-			<#return r'<video controls="controls"><source src="${site.sitePath}'+filePath+'" type="video/${filePath?keep_after('.')}" />'/><#break>
+			<#assign fileSuffix=fileName?keep_after_last('.')/>
+			<#return r'<audio controls="controls"><source src="${site.resourcePath}'+filePath+'" type="video/${fileSuffix}" />'/><#break>
 		<#case 'rar'>
 		<#case 'zip'>
 		<#case 'html'>
