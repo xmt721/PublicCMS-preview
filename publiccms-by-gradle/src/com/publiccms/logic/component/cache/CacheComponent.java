@@ -3,6 +3,8 @@ package com.publiccms.logic.component.cache;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractCachingViewResolver;
@@ -20,6 +22,7 @@ public class CacheComponent extends Base {
     @Autowired
     private HqlService hqlService;
 
+    @PreDestroy
     public void clear() {
         for (Cache cache : cacheableList) {
             cache.clear();

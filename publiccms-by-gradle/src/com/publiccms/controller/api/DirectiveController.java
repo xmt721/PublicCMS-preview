@@ -64,7 +64,7 @@ public class DirectiveController extends AbstractController {
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, mediaType, request,
                         callback, response);
-                handler.put(ERROR, INTERFACE_NOT_FOUND).render();
+                handler.put(ERROR, INTERFACE_NOT_FOUND);
             }
         } catch (IOException e) {
             log.error(e.getMessage());

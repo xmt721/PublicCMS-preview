@@ -122,19 +122,16 @@ public class CmsCategoryAdminController extends AbstractController {
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
 
         List<CmsCategoryModelParamters> categoryModelList = categoryParamters.getCategoryModelList();
-        if(notEmpty(categoryModelList)){
-        	for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
-                if(notEmpty(cmsCategoryModelParamters.getCategoryModel())){
-                    cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
-                    if (cmsCategoryModelParamters.isUse()) {
-                        categoryModelService.updateCategoryModel(cmsCategoryModelParamters.getCategoryModel());
-                    } else {
-                        categoryModelService.delete(cmsCategoryModelParamters.getCategoryModel().getId());
-                    }
+        for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
+            if(notEmpty(cmsCategoryModelParamters.getCategoryModel())){
+                cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
+                if (cmsCategoryModelParamters.isUse()) {
+                    categoryModelService.updateCategoryModel(cmsCategoryModelParamters.getCategoryModel());
+                } else {
+                    categoryModelService.delete(cmsCategoryModelParamters.getCategoryModel().getId());
                 }
             }
         }
-        
         extendFieldService.update(entity.getExtendId(), categoryParamters.getContentExtends());// 修改或增加内容扩展字段
 
         CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());

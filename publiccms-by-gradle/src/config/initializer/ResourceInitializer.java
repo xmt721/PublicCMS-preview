@@ -15,12 +15,10 @@ import org.springframework.web.context.support.HttpRequestHandlerServlet;
 public class ResourceInitializer implements WebApplicationInitializer {
 
     public void onStartup(ServletContext servletContext) throws ServletException {
-        HttpRequestHandlerServlet httpRequestHandlerServlet = new HttpRequestHandlerServlet();
-        Dynamic registration = servletContext.addServlet("defaultServlet", httpRequestHandlerServlet);
+        Dynamic registration = servletContext.addServlet("defaultServlet", new HttpRequestHandlerServlet());
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { "/resource/*", "/favicon.ico" });
-        HttpRequestHandlerServlet siteHttpRequestHandlerServlet = new HttpRequestHandlerServlet();
-        Dynamic webRegistration = servletContext.addServlet("webServlet", siteHttpRequestHandlerServlet);
+        Dynamic webRegistration = servletContext.addServlet("webServlet", new HttpRequestHandlerServlet());
         webRegistration.setLoadOnStartup(0);
         webRegistration.addMapping(new String[] { "/web/*" });
     }

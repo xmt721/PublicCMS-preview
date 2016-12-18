@@ -333,7 +333,7 @@ public class TemplateComponent extends Base implements Cache {
             exposePlace(site, templatePath, metadata, model);
             return makeStringByFile(getFullFileName(site, INCLUDE_DIRECTORY + templatePath), webConfiguration, model);
         }
-        return "";
+        return BLANK;
     }
 
     @Autowired(required = false)

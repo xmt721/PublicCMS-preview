@@ -17,9 +17,7 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
     public List<SysExtendField> getList(Integer extendId) {
         if (notEmpty(extendId)) {
             QueryHandler queryHandler = getQueryHandler("from SysExtendField bean");
-            if (notEmpty(extendId)) {
-                queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
-            }
+            queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
             queryHandler.order("bean.sort asc");
             return (List<SysExtendField>) getList(queryHandler);
         }

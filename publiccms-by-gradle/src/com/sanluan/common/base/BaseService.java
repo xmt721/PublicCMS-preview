@@ -83,11 +83,12 @@ public abstract class BaseService<E> extends Base {
      * @param newEntity
      * @return
      */
-    public void update(Serializable id, E newEntity) {
+    public E update(Serializable id, E newEntity) {
         E entity = getEntity(id);
         if (notEmpty(entity)) {
             copyProperties(dao.init(newEntity), entity);
         }
+        return entity;
     }
 
     /**

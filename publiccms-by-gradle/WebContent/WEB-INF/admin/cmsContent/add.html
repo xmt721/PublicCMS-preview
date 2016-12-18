@@ -164,7 +164,7 @@ function clickAddTag(){
 				<dl class="nowrap">
 					<dt>正文:</dt>
 					<dd style="width:800px">
-						<textarea name="text" class="<#if !model.hasImages&&!model.hasFiles>required </#if>editor" style="width: 100%;" rows="20">${(attribute.text)!}</textarea>
+						<textarea name="text" class="<#if model?has_content&&!model.hasImages&&!model.hasFiles>required </#if>editor" style="width: 100%;" rows="20">${(attribute.text)!}</textarea>
 					</dd>
 				</dl>
 			</div>

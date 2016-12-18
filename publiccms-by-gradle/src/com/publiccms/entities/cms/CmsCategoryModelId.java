@@ -57,8 +57,8 @@ public class CmsCategoryModelId implements java.io.Serializable {
         CmsCategoryModelId castOther = (CmsCategoryModelId) other;
 
         return (this.getCategoryId() == castOther.getCategoryId())
-                && ((this.getModelId() == castOther.getModelId()) || (this.getModelId() != null
-                        && castOther.getModelId() != null && this.getModelId().equals(castOther.getModelId())));
+                && ((this.getModelId() == castOther.getModelId()) || (this.getModelId() != null && castOther.getModelId() != null
+                        && this.getModelId().equals(castOther.getModelId())));
     }
 
     public int hashCode() {

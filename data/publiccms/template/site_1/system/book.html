@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 	<title>${content.title} - ${category.name}</title>
-	<meta name="keywords" content="${content.title}"/>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${content.description}"/>
 <@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 <style>
@@ -23,7 +23,7 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 	<div class="container">
 		<article>
 			<div>
-				<div class="cover"><img src="${site.sitePath+content.cover}"></div>
+				<div class="cover"><img src="${site.sitePath+content.cover!}"></div>
 				<div class="info">
 					<h3><a href="${content.url!}" target="_blank">${content.title}</a></h3>
 					<#if content.tags?has_content>

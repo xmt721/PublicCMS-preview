@@ -165,4 +165,9 @@ public interface RenderHandler {
      * @throws Exception
      */
     public Object getAttribute(String name) throws IOException, Exception;
+
+    /**
+     * 
+     */
+    public void setRenderd();
 }

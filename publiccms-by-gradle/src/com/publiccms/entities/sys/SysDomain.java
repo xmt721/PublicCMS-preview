@@ -1,11 +1,7 @@
 package com.publiccms.entities.sys;
 
-// Generated 2016-1-20 11:01:19 by Hibernate Tools 4.3.1
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,8 +18,6 @@ public class SysDomain implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    @MyColumn(title = "ID")
-    private Integer id;
     @MyColumn(title = "域名")
     private String name;
     @MyColumn(title = "站点", condition = true)
@@ -46,17 +40,7 @@ public class SysDomain implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     public String getName() {
         return this.name;
     }

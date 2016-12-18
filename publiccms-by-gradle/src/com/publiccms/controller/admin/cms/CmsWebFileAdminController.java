@@ -2,6 +2,9 @@ package com.publiccms.controller.admin.cms;
 
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
+import static com.sanluan.common.tools.ZipUtils.unzip;
+import static com.sanluan.common.tools.ZipUtils.unzipHere;
+import static com.sanluan.common.tools.ZipUtils.zip;
 import static org.apache.commons.lang3.StringUtils.join;
 
 import java.io.File;
@@ -23,7 +26,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.file.FileComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.sanluan.common.tools.ZipUtils;
 
 /**
  * 
@@ -96,14 +98,14 @@ public class CmsWebFileAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("zip")
-    public String zip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String doZip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebFilePath(site, path);
             File file = new File(filePath);
             if (notEmpty(file) && file.isDirectory()) {
                 try {
-                    ZipUtils.zip(filePath, filePath + ".zip");
+                    zip(filePath, filePath + ".zip");
                 } catch (IOException e) {
                     verifyCustom("webfile.zip", true, model);
                     log.error(e.getMessage(), e);
@@ -123,8 +125,8 @@ public class CmsWebFileAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("unzip")
-    public String unzip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        unzip(path, false, request, session, model);
+    public String doUnzip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
+        doUnzip(path, false, request, session, model);
         return TEMPLATE_DONE;
     }
 
@@ -136,8 +138,8 @@ public class CmsWebFileAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("unzipHere")
-    public String unzipHere(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        unzip(path, true, request, session, model);
+    public String doUnzipHere(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
+        doUnzip(path, true, request, session, model);
         return TEMPLATE_DONE;
     }
 
@@ -148,7 +150,7 @@ public class CmsWebFileAdminController extends AbstractController {
      * @param session
      * @param model
      */
-    private void unzip(String path, boolean here, HttpServletRequest request, HttpSession session, ModelMap model) {
+    private void doUnzip(String path, boolean here, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebFilePath(site, path);
@@ -156,9 +158,9 @@ public class CmsWebFileAdminController extends AbstractController {
             if (notEmpty(file) && file.isFile()) {
                 try {
                     if (here) {
-                        ZipUtils.unzipHere(filePath);
+                        unzipHere(filePath);
                     } else {
-                        ZipUtils.unzip(filePath, filePath.substring(0, filePath.length() - 4), true);
+                        unzip(filePath, filePath.substring(0, filePath.length() - 4), true);
                     }
                 } catch (IOException e) {
                     verifyCustom("webfile.unzip", true, model);

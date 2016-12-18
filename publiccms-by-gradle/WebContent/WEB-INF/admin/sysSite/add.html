@@ -28,7 +28,7 @@ function siteDefaultConfig${id!}(){
 			<dd>
 				<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
 				<label><input name="useStatic" type="checkbox"/>启用静态化</label>
-				<button  class="button" onclick="siteDefaultConfig${id!}()">使用默认配置</button>
+				<button  class="button" onclick="siteDefaultConfig${id!}();return false;">使用默认配置</button>
 				<span class="info">默认配置并不是最佳的运行方式,建议仅在开发阶段使用</span>
 			</dd>
 		</dl>

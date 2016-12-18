@@ -189,9 +189,8 @@ INSERT INTO `sys_moudle` VALUES (124, '广播管理', 'homeBroadcast/list', 'sys
 INSERT INTO `sys_moudle` VALUES (125, '启用', null, 'homeBroadcast/enable', null, 124, 0);
 INSERT INTO `sys_moudle` VALUES (126, '禁用', null, 'homeBroadcast/disable', null, 124, 0);
 DELETE FROM `sys_moudle` WHERE id = 88;
-UPDATE `sys_moudle` SET parent_id = 45 WHERE id = 61;
 UPDATE `sys_moudle` SET parent_id = 30 WHERE id = 107;
-ALTER TABLE `sys_moudle` ORDER BY  `id`;
+
 -- 20161119 --
 ALTER TABLE `log_operate` CHANGE  `content` `content` text NOT NULL COMMENT '内容';
 ALTER TABLE `cms_category_model` DROP `id`;
@@ -662,10 +661,10 @@ UPDATE `sys_moudle` SET url = 'sysConfigData/list', authorized_url=null,name = '
 ALTER TABLE `sys_config_data` CHANGE COLUMN `subcode` `item_code`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置项编码' AFTER `code`;
 
 -- 20161210 --
-ALTER TABLE `sys_cluster` ADD COLUMN `version`  varchar(20) NULL AFTER `master`;
--- 20161215 --
+ALTER TABLE `sys_cluster` ADD COLUMN `cms_version`  varchar(20) NULL AFTER `master`;
 
-ALTER TABLE `sys_domain` DROP INDEX `name` ,ADD UNIQUE INDEX `name` (`name`);
+-- 20161215 --
+ALTER TABLE `sys_domain` DROP COLUMN `id`,DROP PRIMARY KEY,DROP INDEX `name`,ADD PRIMARY KEY (`name`);
 ALTER TABLE `sys_site` DROP COLUMN `resource_path`;
 INSERT INTO `sys_moudle` VALUES ('131', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '0');
 INSERT INTO `sys_moudle` VALUES ('132', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '131', '0');
@@ -681,4 +680,34 @@ INSERT INTO `sys_moudle` VALUES ('141', '配置项列表', 'sysConfig/itemList',
 INSERT INTO `sys_moudle` VALUES ('142', '保存配置', null, 'sysConfig/save,sysConfig/saveItem', null, '140', '0');
 INSERT INTO `sys_moudle` VALUES ('143', '修改配置', 'sysConfig/add', null, null, '140', '0');
 INSERT INTO `sys_moudle` VALUES ('144', '删除配置', null, 'sysConfig/delete,sysConfig/deleteItem', null, '140', '0');
-
+DROP TABLE IF EXISTS `sys_ftp_user`;
+ALTER TABLE `sys_app_client`  DROP COLUMN `allow_push`, DROP COLUMN `push_token` ,DROP COLUMN `id`, DROP PRIMARY KEY, ADD PRIMARY KEY (`site_id`, `channel`, `uuid`),DROP INDEX `site_id`,DROP INDEX `disabled`,DROP INDEX `create_date`,DROP INDEX `channel`, DROP INDEX `user_id` ,ADD INDEX `user_id` (`user_id`, `disabled`, `create_date`),MODIFY COLUMN `client_version` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '版本' AFTER `user_id`;
+ALTER TABLE `sys_app`
+ADD COLUMN `authorized_apis`  text NULL COMMENT '授权API' AFTER `app_secret`;
+UPDATE `sys_moudle` SET name = '运营' WHERE id = 45;
+UPDATE `sys_moudle` SET parent_id = 5 WHERE id = 61;
+DELETE FROM `sys_moudle` where `id` = 83;
+DELETE FROM `sys_moudle` where `id` = 98;
+DELETE FROM `sys_moudle` where `id` = 99;
+INSERT INTO `sys_moudle` VALUES ('46', '报表管理', NULL, NULL, '<i class=\"icon-sort-by-attributes-alt icon-large\"></i>', '45', '0');
+INSERT INTO `sys_moudle` VALUES ('83', '系统监控', 'report/cms', NULL, '<i class=\"icon-check-sign icon-large\"></i>', '46', '0');
+INSERT INTO `sys_moudle` VALUES ('56', '应用授权', 'sysApp/list', NULL, '<i class=\"icon-linux icon-large\"></i>', '62', '0');
+INSERT INTO `sys_moudle` VALUES ('57', '增加/修改', 'sysApp/add', NULL, '', '56', '0');
+INSERT INTO `sys_moudle` VALUES ('58', '保存', NULL, 'sysApp/save', '', '56', '0');
+INSERT INTO `sys_moudle` VALUES ('59', '删除', NULL, 'sysApp/delete', NULL, '56', '0');
+INSERT INTO `sys_moudle` VALUES ('88', '客户端管理', 'sysAppClient/list', NULL, '<i class=\"icon-coffee icon-large\"></i>', '61', '0');
+INSERT INTO `sys_moudle` VALUES ('89', '启用', NULL, 'sysAppClient/enable', NULL, '88', '0');
+INSERT INTO `sys_moudle` VALUES ('98', '禁用', NULL, 'sysAppClient/disable', NULL, '88', '0');
+INSERT INTO `sys_moudle` VALUES ('99', '抽奖管理', 'cmsLottery/list', NULL, '<i class=\"icon-ticket icon-large\"></i>', '13', '0');
+INSERT INTO `sys_moudle` VALUES ('108', '增加/修改', 'cmsLottery/add', NULL, NULL, '1007', '0');
+INSERT INTO `sys_moudle` VALUES ('145', '保存', NULL, 'cmsLottery/save', NULL, '1007', '0');
+INSERT INTO `sys_moudle` VALUES ('146', '删除', NULL, 'cmsLottery/delete', NULL, '1007', '0');
+INSERT INTO `sys_moudle` VALUES ('147', '抽奖用户管理', 'cmsLotteryUser/list', 'sysUser/lookup', '<i class=\"icon-smile icon-large\"></i>', '13', '0');
+INSERT INTO `sys_moudle` VALUES ('148', '删除', NULL, 'cmsLotteryUser/delete', NULL, '1011', '0');
+INSERT INTO `sys_moudle` VALUES ('149', '投票管理', 'cmsVote/list', NULL, '<i class=\"icon-hand-right icon-large\"></i>', '13', '0');
+INSERT INTO `sys_moudle` VALUES ('150', '增加/修改', 'cmsVote/add', NULL, NULL, '1013', '0');
+INSERT INTO `sys_moudle` VALUES ('151', '保存', NULL, 'cmsVote/save', NULL, '1013', '0');
+INSERT INTO `sys_moudle` VALUES ('152', '删除', NULL, 'cmsVote/delete', NULL, '1013', '0');
+INSERT INTO `sys_moudle` VALUES ('153', '查看', 'cmsVote/view', NULL, NULL, '1013', '0');
+INSERT INTO `sys_moudle` VALUES ('154', '投票用户', 'cmsVoteUser/list', 'sysUser/lookup', NULL, '1013', '0');
+ALTER TABLE `sys_moudle` ORDER BY  `id`;

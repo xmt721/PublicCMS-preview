@@ -28,12 +28,12 @@ public class AppTokenDirective extends AbstractAppDirective {
             if (entity.getAppSecret().equalsIgnoreCase(handler.getString("appSecret"))) {
                 SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), getDate());
                 appTokenService.save(token);
-                handler.put("appToken", token.getAuthToken()).render();
+                handler.put("appToken", token.getAuthToken());
             } else {
-                handler.put("error", SECRET_ERROR).render();
+                handler.put("error", SECRET_ERROR);
             }
         } else {
-            handler.put("error", KEY_NOT_EXISTS).render();
+            handler.put("error", KEY_NOT_EXISTS);
         }
     }
 

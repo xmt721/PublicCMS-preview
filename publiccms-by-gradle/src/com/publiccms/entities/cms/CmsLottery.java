@@ -45,7 +45,7 @@ public class CmsLottery implements java.io.Serializable , Static {
     private Date endDate;
     @MyColumn(title = "时间间隔")
     private int intervalHour;
-    @MyColumn(title = "每天发放数量")
+    @MyColumn(title = "每段时间发放数量")
     private int gift;
     @MyColumn(title = "奖品总数")
     private int totalGift;

@@ -33,7 +33,7 @@ public class SysAppClientAdminController extends AbstractController {
         SysAppClient entity = service.getEntity(id);
         if (notEmpty(entity.getId())) {
             SysSite site = getSite(request);
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
@@ -48,7 +48,7 @@ public class SysAppClientAdminController extends AbstractController {
         SysAppClient entity = service.getEntity(id);
         if (notEmpty(entity)) {
             SysSite site = getSite(request);
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);

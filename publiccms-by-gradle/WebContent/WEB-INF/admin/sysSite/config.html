@@ -49,7 +49,7 @@ server {
 	}
 			</#if>
 			<#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))>
-	#${a.name} 静态化站点配置
+	#${a.name} 静态站点配置
 	location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
 		alias   ${rootPath}/web/site_${siteId}/;
 		index  index.html;
@@ -60,7 +60,7 @@ server {
 	</#if>
 </@_sysDomainList>
 <#if a.useStatic&&!((a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath)))>
-#${a.name} 静态化站点配置
+#${a.name} 静态站点配置
 server {
 	listen       ${sitePort?has_content?then(sitePort,80)};
 	server_name  ${sitePath};
@@ -73,6 +73,7 @@ server {
 	location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
 		alias   ${rootPath}/web/site_${siteId}/;
 		index  index.html;
+		add_header Access-Control-Allow-Origin *;
 	}
 }
 </#if></@_disk></textarea>

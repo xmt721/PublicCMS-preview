@@ -36,6 +36,8 @@ public class SysApp implements java.io.Serializable {
     private String appKey;
     @MyColumn(title = "授权密码")
     private String appSecret;
+    @MyColumn(title = "授权接口")
+    private String authorizedApis;
 
     public SysApp() {
     }
@@ -45,6 +47,14 @@ public class SysApp implements java.io.Serializable {
         this.channel = channel;
         this.appKey = appKey;
         this.appSecret = appSecret;
+    }
+
+    public SysApp(int siteId, String channel, String appKey, String appSecret, String authorizedApis) {
+        this.siteId = siteId;
+        this.channel = channel;
+        this.appKey = appKey;
+        this.appSecret = appSecret;
+        this.authorizedApis = authorizedApis;
     }
 
     @Id
@@ -92,6 +102,15 @@ public class SysApp implements java.io.Serializable {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    @Column(name = "authorized_apis", length = 65535)
+    public String getAuthorizedApis() {
+        return this.authorizedApis;
+    }
+
+    public void setAuthorizedApis(String authorizedApis) {
+        this.authorizedApis = authorizedApis;
     }
 
 }

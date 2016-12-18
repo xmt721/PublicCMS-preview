@@ -28,8 +28,6 @@ public class SysExtendField implements java.io.Serializable {
     private boolean required;
     @MyColumn(title = "最大长度")
     private Integer maxlength;
-    @MyColumn(title = "顺序", order = true)
-    private int sort;
     @MyColumn(title = "名称")
     private String name;
     @MyColumn(title = "描述")
@@ -42,20 +40,22 @@ public class SysExtendField implements java.io.Serializable {
     private String dictionaryType;
     @MyColumn(title = "数据字典ID")
     private String dictionaryId;
+    @MyColumn(title = "顺序", order = true)
+    private int sort;
 
     public SysExtendField() {
     }
 
-    public SysExtendField(SysExtendFieldId id, boolean required, int sort, String name, String inputType) {
+    public SysExtendField(SysExtendFieldId id, boolean required, String name, String inputType, int sort) {
         this.id = id;
         this.required = required;
-        this.sort = sort;
         this.name = name;
         this.inputType = inputType;
+        this.sort = sort;
     }
 
     public SysExtendField(SysExtendFieldId id, boolean required, Integer maxlength, String name, String description,
-            String inputType, String defaultValue, String dictionaryType, String dictionaryId) {
+            String inputType, String defaultValue, String dictionaryType, String dictionaryId, int sort) {
         this.id = id;
         this.required = required;
         this.maxlength = maxlength;
@@ -65,6 +65,7 @@ public class SysExtendField implements java.io.Serializable {
         this.defaultValue = defaultValue;
         this.dictionaryType = dictionaryType;
         this.dictionaryId = dictionaryId;
+        this.sort = sort;
     }
 
     @EmbeddedId
@@ -94,15 +95,6 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setMaxlength(Integer maxlength) {
         this.maxlength = maxlength;
-    }
-
-    @Column(name = "sort", nullable = false)
-    public int getSort() {
-        return this.sort;
-    }
-
-    public void setSort(int sort) {
-        this.sort = sort;
     }
 
     @Column(name = "name", nullable = false, length = 20)
@@ -157,6 +149,15 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setDictionaryId(String dictionaryId) {
         this.dictionaryId = dictionaryId;
+    }
+
+    @Column(name = "sort", nullable = false)
+    public int getSort() {
+        return this.sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 
 }

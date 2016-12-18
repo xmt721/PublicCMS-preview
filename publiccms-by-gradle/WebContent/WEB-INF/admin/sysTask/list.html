@@ -45,7 +45,6 @@
 			</tr>
 		</thead>
 		<tbody>
-			<#assign taskIds=[]/>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
@@ -60,10 +59,8 @@
 						<a href="sysTask/pause.do?id=${a.id}" title="确定要暂停吗?" target="ajaxTodo">暂停</a>
 					<#elseif a.status=2>
 						<a href="sysTask/resume.do?id=${a.id}" title="确定要恢复吗?" target="ajaxTodo">恢复</a>
-					<#elseif a.status=3>
+					<#elseif a.status=3||a.status=1>
 						<a href="sysTask/recreate.do?id=${a.id}" title="确定要重新初始化吗?" target="ajaxTodo">重新初始化</a>
-					<#elseif a.status=1>
-						<#assign taskIds+=[a.id]/>
 					</#if>
 					<a href="log/task.html?taskId=${a.id}" target="navTab" rel="logTask" title="${a.name!}执行日志">查看日志</a>
 				</td>
@@ -73,16 +70,4 @@
 	</table>
 	<#include "../include_page/page.html"/>
 </@_sysTaskList>
-<#if taskIds?has_content>
-<script>
-function checkTaskStatus(){
-	$.getJSON('sysTask/status.do',{<#list taskIds as taskId>"ids":"${taskId}"<#sep>,</#list>}, function(data){
-		if($(data).length>0){
-			$('#pagerForm',navTab.getCurrentPanel()).submit();
-		}
-	});
-}
-setTimeout("checkTaskStatus()",3000); 
-</script>
-</#if>
 </div>
