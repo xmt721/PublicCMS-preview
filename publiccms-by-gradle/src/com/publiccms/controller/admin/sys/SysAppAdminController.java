@@ -5,6 +5,7 @@ import static com.sanluan.common.tools.JsonUtils.getString;
 // Generated 2016-3-1 17:28:30 by com.sanluan.common.source.SourceMaker
 
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
+import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,12 +27,13 @@ import com.publiccms.logic.service.sys.SysAppService;
 public class SysAppAdminController extends AbstractController {
     @Autowired
     private SysAppService service;
-    
+
     private String[] ignoreProperties = new String[] { "id", "siteId", "channel" };
 
     @RequestMapping("save")
-    public String save(SysApp entity, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(SysApp entity, String[] apis, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
+        entity.setAuthorizedApis(arrayToCommaDelimitedString(apis));
         if (notEmpty(entity.getId())) {
             SysApp oldEntity = service.getEntity(entity.getId());
             if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {

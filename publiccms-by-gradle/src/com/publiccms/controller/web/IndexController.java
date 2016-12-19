@@ -8,17 +8,14 @@ import static com.sanluan.common.tools.RequestUtils.getEncodePath;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.split;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -30,7 +27,6 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.views.pojo.CmsPageMetadata;
 import com.sanluan.common.servlet.PageNotFoundException;
-import com.sanluan.common.tools.StreamUtils;
 
 /**
  * 
@@ -57,7 +53,8 @@ public class IndexController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping({ SEPARATOR, "/**" })
-    public String page(HttpServletRequest request, HttpSession session, ModelMap model) throws PageNotFoundException {
+    public String page(@RequestBody(required = false) String body, HttpServletRequest request, ModelMap model)
+            throws PageNotFoundException {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(SEPARATOR)) {
             requestPath += getDefaultPage();
@@ -69,7 +66,7 @@ public class IndexController extends AbstractController {
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath, true);
         if (notEmpty(metadata)) {
             if (metadata.isUseDynamic()) {
-                if (metadata.isNeedLogin() && notEmpty(domain.getId()) && empty(getUserFromSession(session))) {
+                if (metadata.isNeedLogin() && empty(getUserFromSession(request.getSession()))) {
                     Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE_SITE, CONFIG_SUBCODE);
                     String loginPath = config.get(CONFIG_LOGIN_PATH);
                     if (notEmpty(loginPath)) {
@@ -80,16 +77,7 @@ public class IndexController extends AbstractController {
                 }
                 model.put("metadata", metadata);
                 if (metadata.isNeedBody()) {
-                    try {
-                        InputStream inputStream = request.getInputStream();
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        StreamUtils.write(inputStream, false, byteArrayOutputStream);
-                        model.put("body", empty(metadata.getBodyCharset()) ? byteArrayOutputStream.toString()
-                                : byteArrayOutputStream.toString(metadata.getBodyCharset()));
-                    } catch (IOException e) {
-                        log.error(e);
-                        model.put("body", null);
-                    }
+                    model.put("body", body);
                 }
                 if (notEmpty(metadata.getAcceptParamters())) {
                     billingRequestParamtersToModel(request, metadata.getAcceptParamters(), model);

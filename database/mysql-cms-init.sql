@@ -96,7 +96,7 @@ INSERT INTO `cms_category_attribute` VALUES ('19', '案例', 'PublicCMS案例', 
 DROP TABLE IF EXISTS `cms_category_model`;
 CREATE TABLE `cms_category_model` (
   `category_id` int(11) NOT NULL COMMENT '分类ID',
-  `model_id` int(11) NOT NULL COMMENT '模型ID',
+  `model_id` varchar(20) NOT NULL COMMENT '模型编码',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
   PRIMARY KEY  (`category_id`,`model_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类模型';
@@ -177,7 +177,7 @@ CREATE TABLE `cms_content` (
   `user_id` bigint(20) NOT NULL COMMENT '发表用户',
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `category_id` int(11) NOT NULL COMMENT '分类',
-  `model_id` int(11) NOT NULL COMMENT '模型',
+  `model_id` varchar(20) NOT NULL COMMENT '模型',
   `parent_id` bigint(20) default NULL COMMENT '父内容ID',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
   `author` varchar(50) default NULL COMMENT '作者',

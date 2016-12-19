@@ -9,6 +9,8 @@ import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -57,7 +59,7 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping(value = "doLogin")
     public MappingJacksonValue login(String username, String password, String callback, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         username = trim(username);
         password = trim(password);
@@ -81,12 +83,17 @@ public class LoginController extends AbstractController {
             return getMappingJacksonValue(model, callback);
         }
         user.setPassword(null);
-        setUserToSession(session, user);
+        setUserToSession(request.getSession(), user);
         String authToken = UUID.randomUUID().toString();
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
-        String loginInfo = user.getId() + getCookiesUserSplit() + authToken + getCookiesUserSplit() + user.getNickName();
-        model.addAttribute("loginInfo", loginInfo);
-        addCookie(request.getContextPath(), response, getCookiesUser(), loginInfo, Integer.MAX_VALUE, null);
+        try {
+            String loginInfo = user.getId() + getCookiesUserSplit() + authToken + getCookiesUserSplit() + user.isSuperuserAccess()
+                    + getCookiesUserSplit() + URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME);
+            model.addAttribute("loginInfo", loginInfo);
+            addCookie(request.getContextPath(), response, getCookiesUser(), loginInfo, Integer.MAX_VALUE, null);
+        } catch (UnsupportedEncodingException e) {
+            log.error(e);
+        }
         service.updateLoginStatus(user.getId(), ip);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
         return getMappingJacksonValue(model, callback);
@@ -127,7 +134,7 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping(value = "doRegister")
     public MappingJacksonValue register(SysUser entity, String repassword, String callback, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         entity.setName(trim(entity.getName()));
         entity.setNickName(trim(entity.getNickName()));
@@ -149,7 +156,7 @@ public class LoginController extends AbstractController {
         entity.setSiteId(site.getId());
         service.save(entity);
         entity.setPassword(null);
-        setUserToSession(session, entity);
+        setUserToSession(request.getSession(), entity);
         String authToken = UUID.randomUUID().toString();
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL_WEB, getDate(), ip));
         String loginInfo = entity.getId() + getCookiesUserSplit() + authToken + getCookiesUserSplit() + entity.getNickName();

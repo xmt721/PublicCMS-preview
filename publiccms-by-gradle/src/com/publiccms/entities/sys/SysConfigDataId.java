@@ -73,8 +73,8 @@ public class SysConfigDataId implements java.io.Serializable {
         return (this.getSiteId() == castOther.getSiteId())
                 && ((this.getCode() == castOther.getCode())
                         || (this.getCode() != null && castOther.getCode() != null && this.getCode().equals(castOther.getCode())))
-                && ((this.getItemCode() == castOther.getItemCode()) || (this.getItemCode() != null && castOther.getItemCode() != null
-                        && this.getItemCode().equals(castOther.getItemCode())));
+                && ((this.getItemCode() == castOther.getItemCode()) || (this.getItemCode() != null
+                        && castOther.getItemCode() != null && this.getItemCode().equals(castOther.getItemCode())));
     }
 
     public int hashCode() {

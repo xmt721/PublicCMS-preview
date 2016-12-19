@@ -1,11 +1,10 @@
 package com.sanluan.common.cache;
 
 import static com.sanluan.common.tools.RedisUtils.createJedisPool;
+import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
 
 import java.io.IOException;
 import java.util.Properties;
-
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.sanluan.common.base.Base;
 import com.sanluan.common.cache.memory.MemoryCacheEntity;
@@ -21,11 +20,11 @@ public class CacheEntityFactory extends Base {
     private Properties properties;
     private int defaultSize = 100;
 
-    public CacheEntityFactory(String configurationResourceName) {
+    public CacheEntityFactory(String configurationResourceName) throws IOException {
+        this.properties = loadAllProperties(configurationResourceName);
         try {
-            this.properties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName,
-                    CacheEntityFactory.class.getClassLoader());
-        } catch (IOException e) {
+            setDefaultSize(Integer.parseInt(properties.getProperty("cache.defaultSize")));
+        } catch (NumberFormatException e) {
             log.error(e.getMessage());
         }
     }

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import com.publiccms.common.servlet.MultiSiteDispatcherServlet;
 import com.sanluan.common.base.Base;
 
-import config.WebConfig;
+import config.spring.WebConfig;
 
 /**
  * 
@@ -19,6 +19,7 @@ import config.WebConfig;
  *
  */
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;

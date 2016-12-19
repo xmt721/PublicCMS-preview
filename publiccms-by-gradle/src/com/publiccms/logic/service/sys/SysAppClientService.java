@@ -27,6 +27,24 @@ public class SysAppClientService extends BaseService<SysAppClient> {
                 endCreateDate, disabled, orderField, orderType, pageIndex, pageSize);
     }
 
+    public SysAppClient updateUser(Serializable id, Long userId) {
+        SysAppClient entity = dao.getEntity(id);
+        if (notEmpty(entity)) {
+            entity.setUserId(userId);
+        }
+        return entity;
+    }
+
+    public SysAppClient updateLastLogin(Serializable id, String clientVersion, String ip) {
+        SysAppClient entity = dao.getEntity(id);
+        if (notEmpty(entity)) {
+            entity.setClientVersion(clientVersion);
+            entity.setLastLoginDate(getDate());
+            entity.setLastLoginIp(ip);
+        }
+        return entity;
+    }
+
     public SysAppClient updateStatus(Serializable id, boolean status) {
         SysAppClient entity = dao.getEntity(id);
         if (notEmpty(entity)) {

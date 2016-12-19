@@ -35,22 +35,18 @@ public class SysSite implements java.io.Serializable {
     private boolean useSsi;
     @MyColumn(title = "动态站点地址")
     private String dynamicPath;
-    @MyColumn(title = "资源站点地址")
-    private String resourcePath;
     @MyColumn(title = "禁用", condition = true)
     private boolean disabled;
 
     public SysSite() {
     }
 
-    public SysSite(String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath, String resourcePath,
-            boolean disabled) {
+    public SysSite(String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath, boolean disabled) {
         this.name = name;
         this.useStatic = useStatic;
         this.sitePath = sitePath;
         this.useSsi = useSsi;
         this.dynamicPath = dynamicPath;
-        this.resourcePath = resourcePath;
         this.disabled = disabled;
     }
 
@@ -108,15 +104,6 @@ public class SysSite implements java.io.Serializable {
 
     public void setDynamicPath(String dynamicPath) {
         this.dynamicPath = dynamicPath;
-    }
-
-    @Column(name = "resource_path", nullable = false)
-    public String getResourcePath() {
-        return this.resourcePath;
-    }
-
-    public void setResourcePath(String resourcePath) {
-        this.resourcePath = resourcePath;
     }
 
     @Column(name = "disabled", nullable = false)

@@ -2,34 +2,17 @@
 <html lang="zh-CN">
 <head>
 	<title>${metadata.alias!}</title>
-		<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
-	<script type="text/javascript">
-	$(function(){$('.login-form input').eq(0).focus();});
-	</script>
+	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@include path="ftl/dynamic-user.ftl"/> <#-- 动态站点用户状态 -->
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
     <div class="container">
-		<#list (metadata.extendData.domains?split(','))![] as a>
-			<iframe style="display:none" src="//${a}/sso.html"></iframe>
-		</#list>
-		<iframe id="sso" style="display:none" src="${site.sitePath}sso.html"></iframe>
-   	<#if user?has_content>
-		同步登陆状态中..
-		<script>
-			$('#sso').on("load",function(){
-				window.location.href="${(returnUrl!site.sitePath)?js_string}";
-			});
-		</script>
-   	<#else>
-		<form action="doLogin.do" method="post" class="center login-form">
+		<form style="display:none" action="doLogin.do" method="post" class="center login-form cms" data-action="login" data-return-url="login.html?returnUrl=${returnUrl!site.sitePath!}">
 			<p><input type="text" name="username" class="input-text" placeholder="用户名" title="用户名"/></p>
 			<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
 			<p class="text-center">
 				<input type="submit" class="button" value="登  录"/>
-				<input type="hidden" name="returnUrl" value="login.html?returnUrl=${returnUrl!site.sitePath!}"/>
 			</p>
 			<p class="message">没有账号?请<a href="register.html?returnUrl=${(returnUrl!site.sitePath!)?url}">注册</a></p>
 			<@import path="/ftl/tools.ftl" namespace="t"/>
@@ -40,7 +23,41 @@
 				<p class="message"><@t.m "message."+message/></p>
 			</#if>
 		</form>
+<script type="text/javascript">
+function login(){
+	$('.login-form').show();
+	$('.login-form input').eq(0).focus();
+<@_sysDomainList count=100>
+	<#list page.list as a>
+		$('body').append('<iframe style="display:none" src="//${a.name}/sso.html"></iframe>');
+	</#list>
+</@_sysDomainList>
+	$('body').append('<iframe style="display:none" src="${site.sitePath}sso.html"></iframe>');
+	$.getJSON('${base}/logout.do');
+}
+	<#if user?has_content>
+		var token = $.cookie('PUBLICCMS_USER');
+		if(token){
+	<@_sysDomainList count=100>
+		token = encodeURIComponent(token);
+		<#list page.list as a>
+			$('body').append('<iframe style="display:none" src="//${a.name}/sso.html?token='+token+'"></iframe>');
+		</#list>
+		$('body').append('<iframe style="display:none" src="${site.sitePath}sso.html?token='+token+'"></iframe>');
+		var size=${page.totalCount}+1;
+		$('iframe').on("load",function(){
+			if(--size<=0){
+				window.location.href="${(returnUrl!site.sitePath)?js_string}";
+			}
+		});
+	</@_sysDomainList>
+		}else{
+			login();
+		}
+	<#else>
+		login();
 	</#if>
+</script>
     </div>
 </main>
 <@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->

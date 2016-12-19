@@ -245,4 +245,9 @@ public abstract class BaseHandler extends Base implements RenderHandler {
         regristerParamter(PARAMETER_TYPE_STRINGARRAY, name);
         return getStringArrayWithoutRegrister(name);
     }
+
+    @Override
+    public void setRenderd() {
+        this.renderd = true;
+    }
 }

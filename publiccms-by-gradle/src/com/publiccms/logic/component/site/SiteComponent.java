@@ -21,7 +21,6 @@ public class SiteComponent extends Base implements Cache {
     public static final String TEMPLATE_PATH = "template";
     public static final String TASK_FILE_PATH = "task";
 
-    public static final String STATIC_FILE_PATH_RESOURCE = "resource";
     public static final String STATIC_FILE_PATH_WEB = "web";
 
     private CacheEntity<String, SysSite> siteCache;
@@ -36,7 +35,6 @@ public class SiteComponent extends Base implements Cache {
     public static final String CONFIG_FILE = "config.data";
 
     private String rootPath;
-    private String resourceFilePath;
     private String webFilePath;
     private String taskTemplateFilePath;
     private String webTemplateFilePath;
@@ -102,7 +100,7 @@ public class SiteComponent extends Base implements Cache {
         SysSite site = siteCache.get(serverName);
         if (empty(site)) {
             SysDomain sysDomain = getDomain(serverName);
-            if (notEmpty(sysDomain.getId())) {
+            if (notEmpty(sysDomain.getName())) {
                 site = sysSiteService.getEntity(sysDomain.getSiteId());
             } else {
                 site = sysSiteService.getEntity(defaultSiteId);
@@ -114,14 +112,6 @@ public class SiteComponent extends Base implements Cache {
 
     public boolean isMaster(int siteId) {
         return notEmpty(idSet) && idSet.contains(siteId);
-    }
-
-    /**
-     * @param filePath
-     * @return
-     */
-    public String getResourceFilePath(SysSite site, String filePath) {
-        return resourceFilePath + getFullFileName(site, filePath);
     }
 
     /**
@@ -196,7 +186,6 @@ public class SiteComponent extends Base implements Cache {
         this.webFilePath = rootPath + STATIC_FILE_PATH_WEB;
         this.taskTemplateFilePath = rootPath + TASK_FILE_PATH;
         this.webTemplateFilePath = rootPath + TEMPLATE_PATH;
-        this.resourceFilePath = rootPath + STATIC_FILE_PATH_RESOURCE;
     }
 
     @Override

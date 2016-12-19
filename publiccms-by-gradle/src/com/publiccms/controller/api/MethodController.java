@@ -4,7 +4,6 @@ import static com.publiccms.controller.api.ApiController.NOT_FOUND_MAP;
 import static org.springframework.util.StringUtils.uncapitalize;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.entities.sys.SysApp;
+import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.sys.SysAppService;
+import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.sanluan.common.base.BaseMethod;
 
+import freemarker.template.ObjectWrapper;
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -34,6 +39,7 @@ import freemarker.template.TemplateModelException;
 public class MethodController extends AbstractController {
     private Map<String, BaseMethod> methodMap = new HashMap<String, BaseMethod>();
     private List<Map<String, String>> methodList = new ArrayList<Map<String, String>>();
+    private ObjectWrapper objectWrapper;
 
     /**
      * 接口指令统一分发
@@ -45,14 +51,28 @@ public class MethodController extends AbstractController {
      * @return
      */
     @RequestMapping("method/{name}")
-    public MappingJacksonValue method(@PathVariable String name, String callback, HttpServletRequest request,
+    public MappingJacksonValue method(@PathVariable String name, String appToken, String callback, HttpServletRequest request,
             HttpServletResponse response) {
         BaseMethod method = methodMap.get(name);
         if (notEmpty(method)) {
             try {
+                if (method.needAppToken()) {
+                    SysAppToken token = appTokenService.getEntity(appToken);
+                    if (empty(token)) {
+                        return getMappingJacksonValue(NOT_FOUND_MAP, callback);
+                    }
+                    SysApp app = appService.getEntity(token.getAppId());
+                    if (empty(app)) {
+                        return getMappingJacksonValue(NOT_FOUND_MAP, callback);
+                    }
+                }
                 String[] paramters = request.getParameterValues("paramters");
                 if (notEmpty(paramters)) {
-                    return getMappingJacksonValue(method.exec(Arrays.asList(paramters)), callback);
+                    List<TemplateModel> list = new ArrayList<TemplateModel>();
+                    for (String paramter : paramters) {
+                        list.add(getObjectWrapper().wrap(paramter));
+                    }
+                    return getMappingJacksonValue(method.exec(list), callback);
                 } else {
                     return getMappingJacksonValue(method.exec(null), callback);
                 }
@@ -83,16 +103,29 @@ public class MethodController extends AbstractController {
     @Autowired
     public void setActionMap(Map<String, BaseMethod> map) {
         for (Entry<String, BaseMethod> entry : map.entrySet()) {
-            String methodName = uncapitalize(entry.getKey().replaceAll(templateComponent.getMethodRemoveRegex(), BLANK));
-            methodMap.put(methodName, entry.getValue());
-            Map<String, String> resultMap = new HashMap<String, String>();
-            resultMap.put("name", methodName);
-            resultMap.put("needAppToken", String.valueOf(true));
-            resultMap.put("needUserToken", String.valueOf(false));
-            methodList.add(resultMap);
+            if (entry.getValue().httpEnabled()) {
+                String methodName = uncapitalize(entry.getKey().replaceAll(templateComponent.getMethodRemoveRegex(), BLANK));
+                methodMap.put(methodName, entry.getValue());
+                Map<String, String> resultMap = new HashMap<String, String>();
+                resultMap.put("name", methodName);
+                resultMap.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
+                resultMap.put("needUserToken", String.valueOf(false));
+                methodList.add(resultMap);
+            }
         }
     }
 
+    private ObjectWrapper getObjectWrapper() {
+        if (null == objectWrapper) {
+            objectWrapper = templateComponent.getWebConfiguration().getObjectWrapper();
+        }
+        return objectWrapper;
+    }
+
+    @Autowired
+    private SysAppTokenService appTokenService;
+    @Autowired
+    private SysAppService appService;
     @Autowired
     private TemplateComponent templateComponent;
 }

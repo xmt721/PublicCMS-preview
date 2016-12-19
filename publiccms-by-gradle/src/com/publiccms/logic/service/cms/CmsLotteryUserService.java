@@ -18,7 +18,7 @@ import com.sanluan.common.handler.PageHandler;
 public class CmsLotteryUserService extends BaseService<CmsLotteryUser> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer lotteryId, Long userId, Boolean winning, Date startCreateDate, Date endCreateDate,
+    public PageHandler getPage(Long lotteryId, Long userId, Boolean winning, Date startCreateDate, Date endCreateDate,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(lotteryId, userId, winning, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
     }

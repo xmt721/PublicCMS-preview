@@ -5,6 +5,7 @@ import java.util.UUID;
 public class CmsVersion {
     private static final String clusterId = UUID.randomUUID().toString();
     private static boolean master = false;
+    private static boolean initialized = false;
 
     public static final String getVersion() {
         return "V2016.0828";
@@ -20,5 +21,13 @@ public class CmsVersion {
 
     public static void setMaster(boolean master) {
         CmsVersion.master = master;
+    }
+
+    public static boolean isInitialized() {
+        return initialized;
+    }
+
+    public static void setInitialized(boolean initialized) {
+        CmsVersion.initialized = initialized;
     }
 }

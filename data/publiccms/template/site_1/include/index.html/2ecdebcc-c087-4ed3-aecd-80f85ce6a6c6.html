@@ -7,7 +7,7 @@
 				<a href="${metadata.extendData.member!}register.html">注册</a>
 			</div>
 			<div class="user user-logout" style="display:none">
-				您好，<a href="${metadata.extendData.member!}" target="_blank" class="nickname"></a> <a class="master" style="display:none;" target="_blank" href="${site.dynamicPath}admin/">管理后台</a> <a class="logout" href="${metadata.extendData.member!}logout.do">退出登陆</a>
+				您好，<a href="${metadata.extendData.member!}" target="_blank" class="nickname"></a> <a class="master" style="display:none;" target="_blank" href="${site.dynamicPath}admin/">管理后台</a> <a class="cms" data-action="logout" href="${metadata.extendData.member!}logout.do" data-return-url="${metadata.extendData.member!}login.html">退出登陆</a>
 			</div>
 			<form class="search" action="${metadata.extendData.search!}">
 				<input name="word" type="text" placeholder="这里输入关键词"/>
@@ -17,9 +17,9 @@
 		</div>
 		<a href="#" class="nav-icon"></a>
 		<div class="logo">
-			<a href="${site.sitePath}"><img src="${site.resourcePath!}image/logo.png" alt="Public CMS"/></a>
+			<a href="${site.sitePath}"><img src="${site.sitePath!}image/logo.png" alt="Public CMS"/></a>
 		</div>
-		<span class="slogan"><@_metadata path='/index.html'>${object.extendData.slogan!}</@_metadata></span>
+		<span class="slogan">${metadata.extendData.slogan!}</span>
 		<nav class="clearfix-before">
 			<ul>
 				<li><a href="${site.sitePath}">首页</a></li>
@@ -58,16 +58,16 @@
 				$('header').addClass('fixed-position');
 			}
 		});
-		if ($.cookie("CMS_USER")) {
-			var userdata = $.cookie('CMS_USER').split('##');
+		var cookie = $.cookie("PUBLICCMS_USER");
+		if (cookie) {
+			var userdata = cookie.split(';;');
 			if(userdata.length > 2) {
 				$('.tools .user').hide();
-				$('.tools .user-logout .nickname').text(userdata[1]);
+				$('.tools .user-logout .nickname').text(decodeURIComponent(userdata[3]));
 				$('.tools .user-logout').show();
 				if(userdata[2]&&'true'==userdata[2]){
 					$('.tools .user-logout .master').show();
 				}
-				$('.tools .user-logout .logout').prop('href',$('.tools .user-logout .logout').prop('href')+'?returnUrl='+encodeURIComponent('${metadata.extendData.member!}login.html?returnUrl='+encodeURIComponent(window.location.href)));
 			}
 		}
 		if(0>window.location.href.indexOf('returnUrl')){

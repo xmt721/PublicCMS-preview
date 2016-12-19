@@ -8,10 +8,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import com.publiccms.common.servlet.MultiSiteDispatcherServlet;
 import com.sanluan.common.base.Base;
+import com.sanluan.common.servlet.ErrorToNotFoundDispatcherServlet;
 
-import config.ApiConfig;
+import config.spring.ApiConfig;
 
 /**
  * 
@@ -19,6 +19,7 @@ import config.ApiConfig;
  *
  */
 public class ApiInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;
@@ -26,7 +27,7 @@ public class ApiInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        return new MultiSiteDispatcherServlet(servletAppContext);
+        return new ErrorToNotFoundDispatcherServlet(servletAppContext);
     }
 
     @Override

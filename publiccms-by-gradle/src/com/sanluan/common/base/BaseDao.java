@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -158,7 +159,11 @@ public abstract class BaseDao<E> extends Base {
      * @return
      */
     protected List<?> getList(QueryHandler queryHandler) {
-        return getQuery(queryHandler).list();
+        try {
+            return getQuery(queryHandler).list();
+        } catch (ObjectNotFoundException e) {
+            return getQuery(queryHandler).setCacheable(false).list();
+        }
     }
 
     /**
@@ -354,8 +359,9 @@ public abstract class BaseDao<E> extends Base {
 
     @SuppressWarnings("unchecked")
     private Class<E> getEntityClass() {
-        return empty(clazz) ? this.clazz = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-                .getActualTypeArguments()[0] : clazz;
+        return empty(clazz)
+                ? this.clazz = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]
+                : clazz;
     }
 
     protected abstract E init(E entity);

@@ -76,7 +76,7 @@ public class UeditorAdminController extends AbstractController {
     @RequestMapping(params = "action=" + ACTION_CONFIG)
     @ResponseBody
     public UeditorConfig config(HttpServletRequest request) {
-        String urlPrefix = getSite(request).getResourcePath();
+        String urlPrefix = getSite(request).getSitePath();
         UeditorConfig config = new UeditorConfig();
         config.setImageActionName(ACTION_UPLOAD);
         config.setSnapscreenActionName(ACTION_UPLOAD);
@@ -116,7 +116,7 @@ public class UeditorAdminController extends AbstractController {
             String suffix = fileComponent.getSuffix(originalName);
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
-                fileComponent.upload(file, siteComponent.getResourceFilePath(site, fileName));
+                fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER,
                         false, file.getSize(), getIpAddress(request), getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
@@ -143,7 +143,7 @@ public class UeditorAdminController extends AbstractController {
             byte[] data = decodeBase64(file);
             String fileName = fileComponent.getUploadFileName(SCRAW_TYPE);
             try {
-                File dest = new File(siteComponent.getResourceFilePath(site, fileName));
+                File dest = new File(siteComponent.getWebFilePath(site, fileName));
                 writeByteArrayToFile(dest, data);
 
                 logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER, true,
@@ -184,7 +184,7 @@ public class UeditorAdminController extends AbstractController {
                             suffix = ".jpg";
                         }
                         String fileName = fileComponent.getUploadFileName(suffix);
-                        File dest = new File(siteComponent.getResourceFilePath(site, fileName));
+                        File dest = new File(siteComponent.getWebFilePath(site, fileName));
                         copyInputStreamToFile(entity.getContent(), dest);
                         logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(),
                                 CHANNEL_WEB_MANAGER, true, dest.length(), getIpAddress(request), getDate(), fileName));

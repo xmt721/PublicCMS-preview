@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
@@ -43,8 +44,11 @@ public class SysMoudleAdminController extends AbstractController {
     private String[] ignoreProperties = new String[] { "id" };
 
     @RequestMapping("save")
-    public String save(SysMoudle entity, HttpServletRequest request, HttpSession session) {
+    public String save(SysMoudle entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
+        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+            return TEMPLATE_ERROR;
+        }
         if (notEmpty(entity.getId())) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (notEmpty(entity)) {
@@ -66,7 +70,11 @@ public class SysMoudleAdminController extends AbstractController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping("delete")
-    public String delete(Integer id, HttpServletRequest request, HttpSession session) {
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+            return TEMPLATE_ERROR;
+        }
         SysMoudle entity = service.getEntity(id);
         if (notEmpty(entity)) {
             service.delete(id);

@@ -1,13 +1,13 @@
 package com.sanluan.common.cache.redis;
 
+import static org.apache.commons.lang3.ArrayUtils.addAll;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.sanluan.common.cache.CacheEntity;
 import com.sanluan.common.cache.redis.serializer.BinarySerializer;
@@ -156,6 +156,6 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     private byte[] getKey(K key) {
-        return ArrayUtils.addAll(name, keySerializer.serialize(key));
+        return addAll(name, keySerializer.serialize(key));
     }
 }

@@ -67,6 +67,8 @@ dependencies {
         "org.hibernate:hibernate-ehcache:5.1.2.Final",
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         "org.hibernate:hibernate-search:5.5.5.Final",
+        // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
+        "org.apache.lucene:lucene-analyzers-smartcn:5.3.1",
         // http://mvnrepository.com/artifact/redis.clients/jedis
         "redis.clients:jedis:2.9.0",
 
@@ -99,7 +101,7 @@ dependencies {
         "org.apache.ant:ant:1.9.7",
 		
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
-        "org.quartz-scheduler:quartz:2.2.3"		
+        "org.quartz-scheduler:quartz:2.2.3"
     )
     providedCompile(
 	    // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api

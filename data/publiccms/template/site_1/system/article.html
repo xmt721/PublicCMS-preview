@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 	<title>${content.title} - ${category.name}</title>
-	<meta name="keywords" content="${content.title}"/>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${content.description}"/>
 <@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
@@ -30,7 +30,7 @@
 					</@_tag>
 				</div>
 			</#if>
-			<script>uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});</script>
+			<script>uParse('#content',{rootPath: '${site.sitePath!}ueditor'});</script>
 <@include path="/ftl/content_page.ftl"/>
 			<script>
 				var link=$('article .page a:last').attr('href');
@@ -39,7 +39,7 @@
 						$(this).wrapAll("<a href=\"" + link + "\" title=\"点击查看下一页\"></a>");
 					});
 				}
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){
+				$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
 					$('article .author em').text(data.clicks);
 				});
 			</script>

@@ -11,10 +11,6 @@
 					<label>用户ID:</label>
 					<input type="text" name="userId" value="${userId!}" />
 				</li>
-				<li>
-					<label>允许推送:</label>
-					<input type="text" name="allowPush" value="${allowPush!}" />
-				</li>
 				<li class="colspan">
 					<label>上次登录:</label>
 					<input type="text" name="startLastLoginDate" size="15" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
@@ -54,13 +50,11 @@
 		<thead>
 			<tr>
 				<th>ID</th>
-				<th>版本</th>
 				<th>渠道</th>
 				<th>唯一标识符</th>
 				<th>用户ID</th>
 				<th>用户昵称</th>
-				<th>已禁用</th>
-				<th>允许推送</th>
+				<th>版本</th>
 				<th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
 				<th>上次登陆IP</th>
 				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
@@ -75,16 +69,15 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.version!}</td>
 				<td>${a.channel!}</td>
 				<td>${a.uuid!}</td>
 				<td>${a.userId!}</td>
 				<td>${(userMap[a.userId?string].nickName)!}</td>
-				<td>${(a.disabled)?then('<font color="red">禁用</font>','正常')?no_esc}</td>
-				<td>${a.allowPush?string('允许','')}</td>
+				<td>${a.version!}</td>
 				<td>${a.lastLoginDate!}</td>
 				<td>${a.lastLoginIp!}</td>
 				<td>${a.createDate!}</td>
+				<td>${(a.disabled)?then('<font color="red">禁用</font>','正常')?no_esc}</td>
 			</tr>
 			</#list>
 		</tbody>

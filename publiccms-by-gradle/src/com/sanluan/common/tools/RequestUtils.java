@@ -25,7 +25,7 @@ public class RequestUtils extends Base {
      */
     public static String getValue(Map<String, String[]> parameterMap, String key) {
         String[] values = parameterMap.get(key);
-        if (isNotEmpty(values)){
+        if (isNotEmpty(values)) {
             return values[0];
         }
         return null;
@@ -126,18 +126,21 @@ public class RequestUtils extends Base {
      * @return
      */
     public static String getIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("X-Real-IP");
-        if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-            return ip;
-        }
-        ip = request.getHeader("X-Forwarded-For");
-        if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-            int index = ip.indexOf(',');
-            if (index != -1) {
-                return ip.substring(0, index);
+        if (notEmpty(request)) {
+            String ip = request.getHeader("X-Real-IP");
+            if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+                return ip;
             }
-            return ip;
+            ip = request.getHeader("X-Forwarded-For");
+            if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+                int index = ip.indexOf(',');
+                if (index != -1) {
+                    return ip.substring(0, index);
+                }
+                return ip;
+            }
+            return request.getRemoteAddr();
         }
-        return request.getRemoteAddr();
+        return null;
     }
 }

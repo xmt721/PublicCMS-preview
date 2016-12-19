@@ -2,6 +2,7 @@ package com.publiccms.logic.component.task;
 
 import static org.apache.commons.lang3.time.DateUtils.addMinutes;
 import static org.apache.commons.lang3.time.DateUtils.addYears;
+import static org.apache.commons.lang3.time.DateUtils.addMonths;
 
 import java.util.Date;
 
@@ -16,6 +17,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.sanluan.common.base.Base;
 
 @Component
@@ -23,7 +25,9 @@ public class ScheduledTaskComponent extends Base {
     @Autowired
     private SysAppTokenService appTokenService;
     @Autowired
-    private SysEmailTokenService sysEmailTokenService;
+    private SysEmailTokenService emailTokenService;
+    @Autowired
+    private SysUserTokenService userTokenService;
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
@@ -38,10 +42,10 @@ public class ScheduledTaskComponent extends Base {
      */
     @Scheduled(fixedDelay = 60 * 1000L)
     public void clearAppToken() {
-        if (CmsVersion.isMaster()) {
+        if (CmsVersion.isInitialized() && CmsVersion.isMaster()) {
             Date date = addMinutes(getDate(), -30);
             appTokenService.delete(date);
-            sysEmailTokenService.delete(date);
+            emailTokenService.delete(date);
         }
     }
 
@@ -50,7 +54,13 @@ public class ScheduledTaskComponent extends Base {
      */
     @Scheduled(cron = "0 0 0  * * ?")
     public void clearCache() {
-        cacheComponent.clear();
+        if (CmsVersion.isInitialized()) {
+            cacheComponent.clear();
+            if (CmsVersion.isMaster()) {
+                // 清理3个月前的Token
+                userTokenService.delete(addMonths(getDate(), -3));
+            }
+        }
     }
 
     /**
@@ -58,7 +68,7 @@ public class ScheduledTaskComponent extends Base {
      */
     @Scheduled(cron = "0 0 0 1 * ?")
     public void clearLog() {
-        if (CmsVersion.isMaster()) {
+        if (CmsVersion.isInitialized() && CmsVersion.isMaster()) {
             Date date = addYears(getDate(), -2);
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);
