@@ -1,13 +1,13 @@
 package com.sanluan.common.hibernate.redis;
 
 import static com.sanluan.common.tools.RedisUtils.createJedisPool;
+import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
 
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cache.CacheException;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 /**
  * @author zhangxdr
@@ -35,7 +35,7 @@ public class SingletonRedisRegionFactory extends AbstractRedisRegionFactory {
                 String configurationResourceName = (String) properties
                         .get("com.sanluan.common.hibernate.redis.configurationResourceName");
                 if (notEmpty(configurationResourceName)) {
-                    Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
+                    Properties redisProperties = loadAllProperties(configurationResourceName);
                     this.redisClient = new RedisClient(createJedisPool(redisProperties));
                 }
                 this.cacheTimestamper = createCacheTimestamper(redisClient, SingletonRedisRegionFactory.class.getName());

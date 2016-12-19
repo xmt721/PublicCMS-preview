@@ -10,7 +10,7 @@ function refreshCmsTemplate(){
 	<div class="formBar">
 		<ul>
 			<li><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
-			<li><a class="button" href="cmsPage/placeList.html?path=${path?url}&navTabId=cmsTemplate/list" title="<i class='icon-globe icon-large'></i> 页面管理" rel="cmsPage/placeList">页面管理</a></li>
+			<li><a class="button" href="cmsPage/placeList.html?path=${path?url}&navTabId=cmsTemplate/list" target="navTab" title="<i class='icon-globe icon-large'></i> 页面管理" rel="cmsPage/placeList">页面管理</a></li>
 			<li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/metadata">元数据管理</a></li>
 			<#if !path?starts_with('/ftl/')>
 				<li><a class="button" href="cmsTemplate/placeList.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/placeList">推荐位管理</a></li>

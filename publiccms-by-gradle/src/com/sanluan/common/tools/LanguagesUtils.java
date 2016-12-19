@@ -6,7 +6,7 @@ import org.springframework.context.NoSuchMessageException;
 
 import com.sanluan.common.base.Base;
 
-import config.ApplicationConfig;
+import config.spring.ApplicationConfig;
 
 /**
  * 

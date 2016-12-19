@@ -19,10 +19,10 @@ public class MultiDataSource extends AbstractRoutingDataSource {
         return HOLDER.get();
     }
 
-    public void setTargetDataSources(Map<Object, Object> targetDataSources, DataSource database) {
-        super.setTargetDataSources(targetDataSources);
-        if (null != database) {
-            setDefaultTargetDataSource(database);
+    public void setTargetDataSources(Map<Object, Object> targetDataSources, DataSource defaultDatabase) {
+        setTargetDataSources(targetDataSources);
+        if (null != defaultDatabase) {
+            setDefaultTargetDataSource(defaultDatabase);
         }
     }
 

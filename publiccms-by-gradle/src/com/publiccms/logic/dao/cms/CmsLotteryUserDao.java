@@ -13,7 +13,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsLotteryUserDao extends BaseDao<CmsLotteryUser> {
-    public PageHandler getPage(Integer lotteryId, Long userId, 
+    public PageHandler getPage(Long lotteryId, Long userId, 
                 Boolean winning, Date startCreateDate, Date endCreateDate, 
                 String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsLotteryUser bean");

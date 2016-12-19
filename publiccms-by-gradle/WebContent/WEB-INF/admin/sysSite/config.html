@@ -22,12 +22,9 @@
 <#assign sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')/>
 <#assign siteLocation=a.sitePath?keep_after('//')?keep_after('/')/>
 <#assign sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')/>
-<#assign resourcePath=a.resourcePath?keep_after('//')?keep_before('/')?keep_before(':')/>
-<#assign resourceLocation=a.resourcePath?keep_after('//')?keep_after('/')/>
-<#assign resourcePort=a.resourcePath?keep_after('//')?keep_before('/')?keep_after(':')/>
 <@_sysDomainList advanced=true siteId=siteId>
 	<#if page.totalCount gt 0>
-		<#if a.resourcePath?starts_with(a.dynamicPath)||(a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))||a.useSsi>
+		<#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))||a.useSsi>
 #${a.name} 站点配置
 server {
 	listen       ${dynamicPort?has_content?then(dynamicPort,80)};
@@ -52,16 +49,10 @@ server {
 	}
 			</#if>
 			<#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))>
-	#${a.name} 静态化站点配置
+	#${a.name} 静态站点配置
 	location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
 		alias   ${rootPath}/web/site_${siteId}/;
 		index  index.html;
-	}
-			</#if>
-			<#if a.resourcePath?starts_with(a.dynamicPath)||a.resourcePath?starts_with(a.sitePath)>
-	#${a.name} 资源站点配置
-	location ${resourceLocation?has_content?then('/'+resourceLocation,'/')} {
-		alias ${rootPath}/resource/site_${siteId}/;
 	}
 			</#if>
 }
@@ -69,39 +60,23 @@ server {
 	</#if>
 </@_sysDomainList>
 <#if a.useStatic&&!((a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath)))>
-#${a.name} 静态化站点配置
+#${a.name} 静态站点配置
 server {
 	listen       ${sitePort?has_content?then(sitePort,80)};
 	server_name  ${sitePath};
 	<#if a.useSsi>
 	ssi on;
 	ssi_silent_errors on;
+	ssi_types text/html text/shtml;
 	</#if>
 
 	location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
 		alias   ${rootPath}/web/site_${siteId}/;
 		index  index.html;
-	}
-	<#if a.resourcePath?starts_with(a.sitePath)>
-	#${a.name} 资源站点配置
-	location ${resourceLocation?has_content?then('/'+resourceLocation,'/')} {
-		alias ${rootPath}/resource/site_${siteId}/;
-	}
-	</#if>
-}
-</#if>
-<#if (!a.sitePath?has_content||!a.resourcePath?starts_with(a.sitePath))&&!a.resourcePath?starts_with(a.dynamicPath)>
-#${a.name} 资源站点配置
-server {
-	listen       ${resourcePort?has_content?then(resourcePort,80)};
-	server_name  ${resourcePath};
-
-	location ${resourceLocation?has_content?then('/'+resourceLocation,'/')} {
-		alias   ${rootPath}/resource/site_${siteId}/;
-		index  index.html;
 		add_header Access-Control-Allow-Origin *;
 	}
-}</#if></@_disk></textarea>
+}
+</#if></@_disk></textarea>
 <script>
 	CodeMirror.fromTextArea(document.getElementById("nginx"), {
 		mode: "nginx",

@@ -27,6 +27,7 @@ import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysDomainService;
@@ -50,6 +51,8 @@ public class SysSiteAdminController extends AbstractController {
     private SysRoleUserService roleUserService;
     @Autowired
     private SysDomainService domainService;
+    @Autowired
+    private CmsContentService contentService;
 
     private String[] ignoreProperties = new String[] { "id" };
 
@@ -57,8 +60,10 @@ public class SysSiteAdminController extends AbstractController {
     public String save(SysSite entity, String domainName, String roleName, String deptName, String userName, String password,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
+        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+            return TEMPLATE_ERROR;
+        }
         if (!entity.isUseStatic()) {
-            entity.setSitePath(entity.getDynamicPath());
             entity.setUseSsi(false);
         }
         if (notEmpty(entity.getId())) {
@@ -91,22 +96,35 @@ public class SysSiteAdminController extends AbstractController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping("delete")
-    public String delete(Integer id, HttpServletRequest request, HttpSession session) {
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+            return TEMPLATE_ERROR;
+        }
         SysSite entity = service.getEntity(id);
         if (notEmpty(entity)) {
             service.delete(id);
-            SysSite site = getSite(request);
             Long userId = getAdminFromSession(session).getId();
             Date now = getDate();
             String ip = getIpAddress(request);
             for (SysDomain domain : (List<SysDomain>) domainService.getPage(entity.getId(), null, null).getList()) {
-                domainService.delete(domain.getId());
+                domainService.delete(domain.getName());
                 logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain",
                         ip, now, getString(entity)));
             }
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", ip,
                     now, getString(entity)));
         }
+        return TEMPLATE_DONE;
+    }
+
+    @RequestMapping("reCreateIndex")
+    public String reCreateIndex(HttpServletRequest request, HttpSession session) {
+        contentService.reCreateIndex();
+        SysSite site = getSite(request);
+        Long userId = getAdminFromSession(session).getId();
+        logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site",
+                getIpAddress(request), getDate(), BLANK));
         return TEMPLATE_DONE;
     }
 }

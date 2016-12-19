@@ -37,7 +37,7 @@ public class ApiController extends AbstractController {
     private Map<String, AbstractAppDirective> appMap = new LinkedHashMap<String, AbstractAppDirective>();
     private List<Map<String, String>> appList = new ArrayList<Map<String, String>>();
     private MediaType mediaType = new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
-    public final static String INTERFACE_NOT_FOUND = "interface_not_found";
+    public final static String INTERFACE_NOT_FOUND = "interfaceNotFound";
     public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
@@ -75,7 +75,7 @@ public class ApiController extends AbstractController {
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, mediaType,
                         request, callback, response);
-                handler.put("error", INTERFACE_NOT_FOUND).render();
+                handler.put("error", INTERFACE_NOT_FOUND);
             }
         } catch (IOException e) {
             log.error(e.getMessage());

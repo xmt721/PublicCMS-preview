@@ -118,8 +118,8 @@
 				</#list>
 				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
 				<#list page.list as a>
-					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]&&('cmsWebFile/list'!=a.url||site.useStatic)>
-				<li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}">${(a.attached?no_esc)!} ${(a.name)!}</a></li>
+					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
+				<li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')}>${(a.attached?no_esc)!} ${(a.name)!}</a></li>
 					</#if>
 				</#list>
 			</@_sysMoudleList>

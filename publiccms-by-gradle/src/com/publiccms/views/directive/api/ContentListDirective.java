@@ -40,7 +40,7 @@ public class ContentListDirective extends AbstractAppDirective {
         PageHandler page = service.getPage(getSite(handler).getId(), status, categoryId, containChild, disabled, null, parentId,
                 emptyParent, onlyUrl, hasImages, hasFiles, null, authorId, null, null, endPublishDate, null, null, pageIndex,
                 count);
-        handler.put("page", page).render();
+        handler.put("page", page);
     }
 
     @Autowired

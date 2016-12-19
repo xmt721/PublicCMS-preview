@@ -357,9 +357,8 @@ public class CmsContentAdminController extends AbstractController {
             for (CmsContent entity : service.getEntitys(ids)) {
                 CmsCategoryModel categoryModel = categoryModelService
                         .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-                if (verifyNotEmpty("categoryModel", categoryModel, model)) {
-                    return TEMPLATE_ERROR;
-                } else if (!templateComponent.createContentFile(site, entity, null, categoryModel)) {
+                if (notEmpty(categoryModel) && !entity.isOnlyUrl()
+                        && !templateComponent.createContentFile(site, entity, null, categoryModel)) {
                     verifyCustom("static", true, model);
                     return TEMPLATE_ERROR;
                 }

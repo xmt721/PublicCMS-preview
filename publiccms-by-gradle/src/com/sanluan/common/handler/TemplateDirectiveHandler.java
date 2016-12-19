@@ -61,7 +61,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public void render() throws TemplateException, IOException {
+    public synchronized void render() throws TemplateException, IOException {
         if (!renderd) {
             Map<String, TemplateModel> reduceMap = reduce();
             if (notEmpty(templateDirectiveBody)) {
@@ -73,7 +73,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public void print(String value) throws IOException {
+    public synchronized void print(String value) throws IOException {
         environment.getOut().write(value);
     }
 

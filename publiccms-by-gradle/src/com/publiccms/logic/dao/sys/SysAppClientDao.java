@@ -18,10 +18,10 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysAppClient bean");
         if (notEmpty(siteId)) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+            queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (notEmpty(channel)) {
-            queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
+            queryHandler.condition("bean.id.channel = :channel").setParameter("channel", channel);
         }
         if (notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
@@ -61,7 +61,7 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
             queryHandler.order("bean.createDate " + orderType);
             break;
         default:
-            queryHandler.order("bean.id " + orderType);
+            queryHandler.order("bean.createDate " + orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

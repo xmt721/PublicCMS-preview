@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"%>
 <%  
 String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";  
 %>
@@ -39,10 +39,10 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </script>
 </head>
 <body>
-	<div align=center>
-		<div style="background-color:#f0f0f0;width:500px;" onclick="dokeydown()">服务器错误</div>
-		<div style="width:500px;">系统发出错误,请返回重试或查看其他内容!<br /><br /><a href="<%=basePath%>">返回首页</a></div>
-		<div style="display: none;width:500px;" id=divexception>
+	<div style="margin:0 auto;width:500px;">
+		<div style="background-color:#f0f0f0;" onclick="dokeydown()">服务器错误</div>
+		<div>系统发生错误,请返回重试或查看其他内容!<br /><br /><a href="<%=basePath%>">返回首页</a></div>
+		<div style="display: none;" id=divexception>
 			<textarea rows="40" style="width:100%">
 <%
 	Exception exception;

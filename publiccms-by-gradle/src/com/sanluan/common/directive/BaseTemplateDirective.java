@@ -3,14 +3,7 @@ package com.sanluan.common.directive;
 import java.io.IOException;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.publiccms.entities.sys.SysApp;
-import com.publiccms.entities.sys.SysAppToken;
-import com.publiccms.logic.service.sys.SysAppService;
-import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.handler.RenderHandler;
 import com.sanluan.common.handler.TemplateDirectiveHandler;
 
 import freemarker.core.Environment;
@@ -37,18 +30,4 @@ public abstract class BaseTemplateDirective extends Base implements TemplateDire
             throw new TemplateException(e, environment);
         }
     }
-    
-
-    protected SysApp getApp(RenderHandler handler) throws Exception {
-        SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (notEmpty(appToken)) {
-            return appService.getEntity(appToken.getAppId());
-        }
-        return null;
-    }
-    
-    @Autowired
-    private SysAppTokenService appTokenService;
-    @Autowired
-    private SysAppService appService;
 }

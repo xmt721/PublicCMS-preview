@@ -36,51 +36,55 @@ public class ClusterComponent extends Base {
     @SuppressWarnings("unchecked")
     @Scheduled(fixedDelay = THEARTBEAT_INTERVAL)
     public void heartbeat() {
-        SysCluster entity = service.getEntity(CmsVersion.getClusterId());
-        Date now = getDate();
-        Date lastHeartbeatDate = null;
-        if (empty(entity)) {
-            entity = new SysCluster(CmsVersion.getClusterId(), now, now, false, CmsVersion.getVersion());
-            service.save(entity);
-        } else {
-            lastHeartbeatDate = entity.getHeartbeatDate();
-        }
-        service.updateHeartbeatDate(CmsVersion.getClusterId(), now);
-        if (CmsVersion.isMaster() != entity.isMaster()) {
-            CmsVersion.setMaster(entity.isMaster());
-        }
-        Date acceptTeartbeatDate = new Date(now.getTime() - (2 * THEARTBEAT_INTERVAL));
-        if (entity.isMaster()) {
-            PageHandler page = service.getPage(null, acceptTeartbeatDate, false, null, null, null, null);
-            for (SysCluster cluster : (List<SysCluster>) page.getList()) {
-                service.delete(cluster.getUuid());
+        if (CmsVersion.isInitialized()) {
+            SysCluster entity = service.getEntity(CmsVersion.getClusterId());
+            Date now = getDate();
+            Date lastHeartbeatDate = null;
+            if (empty(entity)) {
+                entity = new SysCluster(CmsVersion.getClusterId(), now, now, false, CmsVersion.getVersion());
+                service.save(entity);
+            } else {
+                lastHeartbeatDate = entity.getHeartbeatDate();
             }
-        } else {
-            PageHandler page = service.getPage(null, null, true, "heartbeatDate", "desc", null, null);
-            if (page.getTotalCount() == 0) {
-                upgrade();
-            } else if (page.getTotalCount() == 1) {
-                SysCluster master = (SysCluster) page.getList().get(0);
-                if (acceptTeartbeatDate.after(master.getHeartbeatDate())) {
-                    upgrade();
-                    service.delete(master.getUuid());
+            service.updateHeartbeatDate(CmsVersion.getClusterId(), now);
+            if (CmsVersion.isMaster() != entity.isMaster()) {
+                CmsVersion.setMaster(entity.isMaster());
+            }
+            Date acceptTeartbeatDate = new Date(now.getTime() - (2 * THEARTBEAT_INTERVAL));
+            if (entity.isMaster()) {
+                PageHandler page = service.getPage(null, acceptTeartbeatDate, false, null, null, null, null);
+                for (SysCluster cluster : (List<SysCluster>) page.getList()) {
+                    service.delete(cluster.getUuid());
                 }
             } else {
-                boolean skip = false;
-                for (SysCluster cluster : (List<SysCluster>) page.getList()) {
-                    if (skip) {
-                        service.updateMaster(cluster.getUuid(), false);
+                PageHandler page = service.getPage(null, null, true, "heartbeatDate", "desc", null, null);
+                if (page.getTotalCount() == 0) {
+                    upgrade();
+                } else if (page.getTotalCount() == 1) {
+                    SysCluster master = (SysCluster) page.getList().get(0);
+                    if (acceptTeartbeatDate.after(master.getHeartbeatDate())) {
+                        upgrade();
+                        service.delete(master.getUuid());
                     }
-                    skip = true;
+                } else {
+                    boolean skip = false;
+                    for (SysCluster cluster : (List<SysCluster>) page.getList()) {
+                        if (skip) {
+                            service.updateMaster(cluster.getUuid(), false);
+                        }
+                        skip = true;
+                    }
                 }
             }
+            scheduledTask.setStartDate(lastHeartbeatDate);
+            scheduledTask.init();
         }
-        scheduledTask.setStartDate(lastHeartbeatDate);
-        scheduledTask.init();
     }
 
     @PreDestroy
     public void destroy() {
-        service.delete(CmsVersion.getClusterId());
+        if (CmsVersion.isInitialized()) {
+            service.delete(CmsVersion.getClusterId());
+        }
     }
 }

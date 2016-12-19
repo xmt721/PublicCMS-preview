@@ -27,7 +27,7 @@ import freemarker.template.TemplateModelException;
 public abstract class BaseMethod extends Base implements TemplateMethodModelEx {
 
     private static TemplateModel getModel(int index, List<TemplateModel> arguments) {
-        if (index < arguments.size()) {
+        if (notEmpty(arguments) && index < arguments.size()) {
             return arguments.get(index);
         }
         return null;
@@ -94,6 +94,10 @@ public abstract class BaseMethod extends Base implements TemplateMethodModelEx {
     public static Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException, ParseException {
         return converDate(getModel(index, arguments));
     }
-    
+
+    public boolean httpEnabled() {
+        return true;
+    }
+
     public abstract boolean needAppToken();
 }

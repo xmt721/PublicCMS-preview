@@ -1,0 +1,2 @@
+INSERT INTO `log_operate` VALUES ('1002', '1', '1', 'web_manager', 'update.role', '127.0.0.1', '2016-12-15 15:01:47', '测试脚本');
+INSERT INTO `log_operate` VALUES ('1003', '1', '1', 'web_manager', 'update.role', '127.0.0.1', '2016-12-15 15:01:47', '测试脚本');

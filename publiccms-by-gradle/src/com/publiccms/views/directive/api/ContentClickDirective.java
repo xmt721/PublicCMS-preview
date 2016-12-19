@@ -24,7 +24,7 @@ public class ContentClickDirective extends AbstractAppDirective {
         Long id = handler.getLong("id");
         CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
         if (notEmpty(contentStatistics) && notEmpty(contentStatistics.getEntity())) {
-            handler.put("clicks", contentStatistics.getEntity().getClicks() + contentStatistics.getClicks()).render();
+            handler.put("clicks", contentStatistics.getEntity().getClicks() + contentStatistics.getClicks());
         }
     }
 

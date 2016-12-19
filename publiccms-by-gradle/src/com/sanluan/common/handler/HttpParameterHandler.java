@@ -46,10 +46,10 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public void render() throws HttpMessageNotWritableException, IOException {
+    public synchronized void render() throws HttpMessageNotWritableException, IOException {
         if (!renderd) {
             MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
-            if(notEmpty(callback)){
+            if (notEmpty(callback)) {
                 Matcher m = FUNCTIONNAME_PATTERN.matcher(callback);
                 if (m.matches()) {
                     mappingJacksonValue.setJsonpFunction(callback);

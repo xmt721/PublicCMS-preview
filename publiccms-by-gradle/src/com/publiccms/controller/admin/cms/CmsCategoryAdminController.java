@@ -122,13 +122,15 @@ public class CmsCategoryAdminController extends AbstractController {
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
 
         List<CmsCategoryModelParamters> categoryModelList = categoryParamters.getCategoryModelList();
-        for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
-            if(notEmpty(cmsCategoryModelParamters.getCategoryModel())){
-                cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
-                if (cmsCategoryModelParamters.isUse()) {
-                    categoryModelService.updateCategoryModel(cmsCategoryModelParamters.getCategoryModel());
-                } else {
-                    categoryModelService.delete(cmsCategoryModelParamters.getCategoryModel().getId());
+        if(notEmpty(categoryModelList)){
+            for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
+                if(notEmpty(cmsCategoryModelParamters.getCategoryModel())){
+                    cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
+                    if (cmsCategoryModelParamters.isUse()) {
+                        categoryModelService.updateCategoryModel(cmsCategoryModelParamters.getCategoryModel());
+                    } else {
+                        categoryModelService.delete(cmsCategoryModelParamters.getCategoryModel().getId());
+                    }
                 }
             }
         }

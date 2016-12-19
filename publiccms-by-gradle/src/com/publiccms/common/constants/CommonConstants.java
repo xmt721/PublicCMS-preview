@@ -21,7 +21,7 @@ public class CommonConstants {
     }
 
     public static final String getCookiesUserSplit() {
-        return "##";
+        return ";;";
     }
 
     public static final String getDefaultPageBreakTag() {

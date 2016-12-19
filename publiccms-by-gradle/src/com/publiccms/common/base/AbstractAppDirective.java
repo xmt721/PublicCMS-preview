@@ -60,6 +60,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
             handler.put("error", "needLogin").render();
         } else {
             execute(handler, app, user);
+            handler.render();
         }
     }
 

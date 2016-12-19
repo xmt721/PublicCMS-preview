@@ -14,9 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Facet;
@@ -27,10 +27,12 @@ import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.FullTextFilterDefs;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.publiccms.common.analyzer.MultiTokenizerFactory;
 import com.publiccms.common.index.CmsContentBridge;
 import com.publiccms.common.index.CmsContentInterceptor;
 import com.publiccms.common.index.PublishDateFilterFactory;
@@ -43,7 +45,8 @@ import com.sanluan.common.source.entity.MyColumn;
  */
 @Entity
 @Table(name = "cms_content")
-@Analyzer(impl = StandardAnalyzer.class)
+@AnalyzerDef(name = "default", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class))
+@Analyzer(definition = "default")
 @ClassBridge(impl = CmsContentBridge.class)
 @FullTextFilterDefs({ @FullTextFilterDef(name = "publishDate", impl = PublishDateFilterFactory.class),
         @FullTextFilterDef(name = "siteId", impl = SiteIdFilterFactory.class) })
@@ -152,9 +155,9 @@ public class CmsContent implements java.io.Serializable, Static {
     }
 
     public CmsContent(int siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
-            boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles,
-            boolean hasStatic, String url, String description, String tagIds, String cover, int childs, int scores, int comments,
-            int clicks, Date publishDate, Date createDate, int status, boolean disabled) {
+            boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
+            String url, String description, String tagIds, String cover, int childs, int scores, int comments, int clicks,
+            Date publishDate, Date createDate, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;

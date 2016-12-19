@@ -14,8 +14,8 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.servlet.ErrorToNotFoundDispatcherServlet;
 
-import config.AdminConfig;
-import config.ApplicationConfig;
+import config.spring.AdminConfig;
+import config.spring.ApplicationConfig;
 
 /**
  * 

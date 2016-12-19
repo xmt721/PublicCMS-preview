@@ -24,7 +24,7 @@ import com.publiccms.views.pojo.CmsModel;
 import com.publiccms.views.pojo.ExtendField;
 import com.sanluan.common.base.Base;
 
-import config.ApplicationConfig;
+import config.spring.ApplicationConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)

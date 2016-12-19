@@ -15,6 +15,7 @@
 var i=0;
 var apiArray=['${site.dynamicPath}api/directive/','${site.dynamicPath}api/method/','${site.dynamicPath}api/']
 var apisArray=['${site.dynamicPath}api/directives','${site.dynamicPath}api/methods','${site.dynamicPath}api/apis'];
+var supportShowParamtersArray=[true,false,true];
 
 function invoke(){
 	$('#rawJson').val('loading...');
@@ -44,7 +45,7 @@ function use(action,needAppToken,needUserToken){
 	if('true'==needUserToken){
 		$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken={用户登录Token}&authUserId={用户ID}');
 	}
-	if($('input[name=showParamters]').is(':checked')){
+	if($('input[name=showParamters]').is(':checked')&&$('input[name=showParamters]').is(':visible')){
 		$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParamters=true');
 	}
 	$('#buttons').show();
@@ -52,6 +53,11 @@ function use(action,needAppToken,needUserToken){
 }
 function init(){
 	i=$('input:radio[name=api]:checked').val();
+	if(supportShowParamtersArray[i]){
+		$('input[name=showParamters]').parent().show();
+	}else{
+		$('input[name=showParamters]').parent().hide();
+	}
 	$('#interfaes').empty();
 	$.ajax({
 		url:apisArray[i],type: 'GET',

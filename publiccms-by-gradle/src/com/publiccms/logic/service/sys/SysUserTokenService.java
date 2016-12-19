@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.sys;
 
+import java.util.Date;
+
 // Generated 2016-1-20 11:19:18 by com.sanluan.common.source.SourceMaker
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,9 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
             Integer pageSize) {
         return dao.getPage(siteId, userId, channel, orderType, pageIndex, pageSize);
     }
-
-    public SysUserToken getEntity(String authToken) {
-        return getEntity(authToken, "authToken");
+    
+    public int delete(Date createDate) {
+        return dao.delete(createDate);
     }
 
     @Autowired

@@ -1,5 +1,7 @@
 package com.publiccms.logic.dao.sys;
 
+import java.util.Date;
+
 // Generated 2016-1-20 11:19:18 by com.sanluan.common.source.SourceMaker
 
 import org.springframework.stereotype.Repository;
@@ -27,8 +29,17 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
         } else {
             orderType = "desc";
         }
-        queryHandler.order("bean.createDate " + orderType + ",bean.id " + orderType);
+        queryHandler.order("bean.createDate " + orderType );
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+    
+    public int delete(Date createDate) {
+        if (notEmpty(createDate)) {
+            QueryHandler queryHandler = getDeleteQueryHandler("from SysUserToken bean");
+            queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
+            return delete(queryHandler);
+        }
+        return 0;
     }
 
     @Override

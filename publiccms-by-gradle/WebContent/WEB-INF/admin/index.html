@@ -18,7 +18,6 @@
 	<script src="${res}/js/jquery.cookie.js"></script>
 	<script src="${res}/js/jquery.validate.js"></script>
 	<script src="${res}/js/jquery.bgiframe.js"></script>
-	<script src="${res}/js/echarts.common.min.js"></script>
 
 	<script>var base="${base}/admin";</script>
 	<script src="${res}/ueditor/ueditor.config.js"></script>
@@ -56,6 +55,9 @@ $(function(){
 	<a class="logo" href="./"></a>
 	<ul class="nav">
 		<li>${(admin.nickName)!}</li>
+		<li>
+			<a href="${site.useStatic?then(site.sitePath!,site.dynamicPath!)}" target="_blank">网站首页</a>
+		</li>
 		<@_sysAuthorized roleIds=admin.roles url='clearCache'>
 			<li><a href="clearCache" target="ajaxTodo">刷新缓存</a></li>
 		</@_sysAuthorized>

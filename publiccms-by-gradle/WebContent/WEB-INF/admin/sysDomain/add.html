@@ -18,8 +18,8 @@
 		<dl class="nowrap">
 			<dt>动态站点域名:</dt>
 			<dd>
-				<input class="required" name="name" type="text" size="20"  maxlength="255"value="${(a.name)!}"/>
-				<span class="info">不包含协议头，不包含端口，不包含路径</span>
+				<input class="required domain" remote="sysDomain/virify.do?id=${id!}" name="name" type="text" size="20"  maxlength="255" value="${(a.name)!}"/>
+				<span class="info">不包含协议头，不包含端口，不包含路径，不能和已有域名重复</span>
 			</dd>
 		</dl>
 		<dl class="nowrap">

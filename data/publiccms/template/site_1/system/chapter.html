@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 	<title>${content.title} - <@_content id=content.parentId>${object.title}</@_content> - ${category.name}</title>
-	<meta name="keywords" content="${content.title}"/>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${content.description}"/>
 <@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
@@ -20,10 +20,10 @@
 				${text?no_esc!}
 			</div>
 			<script>
-				uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){});
+				uParse('#content',{rootPath: '${site.sitePath!}ueditor'});
+				$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){});
 <@_content id=content.parentId>
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${object.parentId}&callback=?', function(data){});
+				$.getJSON('${site.dynamicPath!}api/contentClick?id=${object.parentId}&callback=?', function(data){});
 </@_content>
 			</script>
 			<div class="page">

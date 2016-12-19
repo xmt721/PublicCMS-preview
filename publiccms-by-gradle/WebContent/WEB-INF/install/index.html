@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PublicCMS 安装</title>
+<meta http-equiv="pragma" content="no-cache">  
+<meta http-equiv="cache-control" content="no-cache">  
+<meta http-equiv="expires" content="0">
+<meta charset="utf-8" />
+<style type="text/css">
+.error{color:#f00;}
+.box{margin:0 auto;width:500px;}
+.box h1{text-align:center}
+.box p{border-bottom:1px solid #fafafa;}
+.box label{width:100px;}
+</style>
+</head>
+<body>
+<div class="box">
+	<h1>欢迎使用PublicCMS</h1>
+<#if step?has_content&&'config'=step>
+	<#if message?has_content&&'success'=message>
+		<h3>数据库信息配置正确</h3>
+		<form action="./" method="post">
+			<p>
+				<label>下一步操作</label>:
+				<select name="step" onchange="if(this.value=='install'){document.getElementById('useSimple').style='display:block';}else{document.getElementById('useSimple').style='display:block';}">
+					<option value="install">初始化数据库</option>
+					<option value="checkFilePath">数据目录配置</option>
+				</select>
+			</p>
+			<p id="useSimple"><label>导入测试数据</label>:<input type="checkbox" name="useSimple" value="true"/></p>
+			<p><input type="submit" value="执行"/></p>
+		</form>
+	<#else>
+		<h3>数据库信息配置错误</h3>
+		<p class="error">${error!}</p>
+		<p><a href="./">重新配置</a></p>
+	</#if>
+<#elseif step?has_content&&'install'=step>
+	<#if message?has_content&&'success'=message&&!history?has_content>
+		<h3>数据库初始化成功</h3>
+		<form action="./" method="post">
+			<input type="hidden" name="step" value="checkFilePath"/>
+			<p><input type="submit" value="数据目录配置"/></p>
+		</form>
+	<#else>
+		<h3>数据库初始化失败</h3>
+		<p class="error">${error!}</p>
+		<form action="./" method="post">
+			<p>
+				<label>下一步操作</label>:
+				<select name="step" onchange="if(this.value=='install'){document.getElementById('useSimple').style='display:block';}else{document.getElementById('useSimple').style='display:block';}">
+					<option value="install">初始化数据库</option>
+					<option value="checkFilePath">数据目录配置</option>
+				</select>
+			</p>
+			<p id="useSimple"><label>导入测试数据</label>:<input type="checkbox" name="useSimple" value="true"/></p>
+			<p><input type="submit" value="执行"/></p>
+		</form>
+		<p><a href="./">重新配置</a></p>
+		<p>数据库脚本错误信息：</p>
+		<p><textarea rows="20" style="width:100%">${history!}</textarea></p>
+	</#if>
+<#elseif step?has_content&&'checkFilePath'=step>
+		<h3>数据目录配置</h3>
+		<form action="./" method="post">
+			<p><label>数据目录路径</label>:<input type="text" name="path" value="${path!}"/></p>
+			<p><label>路径信息</label>:${exists?then('存在','不存在')}，${canRead?then('可读','不可读')}，${canWrite?then('可写','不可写')}</p>
+			<p>
+				<label>下一步操作</label>:
+				<select name="step">
+					<option value="saveFilePath">修改数据目录</option>
+					<#if canRead&&canWrite||!exists><option value="start">启动</option></#if>
+				</select>
+			</p>
+			<p><input type="submit" value="数据目录配置"/></p>
+		</form>
+<#elseif step?has_content&&'saveFilePath'=step>
+	<h3>数据目录配置成功</h3>
+	<form action="./" method="post">
+		<input type="hidden" name="step" value="start"/>
+		<p><input type="submit" value="启动"/></p>
+	</form>
+<#elseif step?has_content&&'start'=step>
+	<h3>启动失败</h3>
+	<p class="error">${error!}</p>
+	<p><a href="./">重新配置</a></p>
+<#else>
+	<h3>数据库信息配置</h3>
+	<form action="./" method="post">
+		<input type="hidden" name="step" value="config"/>
+		<p><label>数据库地址</label>:<input type="text" maxlength="100" name="host" value="localhost"/></p>
+		<p><label>数据库端口</label>:<input type="number" maxlength="10" name="port" value="3306"/></p>
+		<p><label>数据库名称</label>:<input type="text" maxlength="50" name="database" value="publiccms"/></p>
+		<p><label>数据库用户</label>:<input type="text" maxlength="50" name="username"/></p>
+		<p><label>数据库密码</label>:<input type="text" maxlength="50" name="password"/></p>
+		<p><input type="submit" value="保存数据库配置"/></p>
+	</form>
+</#if>
+</div>
+</body>
+</html>

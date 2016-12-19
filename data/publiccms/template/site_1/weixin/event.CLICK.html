@@ -1,0 +1,8 @@
+<xml>
+	<ToUserName><![CDATA[${xml.FromUserName}]]></ToUserName>
+	<FromUserName><![CDATA[${xml.ToUserName}]]></FromUserName>
+	<CreateTime>${getDateNumber(.now)}</CreateTime>
+	<MsgType><![CDATA[text]]></MsgType>
+	<Content><![CDATA[${xml.EventKey}]]></Content>
+	<FuncFlag>0</FuncFlag>
+</xml>

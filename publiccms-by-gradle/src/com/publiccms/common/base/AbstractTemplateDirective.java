@@ -12,10 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import com.publiccms.entities.sys.SysApp;
+import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.service.sys.SysAppService;
+import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.sanluan.common.directive.BaseTemplateDirective;
@@ -74,6 +77,18 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
         return false;
     }
 
+    protected SysApp getApp(RenderHandler handler) throws Exception {
+        SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
+        if (notEmpty(appToken)) {
+            return appService.getEntity(appToken.getAppId());
+        }
+        return null;
+    }
+
+    @Autowired
+    private SysAppTokenService appTokenService;
+    @Autowired
+    private SysAppService appService;
     @Autowired
     private SysUserTokenService sysUserTokenService;
     @Autowired

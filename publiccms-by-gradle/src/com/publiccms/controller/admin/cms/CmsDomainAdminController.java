@@ -30,7 +30,7 @@ import com.publiccms.logic.service.sys.SysDomainService;
 public class CmsDomainAdminController extends AbstractController {
     @Autowired
     private SysDomainService service;
-    private String[] ignoreProperties = new String[] { "id", "siteId", "name" };
+    private String[] ignoreProperties = new String[] { "siteId", "name" };
 
     /**
      * @param entity
@@ -41,13 +41,13 @@ public class CmsDomainAdminController extends AbstractController {
      */
     @RequestMapping("save")
     public String save(SysDomain entity, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (notEmpty(entity.getId())) {
+        if (notEmpty(entity.getName())) {
             SysSite site = getSite(request);
-            SysDomain oldEntity = service.getEntity(entity.getId());
+            SysDomain oldEntity = service.getEntity(entity.getName());
             if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            entity = service.update(entity.getId(), entity, ignoreProperties);
+            entity = service.update(entity.getName(), entity, ignoreProperties);
             if (notEmpty(entity)) {
                 logOperateService.save(
                         new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
