@@ -33,6 +33,7 @@ public class CmsModelAdminController extends AbstractController {
     @Autowired
     private ModelComponent modelComponent;
 
+
     /**
      * @param entity
      * @param modelId
@@ -46,15 +47,18 @@ public class CmsModelAdminController extends AbstractController {
         modelComponent.clear(site.getId());
         if (notEmpty(modelId)) {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+            CmsModel oldModel=modelMap.get(modelId);
             modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
             modelComponent.save(site, modelMap);
+            modelComponent.updateModelTable(oldModel,entity);//更新模型表结构
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.model", getIpAddress(request), getDate(), getString(entity)));
         } else {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
             modelMap.put(entity.getId(), entity);
             modelComponent.save(site, modelMap);
+            modelComponent.createModelTable(entity);//创建于模型对应的表
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.model", getIpAddress(request), getDate(), getString(entity)));
         }
@@ -80,6 +84,7 @@ public class CmsModelAdminController extends AbstractController {
                 modelMap.put(m.getId(), m);
             }
             modelComponent.save(site, modelMap);
+            modelComponent.dropModelTable(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", getIpAddress(request), getDate(), getString(entity)));
         }

@@ -207,7 +207,9 @@ public class CmsContentAdminController extends AbstractController {
         } else {
             attribute.setData(null);
         }
-        attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+        attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段（保存到CmsContentAttribute的data字段）
+        //保存扩展字段的数据到数据库表中
+        service.updateModelExtendData(entity,map,cmsModel);
 
         cmsContentRelatedService.update(entity.getId(), user.getId(), contentParamters.getContentRelateds());// 更新保存推荐内容
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
@@ -386,6 +388,7 @@ public class CmsContentAdminController extends AbstractController {
                     } else {
                         categoryService.updateContents(entity.getCategoryId(), -1);
                     }
+                    //service.deleteModelExtendData(entity);//cms_content的删除只是更改disabled字段，而不是真的删除，所以不删除对应的modelExtendData
                 } else {
                     removeElements(ids, entity.getId());
                 }

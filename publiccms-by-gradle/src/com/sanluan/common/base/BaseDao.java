@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.FullTextQuery;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.sanluan.common.handler.FacetPageHandler;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.QueryHandler;
+import com.sanluan.common.handler.SqlQueryHandler;
 
 public abstract class BaseDao<E> extends Base {
     public static String FACET_NAME_SUFFIX = "FacetRequest";
@@ -51,6 +53,13 @@ public abstract class BaseDao<E> extends Base {
 
     public static QueryHandler getQueryHandler() {
         return new QueryHandler();
+    }
+    
+    public static SqlQueryHandler getSqlQueryHandler() {
+        return new SqlQueryHandler();
+    }
+    public static SqlQueryHandler getSqlQueryHandler(String sql) {
+        return new SqlQueryHandler(sql);
     }
 
     public static String like(String var) {
@@ -165,7 +174,13 @@ public abstract class BaseDao<E> extends Base {
             return getQuery(queryHandler).setCacheable(false).list();
         }
     }
-
+    protected List<?> getList(SqlQueryHandler queryHandler) {
+        try {
+            return getQuery(queryHandler).list();
+        } catch (ObjectNotFoundException e) {
+            return getQuery(queryHandler).setCacheable(false).list();
+        }
+    }
     /**
      * @param queryHandler
      * @param pageIndex
@@ -186,7 +201,19 @@ public abstract class BaseDao<E> extends Base {
         page.setList(getList(queryHandler));
         return page;
     }
-
+    protected PageHandler getPage(SqlQueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
+        PageHandler page;
+        if (notEmpty(pageSize)) {
+            int totalCount = countResult(queryHandler);
+            page = new PageHandler(pageIndex, pageSize, totalCount, maxResults);
+            queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
+        } else {
+            page = new PageHandler(pageIndex, pageSize, 0, maxResults);
+        }
+        //queryHandler.setCacheable(true);
+        page.setList(getList(queryHandler));
+        return page;
+    }
     /**
      * @param queryHandler
      * @param pageIndex
@@ -196,7 +223,9 @@ public abstract class BaseDao<E> extends Base {
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
         return getPage(queryHandler, pageIndex, pageSize, null);
     }
-
+    protected PageHandler getPage(SqlQueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
+        return getPage(queryHandler, pageIndex, pageSize, null);
+    }
     /**
      * @param query
      * @return
@@ -204,7 +233,9 @@ public abstract class BaseDao<E> extends Base {
     protected int countResult(QueryHandler queryHandler) {
         return ((Number) getCountQuery(queryHandler).iterate().next()).intValue();
     }
-
+    protected int countResult(SqlQueryHandler queryHandler) {
+        return ((Number) getCountQuery(queryHandler).uniqueResult()).intValue();
+    }
     /**
      * @param query
      * @return
@@ -216,11 +247,15 @@ public abstract class BaseDao<E> extends Base {
     private Query getQuery(QueryHandler queryHandler) {
         return queryHandler.getQuery(getSession());
     }
-
+    private SQLQuery getQuery(SqlQueryHandler queryHandler) {
+        return queryHandler.getQuery(getSession());
+    }
     private Query getCountQuery(QueryHandler queryHandler) {
         return queryHandler.getCountQuery(getSession());
     }
-
+    private SQLQuery getCountQuery(SqlQueryHandler queryHandler) {
+        return queryHandler.getCountQuery(getSession());
+    }
     /**
      * @param entityList
      */
@@ -362,6 +397,41 @@ public abstract class BaseDao<E> extends Base {
         return empty(clazz)
                 ? this.clazz = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]
                 : clazz;
+    }
+    
+
+    public SQLQuery getSqlQuery(SqlQueryHandler queryHandler) {
+        return queryHandler.getQuery(getSession());
+    }
+    public Object getSql(String sql,Object[] sqlValueParameters){
+    	Session session=this.getSession();
+    	SQLQuery query=session.createSQLQuery(sql);
+    	int i=0;
+    	for(Object value:sqlValueParameters){
+    		query.setParameter(i, value);
+    		i++;
+    	}
+    	return query.uniqueResult();
+    }
+    public List listSql(String sql,Object[] sqlValueParameters){
+    	Session session=this.getSession();
+    	SQLQuery query=session.createSQLQuery(sql);
+    	int i=0;
+    	for(Object value:sqlValueParameters){
+    		query.setParameter(i, value);
+    		i++;
+    	}
+    	return query.list();
+    }
+    public void updateSql(String sql,Object[] sqlValueParameters){
+    	Session session=this.getSession();
+    	SQLQuery query=session.createSQLQuery(sql);
+    	int i=0;
+    	for(Object value:sqlValueParameters){
+    		query.setParameter(i, value);
+    		i++;
+    	}
+    	query.executeUpdate();
     }
 
     protected abstract E init(E entity);

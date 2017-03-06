@@ -25,7 +25,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("parentId"),
                 handler.getInteger("typeId"), handler.getBoolean("allowContribute"), hidden, disabled,
-                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+                handler.getString("tagTypeIds"),handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 

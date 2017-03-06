@@ -36,7 +36,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 handler.getBoolean("containChild"), disabled, handler.getStringArray("modelId"), handler.getLong("parentId"),
                 emptyParent, handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"), handler.getBoolean("hasFiles"),
                 handler.getString("title"), handler.getLong("userId"), handler.getLong("checkUserId"),
-                handler.getDate("startPublishDate"), endPublishDate, handler.getString("orderField"),
+                handler.getDate("startPublishDate"), endPublishDate,handler.getString("tagIds"), handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }

@@ -6,24 +6,37 @@ import static org.apache.commons.lang3.ArrayUtils.add;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
+import com.publiccms.logic.dao.cms.CmsContentAttributeDao;
 import com.publiccms.logic.dao.cms.CmsContentDao;
+import com.publiccms.views.pojo.CmsContentAndModelData;
 import com.publiccms.views.pojo.CmsContentStatistics;
+import com.publiccms.views.pojo.CmsModel;
+import com.publiccms.views.pojo.ExtendData;
+import com.publiccms.views.pojo.ExtendField;
 import com.sanluan.common.base.BaseService;
 import com.sanluan.common.handler.FacetPageHandler;
 import com.sanluan.common.handler.PageHandler;
+import com.sanluan.common.handler.SqlQueryHandler;
 
 @Service
 @Transactional
@@ -52,10 +65,10 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer[] status, Integer categoryId, Boolean containChild, Boolean disabled,
             String[] modelId, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
-            String title, Long userId, Long checkUserId, Date startPublishDate, Date endPublishDate, String orderField,
+            String title, Long userId, Long checkUserId, Date startPublishDate, Date endPublishDate,String tagIds, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, status, categoryId, getCategoryIds(containChild, categoryId), disabled, modelId, parentId,
-                emptyParent, onlyUrl, hasImages, hasFiles, title, userId, checkUserId, startPublishDate, endPublishDate,
+                emptyParent, onlyUrl, hasImages, hasFiles, title, userId, checkUserId, startPublishDate, endPublishDate,tagIds,
                 orderField, orderType, pageIndex, pageSize);
     }
 
@@ -137,7 +150,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(siteId, null, null, null, false, null, entity.getId(),
-                            null, null, null, null, null, null, null, null, null, null, null, null, null).getList()) {
+                            null, null, null, null, null, null, null, null, null, null, null, null, null,null).getList()) {
                         child.setDisabled(true);
                         entityList.add(child);
                     }
@@ -156,18 +169,82 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (notEmpty(category) && notEmpty(category.getChildIds())) {
                 String[] categoryStringIds = add(splitByWholeSeparator(category.getChildIds(), COMMA_DELIMITED),
                         String.valueOf(categoryId));
-                categoryIds = new Integer[categoryStringIds.length + 1];
+                //categoryIds = new Integer[categoryStringIds.length + 1];
+                categoryIds = new Integer[categoryStringIds.length];
                 for (int i = 0; i < categoryStringIds.length; i++) {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);
                 }
-                categoryIds[categoryStringIds.length] = categoryId;
+                //categoryIds[categoryStringIds.length] = categoryId;
             }
         }
         return categoryIds;
+    }
+    
+    public PageHandler  getPageByContentAttribute(SysSite site,
+    		Integer[] status,Boolean disabled,Boolean hasImages,Boolean hasFiles,
+    		String modelId,Integer categoryId,Boolean containChild, String tagIds,List<Map> attrConList,
+    		String orderField,String orderType, Integer pageIndex, Integer pageSize) throws Exception{
+    	Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+        return this.dao.getPageByContentAttribute(site.getId(), modelMap, status, disabled,hasImages,hasFiles, modelId, categoryId, getCategoryIds(containChild, categoryId), tagIds, attrConList, orderField, orderType, pageIndex, pageSize);
+    }
+ 
+    public void insertModelExtendData(CmsContent cmsContent,Map<String,String> map,CmsModel cmsModel){
+    	String tableName="XMT_"+cmsModel.getId();
+    	String sqlFieldNames=" (content_id,";
+    	String sqlValues=" values(?,";
+    	Set<String> fieldNameSet=map.keySet();
+    	int fieldCount=fieldNameSet.size();
+    	Object[] sqlValueParameters=new Object[fieldCount+1];
+    	sqlValueParameters[0]=cmsContent.getId();
+    	int i=1;
+    	for(Iterator<String> iterator=fieldNameSet.iterator();iterator.hasNext();){
+    		String key=iterator.next();
+    		String value=map.get(key);
+    		sqlFieldNames=sqlFieldNames+key+",";
+    		sqlValues=sqlValues+"?,";
+    		sqlValueParameters[i]=value;
+    		i++;
+    	}
+    	sqlFieldNames=sqlFieldNames.substring(0, sqlFieldNames.lastIndexOf(","));
+    	sqlFieldNames+=")";
+    	sqlValues=sqlValues.substring(0, sqlValues.lastIndexOf(","));
+    	sqlValues+=")";
+    	String sql="insert into "+tableName+sqlFieldNames+sqlValues;
+    	dao.updateSql(sql,sqlValueParameters);
+    }
+    public Object getModelExtendData(CmsContent cmsContent){
+    	String tableName="XMT_"+cmsContent.getModelId();
+    	String sql="select * from "+tableName+" where content_id=?";
+    	Object[] sqlValueParameters=new Object[1];
+    	sqlValueParameters[0]=cmsContent.getId();
+    	Object modelExtendData=dao.getSql(sql,sqlValueParameters);
+    	return modelExtendData;
+    }
+    public void deleteModelExtendData(CmsContent cmsContent){
+    	String tableName="XMT_"+cmsContent.getModelId();
+    	String sql="delete from "+tableName+" where content_id=?";
+    	Object[] sqlValueParameters=new Object[1];
+    	sqlValueParameters[0]=cmsContent.getId();
+    	dao.updateSql(sql,sqlValueParameters);
+    }
+    public void updateModelExtendData(CmsContent cmsContent,Map<String,String> map,CmsModel cmsModel){
+    	Object extendData=this.getModelExtendData(cmsContent);
+    	if(this.notEmpty(extendData)){//update
+    		this.deleteModelExtendData(cmsContent);
+    		this.insertModelExtendData(cmsContent, map, cmsModel);
+    	}else{//save
+    		this.insertModelExtendData(cmsContent, map, cmsModel);
+    	}
+
     }
 
     @Autowired
     private CmsContentDao dao;
     @Autowired
     private CmsCategoryDao categoryDao;
+    @Autowired
+    private CmsContentAttributeDao attributeDao;
+    @Autowired
+    private ModelComponent modelComponent;
+
 }

@@ -3,12 +3,12 @@ package com.sanluan.common.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import com.sanluan.common.base.Base;
 
-public class QueryHandler extends Base   {
+public class SqlQueryHandler extends Base   {
 	public static final String COUNT_SQL = "select count(*) ";
     public static final String KEYWORD_FROM = " from ";
     public static final String KEYWORD_ORDER = " order by ";
@@ -23,24 +23,25 @@ public class QueryHandler extends Base   {
     private Integer maxResults;
     private Boolean cacheable;
 
-    public QueryHandler(String sql) {
+    public SqlQueryHandler(String sql) {
         this.sqlBuilder = new StringBuilder(" ");
         sqlBuilder.append(sql);
     }
 
-    public QueryHandler() {
+    public SqlQueryHandler() {
         this.sqlBuilder = new StringBuilder();
     }
 
-    public Query getQuery(Session session) {
+    public SQLQuery getQuery(Session session) {
         return getQuery(session, getSql());
     }
 
-    public Query getCountQuery(Session session) {
+    public SQLQuery getCountQuery(Session session) {
         return getQuery(session, getCountSql());
     }
 
-    public QueryHandler condition(String condition) {
+
+    public SqlQueryHandler condition(String condition) {
         if (whereFlag) {
             whereFlag = false;
             sqlBuilder.append(" where ");
@@ -51,7 +52,7 @@ public class QueryHandler extends Base   {
         return this;
     }
 
-    public QueryHandler order(String sqlString) {
+    public SqlQueryHandler order(String sqlString) {
         if (orderFlag) {
             orderFlag = false;
             append(KEYWORD_ORDER);
@@ -62,7 +63,7 @@ public class QueryHandler extends Base   {
         return this;
     }
 
-    public QueryHandler group(String sqlString) {
+    public SqlQueryHandler group(String sqlString) {
         if (groupFlag) {
             groupFlag = false;
             sqlBuilder.append(KEYWORD_GROUP);
@@ -73,28 +74,28 @@ public class QueryHandler extends Base   {
         return this;
     }
 
-    public QueryHandler append(String sqlString) {
+    public SqlQueryHandler append(String sqlString) {
         sqlBuilder.append(" ");
         sqlBuilder.append(sqlString);
         return this;
     }
 
-    public QueryHandler setFirstResult(int firstResult) {
+    public SqlQueryHandler setFirstResult(int firstResult) {
         this.firstResult = firstResult;
         return this;
     }
 
-    public QueryHandler setMaxResults(int maxResults) {
+    public SqlQueryHandler setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
 
-    public QueryHandler setCacheable(boolean cacheable) {
+    public SqlQueryHandler setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
         return this;
     }
 
-    public QueryHandler setParameter(String key, Object value) {
+    public SqlQueryHandler setParameter(String key, Object value) {
         if (empty(map)) {
             map = new HashMap<String, Object>();
         }
@@ -102,7 +103,7 @@ public class QueryHandler extends Base   {
         return this;
     }
 
-    public QueryHandler setParameter(String key, Object[] value) {
+    public SqlQueryHandler setParameter(String key, Object[] value) {
         if (empty(arrayMap)) {
             arrayMap = new HashMap<String, Object[]>();
         }
@@ -110,8 +111,8 @@ public class QueryHandler extends Base   {
         return this;
     }
 
-    private Query getQuery(Session session, String sql) {
-        Query query = session.createQuery(sql);
+    private SQLQuery getQuery(Session session, String sql) {
+    	SQLQuery query = session.createSQLQuery(sql);
         if (notEmpty(map)) {
             for (String key : map.keySet()) {
                 query.setParameter(key, map.get(key));

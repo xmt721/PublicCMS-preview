@@ -12,7 +12,7 @@ import com.sanluan.common.handler.QueryHandler;
 @Repository
 public class CmsCategoryDao extends BaseDao<CmsCategory> {
     public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean hidden,
-            Boolean disabled, Integer pageIndex, Integer pageSize) {
+            Boolean disabled,String tagTypeIds, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -33,6 +33,13 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         }
         if (notEmpty(disabled)) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
+        }
+        if(notEmpty(tagTypeIds)){
+        	if("NULL".equals(tagTypeIds)){
+        		queryHandler.condition("(bean.tagTypeIds is NULL or bean.tagTypeIds='')");
+        	}else{
+            	queryHandler.condition("bean.tagTypeIds like :tagTypeIds)").setParameter("tagTypeIds", this.like(tagTypeIds));
+        	}
         }
         queryHandler.order("bean.sort asc,bean.id asc");
         return getPage(queryHandler, pageIndex, pageSize);
